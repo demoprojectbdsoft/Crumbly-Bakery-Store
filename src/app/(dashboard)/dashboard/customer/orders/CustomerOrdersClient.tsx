@@ -401,7 +401,6 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                       )}
                       <Button
                         size="sm"
-                        isLoading={loadingItemId === item.id}
                         isDisabled={loadingItemId === item.id}
                         onClick={() => handleBuyAgain(item)}
                         className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors cursor-pointer h-8 ${
@@ -410,8 +409,8 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                             : "bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
                         }`}
                       >
-                        <RotateCcw className="w-3.5 h-3.5" />
-                        <span>Buy Again</span>
+                        <RotateCcw className={`w-3.5 h-3.5 ${loadingItemId === item.id ? "animate-spin" : ""}`} />
+                        <span>{loadingItemId === item.id ? "Adding..." : "Buy Again"}</span>
                       </Button>
 
                       {order.status === "Delivered" && (

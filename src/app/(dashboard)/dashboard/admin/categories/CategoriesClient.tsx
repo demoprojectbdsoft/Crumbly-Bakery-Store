@@ -190,7 +190,7 @@ export default function CategoriesClient({
           isActive: editingCategory.isActive,
         });
 
-        if (res?.success !== false) {
+        if (res?.success === true) {
           toast.success("Category updated successfully!");
           setCategories((prev) =>
             prev.map((c) =>
@@ -213,7 +213,7 @@ export default function CategoriesClient({
           isActive: editingSubCategory.isActive,
         });
 
-        if (res?.success !== false) {
+        if (res?.success === true) {
           toast.success("Subcategory updated successfully!");
           setSubCategories((prev) =>
             prev.map((s) =>
@@ -253,7 +253,7 @@ export default function CategoriesClient({
 
       if (deleteTarget.type === "category") {
         const res = await deleteCategory(id);
-        if (res?.success !== false) {
+        if (res?.success === true) {
           toast.success("Category and linked subcategories deleted!");
           setCategories((prev) => prev.filter((c) => (c._id || c.id) !== id));
           setSubCategories((prev) =>
@@ -266,7 +266,7 @@ export default function CategoriesClient({
         }
       } else {
         const res = await deleteSubCategory(id);
-        if (res?.success !== false) {
+        if (res?.success === true) {
           toast.success("Subcategory deleted!");
           setSubCategories((prev) => prev.filter((s) => (s._id || s.id) !== id));
           setIsDeleteOpen(false);
