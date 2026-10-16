@@ -63,8 +63,10 @@ export default function MobileMenuContent({
   }
 
   const userRole = ((user as { role?: string })?.role || "customer").toLowerCase();
+  // demoadmin shares the admin dashboard routes
+  const dashboardRole = userRole === "demoadmin" ? "admin" : userRole;
   const accountHref = user
-    ? `/dashboard/${userRole}`
+    ? `/dashboard/${dashboardRole}`
     : "/auth/login";
 
   return (
@@ -138,7 +140,7 @@ export default function MobileMenuContent({
               </div>
               <div className="min-w-0">
                 <p className="text-xs font-bold text-gray-800 dark:text-gray-200 truncate">
-                  Welcome to Electro
+                  Welcome to Sparq
                 </p>
                 <p className="text-[10px] text-gray-400 truncate">
                   Sign in to access your orders

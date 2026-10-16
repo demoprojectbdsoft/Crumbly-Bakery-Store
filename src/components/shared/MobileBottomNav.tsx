@@ -13,16 +13,18 @@ export default function MobileBottomNav() {
   const { data: session } = authClient.useSession();
   const user = session?.user;
   const userRole = ((user as { role?: string })?.role || "customer").toLowerCase();
+  // demoadmin shares the admin dashboard routes
+  const dashboardRole = userRole === "demoadmin" ? "admin" : userRole;
 
   // Auth-aware hrefs
   const profileHref = user
-    ? `/dashboard/${userRole}/profile`
+    ? `/dashboard/${dashboardRole}/profile`
     : "/auth/login";
   const settingsHref = user
-    ? `/dashboard/${userRole}/settings`
+    ? `/dashboard/${dashboardRole}/settings`
     : "/auth/login";
   const dashboardHref = user
-    ? `/dashboard/${userRole}`
+    ? `/dashboard/${dashboardRole}`
     : "/auth/login";
 
   const NAV_ITEMS = [
