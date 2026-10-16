@@ -225,9 +225,10 @@ export default async function CustomerDashboardPage() {
 
     const orderIdStr: string = order._id?.toString() || order.id || "";
     const shortId = orderIdStr.slice(-6).toUpperCase();
-    const shippingAddr = order.shippingAddress
-      ? `${order.shippingAddress.address || ""}, ${order.shippingAddress.city || ""} - ${order.shippingAddress.postalCode || ""}`
-      : "Default Shipping Address";
+    const shippingAddr =
+      order.shippingAddress && order.shippingAddress.address
+        ? `${order.shippingAddress.address || ""}, ${order.shippingAddress.city || ""} - ${order.shippingAddress.postalCode || ""}`
+        : "Digital Delivery / N/A";
 
     return {
       id: orderIdStr,

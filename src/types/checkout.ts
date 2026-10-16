@@ -18,7 +18,7 @@ export interface CreateOrderItemPayload {
 export interface CreateOrderPayload {
   userId: string;
   items: CreateOrderItemPayload[];
-  shippingAddress: ShippingAddress;
+  shippingAddress?: ShippingAddress;
   paymentMethod: PaymentMethod;
   transactionId?: string;
 }
@@ -64,7 +64,7 @@ export interface Order {
         avatar?: string;
       };
   items: OrderItem[];
-  shippingAddress: ShippingAddress;
+  shippingAddress?: ShippingAddress;
   paymentMethod: PaymentMethod;
   /** Reference/transaction ID — returned by backend's getOrderById via the transaction record */
   transactionId?: string;

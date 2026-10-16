@@ -211,8 +211,9 @@ export default function CheckoutClient({
   const grandTotal = subtotal + shippingCost;
   const isCartEmpty = items.length === 0;
 
-  // Validation: Shipping form must have all required fields
+  // Validation: Shipping form must have all required fields (Only required for Cash on Delivery)
   const isShippingValid = useMemo(() => {
+    if (selectedPaymentMethod !== "cod") return true;
     return (
       shippingForm.fullName.trim().length > 1 &&
       shippingForm.phone.trim().length >= 6 &&
@@ -220,7 +221,7 @@ export default function CheckoutClient({
       shippingForm.city.trim().length >= 2 &&
       shippingForm.postalCode.trim().length >= 2
     );
-  }, [shippingForm]);
+  }, [shippingForm, selectedPaymentMethod]);
 
   // Validation: Payment requirement
   // If COD: ready if shipping is valid
@@ -389,7 +390,7 @@ export default function CheckoutClient({
       return;
     }
 
-    if (!isShippingValid) {
+    if (selectedPaymentMethod === "cod" && !isShippingValid) {
       toast.error("Please complete all required shipping address fields.");
       return;
     }
@@ -412,13 +413,25 @@ export default function CheckoutClient({
         price: Number(item.product?.price || 0),
         image: item.product?.image || "",
       })),
-      shippingAddress: {
-        fullName: shippingForm.fullName.trim(),
-        phone: shippingForm.phone.trim(),
-        address: shippingForm.address.trim(),
-        city: shippingForm.city.trim(),
-        postalCode: shippingForm.postalCode.trim(),
-      },
+      ...(selectedPaymentMethod === "cod"
+        ? {
+            shippingAddress: {
+              fullName: shippingForm.fullName.trim(),
+              phone: shippingForm.phone.trim(),
+              address: shippingForm.address.trim(),
+              city: shippingForm.city.trim(),
+              postalCode: shippingForm.postalCode.trim(),
+            },
+          }
+        : {
+            shippingAddress: {
+              fullName: user?.name || "Customer",
+              phone: walletPhone.trim() || (user as { phone?: string })?.phone || "N/A",
+              address: "Digital Delivery / N/A",
+              city: "Online",
+              postalCode: "0000",
+            },
+          }),
       paymentMethod: selectedPaymentMethod,
       ...(selectedPaymentMethod !== "cod" && transactionId
         ? { transactionId }
@@ -567,124 +580,7 @@ export default function CheckoutClient({
               LEFT COLUMN (Spans 2 of 3 Columns)
           ════════════════════════════════════════════════════════ */}
           <div className="lg:col-span-2 space-y-6">
-            {/* ── 1. Shipping Address Section ── */}
-            <Card className={cardClass}>
-              <Card.Content className="p-5 sm:p-6 md:p-7 space-y-5">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
-                  <h2 className={sectionHeadingClass}>
-                    <div className="w-7 h-7 rounded-lg bg-sky-50 dark:bg-sky-950/50 text-sky-600 dark:text-sky-400 flex items-center justify-center">
-                      <MapPin className="w-4 h-4" />
-                    </div>
-                    <span>1. Shipping & Delivery Address</span>
-                  </h2>
-                  <span className="text-[11px] font-semibold text-slate-400">
-                    Required fields marked <span className="text-rose-500">*</span>
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Full Name */}
-                  <div className={fieldClass}>
-                    <label className={labelClass}>
-                      Full Name <span className="text-rose-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <Input
-                        name="fullName"
-                        placeholder="e.g. John Doe"
-                        value={shippingForm.fullName}
-                        onChange={(e) =>
-                          handleShippingChange("fullName", e.target.value)
-                        }
-                        className="w-full"
-                        required
-                      />
-                      <UserIcon className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                    </div>
-                  </div>
-
-                  {/* Phone Number */}
-                  <div className={fieldClass}>
-                    <label className={labelClass}>
-                      Contact Phone <span className="text-rose-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <Input
-                        name="phone"
-                        type="tel"
-                        placeholder="e.g. +880 1712 345678"
-                        value={shippingForm.phone}
-                        onChange={(e) =>
-                          handleShippingChange("phone", e.target.value)
-                        }
-                        className="w-full"
-                        required
-                      />
-                      <Phone className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                    </div>
-                  </div>
-
-                  {/* Street Address */}
-                  <div className={`${fieldClass} sm:col-span-2`}>
-                    <label className={labelClass}>
-                      Street Address / House / Flat <span className="text-rose-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <Input
-                        name="address"
-                        placeholder="e.g. House 42, Road 11, Block D, Banani"
-                        value={shippingForm.address}
-                        onChange={(e) =>
-                          handleShippingChange("address", e.target.value)
-                        }
-                        className="w-full"
-                        required
-                      />
-                      <Building className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                    </div>
-                  </div>
-
-                  {/* City */}
-                  <div className={fieldClass}>
-                    <label className={labelClass}>
-                      City / District <span className="text-rose-500">*</span>
-                    </label>
-                    <Input
-                      name="city"
-                      placeholder="e.g. Dhaka"
-                      value={shippingForm.city}
-                      onChange={(e) =>
-                        handleShippingChange("city", e.target.value)
-                      }
-                      className="w-full"
-                      required
-                    />
-                  </div>
-
-                  {/* Postal Code */}
-                  <div className={fieldClass}>
-                    <label className={labelClass}>
-                      Postal / ZIP Code <span className="text-rose-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <Input
-                        name="postalCode"
-                        placeholder="e.g. 1213"
-                        value={shippingForm.postalCode}
-                        onChange={(e) =>
-                          handleShippingChange("postalCode", e.target.value)
-                        }
-                        className="w-full"
-                        required
-                      />
-                      <Hash className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                    </div>
-                  </div>
-                </div>
-              </Card.Content>
-            </Card>
-
-            {/* ── 2. Payment Method Section ── */}
+            {/* ── 1. Payment Method Section ── */}
             <Card className={cardClass}>
               <Card.Content className="p-5 sm:p-6 md:p-7 space-y-5">
                 <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
@@ -692,10 +588,10 @@ export default function CheckoutClient({
                     <div className="w-7 h-7 rounded-lg bg-sky-50 dark:bg-sky-950/50 text-sky-600 dark:text-sky-400 flex items-center justify-center">
                       <CreditCard className="w-4 h-4" />
                     </div>
-                    <span>2. Payment Method</span>
+                    <span>{selectedPaymentMethod === "cod" ? "1. Payment Method" : "Payment Method"}</span>
                   </h2>
                   <span className="text-[11px] font-semibold text-slate-400">
-                    Select one option
+                    Select payment option
                   </span>
                 </div>
 
@@ -772,117 +668,244 @@ export default function CheckoutClient({
                         Cash on Delivery Selected
                       </p>
                       <p className="text-emerald-700/90 dark:text-emerald-300/80 text-[11px]">
-                        No advance payment or OTP verification required. You can pay
-                        with cash directly to our delivery courier once you inspect your package.
+                        No advance payment or OTP verification required. Please provide your shipping address below for courier delivery.
                       </p>
                     </div>
                   </div>
                 ) : (
                   /* Mobile Wallet Entry Block */
-                  <div className="p-4 sm:p-5 rounded-xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-4">
-                    <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-slate-700">
-                      <div className="flex items-center gap-2">
-                        <Smartphone className="w-4 h-4 text-sky-500" />
-                        <h3 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-                          {selectedPaymentMethod.toUpperCase()} Direct Verification
-                        </h3>
-                      </div>
-                      {isOtpVerified ? (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-100/70 dark:bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-300 dark:border-emerald-800">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
-                          Payment Verified
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-medium text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full border border-amber-200 dark:border-amber-800/60">
-                          <AlertCircle className="w-3 h-3" />
-                          OTP Verification Required
-                        </span>
-                      )}
+                  <div className="space-y-3">
+                    <div className="p-3.5 rounded-xl bg-sky-50/80 dark:bg-sky-950/30 border border-sky-200/70 dark:border-sky-800/60 flex items-center gap-2.5 text-xs text-sky-800 dark:text-sky-300">
+                      <Sparkles className="w-4 h-4 shrink-0 text-sky-500" />
+                      <span>
+                        <strong>Instant Digital Checkout:</strong> Physical shipping address is not required for {currentPaymentOption.name} orders.
+                      </span>
                     </div>
 
-                    {/* Phone Number Input & Modal Trigger */}
-                    <div className="space-y-2">
-                      <label className={labelClass}>
-                        {selectedPaymentMethod.toUpperCase()} Account Mobile Number
-                      </label>
-                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                        <div className="relative flex-1">
-                          <Input
-                            type="tel"
-                            placeholder="01XXXXXXXXX"
-                            value={walletPhone}
-                            onChange={(e) => setWalletPhone(e.target.value)}
-                            disabled={isOtpVerified || isSendingOtp}
-                            className="w-full"
-                          />
-                          <Smartphone className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <div className="p-4 sm:p-5 rounded-xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 space-y-4">
+                      <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-slate-700">
+                        <div className="flex items-center gap-2">
+                          <Smartphone className="w-4 h-4 text-sky-500" />
+                          <h3 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                            {selectedPaymentMethod.toUpperCase()} Direct Verification
+                          </h3>
                         </div>
-
-                        {!isOtpVerified ? (
-                          <Button
-                            type="button"
-                            onPress={() => handleSendOtp()}
-                            isDisabled={
-                              isSendingOtp ||
-                              !walletPhone ||
-                              walletPhone.trim().length < 10
-                            }
-                            className="h-10 px-5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-xl transition-colors shrink-0 disabled:opacity-50"
-                          >
-                            {isSendingOtp ? (
-                              <span className="flex items-center gap-1.5">
-                                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                                Sending OTP...
-                              </span>
-                            ) : (
-                              <span className="flex items-center gap-1.5">
-                                <Lock className="w-3.5 h-3.5" />
-                                Send OTP & Verify
-                              </span>
-                            )}
-                          </Button>
+                        {isOtpVerified ? (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-100/70 dark:bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-300 dark:border-emerald-800">
+                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            Payment Verified
+                          </span>
                         ) : (
-                          <Button
-                            type="button"
-                            onPress={handleResetWalletVerification}
-                            className="h-10 px-4 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-bold text-xs rounded-xl transition-colors shrink-0"
-                          >
-                            Change Number
-                          </Button>
+                          <span className="inline-flex items-center gap-1 text-[10px] font-medium text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full border border-amber-200 dark:border-amber-800/60">
+                            <AlertCircle className="w-3.5 h-3.5" />
+                            OTP Verification Required
+                          </span>
                         )}
                       </div>
-                    </div>
 
-                    {/* Verified State Banner */}
-                    {isOtpVerified && transactionId && (
-                      <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
-                            <CheckCircle2 className="w-5 h-5" />
+                      {/* Phone Number Input & Modal Trigger */}
+                      <div className="space-y-2">
+                        <label className={labelClass}>
+                          {selectedPaymentMethod.toUpperCase()} Account Mobile Number
+                        </label>
+                        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                          <div className="relative flex-1">
+                            <Input
+                              type="tel"
+                              placeholder="01XXXXXXXXX"
+                              value={walletPhone}
+                              onChange={(e) => setWalletPhone(e.target.value)}
+                              disabled={isOtpVerified || isSendingOtp}
+                              className="w-full"
+                            />
+                            <Smartphone className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           </div>
-                          <div>
-                            <p className="text-xs font-bold text-emerald-900 dark:text-emerald-200">
-                              Payment Authenticated & Ready
-                            </p>
-                            <p className="text-[11px] font-mono text-emerald-700 dark:text-emerald-400">
-                              Ref Trx ID: {transactionId}
-                            </p>
-                          </div>
+
+                          {!isOtpVerified ? (
+                            <Button
+                              type="button"
+                              onPress={() => handleSendOtp()}
+                              isDisabled={
+                                isSendingOtp ||
+                                !walletPhone ||
+                                walletPhone.trim().length < 10
+                              }
+                              className="h-10 px-5 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-xl transition-colors shrink-0 disabled:opacity-50"
+                            >
+                              {isSendingOtp ? (
+                                <span className="flex items-center gap-1.5">
+                                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                                  Sending OTP...
+                                </span>
+                              ) : (
+                                <span className="flex items-center gap-1.5">
+                                  <Lock className="w-3.5 h-3.5" />
+                                  Send OTP & Verify
+                                </span>
+                              )}
+                            </Button>
+                          ) : (
+                            <Button
+                              type="button"
+                              onPress={handleResetWalletVerification}
+                              className="h-10 px-4 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-bold text-xs rounded-xl transition-colors shrink-0"
+                            >
+                              Change Number
+                            </Button>
+                          )}
                         </div>
-
-                        <button
-                          type="button"
-                          onClick={handleResetWalletVerification}
-                          className="text-[11px] font-semibold text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 underline cursor-pointer"
-                        >
-                          Re-verify
-                        </button>
                       </div>
-                    )}
+
+                      {/* Verified State Banner */}
+                      {isOtpVerified && transactionId && (
+                        <div className="p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-2.5">
+                            <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                              <CheckCircle2 className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <p className="text-xs font-bold text-emerald-900 dark:text-emerald-200">
+                                Payment Authenticated & Ready
+                              </p>
+                              <p className="text-[11px] font-mono text-emerald-700 dark:text-emerald-400">
+                                Ref Trx ID: {transactionId}
+                              </p>
+                            </div>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={handleResetWalletVerification}
+                            className="text-[11px] font-semibold text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 underline cursor-pointer"
+                          >
+                            Re-verify
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
               </Card.Content>
             </Card>
+
+            {/* ── 2. Shipping Address Section (Only for Cash on Delivery) ── */}
+            {selectedPaymentMethod === "cod" && (
+              <Card className={cardClass}>
+                <Card.Content className="p-5 sm:p-6 md:p-7 space-y-5">
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                    <h2 className={sectionHeadingClass}>
+                      <div className="w-7 h-7 rounded-lg bg-sky-50 dark:bg-sky-950/50 text-sky-600 dark:text-sky-400 flex items-center justify-center">
+                        <MapPin className="w-4 h-4" />
+                      </div>
+                      <span>2. Shipping & Delivery Address</span>
+                    </h2>
+                    <span className="text-[11px] font-semibold text-slate-400">
+                      Required for COD <span className="text-rose-500">*</span>
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Full Name */}
+                    <div className={fieldClass}>
+                      <label className={labelClass}>
+                        Full Name <span className="text-rose-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <Input
+                          name="fullName"
+                          placeholder="e.g. John Doe"
+                          value={shippingForm.fullName}
+                          onChange={(e) =>
+                            handleShippingChange("fullName", e.target.value)
+                          }
+                          className="w-full"
+                          required
+                        />
+                        <UserIcon className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      </div>
+                    </div>
+
+                    {/* Phone Number */}
+                    <div className={fieldClass}>
+                      <label className={labelClass}>
+                        Contact Phone <span className="text-rose-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <Input
+                          name="phone"
+                          type="tel"
+                          placeholder="e.g. +880 1712 345678"
+                          value={shippingForm.phone}
+                          onChange={(e) =>
+                            handleShippingChange("phone", e.target.value)
+                          }
+                          className="w-full"
+                          required
+                        />
+                        <Phone className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      </div>
+                    </div>
+
+                    {/* Street Address */}
+                    <div className={`${fieldClass} sm:col-span-2`}>
+                      <label className={labelClass}>
+                        Street Address / House / Flat <span className="text-rose-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <Input
+                          name="address"
+                          placeholder="e.g. House 42, Road 11, Block D, Banani"
+                          value={shippingForm.address}
+                          onChange={(e) =>
+                            handleShippingChange("address", e.target.value)
+                          }
+                          className="w-full"
+                          required
+                        />
+                        <Building className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      </div>
+                    </div>
+
+                    {/* City */}
+                    <div className={fieldClass}>
+                      <label className={labelClass}>
+                        City / District <span className="text-rose-500">*</span>
+                      </label>
+                      <Input
+                        name="city"
+                        placeholder="e.g. Dhaka"
+                        value={shippingForm.city}
+                        onChange={(e) =>
+                          handleShippingChange("city", e.target.value)
+                        }
+                        className="w-full"
+                        required
+                      />
+                    </div>
+
+                    {/* Postal Code */}
+                    <div className={fieldClass}>
+                      <label className={labelClass}>
+                        Postal / ZIP Code <span className="text-rose-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <Input
+                          name="postalCode"
+                          placeholder="e.g. 1213"
+                          value={shippingForm.postalCode}
+                          onChange={(e) =>
+                            handleShippingChange("postalCode", e.target.value)
+                          }
+                          className="w-full"
+                          required
+                        />
+                        <Hash className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                      </div>
+                    </div>
+                  </div>
+                </Card.Content>
+              </Card>
+            )}
           </div>
 
           {/* ════════════════════════════════════════════════════════
@@ -1034,21 +1057,19 @@ export default function CheckoutClient({
                     )}
                   </Button>
 
-                  {!isShippingValid && (
+                  {selectedPaymentMethod === "cod" && !isShippingValid && (
                     <p className="text-[11px] text-center text-amber-600 dark:text-amber-400 flex items-center justify-center gap-1">
                       <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                       Please fill in all shipping address fields.
                     </p>
                   )}
 
-                  {isShippingValid &&
-                    selectedPaymentMethod !== "cod" &&
-                    !isOtpVerified && (
-                      <p className="text-[11px] text-center text-amber-600 dark:text-amber-400 flex items-center justify-center gap-1">
-                        <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                        Verify your mobile wallet before placing order.
-                      </p>
-                    )}
+                  {selectedPaymentMethod !== "cod" && !isOtpVerified && (
+                    <p className="text-[11px] text-center text-amber-600 dark:text-amber-400 flex items-center justify-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                      Verify your mobile wallet before placing order.
+                    </p>
+                  )}
                 </div>
 
                 {/* Trust Badges */}

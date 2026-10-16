@@ -189,9 +189,10 @@ export default async function CustomerOrdersPage() {
         const orderIdStr: string = order._id?.toString() || order.id || "";
         const shortId = orderIdStr.slice(-6).toUpperCase();
 
-        const shippingAddr = order.shippingAddress
-          ? `${order.shippingAddress.address}, ${order.shippingAddress.city} - ${order.shippingAddress.postalCode}`
-          : "N/A";
+        const shippingAddr =
+          order.shippingAddress && order.shippingAddress.address
+            ? `${order.shippingAddress.address}, ${order.shippingAddress.city || ""} - ${order.shippingAddress.postalCode || ""}`
+            : "Digital Delivery / N/A";
 
         const status = mapOrderStatus(order.orderStatus || "processing");
 
