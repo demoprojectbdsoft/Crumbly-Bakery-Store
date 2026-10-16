@@ -29,7 +29,9 @@ import {
   BarChart3,
   UserCheck,
   AlertTriangle,
+  Maximize2,
 } from "lucide-react";
+import ImageGalleryModal from "@/components/shared/ImageGalleryModal";
 import { Product } from "@/types";
 
 interface ProductDetailClientProps {
@@ -60,6 +62,13 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
   ].filter(Boolean);
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [galleryInitialIndex, setGalleryInitialIndex] = useState(0);
+
+  const openGallery = (index: number) => {
+    setGalleryInitialIndex(index >= 0 && index < allImages.length ? index : 0);
+    setIsGalleryOpen(true);
+  };
 
   const catName =
     product.categoryId?.name ||
@@ -470,16 +479,34 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         <div className="lg:col-span-5 space-y-4">
           <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-3xl p-4 overflow-hidden shadow-xs">
             {/* Active Image */}
-            <div className="relative w-full aspect-square bg-slate-50 dark:bg-gray-800 rounded-2xl overflow-hidden border border-slate-100 dark:border-gray-700/60">
+            <div
+              onClick={() => openGallery(activeImageIndex)}
+              className="relative w-full aspect-square bg-slate-50 dark:bg-gray-800 rounded-2xl overflow-hidden border border-slate-100 dark:border-gray-700/60 cursor-zoom-in group"
+            >
               {allImages[activeImageIndex] ? (
-                <Image
-                  src={allImages[activeImageIndex]}
-                  alt={product.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 500px"
-                  className="object-contain p-4"
-                  unoptimized
-                />
+                <>
+                  <Image
+                    src={allImages[activeImageIndex]}
+                    alt={product.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 500px"
+                    className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+                    unoptimized
+                  />
+                  {/* Click to Expand Button Badge */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openGallery(activeImageIndex);
+                    }}
+                    title="Click to expand gallery"
+                    className="absolute bottom-3 right-3 z-10 px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-900 text-white backdrop-blur-md border border-white/20 shadow-md transition-all hover:scale-105 flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
+                  >
+                    <Maximize2 className="w-3.5 h-3.5 text-sky-400" />
+                    <span>View Gallery ({allImages.length})</span>
+                  </button>
+                </>
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-gray-400">
                   <Package className="w-16 h-16" />
@@ -493,7 +520,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                 {allImages.map((img, idx) => (
                   <button
                     key={idx}
+                    type="button"
                     onClick={() => setActiveImageIndex(idx)}
+                    onDoubleClick={() => openGallery(idx)}
+                    title="Click to preview, double click to expand gallery"
                     className={`relative w-16 h-16 rounded-xl overflow-hidden shrink-0 border-2 transition-all cursor-pointer bg-slate-50 dark:bg-gray-800 p-1 ${
                       activeImageIndex === idx
                         ? "border-sky-500 shadow-xs ring-2 ring-sky-500/20"
@@ -713,6 +743,14 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           </Card>
         </div>
       </div>
+
+      <ImageGalleryModal
+        isOpen={isGalleryOpen}
+        onClose={() => setIsGalleryOpen(false)}
+        images={allImages}
+        initialIndex={galleryInitialIndex}
+        productTitle={product.title}
+      />
     </div>
   );
 }

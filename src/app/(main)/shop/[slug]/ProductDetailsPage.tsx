@@ -26,11 +26,13 @@ import {
   User as UserIcon,
   ShieldAlert,
   Sparkles,
+  Maximize2,
 } from "lucide-react";
 import { Button, Card, Tabs, Tab, TabList, TabPanel } from "@heroui/react";
 import { toast } from "react-toastify";
 import { authClient } from "@/lib/auth-client";
 import SuspendedAccountModal from "@/components/shared/SuspendedAccountModal";
+import ImageGalleryModal from "@/components/shared/ImageGalleryModal";
 import { Product, ProductReview, User } from "@/types";
 import ProductNotFound from "./ProductNotFound";
 import { addReview } from "@/lib/action/reviews";
@@ -78,6 +80,8 @@ export default function ProductDetailsPage({
   const [isInCart, setIsInCart] = useState<boolean>(false);
   const [isWishlistLoading, setIsWishlistLoading] = useState<boolean>(false);
   const [showSuspendedAlert, setShowSuspendedAlert] = useState<boolean>(false);
+  const [isGalleryOpen, setIsGalleryOpen] = useState<boolean>(false);
+  const [galleryInitialIndex, setGalleryInitialIndex] = useState<number>(0);
 
   // ── Countdown Timer ────────────────────────────────────────────────────────
   const offerTarget = useMemo(() => {
@@ -139,6 +143,11 @@ export default function ProductDetailsPage({
 
   // Initialize selectedImage from allImages (use state only for updates)
   const currentImage = selectedImage || allImages[0] || "";
+
+  const openGallery = (index: number) => {
+    setGalleryInitialIndex(index >= 0 && index < allImages.length ? index : 0);
+    setIsGalleryOpen(true);
+  };
 
   const formattedPrice = `$${product.price.toLocaleString("en-US", {
     minimumFractionDigits: 2,
@@ -521,8 +530,13 @@ export default function ProductDetailsPage({
         <div className="lg:col-span-5 space-y-4">
           
           {/* Featured Hero Display */}
-          <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-gradient-to-br from-white via-sky-50/40 to-slate-50 dark:from-slate-900 dark:via-slate-900/90 dark:to-sky-950/40 border border-sky-100 dark:border-sky-900/40 shadow-xl shadow-sky-950/5 dark:shadow-sky-950/40 backdrop-blur-md group">
-            
+          <div
+            onClick={() => {
+              const activeIdx = allImages.indexOf(currentImage);
+              openGallery(activeIdx >= 0 ? activeIdx : 0);
+            }}
+            className="relative aspect-square w-full rounded-2xl overflow-hidden bg-gradient-to-br from-white via-sky-50/40 to-slate-50 dark:from-slate-900 dark:via-slate-900/90 dark:to-sky-950/40 border border-sky-100 dark:border-sky-900/40 shadow-xl shadow-sky-950/5 dark:shadow-sky-950/40 backdrop-blur-md group cursor-zoom-in"
+          >
             {/* Badges */}
             <div className="absolute top-4 left-4 z-10 flex flex-col gap-1.5">
               {product.isFeatured && (
@@ -563,6 +577,21 @@ export default function ProductDetailsPage({
                 )
               }
             />
+
+            {/* Click to Expand Button Badge */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                const activeIdx = allImages.indexOf(currentImage);
+                openGallery(activeIdx >= 0 ? activeIdx : 0);
+              }}
+              title="Click to expand gallery"
+              className="absolute bottom-3 right-3 z-10 px-3 py-1.5 rounded-xl bg-slate-900/75 hover:bg-slate-900 text-white backdrop-blur-md border border-white/20 shadow-lg transition-all hover:scale-105 flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
+            >
+              <Maximize2 className="w-3.5 h-3.5 text-sky-400" />
+              <span>Gallery ({allImages.length})</span>
+            </button>
           </div>
 
           {/* Thumbnail Carousel */}
@@ -573,6 +602,8 @@ export default function ProductDetailsPage({
                   key={idx}
                   type="button"
                   onClick={() => setSelectedImage(img)}
+                  onDoubleClick={() => openGallery(idx)}
+                  title="Click to preview, double click to expand gallery"
                   className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 cursor-pointer ${
                     currentImage === img
                       ? "border-sky-500 shadow-md ring-2 ring-sky-500/30 scale-95 bg-white dark:bg-slate-900"
@@ -1264,6 +1295,14 @@ export default function ProductDetailsPage({
           </Tabs>
         </Card>
     </div>
+
+    <ImageGalleryModal
+      isOpen={isGalleryOpen}
+      onClose={() => setIsGalleryOpen(false)}
+      images={allImages}
+      initialIndex={galleryInitialIndex}
+      productTitle={product.title}
+    />
     </>
   );
 }

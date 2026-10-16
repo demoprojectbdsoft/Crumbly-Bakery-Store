@@ -256,32 +256,7 @@ export function LoginForm() {
               </div>
 
               {/* Checkboxes / Selection Options */}
-              <div className="space-y-2 pt-1">
-                {/* Terms and Conditions option */}
-                <label className="flex items-start gap-2 text-xs text-slate-600 dark:text-slate-400 cursor-pointer select-none">
-                  <input
-                    type="checkbox"
-                    name="agreeTerms"
-                    className="w-4 h-4 mt-0.5 rounded border-slate-300 dark:border-gray-700 text-blue-600 focus:ring-blue-500 cursor-pointer accent-blue-600"
-                  />
-                  <span>
-                    I accept the{" "}
-                    <Link
-                      href="/terms"
-                      className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
-                    >
-                      Terms &amp; Conditions
-                    </Link>{" "}
-                    and{" "}
-                    <Link
-                      href="/privacy"
-                      className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
-                    >
-                      Privacy Policy
-                    </Link>
-                  </span>
-                </label>
-              </div>
+              
 
               <Button
                 type="submit"
