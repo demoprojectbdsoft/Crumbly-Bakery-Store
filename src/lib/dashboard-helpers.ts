@@ -8,6 +8,8 @@ import {
   AdminKPIs,
   RecentOrder,
   ProfitDataPoint,
+  TopSellingPeriodItem,
+  TopSellingByPeriod,
 } from "@/types/adminDashboard";
 import {
   SpendingDataPoint,
@@ -176,10 +178,21 @@ export function aggregateAdminDashboard(
 
   // Product sales counter (with cost/profit tracking)
   const productSalesMap: Record<string, {
-    title: string; image: string; category: string;
+    title: string; image: string; category: string; slug?: string;
     price: number; investPrice?: number;
     unitsSold: number; revenue: number; cost: number; profit: number;
   }> = {};
+
+  // Per-period product sales maps
+  type PeriodSaleEntry = {
+    title: string; image: string; category: string; slug?: string;
+    price: number; investPrice?: number;
+    unitsSold: number; revenue: number; cost: number; profit: number;
+  };
+  const dailyProductMap: Record<string, PeriodSaleEntry> = {};
+  const weeklyProductMap: Record<string, PeriodSaleEntry> = {};
+  const monthlyProductMap: Record<string, PeriodSaleEntry> = {};
+  const yearlyProductMap: Record<string, PeriodSaleEntry> = {};
 
   // Build product lookup map for investPrice
   const productMap: Record<string, RawProduct> = {};
@@ -285,6 +298,20 @@ export function aggregateAdminDashboard(
 
     // Item sales (with cost/profit tracking)
     if (Array.isArray(order.items)) {
+      const orderDate = order.createdAt ? new Date(order.createdAt) : null;
+      const isValidDate = orderDate && !isNaN(orderDate.getTime());
+
+      // Period cutoffs
+      const cutoffDay = new Date(now); cutoffDay.setDate(cutoffDay.getDate() - 1);
+      const cutoffWeek = new Date(now); cutoffWeek.setDate(cutoffWeek.getDate() - 7);
+      const cutoffMonth = new Date(now); cutoffMonth.setMonth(cutoffMonth.getMonth() - 1);
+      const cutoffYear = new Date(now); cutoffYear.setFullYear(cutoffYear.getFullYear() - 1);
+
+      const inDay = isValidDate && orderDate! >= cutoffDay;
+      const inWeek = isValidDate && orderDate! >= cutoffWeek;
+      const inMonth = isValidDate && orderDate! >= cutoffMonth;
+      const inYear = isValidDate && orderDate! >= cutoffYear;
+
       order.items.forEach((item) => {
         const pid = typeof item.productId === "object" ? item.productId?._id || item.productId?.id : item.productId;
         const key = pid ? String(pid) : item.title || "Product";
@@ -294,6 +321,7 @@ export function aggregateAdminDashboard(
           typeof item.productId === "object"
             ? item.productId?.categoryId?.name || item.productId?.category?.name || "Electronics"
             : "Electronics";
+        const prodSlug = typeof item.productId === "object" ? item.productId?.slug : undefined;
 
         // Try to get investPrice from populated productId or productMap
         const populatedProd = typeof item.productId === "object" ? item.productId : null;
@@ -304,11 +332,13 @@ export function aggregateAdminDashboard(
         const itemCost = investPrice != null ? investPrice * qty : 0;
         const itemProfit = (itemPrice * qty) - itemCost;
 
+        // All-time aggregate
         if (!productSalesMap[key]) {
           productSalesMap[key] = {
             title: item.title || "Product Item",
             image: item.image || "",
             category: prodCat,
+            slug: prodSlug,
             price: itemPrice,
             investPrice,
             unitsSold: 0,
@@ -321,6 +351,33 @@ export function aggregateAdminDashboard(
         productSalesMap[key].revenue += qty * itemPrice;
         productSalesMap[key].cost += itemCost;
         productSalesMap[key].profit += itemProfit;
+
+        // Helper to upsert into a period map
+        function upsertPeriod(map: Record<string, PeriodSaleEntry>) {
+          if (!map[key]) {
+            map[key] = {
+              title: item.title || "Product Item",
+              image: item.image || "",
+              category: prodCat,
+              slug: prodSlug,
+              price: itemPrice,
+              investPrice,
+              unitsSold: 0,
+              revenue: 0,
+              cost: 0,
+              profit: 0,
+            };
+          }
+          map[key].unitsSold += qty;
+          map[key].revenue += qty * itemPrice;
+          map[key].cost += itemCost;
+          map[key].profit += itemProfit;
+        }
+
+        if (inDay) upsertPeriod(dailyProductMap);
+        if (inWeek) upsertPeriod(weeklyProductMap);
+        if (inMonth) upsertPeriod(monthlyProductMap);
+        if (inYear) upsertPeriod(yearlyProductMap);
       });
     }
 
@@ -585,6 +642,33 @@ export function aggregateAdminDashboard(
     },
   ];
 
+  // Build top-selling-by-period lists (top 10 each, sorted by unitsSold desc)
+  function buildPeriodList(map: Record<string, PeriodSaleEntry>): TopSellingPeriodItem[] {
+    return Object.entries(map)
+      .map(([id, p]) => ({
+        id,
+        title: p.title,
+        image: p.image,
+        category: p.category,
+        slug: p.slug,
+        price: p.price,
+        investPrice: p.investPrice,
+        unitsSold: p.unitsSold,
+        revenue: Math.round(p.revenue * 100) / 100,
+        cost: Math.round(p.cost * 100) / 100,
+        profit: Math.round(p.profit * 100) / 100,
+      }))
+      .sort((a, b) => b.unitsSold - a.unitsSold)
+      .slice(0, 10);
+  }
+
+  const topSellingByPeriod: TopSellingByPeriod = {
+    daily: buildPeriodList(dailyProductMap),
+    weekly: buildPeriodList(weeklyProductMap),
+    monthly: buildPeriodList(monthlyProductMap),
+    yearly: buildPeriodList(yearlyProductMap),
+  };
+
   return {
     stats,
     revenueData,
@@ -598,6 +682,7 @@ export function aggregateAdminDashboard(
     weeklyProfitData,
     monthlyProfitData,
     yearlyProfitData,
+    topSellingByPeriod,
   };
 }
 

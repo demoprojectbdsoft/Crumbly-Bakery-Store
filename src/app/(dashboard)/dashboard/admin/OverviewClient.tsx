@@ -55,8 +55,10 @@ import {
   AdminKPIs,
   RecentOrder,
   ProfitDataPoint,
+  TopSellingByPeriod,
+  TopSellingPeriodItem,
 } from "@/types/adminDashboard";
-import { exportAdminOverviewCsv } from "@/lib/csvExport";
+import { exportAdminOverviewCsv, exportTopSellingCsv } from "@/lib/csvExport";
 
 interface OverviewClientProps {
   stats: StatCardItem[];
@@ -71,6 +73,7 @@ interface OverviewClientProps {
   weeklyProfitData: ProfitDataPoint[];
   monthlyProfitData: ProfitDataPoint[];
   yearlyProfitData: ProfitDataPoint[];
+  topSellingByPeriod: TopSellingByPeriod;
 }
 
 const ICON_MAP: Record<string, any> = {
@@ -95,9 +98,12 @@ export default function OverviewClient({
   weeklyProfitData,
   monthlyProfitData,
   yearlyProfitData,
+  topSellingByPeriod,
 }: OverviewClientProps) {
   const [revenueMetric, setRevenueMetric] = useState<"both" | "revenue" | "orders">("both");
   const [profitTimeframe, setProfitTimeframe] = useState<"daily" | "weekly" | "monthly" | "yearly">("monthly");
+  const [sellingPeriod, setSellingPeriod] = useState<"daily" | "weekly" | "monthly" | "yearly">("monthly");
+  const [sellingMetric, setSellingMetric] = useState<"units" | "earnings">("units");
 
   const profitChartData = {
     daily: dailyProfitData,
@@ -904,6 +910,240 @@ export default function OverviewClient({
           </div>
         </div>
       )}
+
+      {/* ── Most Selling & Most Earning Products Table ── */}
+      <div className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-5">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 rounded-lg bg-violet-500/10 text-violet-600 dark:text-violet-400">
+              <TrendingUp className="w-4 h-4" />
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-gray-900 dark:text-white">
+                Most Selling &amp; Most Earning Products
+              </h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                Top 10 products ranked by sales volume or earnings per period
+              </p>
+            </div>
+          </div>
+
+          {/* Export CSV */}
+          <button
+            id="btn-export-top-selling-csv"
+            onClick={() => {
+              try {
+                toast.info("Generating top selling products CSV...");
+                exportTopSellingCsv({
+                  period: sellingPeriod,
+                  metric: sellingMetric,
+                  daily: topSellingByPeriod.daily,
+                  weekly: topSellingByPeriod.weekly,
+                  monthly: topSellingByPeriod.monthly,
+                  yearly: topSellingByPeriod.yearly,
+                });
+                toast.success("CSV exported successfully!");
+              } catch {
+                toast.error("Failed to export CSV.");
+              }
+            }}
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-bold shadow-md shadow-violet-500/20 transition-all cursor-pointer shrink-0"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Export CSV</span>
+          </button>
+        </div>
+
+        {/* Period + Metric Tabs */}
+        <div className="flex flex-col sm:flex-row gap-3">
+          {/* Period tabs */}
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-gray-800 w-fit">
+            {(["daily", "weekly", "monthly", "yearly"] as const).map((p) => (
+              <button
+                key={p}
+                id={`btn-top-selling-period-${p}`}
+                onClick={() => setSellingPeriod(p)}
+                className={`px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all cursor-pointer capitalize ${
+                  sellingPeriod === p
+                    ? "bg-white dark:bg-gray-700 text-violet-600 dark:text-violet-400 shadow-xs"
+                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                }`}
+              >
+                {p === "daily" ? "Day" : p === "weekly" ? "Week" : p === "monthly" ? "Month" : "Year"}
+              </button>
+            ))}
+          </div>
+
+          {/* Metric tabs */}
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-gray-800 w-fit">
+            {(["units", "earnings"] as const).map((m) => (
+              <button
+                key={m}
+                id={`btn-top-selling-metric-${m}`}
+                onClick={() => setSellingMetric(m)}
+                className={`px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+                  sellingMetric === m
+                    ? "bg-white dark:bg-gray-700 text-emerald-600 dark:text-emerald-400 shadow-xs"
+                    : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                }`}
+              >
+                {m === "units" ? "Most Sold" : "Most Earned"}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Table */}
+        {(() => {
+          const raw = topSellingByPeriod[sellingPeriod];
+          const items: TopSellingPeriodItem[] =
+            sellingMetric === "units"
+              ? [...raw].sort((a, b) => b.unitsSold - a.unitsSold)
+              : [...raw].sort((a, b) => b.revenue - a.revenue);
+
+          return (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead>
+                  <tr className="border-b border-slate-100 dark:border-gray-800 text-gray-400 dark:text-gray-500 uppercase tracking-wider font-semibold">
+                    <th className="pb-3 pl-2 w-8">#</th>
+                    <th className="pb-3">Product</th>
+                    <th className="pb-3">Category</th>
+                    <th className="pb-3 text-right">Price</th>
+                    <th className="pb-3 text-right">Units Sold</th>
+                    <th className="pb-3 text-right">Revenue</th>
+                    <th className="pb-3 text-right">Cost</th>
+                    <th className="pb-3 text-right pr-2">Profit / Loss</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-gray-800">
+                  {items.length === 0 ? (
+                    <tr>
+                      <td colSpan={8} className="py-10 text-center text-xs text-gray-400">
+                        No order data for this period yet.
+                      </td>
+                    </tr>
+                  ) : (
+                    items.map((item, idx) => {
+                      const profitMarginPct =
+                        item.revenue > 0
+                          ? Math.round((item.profit / item.revenue) * 100)
+                          : null;
+                      const isProfit = item.profit >= 0;
+
+                      return (
+                        <tr
+                          key={item.id || idx}
+                          className="hover:bg-slate-50/70 dark:hover:bg-gray-800/40 transition-colors group"
+                        >
+                          {/* Rank */}
+                          <td className="py-3.5 pl-2">
+                            <span
+                              className={`inline-flex items-center justify-center w-6 h-6 rounded-lg text-[10px] font-black ${
+                                idx === 0
+                                  ? "bg-amber-400/20 text-amber-600 dark:text-amber-400"
+                                  : idx === 1
+                                  ? "bg-slate-300/30 text-slate-500 dark:text-slate-400"
+                                  : idx === 2
+                                  ? "bg-orange-300/20 text-orange-600 dark:text-orange-400"
+                                  : "bg-slate-100 dark:bg-gray-800 text-gray-500"
+                              }`}
+                            >
+                              {idx + 1}
+                            </span>
+                          </td>
+
+                          {/* Product */}
+                          <td className="py-3.5">
+                            <div className="flex items-center gap-2.5">
+                              {item.image ? (
+                                <div className="relative w-8 h-8 rounded-lg overflow-hidden bg-white dark:bg-gray-800 border border-slate-200 dark:border-gray-700 shrink-0">
+                                  <Image
+                                    src={item.image}
+                                    alt={item.title}
+                                    fill
+                                    className="object-contain p-0.5"
+                                    unoptimized
+                                  />
+                                </div>
+                              ) : (
+                                <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-gray-800 flex items-center justify-center shrink-0">
+                                  <Package className="w-4 h-4 text-slate-400" />
+                                </div>
+                              )}
+                              <span className="font-semibold text-gray-800 dark:text-gray-200 max-w-[180px] truncate">
+                                {item.title}
+                              </span>
+                            </div>
+                          </td>
+
+                          {/* Category */}
+                          <td className="py-3.5">
+                            <span className="px-2 py-0.5 rounded-md bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 text-[10px] font-bold">
+                              {item.category}
+                            </span>
+                          </td>
+
+                          {/* Price */}
+                          <td className="py-3.5 text-right text-gray-700 dark:text-gray-300 font-mono">
+                            ${Number(item.price).toFixed(2)}
+                          </td>
+
+                          {/* Units Sold */}
+                          <td className="py-3.5 text-right">
+                            <span className="font-black text-gray-900 dark:text-white">
+                              {item.unitsSold.toLocaleString()}
+                            </span>
+                            <span className="text-gray-400 ml-1">units</span>
+                          </td>
+
+                          {/* Revenue */}
+                          <td className="py-3.5 text-right font-bold text-gray-900 dark:text-white font-mono">
+                            ${Number(item.revenue).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                          </td>
+
+                          {/* Cost */}
+                          <td className="py-3.5 text-right text-gray-500 dark:text-gray-400 font-mono">
+                            {item.cost > 0
+                              ? `$${Number(item.cost).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                              : <span className="text-gray-300 dark:text-gray-600">—</span>
+                            }
+                          </td>
+
+                          {/* Profit / Loss */}
+                          <td className="py-3.5 pr-2 text-right">
+                            <div className="flex flex-col items-end gap-0.5">
+                              <span
+                                className={`font-black font-mono ${
+                                  isProfit
+                                    ? "text-emerald-600 dark:text-emerald-400"
+                                    : "text-rose-600 dark:text-rose-400"
+                                }`}
+                              >
+                                {isProfit ? "+" : "-"}${Math.abs(item.profit).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                              </span>
+                              {profitMarginPct !== null && (
+                                <span
+                                  className={`text-[10px] font-semibold ${
+                                    isProfit ? "text-emerald-500" : "text-rose-500"
+                                  }`}
+                                >
+                                  {profitMarginPct}% margin
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+          );
+        })()}
+      </div>
 
       {/* ── Recent Orders Table ── */}
       <div className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-5">

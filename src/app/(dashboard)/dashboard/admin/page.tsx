@@ -92,6 +92,7 @@ export default async function AdminDashboardPage() {
       weeklyProfitData={data.weeklyProfitData}
       monthlyProfitData={data.monthlyProfitData}
       yearlyProfitData={data.yearlyProfitData}
+      topSellingByPeriod={data.topSellingByPeriod}
     />
   );
 }

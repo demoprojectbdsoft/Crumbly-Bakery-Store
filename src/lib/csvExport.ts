@@ -620,3 +620,78 @@ export function exportCustomerOverviewCsv(data: CustomerOverviewExportData): voi
   const csvText = buildCsvString(rows);
   triggerCsvDownload(csvText, `Customer_Shopping_Report_${dateStr}.csv`);
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TOP SELLING & MOST EARNING PRODUCTS CSV EXPORTER
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface TopSellingExportItem {
+  title: string;
+  category: string;
+  price: number;
+  investPrice?: number;
+  unitsSold: number;
+  revenue: number;
+  cost: number;
+  profit: number;
+}
+
+export interface TopSellingExportData {
+  period: "daily" | "weekly" | "monthly" | "yearly";
+  metric: "units" | "earnings";
+  daily: TopSellingExportItem[];
+  weekly: TopSellingExportItem[];
+  monthly: TopSellingExportItem[];
+  yearly: TopSellingExportItem[];
+}
+
+/**
+ * Exports Most Selling & Most Earning Products CSV report across all 4 periods.
+ */
+export function exportTopSellingCsv(data: TopSellingExportData): void {
+  const dateStr = new Date().toISOString().split("T")[0];
+  const timestamp = new Date().toLocaleString("en-US", { dateStyle: "full", timeStyle: "medium" });
+
+  const rows: (string | number | boolean | null | undefined)[][] = [];
+
+  rows.push(["SPARQ – MOST SELLING & MOST EARNING PRODUCTS REPORT"]);
+  rows.push(["Generated On", timestamp]);
+  rows.push(["Active Period", data.period.toUpperCase()]);
+  rows.push(["Sort Metric", data.metric === "units" ? "Units Sold" : "Total Earnings"]);
+  rows.push([]);
+
+  const COLS = ["Rank", "Product Title", "Category", "Unit Price", "Invest Price", "Units Sold", "Revenue", "Cost", "Profit / Loss", "Profit %"];
+
+  function writeSection(label: string, items: TopSellingExportItem[]) {
+    rows.push([`=== ${label} ===`]);
+    rows.push(COLS);
+    if (items.length === 0) {
+      rows.push(["-", "No data for this period", "-", "-", "-", 0, "$0.00", "$0.00", "$0.00", "0%"]);
+    } else {
+      items.forEach((p, i) => {
+        const margin = p.revenue > 0 ? `${Math.round((p.profit / p.revenue) * 100)}%` : "N/A";
+        rows.push([
+          i + 1,
+          p.title,
+          p.category,
+          `$${Number(p.price ?? 0).toFixed(2)}`,
+          p.investPrice != null ? `$${Number(p.investPrice).toFixed(2)}` : "N/A",
+          p.unitsSold,
+          `$${Number(p.revenue).toFixed(2)}`,
+          `$${Number(p.cost).toFixed(2)}`,
+          `$${Number(p.profit).toFixed(2)}`,
+          margin,
+        ]);
+      });
+    }
+    rows.push([]);
+  }
+
+  writeSection("DAILY – Last 24 Hours", data.daily);
+  writeSection("WEEKLY – Last 7 Days", data.weekly);
+  writeSection("MONTHLY – Last 30 Days", data.monthly);
+  writeSection("YEARLY – Last 365 Days", data.yearly);
+
+  const csvText = buildCsvString(rows);
+  triggerCsvDownload(csvText, `Sparq_Top_Selling_Products_${dateStr}.csv`);
+}

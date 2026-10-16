@@ -1,5 +1,26 @@
 // ─── Admin Dashboard Page Types ───────────────────────────────────────────────
 
+export interface TopSellingPeriodItem {
+  id: string;
+  title: string;
+  image: string;
+  category: string;
+  slug?: string;
+  price: number;
+  investPrice?: number;
+  unitsSold: number;
+  revenue: number;
+  cost: number;
+  profit: number;
+}
+
+export interface TopSellingByPeriod {
+  daily: TopSellingPeriodItem[];
+  weekly: TopSellingPeriodItem[];
+  monthly: TopSellingPeriodItem[];
+  yearly: TopSellingPeriodItem[];
+}
+
 export interface StatCardItem {
   title: string;
   value: string;
