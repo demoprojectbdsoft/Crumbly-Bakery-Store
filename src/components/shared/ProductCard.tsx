@@ -227,10 +227,15 @@ export default function ProductCard({
       return;
     }
 
-    if (userRole === "admin") {
-      toast.warning("Admin cannot add products to cart!", {
-        icon: <span>🛡️</span>,
-      });
+    if (userRole === "admin" || userRole === "demoadmin") {
+      toast.warning(
+        userRole === "demoadmin"
+          ? "Demo admin cannot add products to cart!"
+          : "Admin cannot add products to cart!",
+        {
+          icon: <span>🛡️</span>,
+        }
+      );
       return;
     }
     if (isOwner) {
@@ -278,10 +283,15 @@ export default function ProductCard({
     }
 
     if (!isWishlisted) {
-      if (userRole === "admin") {
-        toast.warning("Admin cannot add products to wishlist!", {
-          icon: <span>🛡️</span>,
-        });
+      if (userRole === "admin" || userRole === "demoadmin") {
+        toast.warning(
+          userRole === "demoadmin"
+            ? "Demo admin cannot add products to wishlist!"
+            : "Admin cannot add products to wishlist!",
+          {
+            icon: <span>🛡️</span>,
+          }
+        );
         return;
       }
       if (isOwner) {

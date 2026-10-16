@@ -80,8 +80,12 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
       return;
     }
 
-    if (userRole === "admin") {
-      toast.warning("Admin cannot add products to cart!");
+    if (userRole === "admin" || userRole === "demoadmin") {
+      toast.warning(
+        userRole === "demoadmin"
+          ? "Demo admin cannot add products to cart!"
+          : "Admin cannot add products to cart!"
+      );
       return;
     }
 

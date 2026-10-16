@@ -6,6 +6,16 @@ import { getUserSession } from "../core/session";
 export const addToWishlist = async (productId: string) => {
   const user = await getUserSession();
   if (!user?.id) return null;
+  const role = ((user as { role?: string })?.role || "").toLowerCase();
+  if (role === "admin" || role === "demoadmin") {
+    return {
+      success: false,
+      message:
+        role === "demoadmin"
+          ? "Demo admin cannot add products to wishlist!"
+          : "Admin cannot add products to wishlist!",
+    };
+  }
   return serverMutation("/wishlist", { userId: user.id, productId });
 };
 
