@@ -85,11 +85,13 @@ export default function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProp
           <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-500" />
         </button>
 
-        {/* Cart Item Count & Dollar Total */}
-        <CartButton
-          showTotal={true}
-          className="px-2 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors"
-        />
+        {/* Cart Item Count & Dollar Total — hidden for admin/demoadmin */}
+        {userRole !== "admin" && userRole !== "demoadmin" && (
+          <CartButton
+            showTotal={true}
+            className="px-2 py-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors"
+          />
+        )}
 
         <div className="h-5 w-px bg-slate-200 dark:bg-gray-800 hidden sm:block" />
 
