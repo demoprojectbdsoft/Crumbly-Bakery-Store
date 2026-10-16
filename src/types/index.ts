@@ -120,18 +120,21 @@ export interface Review {
 
 export interface Product {
   id: string;
+  _id?: string;
   ownerId?: string;
   title: string;
   slug: string;
   categories: string[]; // e.g. ["Accessories", "Headphone Cases"]
   // Populated references (present on product detail page)
-  categoryId?: { name: string; slug: string };
-  subCategoryIds?: { name: string; slug: string }[];
+  categoryId?: { name: string; slug: string; _id?: string; id?: string };
+  subCategoryIds?: { name: string; slug: string; _id?: string; id?: string }[];
   price: number;
   originalPrice?: number;
   investPrice?: number;       // admin-only: purchase/cost price
   discountPercentage?: number; // e.g. 80 for -80%
   profitMargin?: number;      // computed: (price - investPrice) / price * 100
+  unitProfit?: number;        // computed: price - investPrice
+  totalProfit?: number;       // computed: (price - investPrice) * sellCount
   isOfferExpired?: boolean;   // true when offerEndDate has passed
   image: string;
   additionalImages?: string[];
@@ -146,6 +149,8 @@ export interface Product {
   specifications?: Record<string, string>;
   isFeatured?: boolean;
   offerEndDate?: string | Date;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 }
 
 // ─── Brand ───────────────────────────────────────────────────────────────────

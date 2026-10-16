@@ -163,6 +163,7 @@ export default function ProductsClient({
     investPrice: "",
     discountPercentage: "",
     stockQuantity: "",
+    sellCount: "0",
     sku: "",
     description: "",
     image: "",
@@ -244,6 +245,7 @@ export default function ProductsClient({
       investPrice: p.investPrice != null ? String(p.investPrice) : "",
       discountPercentage: p.discountPercentage ? String(p.discountPercentage) : "",
       stockQuantity: p.stockQuantity !== undefined ? String(p.stockQuantity) : "",
+      sellCount: p.sellCount !== undefined ? String(p.sellCount) : "0",
       sku: p.sku || "",
       description: p.description || "",
       image: p.image || "",
@@ -305,6 +307,7 @@ export default function ProductsClient({
       investPrice: editForm.investPrice ? parseFloat(editForm.investPrice) : undefined,
       discountPercentage: editForm.discountPercentage ? parseFloat(editForm.discountPercentage) : undefined,
       stockQuantity: editForm.stockQuantity ? parseInt(editForm.stockQuantity) : 0,
+      sellCount: editForm.sellCount ? parseInt(editForm.sellCount) : 0,
       sku: editForm.sku || undefined,
       description: editForm.description || undefined,
       image: editForm.image,
@@ -614,6 +617,7 @@ export default function ProductsClient({
                   <th className="py-3.5 px-4">Product</th>
                   <th className="py-3.5 px-4">Category</th>
                   <th className="py-3.5 px-4">Price</th>
+                  <th className="py-3.5 px-4 text-center">Sold</th>
                   <th className="py-3.5 px-4 text-center">Stock</th>
                   <th className="py-3.5 px-4 text-center">Status</th>
                   <th className="py-3.5 px-4">Badges</th>
@@ -681,7 +685,7 @@ export default function ProductsClient({
                         </span>
                       </td>
 
-                      {/* Price */}
+                      {/* Price & Profit */}
                       <td className="py-3.5 px-4 whitespace-nowrap">
                         <div className="flex flex-col">
                           <span className="font-black text-gray-900 dark:text-white text-sm">
@@ -692,7 +696,36 @@ export default function ProductsClient({
                               ${product.originalPrice?.toFixed(2)}
                             </span>
                           )}
+                          {product.investPrice != null ? (
+                            <div className="flex items-center gap-1 mt-0.5">
+                              <span
+                                className={`text-[10px] font-bold ${
+                                  product.price >= product.investPrice
+                                    ? "text-emerald-600 dark:text-emerald-400"
+                                    : "text-rose-500"
+                                }`}
+                                title={`Cost: $${product.investPrice.toFixed(2)} | Profit: ${
+                                  product.price >= product.investPrice ? "+" : ""
+                                }$${(product.price - product.investPrice).toFixed(2)}`}
+                              >
+                                {product.price >= product.investPrice ? "+" : ""}${(product.price - product.investPrice).toFixed(2)} P/L
+                              </span>
+                              {product.profitMargin != null && (
+                                <span className="text-[9px] text-gray-400 font-medium">
+                                  ({product.profitMargin}%)
+                                </span>
+                              )}
+                            </div>
+                          ) : null}
                         </div>
+                      </td>
+
+                      {/* Units Sold */}
+                      <td className="py-3.5 px-4 text-center whitespace-nowrap">
+                        <span className="font-mono text-xs font-bold text-gray-800 dark:text-gray-200">
+                          {product.sellCount ?? 0}
+                        </span>
+                        <span className="block text-[10px] text-gray-400 font-medium">sold</span>
                       </td>
 
                       {/* Stock Quantity */}
@@ -1029,6 +1062,21 @@ export default function ProductsClient({
                         }
                         required
                         className="w-full h-10 rounded-xl bg-slate-50 dark:bg-gray-800 text-xs font-bold"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-xs font-bold text-gray-700 dark:text-gray-300 block mb-1">
+                        Units Sold
+                      </label>
+                      <Input
+                        type="number"
+                        min="0"
+                        value={editForm.sellCount}
+                        onChange={(e) =>
+                          setEditForm((prev) => ({ ...prev, sellCount: e.target.value }))
+                        }
+                        className="w-full h-10 rounded-xl bg-slate-50 dark:bg-gray-800 text-xs font-mono"
                       />
                     </div>
                   </div>
