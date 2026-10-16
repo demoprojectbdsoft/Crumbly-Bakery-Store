@@ -27,6 +27,10 @@ import {
   ShieldAlert,
   Sparkles,
   Maximize2,
+  ImagePlus,
+  X as XIcon,
+  Loader2,
+  Images,
 } from "lucide-react";
 import { Button, Card, Tabs, Tab, TabList, TabPanel } from "@heroui/react";
 import { toast } from "react-toastify";
@@ -72,9 +76,11 @@ export default function ProductDetailsPage({
   const [hoverRating, setHoverRating] = useState<number>(0);
   const [description, setDescription] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [reviewImages, setReviewImages] = useState<string[]>([]);
+  const [isUploadingReviewImage, setIsUploadingReviewImage] = useState<boolean>(false);
   const [helpfulCounts, setHelpfulCounts] = useState<Record<string, number>>({});
   const [likedReviews, setLikedReviews] = useState<Record<string, boolean>>({});
-  const [selectedImage, setSelectedImage] = useState<string>("" );
+  const [selectedImage, setSelectedImage] = useState<string>("");
   const [quantity, setQuantity] = useState<number>(1);
   const [isWishlisted, setIsWishlisted] = useState<boolean>(false);
   const [isInCart, setIsInCart] = useState<boolean>(false);
@@ -82,6 +88,10 @@ export default function ProductDetailsPage({
   const [showSuspendedAlert, setShowSuspendedAlert] = useState<boolean>(false);
   const [isGalleryOpen, setIsGalleryOpen] = useState<boolean>(false);
   const [galleryInitialIndex, setGalleryInitialIndex] = useState<number>(0);
+  // Gallery for review images
+  const [reviewGalleryImages, setReviewGalleryImages] = useState<string[]>([]);
+  const [reviewGalleryIndex, setReviewGalleryIndex] = useState<number>(0);
+  const [isReviewGalleryOpen, setIsReviewGalleryOpen] = useState<boolean>(false);
 
   // ── Countdown Timer ────────────────────────────────────────────────────────
   const offerTarget = useMemo(() => {
@@ -391,11 +401,47 @@ export default function ProductDetailsPage({
     });
   };
 
+  const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMGBB_API_KEY ?? "";
+
+  const handleReviewImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    const remaining = 5 - reviewImages.length;
+    if (remaining <= 0) {
+      toast.warning("Maximum 5 images per review.");
+      return;
+    }
+    const toUpload = files.slice(0, remaining);
+    setIsUploadingReviewImage(true);
+    try {
+      const uploaded: string[] = [];
+      for (const file of toUpload) {
+        const body = new FormData();
+        body.append("image", file);
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, { method: "POST", body });
+        const data = await res.json();
+        if (data.success) uploaded.push(data.data.url as string);
+      }
+      setReviewImages((prev) => [...prev, ...uploaded].slice(0, 5));
+    } catch {
+      toast.error("Failed to upload image(s). Please try again.");
+    } finally {
+      setIsUploadingReviewImage(false);
+      e.target.value = "";
+    }
+  };
+
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!user) {
       toast.error("Please sign in to submit a review.");
+      return;
+    }
+
+    const userRole = ((user as { role?: string })?.role || "").toLowerCase();
+    if (userRole === "demoadmin" || userRole === "admin") {
+      toast.warning("Admins cannot submit product reviews.", { icon: <span>🛡️</span> });
       return;
     }
 
@@ -433,6 +479,7 @@ export default function ProductDetailsPage({
         productId: product.id,
         rating,
         comment: description.trim(),
+        images: reviewImages,
       });
 
       if (res?.success) {
@@ -442,6 +489,7 @@ export default function ProductDetailsPage({
         setDescription("");
         setRating(5);
         setHoverRating(0);
+        setReviewImages([]);
         if (typeof window !== "undefined") {
           window.dispatchEvent(
             new CustomEvent("review-updated", {
@@ -1022,6 +1070,16 @@ export default function ProductDetailsPage({
                           You are currently logged in as the owner of this product. Product owners cannot leave reviews on their own listings to maintain fair and transparent customer feedback.
                         </p>
                       </div>
+                    ) : (((user as { role?: string })?.role || "").toLowerCase() === "demoadmin" || ((user as { role?: string })?.role || "").toLowerCase() === "admin") ? (
+                      <div className="p-4 rounded-xl bg-violet-50 dark:bg-violet-950/40 border border-violet-200 dark:border-violet-800/60 text-violet-800 dark:text-violet-300 space-y-2">
+                        <div className="flex items-center gap-2 font-bold text-xs">
+                          <ShieldAlert className="w-4 h-4 text-violet-600 dark:text-violet-400 shrink-0" />
+                          <span>Admin Review Policy</span>
+                        </div>
+                        <p className="text-xs leading-relaxed">
+                          Admin accounts cannot submit product reviews.
+                        </p>
+                      </div>
                     ) : !user ? (
                       /* ── Not signed in: show sign-in gate ── */
                       <div className="flex flex-col items-center justify-center gap-4 py-8 px-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/40 border border-dashed border-sky-200 dark:border-sky-900/50 text-center">
@@ -1174,14 +1232,67 @@ export default function ProductDetailsPage({
                           />
                         </div>
 
+                        {/* Review Images Upload (max 5) */}
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                              <Images className="w-3.5 h-3.5 text-sky-500" />
+                              Add Photos <span className="text-[10px] font-normal text-slate-400">(optional, max 5)</span>
+                            </label>
+                            <span className="text-[10px] text-slate-400">{reviewImages.length}/5</span>
+                          </div>
+
+                          {/* Image previews */}
+                          {reviewImages.length > 0 && (
+                            <div className="flex flex-wrap gap-2">
+                              {reviewImages.map((img, idx) => (
+                                <div key={idx} className="relative w-16 h-16 rounded-xl overflow-hidden border border-sky-200 dark:border-sky-900/60 group">
+                                  <img src={img} alt={`Review photo ${idx + 1}`} className="w-full h-full object-cover" />
+                                  <button
+                                    type="button"
+                                    onClick={() => setReviewImages((prev) => prev.filter((_, i) => i !== idx))}
+                                    className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer"
+                                  >
+                                    <XIcon className="w-4 h-4 text-white" />
+                                  </button>
+                                </div>
+                              ))}
+                              {isUploadingReviewImage && (
+                                <div className="w-16 h-16 rounded-xl border border-dashed border-sky-300 bg-sky-50 dark:bg-sky-950/30 flex items-center justify-center">
+                                  <Loader2 className="w-4 h-4 text-sky-500 animate-spin" />
+                                </div>
+                              )}
+                            </div>
+                          )}
+
+                          {/* Upload button */}
+                          {reviewImages.length < 5 && (
+                            <label className={`flex items-center gap-2 px-3 py-2 rounded-xl border border-dashed border-sky-300 dark:border-sky-800 bg-sky-50/50 dark:bg-sky-950/20 hover:bg-sky-50 dark:hover:bg-sky-950/40 transition-colors cursor-pointer text-xs font-semibold text-sky-600 dark:text-sky-400 w-fit ${isUploadingReviewImage ? "opacity-50 pointer-events-none" : ""}`}>
+                              {isUploadingReviewImage ? (
+                                <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Uploading...</>
+                              ) : (
+                                <><ImagePlus className="w-3.5 h-3.5" /> Add Photo{reviewImages.length === 0 ? "s" : ""}</>
+                              )}
+                              <input
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                className="hidden"
+                                onChange={handleReviewImageUpload}
+                                disabled={isUploadingReviewImage}
+                              />
+                            </label>
+                          )}
+                        </div>
+
                         {/* Submit Button */}
                         <Button
                           type="submit"
-                          isDisabled={isSubmitting}
+                          isDisabled={isSubmitting || isUploadingReviewImage}
                           className="w-full sm:w-auto px-6 h-10 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white text-xs font-bold rounded-xl shadow-md shadow-sky-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
                         >
                           <Send className="w-3.5 h-3.5" />
-                          Submit Review
+                          {isSubmitting ? "Submitting..." : "Submit Review"}
                         </Button>
                       </form>
                     )}
@@ -1264,6 +1375,29 @@ export default function ProductDetailsPage({
                               <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                                 {rev.comment}
                               </p>
+
+                              {/* Review Images */}
+                              {rev.images && rev.images.length > 0 && (
+                                <div className="flex flex-wrap gap-1.5 pt-1">
+                                  {rev.images.map((img, idx) => (
+                                    <button
+                                      key={idx}
+                                      type="button"
+                                      onClick={() => {
+                                        setReviewGalleryImages(rev.images!);
+                                        setReviewGalleryIndex(idx);
+                                        setIsReviewGalleryOpen(true);
+                                      }}
+                                      className="relative w-14 h-14 rounded-lg overflow-hidden border border-sky-100 dark:border-sky-900/40 hover:border-sky-400 dark:hover:border-sky-600 transition-colors cursor-pointer group"
+                                    >
+                                      <img src={img} alt={`Review image ${idx + 1}`} className="w-full h-full object-cover" />
+                                      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                        <Maximize2 className="w-3.5 h-3.5 text-white" />
+                                      </div>
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
                             </div>
 
                             {/* Review Footer / Helpful reaction */}
@@ -1302,6 +1436,15 @@ export default function ProductDetailsPage({
       images={allImages}
       initialIndex={galleryInitialIndex}
       productTitle={product.title}
+    />
+
+    {/* Review images gallery */}
+    <ImageGalleryModal
+      isOpen={isReviewGalleryOpen}
+      onClose={() => setIsReviewGalleryOpen(false)}
+      images={reviewGalleryImages}
+      initialIndex={reviewGalleryIndex}
+      productTitle="Review Photos"
     />
     </>
   );

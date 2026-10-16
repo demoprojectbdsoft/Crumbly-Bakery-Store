@@ -25,10 +25,13 @@ import {
   MessageSquare,
   Sparkles,
   AlertTriangle,
+  Images,
+  Maximize2,
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { deleteReview } from "@/lib/action/reviews";
 import { useDemoAdmin } from "@/hooks/useDemoAdmin";
+import ImageGalleryModal from "@/components/shared/ImageGalleryModal";
 
 const RATING_FILTER_TABS = ["All", "5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star"];
 
@@ -53,6 +56,7 @@ interface ReviewItem {
   userEmail?: string;
   rating: number;
   comment: string;
+  images?: string[];
   date?: string;
   createdAt?: string;
 }
@@ -84,6 +88,10 @@ export default function ReviewsClient({
   const [isDeleting, setIsDeleting] = useState(false);
   const [reviewToDelete, setReviewToDelete] = useState<ReviewItem | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  // Review image gallery state
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [galleryIndex, setGalleryIndex] = useState(0);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
 
   useEffect(() => {
     setReviews(Array.isArray(initialReviews) ? initialReviews : []);
@@ -472,6 +480,12 @@ export default function ReviewsClient({
                         <p className="text-gray-600 dark:text-gray-300 truncate font-normal">
                           {rev.comment}
                         </p>
+                        {rev.images && rev.images.length > 0 && (
+                          <div className="flex items-center gap-1 mt-1">
+                            <Images className="w-3 h-3 text-sky-400" />
+                            <span className="text-[10px] text-sky-500 font-semibold">{rev.images.length} photo{rev.images.length > 1 ? "s" : ""}</span>
+                          </div>
+                        )}
                       </td>
 
                       {/* Date */}
@@ -709,6 +723,35 @@ export default function ReviewsClient({
                         "{selectedReview.comment}"
                       </div>
                     </div>
+
+                    {/* Review Images */}
+                    {selectedReview.images && selectedReview.images.length > 0 && (
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-gray-300">
+                          <Images className="w-4 h-4 text-sky-500" />
+                          <span>Review Photos ({selectedReview.images.length})</span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedReview.images.map((img, idx) => (
+                            <button
+                              key={idx}
+                              type="button"
+                              onClick={() => {
+                                setGalleryImages(selectedReview.images!);
+                                setGalleryIndex(idx);
+                                setIsGalleryOpen(true);
+                              }}
+                              className="relative w-16 h-16 rounded-xl overflow-hidden border border-slate-200 dark:border-gray-700 hover:border-amber-400 dark:hover:border-amber-600 transition-colors cursor-pointer group"
+                            >
+                              <img src={img} alt={`Photo ${idx + 1}`} className="w-full h-full object-cover" />
+                              <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                                <Maximize2 className="w-4 h-4 text-white" />
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </Modal.Body>
 
                   {/* Modal Footer Actions */}
@@ -807,6 +850,15 @@ export default function ReviewsClient({
           </Modal.Container>
         </Modal.Backdrop>
       </Modal>
+
+      {/* Review Image Gallery Lightbox */}
+      <ImageGalleryModal
+        isOpen={isGalleryOpen}
+        onClose={() => setIsGalleryOpen(false)}
+        images={galleryImages}
+        initialIndex={galleryIndex}
+        productTitle="Review Photos"
+      />
     </div>
   );
 }

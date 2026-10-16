@@ -101,12 +101,13 @@ export interface ProductReview {
   userAvatar?: string;
   rating: number; // 1 to 5
   comment: string;
+  images?: string[]; // up to 5 review photos
   date: string;
 }
 
 /**
  * Review payload type — mirrors the server-side ProductReview model.
- * Fields: productId, userId, rating (1-5), comment.
+ * Fields: productId, userId, rating (1-5), comment, images.
  * `createdAt` / `updatedAt` are added by MongoDB timestamps.
  */
 export interface Review {
@@ -114,6 +115,7 @@ export interface Review {
   userId: string;
   rating: number; // 1 to 5
   comment: string;
+  images?: string[];
   createdAt?: string;
   updatedAt?: string;
 }
