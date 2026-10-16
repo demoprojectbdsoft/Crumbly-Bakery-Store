@@ -90,13 +90,15 @@ Role checks run on both sides — frontend route guards and backend middleware b
 - **Product reviews & ratings** — a product's rating and review count are recalculated from its actual reviews.
 - **Checkout** — Cash on Delivery or mobile wallet (bKash / Rocket / Nagad) with OTP verification.
 - **Order tracking** — a Track Order page and full status history per order.
+- **Order response system** — after a shipped order, admin records the customer's response (Order Received / Still Not Received / Order Cancel) with a description message, which resolves the order to delivered or cancelled.
+- **Buy Again** — from an order in Orders history, re-add that same product straight back to the cart.
 - **Loyalty points & membership** — points on every order, tracked against a membership tier.
 
 ### 👤 Customer Dashboard
-- Overview, Orders, Transactions, Wishlist, Reviews, Analytics (with CSV export), Profile, and Settings.
+- Overview, Orders (with Buy Again and a direct link to leave a review), Transactions, Wishlist, Reviews, Analytics (with CSV export), Profile, and Settings.
 
 ### 🛠️ Admin Dashboard
-- **Catalog management** — categories, subcategories, and products, with image upload, badges, and stock.
+- **Catalog management** — categories, subcategories, and products, with image upload, badges, and stock. Deleting a category cascades to its subcategories, but the delete is cancelled if the category or any subcategory still has products attached.
 - **Homepage slider control** — add, reorder, and manage slides by selecting an existing product.
 - **Order & transaction oversight** — platform-wide tables with status updates.
 - **User management** — change user role and account status.
@@ -110,6 +112,8 @@ Role checks run on both sides — frontend route guards and backend middleware b
 - **Order creation pipeline** — placing an order validates stock, computes totals, creates the order and linked transaction, logs status, decrements stock, and clears the cart — in one backend flow.
 - **Delivery-triggered loyalty points** — points are credited, and the membership tier re-checked, only when an admin marks the order delivered.
 - **Auto-settled COD transactions** — a COD transaction stays `pending` until delivery, then flips to `success` automatically.
+- **Cancellation fails the transaction** — cancelling an order marks its linked transaction as failed, whatever the payment method.
+- **Sell-count tracking** — each product's sold count increases by the ordered quantity whenever an order succeeds.
 - **Countdown-driven pricing** — once a slide's countdown ends, its discount reverts to 0 and price reverts to original.
 - **Self-correcting ratings** — ratings are recalculated from actual review documents, never stored stale.
 
