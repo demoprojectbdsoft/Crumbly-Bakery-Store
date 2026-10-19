@@ -21,11 +21,11 @@ export function useDemoAdmin() {
   const isDemoAdmin = role?.toLowerCase() === "demoadmin";
 
   /**
-   * Call this at the top of every CUD handler.
-   * Returns `true` (and shows a toast) when the user is a demoAdmin,
-   * so the caller should `return` immediately.
+   * Call this at the top of sensitive handlers where demoAdmin is disabled
+   * (e.g. altering users, settings, system configuration).
+   * Note: Products CRUD is enabled for demo admin and restores daily at 2:00 AM.
    */
-  const guardDemo = (message = "This is a demo account. Changes are disabled.") => {
+  const guardDemo = (message = "This is a demo account. Changes to this section are disabled.") => {
     if (isDemoAdmin) {
       toast.info(message, { toastId: "demo-guard" });
       return true;

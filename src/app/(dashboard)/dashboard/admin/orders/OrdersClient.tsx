@@ -34,7 +34,6 @@ import {
 import { toast } from "react-toastify";
 import { Order } from "@/types";
 import { updateOrderStatus } from "@/lib/action/orders";
-import { useDemoAdmin } from "@/hooks/useDemoAdmin";
 
 const STATUS_OPTIONS = [
   { id: "confirmed",  label: "Confirmed",  color: "sky" },
@@ -71,7 +70,6 @@ export default function OrdersClient({
 }: OrdersClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { guardDemo } = useDemoAdmin();
   const [isPending, startTransition] = useTransition();
 
   const [orders, setOrders] = useState<Order[]>(initialOrders);
@@ -185,7 +183,6 @@ export default function OrdersClient({
   // Update Status
   const handleStatusChange = async (newStatus: string) => {
     if (!selectedOrder || !newStatus) return;
-    if (guardDemo()) return;
 
     const currentStatus = (selectedOrder.orderStatus || selectedOrder.status || "").toLowerCase();
     if (

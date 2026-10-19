@@ -84,7 +84,6 @@ export default function AddProductClient({
   subcategories = [],
 }: AddProductClientProps) {
   const router = useRouter();
-  const { guardDemo } = useDemoAdmin();
 
   // ── Basic product fields ────────────────────────────────────────────────────
   const [formState, setFormState] = useState({
@@ -240,7 +239,6 @@ export default function AddProductClient({
   // ── Form submit ─────────────────────────────────────────────────────────────
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (guardDemo()) return;
 
     if (!selectedCategoryId) {
       toast.error("Please select a primary category");

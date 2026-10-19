@@ -35,7 +35,6 @@ import ImageUploader from "@/components/shared/ImageUploader";
 import { Category, SubCategory } from "@/types";
 import { updateCategory, deleteCategory } from "@/lib/action/categories";
 import { updateSubCategory, deleteSubCategory } from "@/lib/action/subCategories";
-import { useDemoAdmin } from "@/hooks/useDemoAdmin";
 
 interface CategoriesClientProps {
   initialCategories: Category[];
@@ -56,7 +55,6 @@ export default function CategoriesClient({
   initialSubCategories = [],
 }: CategoriesClientProps) {
   const router = useRouter();
-  const { guardDemo } = useDemoAdmin();
 
   const [categories, setCategories] = useState<Category[]>(
     Array.isArray(initialCategories) ? initialCategories : []
@@ -176,7 +174,6 @@ export default function CategoriesClient({
   // Submit Edit Form
   const handleSaveEdit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (guardDemo()) return;
     setIsUpdating(true);
 
     try {
@@ -245,7 +242,6 @@ export default function CategoriesClient({
   // Confirm Delete Action
   const handleConfirmDelete = async () => {
     if (!deleteTarget) return;
-    if (guardDemo()) return;
     setIsDeleting(true);
 
     try {

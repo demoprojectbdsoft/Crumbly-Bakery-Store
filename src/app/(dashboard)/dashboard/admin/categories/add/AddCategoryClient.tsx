@@ -21,7 +21,6 @@ import { addCategory } from "@/lib/action/categories";
 import { addSubCategory } from "@/lib/action/subCategories";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { useDemoAdmin } from "@/hooks/useDemoAdmin";
 
 interface AddCategoryClientProps {
   categories?: Category[];
@@ -41,7 +40,6 @@ export default function AddCategoryClient({
   categories = [],
 }: AddCategoryClientProps) {
   const router = useRouter();
-  const { guardDemo } = useDemoAdmin();
 
   // ── State for the "Add Category" form ──────────────────────────────────────
   const [categoryData, setCategoryData] = useState<Category>({
@@ -74,7 +72,6 @@ export default function AddCategoryClient({
 
   async function handleCategorySubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (guardDemo()) return;
     setIsCategorySubmitting(true);
 
     const formData = new FormData(e.currentTarget);
@@ -117,7 +114,6 @@ export default function AddCategoryClient({
 
   async function handleSubCategorySubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (guardDemo()) return;
     if (!subCategoryData.categoryId) {
       toast.error("Please select a parent category");
       return;
