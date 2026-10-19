@@ -1,228 +1,1232 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useTransition, useEffect } from "react";
 import Link from "next/link";
-import { Card, Button, Input, Switch } from "@heroui/react";
+import Image from "next/image";
 import {
-  Settings,
-  Bell,
-  Lock,
+  Card,
+  Button,
+  Input,
+  TextArea,
+  Switch,
+  Select,
+  ListBox,
+} from "@heroui/react";
+import {
   Globe,
+  Palette,
+  Type,
+  ImageIcon,
+  Truck,
+  Phone,
   Shield,
-  Smartphone,
-  CheckCircle2,
-  AlertTriangle,
-  Download,
-  Trash2,
-  KeyRound,
-  Eye,
-  EyeOff,
-  Laptop,
-  Store,
-  Database,
+  Sparkles,
   Save,
+  RotateCcw,
+  Plus,
+  Trash2,
+  Check,
+  CheckCircle2,
+  Eye,
+  Settings,
+  ChevronRight,
+  Gem,
+  Shirt,
+  Utensils,
+  Cake,
+  Coffee,
+  Cpu,
+  Wand2,
+  BookmarkCheck,
+  Leaf,
+  Bot,
+  Zap,
+  Sprout,
+  AlertCircle,
 } from "lucide-react";
 import { toast } from "react-toastify";
-import { useDemoAdmin } from "@/hooks/useDemoAdmin";
+import {
+  SiteSettingsData,
+  SiteTopBarItem,
+  SiteSocialLink,
+  SiteColorPalette,
+} from "@/types";
+import { updateSiteSettings } from "@/lib/action/siteSettings";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
+import ImageUploader from "@/components/shared/ImageUploader";
 
+
+// ── Tabs Navigation ───────────────────────────────────────────────────────────
 const SETTING_TABS = [
-  { id: "store", label: "Store & System", icon: Store },
-  { id: "notifications", label: "Notifications & Alerts", icon: Bell },
-  { id: "security", label: "Security & Sessions", icon: Shield },
-  { id: "database", label: "Maintenance & Logs", icon: Database },
+  { id: "identity", label: "Identity & Meta", icon: Globe },
+  { id: "fonts", label: "Typography & Fonts", icon: Type },
+  { id: "colors", label: "Theme & Palettes", icon: Palette },
+  { id: "shipping", label: "Shipping & Delivery", icon: Truck },
+  { id: "topbar", label: "Top Bar & Layout", icon: Sparkles },
+  { id: "branding", label: "Logos & Media", icon: ImageIcon },
+  { id: "contact", label: "Contact & Socials", icon: Phone },
+  { id: "system", label: "System & Security", icon: Shield },
 ];
 
-export interface AdminActiveSession {
+// ── Google Font Curated Options ────────────────────────────────────────────────
+const GOOGLE_FONTS = [
+  { name: "Open Sans", category: "Humanist Sans", sample: "Balanced, neutral & easy to read." },
+  { name: "Poppins", category: "Geometric Sans", sample: "Modern, tech-forward & friendly." },
+  { name: "Josefin Sans", category: "Geometric Vintage", sample: "Elegant, Scandinavian vintage & sleek." },
+  { name: "Inter", category: "Modern Neo-grotesque", sample: "Crisp, clean & highly readable." },
+  { name: "Roboto", category: "Classic Sans", sample: "Google classic, versatile & solid." },
+  { name: "Plus Jakarta Sans", category: "Contemporary Sans", sample: "Trendy, clean SaaS aesthetic." },
+  { name: "Outfit", category: "Futuristic Sans", sample: "Premium, sleek & geometric." },
+  { name: "Montserrat", category: "Punchy Sans", sample: "Bold, modern architectural style." },
+  { name: "Playfair Display", category: "Elegant Serif", sample: "Luxury, fashion & jewelry vibe." },
+  { name: "Cormorant Garamond", category: "High Luxury Serif", sample: "Royal, fine dining & jewelry." },
+  { name: "Merriweather", category: "Warm Editorial", sample: "Cozy, bakery & coffee warmth." },
+  { name: "Cinzel", category: "Roman Luxury", sample: "Prestige, watches & regal tone." },
+  { name: "Space Grotesk", category: "Quirky Tech", sample: "Edgy, futuristic tech character." },
+];
+
+// ── Comprehensive Industry Color Palettes ──────────────────────────────────────
+export interface ThemePreset {
   id: string;
-  device: string;
-  location: string;
-  lastActive: string;
-  isCurrent: boolean;
+  name: string;
+  category: "green" | "tech" | "jewelry" | "fashion" | "restaurant" | "bakery" | "coffee" | "custom";
+  categoryLabel: string;
+  badgeIcon?: React.ElementType;
+  description: string;
+  palette: SiteColorPalette;
 }
 
-export interface AdminSettingsData {
-  store: {
-    storeName: string;
-    supportEmail: string;
-    supportPhone: string;
-    currency: string;
-    timezone: string;
-    orderPrefix: string;
-    lowStockThreshold: number;
-    maintenanceMode: boolean;
-  };
-  notifications: {
-    emailOnNewOrder: boolean;
-    emailOnLowStock: boolean;
-    emailOnNewUser: boolean;
-    smsOnCriticalError: boolean;
-    dailyDigest: boolean;
-  };
-  security: {
-    twoFactor: boolean;
-    sessionTimeoutMins: number;
-    activeSessions: AdminActiveSession[];
-  };
+const DEFAULT_THEME_PRESETS: ThemePreset[] = [
+  // ── 1. Jewelry & Luxury Goods
+  {
+    id: "royal-gold-onyx",
+    name: "Royal Gold & Onyx",
+    category: "jewelry",
+    categoryLabel: "Jewelry & Luxury",
+    badgeIcon: Gem,
+    description: "Cartier & Rolex inspired: 24K gilded gold, velvet onyx & champagne.",
+    palette: {
+      primary: "#d4af37",
+      primaryDark: "#b8860b",
+      secondary: "#f3e5ab",
+      accent: "#e5c158",
+      background: "#ffffff",
+      backgroundDark: "#0c0a09",
+      surface: "#fafaf9",
+      surfaceDark: "#1c1917",
+      topBarFrom: "#1c1917",
+      topBarVia: "#78350f",
+      topBarTo: "#d4af37",
+    },
+  },
+  {
+    id: "rose-gold-diamond",
+    name: "Rose Gold & Diamond",
+    category: "jewelry",
+    categoryLabel: "Jewelry & Luxury",
+    badgeIcon: Gem,
+    description: "Romantic luxury: shimmering rose gold, blush silk & diamond platinum.",
+    palette: {
+      primary: "#b76e79",
+      primaryDark: "#944e59",
+      secondary: "#e0a899",
+      accent: "#f5d0c5",
+      background: "#fffafb",
+      backgroundDark: "#140c0f",
+      surface: "#fdf2f4",
+      surfaceDark: "#24141a",
+      topBarFrom: "#4a1525",
+      topBarVia: "#944e59",
+      topBarTo: "#b76e79",
+    },
+  },
+  {
+    id: "tiffany-turquoise",
+    name: "Tiffany Robin Egg Blue",
+    category: "jewelry",
+    categoryLabel: "Jewelry & Luxury",
+    badgeIcon: Gem,
+    description: "Iconic Fifth Avenue luxury: Tiffany turquoise with platinum white.",
+    palette: {
+      primary: "#0abab5",
+      primaryDark: "#088f8a",
+      secondary: "#81d8d0",
+      accent: "#14b8a6",
+      background: "#f0fdfa",
+      backgroundDark: "#041b1a",
+      surface: "#ccfbf1",
+      surfaceDark: "#0b2e2c",
+      topBarFrom: "#0f766e",
+      topBarVia: "#0abab5",
+      topBarTo: "#115e59",
+    },
+  },
+
+  // ── 2. Clothes & Fashion Apparel
+  {
+    id: "haute-couture-noir",
+    name: "Haute Couture Noir",
+    category: "fashion",
+    categoryLabel: "Fashion & Apparel",
+    badgeIcon: Shirt,
+    description: "Zara & SSENSE editorial: high-contrast obsidian black with alabaster.",
+    palette: {
+      primary: "#18181b",
+      primaryDark: "#09090b",
+      secondary: "#52525b",
+      accent: "#d4d4d8",
+      background: "#ffffff",
+      backgroundDark: "#09090b",
+      surface: "#f4f4f5",
+      surfaceDark: "#18181b",
+      topBarFrom: "#09090b",
+      topBarVia: "#18181b",
+      topBarTo: "#27272a",
+    },
+  },
+  {
+    id: "terracotta-linen",
+    name: "Terracotta & Raw Linen",
+    category: "fashion",
+    categoryLabel: "Fashion & Apparel",
+    badgeIcon: Shirt,
+    description: "Mediterranean summer fashion: warm earthy terracotta, sand & ochre.",
+    palette: {
+      primary: "#c2410c",
+      primaryDark: "#9a3412",
+      secondary: "#ea580c",
+      accent: "#fbbf24",
+      background: "#fffbf5",
+      backgroundDark: "#1a0f08",
+      surface: "#ffedd5",
+      surfaceDark: "#2d1a0e",
+      topBarFrom: "#7c2d12",
+      topBarVia: "#c2410c",
+      topBarTo: "#ea580c",
+    },
+  },
+  {
+    id: "velvet-berry-chic",
+    name: "Velvet Berry Chic",
+    category: "fashion",
+    categoryLabel: "Fashion & Apparel",
+    badgeIcon: Shirt,
+    description: "Luxury women's apparel: opulent mulberry wine, berry rose & cashmere.",
+    palette: {
+      primary: "#be185d",
+      primaryDark: "#9d174d",
+      secondary: "#db2777",
+      accent: "#f472b6",
+      background: "#fdf2f8",
+      backgroundDark: "#1c0714",
+      surface: "#fce7f3",
+      surfaceDark: "#2d0b20",
+      topBarFrom: "#831843",
+      topBarVia: "#be185d",
+      topBarTo: "#9d174d",
+    },
+  },
+
+  // ── 3. Restaurant & Fine Dining
+  {
+    id: "bordeaux-wine-dining",
+    name: "Bordeaux Wine & Truffle",
+    category: "restaurant",
+    categoryLabel: "Restaurant & Dining",
+    badgeIcon: Utensils,
+    description: "Michelin bistro: deep Cabernet burgundy, aged brass & warm parchment.",
+    palette: {
+      primary: "#881337",
+      primaryDark: "#4c0519",
+      secondary: "#9f1239",
+      accent: "#eab308",
+      background: "#fff1f2",
+      backgroundDark: "#140408",
+      surface: "#ffe4e6",
+      surfaceDark: "#260810",
+      topBarFrom: "#4c0519",
+      topBarVia: "#881337",
+      topBarTo: "#9f1239",
+    },
+  },
+  {
+    id: "tuscan-olive-bistro",
+    name: "Tuscan Olive & Herb",
+    category: "restaurant",
+    categoryLabel: "Restaurant & Dining",
+    badgeIcon: Utensils,
+    description: "Italian trattoria: cold-pressed olive grove green, rosemary & roasted terracotta.",
+    palette: {
+      primary: "#3f6212",
+      primaryDark: "#1a2e05",
+      secondary: "#65a30d",
+      accent: "#ea580c",
+      background: "#f7fee7",
+      backgroundDark: "#0b1404",
+      surface: "#ecfccb",
+      surfaceDark: "#172509",
+      topBarFrom: "#1a2e05",
+      topBarVia: "#3f6212",
+      topBarTo: "#4d7c0f",
+    },
+  },
+  {
+    id: "spiced-paprika-grill",
+    name: "Spiced Paprika & Charcoal",
+    category: "restaurant",
+    categoryLabel: "Restaurant & Dining",
+    badgeIcon: Utensils,
+    description: "Gourmet steakhouse: smoked paprika red, glowing amber coals & cast iron.",
+    palette: {
+      primary: "#dc2626",
+      primaryDark: "#991b1b",
+      secondary: "#ea580c",
+      accent: "#facc15",
+      background: "#fef2f2",
+      backgroundDark: "#180606",
+      surface: "#fee2e2",
+      surfaceDark: "#2b0a0a",
+      topBarFrom: "#7f1d1d",
+      topBarVia: "#dc2626",
+      topBarTo: "#ea580c",
+    },
+  },
+
+  // ── 4. Bakery & Pastry Café
+  {
+    id: "golden-brioche-honey",
+    name: "Golden Brioche & Honey",
+    category: "bakery",
+    categoryLabel: "Bakery & Patisserie",
+    badgeIcon: Cake,
+    description: "Artisan French boulangerie: oven-fresh golden brioche, wildflower honey & butter.",
+    palette: {
+      primary: "#d97706",
+      primaryDark: "#b45309",
+      secondary: "#f59e0b",
+      accent: "#fde68a",
+      background: "#fffdf5",
+      backgroundDark: "#1a1205",
+      surface: "#fef3c7",
+      surfaceDark: "#291c08",
+      topBarFrom: "#78350f",
+      topBarVia: "#d97706",
+      topBarTo: "#b45309",
+    },
+  },
+  {
+    id: "strawberry-macaron",
+    name: "Strawberry Macaron Cream",
+    category: "bakery",
+    categoryLabel: "Bakery & Patisserie",
+    badgeIcon: Cake,
+    description: "Pastry café: sweet strawberry glaze, whipped vanilla cream & pastel sprinkles.",
+    palette: {
+      primary: "#f43f5e",
+      primaryDark: "#be123c",
+      secondary: "#fb7185",
+      accent: "#fbcfe8",
+      background: "#fff1f2",
+      backgroundDark: "#1f060d",
+      surface: "#ffe4e6",
+      surfaceDark: "#330b17",
+      topBarFrom: "#9f1239",
+      topBarVia: "#f43f5e",
+      topBarTo: "#fb7185",
+    },
+  },
+  {
+    id: "matcha-pistachio-tart",
+    name: "Matcha & Pistachio Cream",
+    category: "bakery",
+    categoryLabel: "Bakery & Patisserie",
+    badgeIcon: Cake,
+    description: "Japanese confectionery: Ceremonial Uji matcha, pistachio cream & almond sponge.",
+    palette: {
+      primary: "#65a30d",
+      primaryDark: "#365314",
+      secondary: "#84cc16",
+      accent: "#bef264",
+      background: "#f7fee7",
+      backgroundDark: "#0d1a04",
+      surface: "#ecfccb",
+      surfaceDark: "#193009",
+      topBarFrom: "#365314",
+      topBarVia: "#65a30d",
+      topBarTo: "#4d7c0f",
+    },
+  },
+
+  // ── 5. Coffee Shop & Roastery
+  {
+    id: "espresso-roastery-caramel",
+    name: "Espresso & Roasted Caramel",
+    category: "coffee",
+    categoryLabel: "Coffee Roastery",
+    badgeIcon: Coffee,
+    description: "Specialty coffee roastery: dark roast espresso, crema froth & toasted hazelnut.",
+    palette: {
+      primary: "#78350f",
+      primaryDark: "#451a03",
+      secondary: "#92400e",
+      accent: "#fbbf24",
+      background: "#fffbeb",
+      backgroundDark: "#170a03",
+      surface: "#fef3c7",
+      surfaceDark: "#261205",
+      topBarFrom: "#451a03",
+      topBarVia: "#78350f",
+      topBarTo: "#92400e",
+    },
+  },
+
+  // ── 6. Electronics & Tech
+  {
+    id: "sparq-tech-blue",
+    name: "Sparq Tech Blue (Default)",
+    category: "tech",
+    categoryLabel: "Electronics & Tech",
+    badgeIcon: Cpu,
+    description: "High-tech futuristic: vibrant cyan-sky, neon indigo & energizing amber.",
+    palette: {
+      primary: "#0284c7",
+      primaryDark: "#0369a1",
+      secondary: "#6366f1",
+      accent: "#f59e0b",
+      background: "#ffffff",
+      backgroundDark: "#0b0f19",
+      surface: "#f8fafc",
+      surfaceDark: "#131d2e",
+      topBarFrom: "#1d4ed8",
+      topBarVia: "#0284c7",
+      topBarTo: "#4338ca",
+    },
+  },
+  {
+    id: "cyber-matrix-purple",
+    name: "Cyber Violet & Aqua",
+    category: "tech",
+    categoryLabel: "Electronics & Tech",
+    badgeIcon: Cpu,
+    description: "Gaming & next-gen tech: neon ultraviolet with electric turquoise highlights.",
+    palette: {
+      primary: "#7c3aed",
+      primaryDark: "#5b21b6",
+      secondary: "#06b6d4",
+      accent: "#f43f5e",
+      background: "#faf5ff",
+      backgroundDark: "#0d041a",
+      surface: "#f3e8ff",
+      surfaceDark: "#1a0933",
+      topBarFrom: "#4c1d95",
+      topBarVia: "#7c3aed",
+      topBarTo: "#0891b2",
+    },
+  },
+
+  // ── 7. Green, Plants & Eco Environment
+  {
+    id: "urban-jungle-plants",
+    name: "Urban Jungle & Houseplants",
+    category: "green",
+    categoryLabel: "Plants & Nursery",
+    badgeIcon: Sprout,
+    description: "Botanical plant boutique: lush Monstera forest green, sage shoots & warm terracotta.",
+    palette: {
+      primary: "#15803d",
+      primaryDark: "#14532d",
+      secondary: "#22c55e",
+      accent: "#d97706",
+      background: "#f7fee7",
+      backgroundDark: "#081406",
+      surface: "#ecfccb",
+      surfaceDark: "#12260d",
+      topBarFrom: "#14532d",
+      topBarVia: "#15803d",
+      topBarTo: "#16a34a",
+    },
+  },
+  {
+    id: "rainforest-eco-sanctuary",
+    name: "Rainforest Eco Sanctuary",
+    category: "green",
+    categoryLabel: "Eco & Environment",
+    badgeIcon: Leaf,
+    description: "Ecology & organic habitat: deep canopy emerald, living jade & solar warmth.",
+    palette: {
+      primary: "#047857",
+      primaryDark: "#064e3b",
+      secondary: "#10b981",
+      accent: "#facc15",
+      background: "#f0fdf4",
+      backgroundDark: "#021a10",
+      surface: "#dcfce7",
+      surfaceDark: "#05311e",
+      topBarFrom: "#064e3b",
+      topBarVia: "#047857",
+      topBarTo: "#059669",
+    },
+  },
+  {
+    id: "wildflower-herbal-farm",
+    name: "Wildflower Herbs & Farmstead",
+    category: "green",
+    categoryLabel: "Plants & Nature",
+    badgeIcon: Leaf,
+    description: "Fresh flora & organic gardens: crisp farm green, lemon verbena & rich soil.",
+    palette: {
+      primary: "#16a34a",
+      primaryDark: "#166534",
+      secondary: "#84cc16",
+      accent: "#ea580c",
+      background: "#f0fdf4",
+      backgroundDark: "#06180c",
+      surface: "#dcfce7",
+      surfaceDark: "#0e3019",
+      topBarFrom: "#166534",
+      topBarVia: "#16a34a",
+      topBarTo: "#22c55e",
+    },
+  },
+  {
+    id: "zen-bamboo-bonsai",
+    name: "Zen Bamboo & Bonsai Garden",
+    category: "green",
+    categoryLabel: "Plants & Bonsai",
+    badgeIcon: Sprout,
+    description: "Kyoto botanical garden: tranquil aged bamboo, matcha moss & river stone.",
+    palette: {
+      primary: "#3f6212",
+      primaryDark: "#1a2e05",
+      secondary: "#65a30d",
+      accent: "#eab308",
+      background: "#f7fee7",
+      backgroundDark: "#0a1404",
+      surface: "#ecfccb",
+      surfaceDark: "#162808",
+      topBarFrom: "#1a2e05",
+      topBarVia: "#3f6212",
+      topBarTo: "#4d7c0f",
+    },
+  },
+
+  // ── 8. Neon Cyberspace, Tech & Robotics
+  {
+    id: "neon-cyberspace-2077",
+    name: "Neon Cyberspace 2077",
+    category: "tech",
+    categoryLabel: "Robotics & Cyberspace",
+    badgeIcon: Bot,
+    description: "Cyberpunk androids & robotics: electric laser neon-green, void black & cyber cyan.",
+    palette: {
+      primary: "#00ff88",
+      primaryDark: "#059669",
+      secondary: "#00f2fe",
+      accent: "#ff007a",
+      background: "#030712",
+      backgroundDark: "#020408",
+      surface: "#0f172a",
+      surfaceDark: "#0a0f1d",
+      topBarFrom: "#022c22",
+      topBarVia: "#059669",
+      topBarTo: "#00f2fe",
+    },
+  },
+  {
+    id: "quantum-robotics-matrix",
+    name: "Quantum AI & Bionic Mecha",
+    category: "tech",
+    categoryLabel: "Robotics & Cyberspace",
+    badgeIcon: Bot,
+    description: "Autonomous mecha & AI: laser cyber-cyan, neural ultraviolet & synthetic pulse green.",
+    palette: {
+      primary: "#06b6d4",
+      primaryDark: "#0891b2",
+      secondary: "#8b5cf6",
+      accent: "#10b981",
+      background: "#040714",
+      backgroundDark: "#02040a",
+      surface: "#0b1329",
+      surfaceDark: "#070c1a",
+      topBarFrom: "#083344",
+      topBarVia: "#0891b2",
+      topBarTo: "#7c3aed",
+    },
+  },
+  {
+    id: "cyber-matrix-grid",
+    name: "Cyber Matrix Terminal",
+    category: "tech",
+    categoryLabel: "Robotics & Cyberspace",
+    badgeIcon: Zap,
+    description: "Hacker terminal & mainframe: phosphor green CRT glow on pitch black.",
+    palette: {
+      primary: "#10b981",
+      primaryDark: "#047857",
+      secondary: "#22c55e",
+      accent: "#38bdf8",
+      background: "#ffffff",
+      backgroundDark: "#030a06",
+      surface: "#f0fdf4",
+      surfaceDark: "#071f11",
+      topBarFrom: "#047857",
+      topBarVia: "#059669",
+      topBarTo: "#10b981",
+    },
+  },
+];
+
+const STORE_TYPES = [
+  { value: "electronics", label: "Electronics & Tech Devices" },
+  { value: "plants", label: "🌿 Plants, Houseplants & Eco Nursery" },
+  { value: "robotics", label: "🤖 Robotics, AI Hardware & Cyberspace" },
+  { value: "jewelry", label: "Jewelry, Watches & Luxury Goods" },
+  { value: "clothing", label: "Fashion Apparel & Clothing Boutique" },
+  { value: "restaurant", label: "Restaurant & Fine Dining Gourmet" },
+  { value: "bakery", label: "Bakery, Patisserie & Confectionery" },
+  { value: "coffee", label: "Coffee Shop & Specialty Roastery" },
+  { value: "grocery", label: "Grocery & Organic Farm Store" },
+  { value: "furniture", label: "Furniture & Modern Interior Design" },
+  { value: "books", label: "Books, Art & Literary Goods" },
+  { value: "beauty", label: "Beauty, Skincare & Cosmetics" },
+  { value: "sports", label: "Sports, Fitness & Outdoors" },
+  { value: "general", label: "General Retail Merchandise" },
+];
+
+const CURRENCIES = [
+  { value: "USD", label: "USD ($) - US Dollar" },
+  { value: "EUR", label: "EUR (€) - Euro" },
+  { value: "GBP", label: "GBP (£) - British Pound" },
+  { value: "BDT", label: "BDT (৳) - Bangladeshi Taka" },
+  { value: "INR", label: "INR (₹) - Indian Rupee" },
+  { value: "CAD", label: "CAD ($) - Canadian Dollar" },
+  { value: "AUD", label: "AUD ($) - Australian Dollar" },
+  { value: "JPY", label: "JPY (¥) - Japanese Yen" },
+  { value: "CNY", label: "CNY (¥) - Chinese Yuan" },
+];
+
+const TIMEZONES = [
+  { value: "Asia/Dhaka", label: "Asia/Dhaka (GMT+6)" },
+  { value: "America/New_York", label: "America/New_York (EST)" },
+  { value: "America/Los_Angeles", label: "America/Los_Angeles (PST)" },
+  { value: "Europe/London", label: "Europe/London (GMT)" },
+  { value: "Europe/Paris", label: "Europe/Paris (CET)" },
+  { value: "Asia/Kolkata", label: "Asia/Kolkata (IST)" },
+  { value: "Asia/Tokyo", label: "Asia/Tokyo (JST)" },
+  { value: "Asia/Singapore", label: "Asia/Singapore (SGT)" },
+  { value: "Australia/Sydney", label: "Australia/Sydney (AEST)" },
+  { value: "UTC", label: "UTC (Coordinated Universal Time)" },
+];
+
+const SOCIAL_PLATFORMS = [
+  { value: "Facebook", label: "Facebook" },
+  { value: "Twitter/X", label: "Twitter / X" },
+  { value: "Instagram", label: "Instagram" },
+  { value: "LinkedIn", label: "LinkedIn" },
+  { value: "YouTube", label: "YouTube" },
+  { value: "TikTok", label: "TikTok" },
+  { value: "Pinterest", label: "Pinterest" },
+  { value: "RSS", label: "RSS Feed" },
+];
+
+// ── Reusable HeroUI Select Component ──────────────────────────────────────────
+function HeroUISelect({
+  label,
+  value,
+  onChange,
+  options,
+  placeholder = "Select an option",
+  className = "",
+}: {
+  label?: string;
+  value: string;
+  onChange: (val: string) => void;
+  options: { value: string; label: string }[];
+  placeholder?: string;
+  className?: string;
+}) {
+  const currentOption = options.find((opt) => opt.value === value);
+
+  return (
+    <div className={`flex flex-col gap-1.5 ${className}`}>
+      {label && (
+        <label className="text-xs font-semibold text-[var(--foreground)]">
+          {label}
+        </label>
+      )}
+      <Select
+        selectedKey={value || null}
+        onSelectionChange={(key) => {
+          if (key !== null && key !== undefined) {
+            onChange(String(key));
+          }
+        }}
+        placeholder={placeholder}
+        aria-label={label || placeholder}
+      >
+        <Select.Trigger className="w-full h-10 px-3.5 py-2.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] text-xs font-semibold text-[var(--foreground)] flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-2xs outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20">
+          <Select.Value className="text-xs truncate font-medium text-[var(--foreground)]">
+            {({ selectedText, isPlaceholder }) => (
+              <span className={isPlaceholder ? "text-[var(--foreground-muted)]" : "text-[var(--foreground)] font-semibold"}>
+                {selectedText || currentOption?.label || placeholder}
+              </span>
+            )}
+          </Select.Value>
+          <Select.Indicator className="text-[var(--foreground-muted)] shrink-0" />
+        </Select.Trigger>
+        <Select.Popover className="min-w-[var(--trigger-width)] w-full p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto">
+          <ListBox className="outline-hidden space-y-0.5">
+            {options.map((opt) => {
+              const isSelected = opt.value === value;
+              return (
+                <ListBox.Item
+                  key={opt.value}
+                  id={opt.value}
+                  textValue={opt.label}
+                  className={`text-xs font-medium px-3 py-2 rounded-lg cursor-pointer flex items-center justify-between transition-colors outline-hidden ${
+                    isSelected
+                      ? "bg-primary text-white font-bold"
+                      : "text-[var(--foreground)] hover:bg-primary/10 hover:text-primary"
+                  }`}
+                >
+                  <span>{opt.label}</span>
+                  {isSelected && <Check className="w-3.5 h-3.5 stroke-[2.5]" />}
+                </ListBox.Item>
+              );
+            })}
+          </ListBox>
+        </Select.Popover>
+      </Select>
+    </div>
+  );
+}
+
+// ── HeroUI Card Container Helper ──────────────────────────────────────────────
+function SettingCard({
+  title,
+  subtitle,
+  icon: Icon,
+  children,
+  className = "",
+}: {
+  title: string;
+  subtitle?: string;
+  icon: React.ElementType;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <Card
+      className={`border border-slate-200/80 dark:border-gray-800 shadow-xs bg-white dark:bg-gray-900 rounded-2xl overflow-hidden transition-all ${className}`}
+    >
+      <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100 dark:border-gray-800/80 bg-slate-50/50 dark:bg-gray-900/40">
+        <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0">
+          <Icon className="w-4 h-4" />
+        </div>
+        <div>
+          <h3 className="text-sm font-bold text-gray-900 dark:text-white">
+            {title}
+          </h3>
+          {subtitle && (
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+              {subtitle}
+            </p>
+          )}
+        </div>
+      </div>
+      <div className="p-6 space-y-5">{children}</div>
+    </Card>
+  );
+}
+
+// ── Color Field Helper ────────────────────────────────────────────────────────
+function ColorPickerRow({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <div className="space-y-1">
+      <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+        {label}
+      </label>
+      <div className="flex items-center gap-2">
+        <input
+          type="color"
+          value={value || "#000000"}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-10 h-10 rounded-xl border border-slate-200 dark:border-gray-700 cursor-pointer bg-transparent p-0.5 shrink-0"
+        />
+        <Input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="font-mono text-xs"
+          placeholder="#000000"
+        />
+      </div>
+    </div>
+  );
+}
+
+// ── Color Math Helpers for Auto-Harmonization ─────────────────────────────────
+function shadeHex(color: string, percent: number): string {
+  let hex = color.replace("#", "");
+  if (hex.length === 3) {
+    hex = hex.split("").map((c) => c + c).join("");
+  }
+  const num = parseInt(hex, 16);
+  let r = (num >> 16) + Math.round(255 * (percent / 100));
+  let g = ((num >> 8) & 0x00ff) + Math.round(255 * (percent / 100));
+  let b = (num & 0x0000ff) + Math.round(255 * (percent / 100));
+
+  r = Math.min(255, Math.max(0, r));
+  g = Math.min(255, Math.max(0, g));
+  b = Math.min(255, Math.max(0, b));
+
+  return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+}
+
+// ── Contrast Text Color (Light vs Dark mode accessibility) ───────────────────
+function getContrastTextColor(hexColor: string): string {
+  let hex = (hexColor || "#000000").replace("#", "");
+  if (hex.length === 3) {
+    hex = hex.split("").map((c) => c + c).join("");
+  }
+  const num = parseInt(hex, 16);
+  if (isNaN(num)) return "#ffffff";
+  const r = num >> 16;
+  const g = (num >> 8) & 0x00ff;
+  const b = num & 0x0000ff;
+  const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+  return yiq >= 135 ? "#0f172a" : "#ffffff";
 }
 
 interface AdminSettingsClientProps {
-  initialSettings?: AdminSettingsData;
+  initialSettings?: SiteSettingsData;
 }
 
 export default function AdminSettingsClient({
   initialSettings,
 }: AdminSettingsClientProps) {
-  const { guardDemo } = useDemoAdmin();
-  const [activeTab, setActiveTab] = useState("store");
+  const { settings: globalSettings, updateSettings } = useSiteSettings();
+  const current = initialSettings || globalSettings;
 
-  // Store & System State
-  const [storeName, setStoreName] = useState(
-    initialSettings?.store.storeName || "Electro Store"
+  const [activeTab, setActiveTab] = useState("identity");
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>("all");
+  const [isPending, startTransition] = useTransition();
+
+  // ── Custom Presets State (Persisted in localStorage) ──
+  const [customPresets, setCustomPresets] = useState<ThemePreset[]>([]);
+  const [customPaletteName, setCustomPaletteName] = useState("My Boutique Brand");
+  const [customSeedColor, setCustomSeedColor] = useState("#b45309");
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("sparq_custom_palettes");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          // Restore Wand2 as the badgeIcon component so it is never an empty serialized object
+          const sanitized: ThemePreset[] = parsed.map((p: any) => ({
+            ...p,
+            badgeIcon: Wand2,
+          }));
+          setCustomPresets(sanitized);
+        }
+      }
+    } catch {}
+  }, []);
+
+  const saveCustomPresetToStorage = (newPresets: ThemePreset[]) => {
+    setCustomPresets(newPresets);
+    try {
+      // Strip React component references before JSON serialization
+      const serializable = newPresets.map(({ badgeIcon, ...rest }) => rest);
+      localStorage.setItem("sparq_custom_palettes", JSON.stringify(serializable));
+    } catch {}
+  };
+
+  // ── 1. Identity & Meta State ──
+  const [siteName, setSiteName] = useState(current.siteName || "Sparq");
+  const [siteTagline, setSiteTagline] = useState(
+    current.siteTagline || "Better products. A brighter you."
   );
-  const [supportEmail, setSupportEmail] = useState(
-    initialSettings?.store.supportEmail || "support@electro.com"
+  const [storeType, setStoreType] = useState(current.storeType || "electronics");
+  const [metaTitle, setMetaTitle] = useState(
+    current.metaTitle || "Sparq - Premium Electronics Store"
   );
-  const [supportPhone, setSupportPhone] = useState(
-    initialSettings?.store.supportPhone || "+1 (555) 019-2834"
-  );
-  const [currency, setCurrency] = useState(
-    initialSettings?.store.currency || "USD"
-  );
-  const [timezone, setTimezone] = useState(
-    initialSettings?.store.timezone || "America/New_York"
-  );
-  const [orderPrefix, setOrderPrefix] = useState(
-    initialSettings?.store.orderPrefix || "ELC-"
-  );
-  const [lowStockThreshold, setLowStockThreshold] = useState(
-    initialSettings?.store.lowStockThreshold || 5
-  );
-  const [maintenanceMode, setMaintenanceMode] = useState(
-    initialSettings?.store.maintenanceMode || false
+  const [metaDescription, setMetaDescription] = useState(
+    current.metaDescription ||
+      "Sparq - Premium Worldwide Store with best deals, fast shipping, and top-tier products."
   );
 
-  // Notifications State
-  const [emailOnNewOrder, setEmailOnNewOrder] = useState(
-    initialSettings?.notifications.emailOnNewOrder ?? true
+  // ── 2. Typography State ──
+  const [primaryFont, setPrimaryFont] = useState(
+    current.typography?.primaryFont || "Open Sans"
   );
-  const [emailOnLowStock, setEmailOnLowStock] = useState(
-    initialSettings?.notifications.emailOnLowStock ?? true
-  );
-  const [emailOnNewUser, setEmailOnNewUser] = useState(
-    initialSettings?.notifications.emailOnNewUser ?? false
-  );
-  const [smsOnCriticalError, setSmsOnCriticalError] = useState(
-    initialSettings?.notifications.smsOnCriticalError ?? true
-  );
-  const [dailyDigest, setDailyDigest] = useState(
-    initialSettings?.notifications.dailyDigest ?? true
+  const [headingFont, setHeadingFont] = useState(
+    current.typography?.headingFont || "Poppins"
   );
 
-  // Security State
-  const [twoFactor, setTwoFactor] = useState(
-    initialSettings?.security.twoFactor ?? false
-  );
-  const [sessionTimeoutMins, setSessionTimeoutMins] = useState(
-    initialSettings?.security.sessionTimeoutMins ?? 60
-  );
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  // ── 3. Theme & Colors State ──
+  const [colors, setColors] = useState<SiteColorPalette>({
+    primary: current.colorPalette?.primary || "#0284c7",
+    primaryDark: current.colorPalette?.primaryDark || "#0369a1",
+    secondary: current.colorPalette?.secondary || "#6366f1",
+    accent: current.colorPalette?.accent || "#f59e0b",
+    background: current.colorPalette?.background || "#ffffff",
+    backgroundDark: current.colorPalette?.backgroundDark || "#0b0f19",
+    surface: current.colorPalette?.surface || "#f8fafc",
+    surfaceDark: current.colorPalette?.surfaceDark || "#131d2e",
+    topBarFrom: current.colorPalette?.topBarFrom || "#1d4ed8",
+    topBarVia: current.colorPalette?.topBarVia || "#0284c7",
+    topBarTo: current.colorPalette?.topBarTo || "#4338ca",
+  });
 
-  const [activeSessions, setActiveSessions] = useState<AdminActiveSession[]>(
-    initialSettings?.security.activeSessions || [
-      {
-        id: "sess-1",
-        device: "Windows 11 (Chrome 128)",
-        location: "New York, NY, USA",
-        lastActive: "Active Now",
-        isCurrent: true,
-      },
-      {
-        id: "sess-2",
-        device: "MacBook Pro (Safari 17.5)",
-        location: "New York, NY, USA",
-        lastActive: "4 hours ago",
-        isCurrent: false,
-      },
+  // ── 4. Shipping & Delivery Costs State ──
+  const [freeShippingEnabled, setFreeShippingEnabled] = useState(
+    current.shipping?.freeShippingEnabled ?? true
+  );
+  const [freeShippingThreshold, setFreeShippingThreshold] = useState(
+    current.shipping?.freeShippingThreshold ?? 50
+  );
+  const [standardDeliveryFee, setStandardDeliveryFee] = useState(
+    current.shipping?.standardDeliveryFee ?? 15
+  );
+  const [expressDeliveryFee, setExpressDeliveryFee] = useState(
+    current.shipping?.expressDeliveryFee ?? 25
+  );
+  const [estimatedDeliveryDays, setEstimatedDeliveryDays] = useState(
+    current.shipping?.estimatedDeliveryDays || "2-4 business days"
+  );
+
+  // ── 5. Top Bar State ──
+  const [topBarEnabled, setTopBarEnabled] = useState(
+    current.topBarEnabled ?? true
+  );
+  const [topBarText, setTopBarText] = useState(
+    current.topBarText ||
+      "Welcome to Worldwide Store • Free Express Shipping on $50+"
+  );
+  const [topBarItems, setTopBarItems] = useState<SiteTopBarItem[]>(
+    current.topBarItems || [
+      { label: "Store Locator", href: "/store-locator" },
+      { label: "Track Order", href: "/track-order" },
     ]
   );
 
-  const handleStoreSave = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (guardDemo()) return;
-    toast.success("Store & system settings saved successfully!");
+  // ── 6. Logos & Branding State ──
+  const [logoType, setLogoType] = useState<"both" | "img" | "text">(
+    current.logoType || "both"
+  );
+  const [navbarLogoLight, setNavbarLogoLight] = useState(
+    current.navbarLogo?.light || ""
+  );
+  const [navbarLogoDark, setNavbarLogoDark] = useState(
+    current.navbarLogo?.dark || ""
+  );
+  const [footerLogoLight, setFooterLogoLight] = useState(
+    current.footerLogo?.light || ""
+  );
+  const [footerLogoDark, setFooterLogoDark] = useState(
+    current.footerLogo?.dark || ""
+  );
+  const [faviconUrl, setFaviconUrl] = useState(current.faviconUrl || "");
+
+  // ── 7. Contact & Socials State ──
+  const [supportEmail, setSupportEmail] = useState(
+    current.supportEmail || "support@sparq.com"
+  );
+  const [supportPhone, setSupportPhone] = useState(
+    current.supportPhone || "(800) 8001-8588"
+  );
+  const [address, setAddress] = useState(
+    current.address || "17 Princess Road, London, Greater London NW1 8JR, UK"
+  );
+  const [socialLinks, setSocialLinks] = useState<SiteSocialLink[]>(
+    current.socialLinks || [
+      { platform: "Facebook", url: "#" },
+      { platform: "Twitter/X", url: "#" },
+      { platform: "Instagram", url: "#" },
+    ]
+  );
+
+  // ── 8. System & Security State ──
+  const [currency, setCurrency] = useState(current.currency || "USD");
+  const [timezone, setTimezone] = useState(current.timezone || "Asia/Dhaka");
+  const [maintenanceMode, setMaintenanceMode] = useState(
+    current.maintenanceMode || false
+  );
+  const [footerCopyright, setFooterCopyright] = useState(
+    current.footerCopyright || ""
+  );
+
+  // ── Helpers & Real-Time Sync ──
+  const setColor = (key: keyof SiteColorPalette, val: string) => {
+    setColors((prev) => {
+      const next = { ...prev, [key]: val };
+      updateSettings({ colorPalette: next });
+      return next;
+    });
   };
 
-  const handleNotificationsSave = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (guardDemo()) return;
-    toast.success("Admin notification alerts updated!");
+  const applyPreset = (preset: ThemePreset) => {
+    const nextPalette = { ...preset.palette };
+    setColors(nextPalette);
+    updateSettings({ colorPalette: nextPalette });
+    toast.info(`Applied "${preset.name}" palette to live preview!`);
   };
 
-  const handlePasswordChange = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (guardDemo()) return;
-    if (newPassword !== confirmPassword) {
-      toast.error("New passwords do not match!");
+  // Direct real-time save of palette to DB
+  const handleSavePaletteToDB = async (
+    paletteToSave: SiteColorPalette = colors,
+    label = "Color Palette"
+  ) => {
+    startTransition(async () => {
+      try {
+        const res = await updateSiteSettings({ colorPalette: paletteToSave });
+        if (res?.success === false) {
+          toast.error(res.message || "Failed to save palette to database.");
+        } else {
+          updateSettings({ colorPalette: paletteToSave });
+          toast.success(`"${label}" saved to database successfully!`);
+        }
+      } catch (err) {
+        toast.error("Error saving palette to database.");
+      }
+    });
+  };
+
+  const handlePrimaryFontChange = (val: string) => {
+    setPrimaryFont(val);
+    updateSettings({
+      typography: {
+        primaryFont: val,
+        headingFont,
+        baseFontSize: current.typography?.baseFontSize || "16px",
+      },
+    });
+  };
+
+  const handleHeadingFontChange = (val: string) => {
+    setHeadingFont(val);
+    updateSettings({
+      typography: {
+        primaryFont,
+        headingFont: val,
+        baseFontSize: current.typography?.baseFontSize || "16px",
+      },
+    });
+  };
+
+  // Auto Harmonize from Base Seed Color
+  const handleAutoHarmonize = () => {
+    const base = customSeedColor;
+    const darker = shadeHex(base, -25);
+    const lighter = shadeHex(base, 25);
+    const accentColor = shadeHex(base, 45);
+
+    const generated: SiteColorPalette = {
+      primary: base,
+      primaryDark: darker,
+      secondary: lighter,
+      accent: accentColor,
+      background: "#ffffff",
+      backgroundDark: shadeHex(darker, -40),
+      surface: shadeHex(base, 85),
+      surfaceDark: shadeHex(darker, -20),
+      topBarFrom: darker,
+      topBarVia: base,
+      topBarTo: lighter,
+    };
+
+    setColors(generated);
+    updateSettings({ colorPalette: generated });
+    toast.success("Harmonious custom palette generated and applied in real time!");
+  };
+
+  // Save Custom Palette to Custom Presets
+  const handleSaveCustomPalette = () => {
+    if (!customPaletteName.trim()) {
+      toast.error("Please enter a name for your custom palette.");
       return;
     }
-    if (newPassword.length < 8) {
-      toast.error("Password must be at least 8 characters long.");
-      return;
-    }
-    toast.success("Admin password changed successfully!");
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
+
+    const newPreset: ThemePreset = {
+      id: `custom-${Date.now()}`,
+      name: customPaletteName.trim(),
+      category: "custom",
+      categoryLabel: "Custom Created",
+      badgeIcon: Wand2,
+      description: `Created for ${siteName}. Custom primary ${colors.primary}.`,
+      palette: { ...colors },
+    };
+
+    const updated = [newPreset, ...customPresets];
+    saveCustomPresetToStorage(updated);
+    toast.success(`Saved "${customPaletteName}" to your custom presets!`);
   };
 
-  const handleRevokeSession = (sessionId: string) => {
-    if (guardDemo()) return;
-    setActiveSessions((prev) => prev.filter((s) => s.id !== sessionId));
-    toast.success("Session revoked successfully.");
+  // Delete Custom Preset
+  const handleDeleteCustomPreset = (presetId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const updated = customPresets.filter((p) => p.id !== presetId);
+    saveCustomPresetToStorage(updated);
+    toast.info("Custom palette removed.");
   };
 
-  const handleClearCache = () => {
-    if (guardDemo()) return;
-    toast.success("Application and redis cache cleared successfully!");
+  const addTopBarItem = () =>
+    setTopBarItems((prev) => [...prev, { label: "", href: "" }]);
+  const removeTopBarItem = (idx: number) =>
+    setTopBarItems((prev) => prev.filter((_, i) => i !== idx));
+  const updateTopBarItem = (idx: number, field: "label" | "href", val: string) =>
+    setTopBarItems((prev) =>
+      prev.map((it, i) => (i === idx ? { ...it, [field]: val } : it))
+    );
+
+  const addSocialLink = () =>
+    setSocialLinks((prev) => [...prev, { platform: "Facebook", url: "" }]);
+  const removeSocialLink = (idx: number) =>
+    setSocialLinks((prev) => prev.filter((_, i) => i !== idx));
+  const updateSocialLink = (
+    idx: number,
+    field: "platform" | "url",
+    val: string
+  ) =>
+    setSocialLinks((prev) =>
+      prev.map((it, i) => (i === idx ? { ...it, [field]: val } : it))
+    );
+
+  const topBarGradient = `linear-gradient(to right, ${colors.topBarFrom}, ${colors.topBarVia}, ${colors.topBarTo})`;
+
+  // Combine Default Presets with User's Custom Presets
+  const allPresets = [...customPresets, ...DEFAULT_THEME_PRESETS];
+  const filteredPresets =
+    selectedCategoryFilter === "all"
+      ? allPresets
+      : allPresets.filter((p) => p.category === selectedCategoryFilter);
+
+  // ── Save All Changes ──
+  const handleSave = () => {
+    startTransition(async () => {
+      try {
+        const payload = {
+          siteName,
+          siteTagline,
+          storeType,
+          metaTitle,
+          metaDescription,
+          typography: {
+            primaryFont,
+            headingFont,
+          },
+          colorPalette: colors,
+          shipping: {
+            freeShippingEnabled,
+            freeShippingThreshold: Number(freeShippingThreshold) || 0,
+            standardDeliveryFee: Number(standardDeliveryFee) || 0,
+            expressDeliveryFee: Number(expressDeliveryFee) || 0,
+            estimatedDeliveryDays,
+          },
+          topBarEnabled,
+          topBarText,
+          topBarItems: topBarItems.filter((i) => i.label.trim()),
+          logoType,
+          navbarLogo: {
+            light: navbarLogoLight,
+            dark: navbarLogoDark,
+          },
+          footerLogo: {
+            light: footerLogoLight,
+            dark: footerLogoDark,
+          },
+          faviconUrl,
+          supportEmail,
+          supportPhone,
+          address,
+          socialLinks: socialLinks.filter((s) => s.platform.trim()),
+          currency,
+          timezone,
+          maintenanceMode,
+          footerCopyright,
+        };
+
+        const res = await updateSiteSettings(payload);
+
+        if (res?.success === false) {
+          toast.error(res.message || "Failed to save site settings.");
+        } else {
+          updateSettings(payload as unknown as Partial<SiteSettingsData>);
+          toast.success("Site settings updated and published successfully!");
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error("An error occurred while saving.");
+      }
+    });
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 pb-20">
       {/* ── Page Header ── */}
-      <div>
-        <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
-          <Link href="/dashboard/admin" className="hover:text-sky-600 transition-colors">
-            Admin Dashboard
-          </Link>
-          <span>/</span>
-          <span className="text-sky-600 dark:text-sky-400">Settings</span>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
+            <Link
+              href="/dashboard/admin"
+              className="hover:text-primary transition-colors"
+            >
+              Admin Dashboard
+            </Link>
+            <ChevronRight className="w-3 h-3" />
+            <span className="text-primary">Site Settings</span>
+          </div>
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+            Site{" "}
+            <span className="text-gradient-primary">
+              Settings &amp; Branding
+            </span>
+          </h1>
+          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+            Full control over store branding, Google fonts, custom color palette creation, dual-theme logos, and delivery stats.
+          </p>
         </div>
-        <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-          Admin{" "}
-          <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
-            Settings
-          </span>
-        </h1>
-        <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
-          Manage system configurations, alert preferences, security rules, and store parameters.
-        </p>
+
+        <Button
+          onClick={handleSave}
+          isDisabled={isPending}
+          className="bg-primary text-white font-bold text-xs px-6 py-2.5 rounded-xl shadow-md shadow-primary/25 inline-flex items-center gap-2 cursor-pointer hover:opacity-95 transition-all self-start sm:self-auto shrink-0"
+        >
+          {isPending ? (
+            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          ) : (
+            <Save className="w-4 h-4" />
+          )}
+          {isPending ? "Publishing..." : "Publish Changes"}
+        </Button>
       </div>
 
-      {/* ── Settings Tabs Navigation ── */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-200 dark:border-gray-800">
+      {/* ── Navigation Tabs ── */}
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-2 border-b border-slate-200 dark:border-gray-800 scrollbar-none">
         {SETTING_TABS.map((tab) => {
-          const Icon = tab.icon;
+          const isValidTabIcon =
+            tab.icon &&
+            (typeof tab.icon === "function" ||
+              (typeof tab.icon === "object" && Boolean((tab.icon as any)?.$$typeof)));
+          const Icon = isValidTabIcon ? tab.icon : Settings;
           const isActive = activeTab === tab.id;
           return (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                 isActive
-                  ? "bg-sky-500 text-white shadow-xs shadow-sky-500/20"
+                  ? "bg-sky-500 text-white shadow-xs shadow-primary/20"
                   : "text-gray-600 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-gray-800/60"
               }`}
             >
@@ -233,447 +1237,1323 @@ export default function AdminSettingsClient({
         })}
       </div>
 
-      {/* ── Tab 1: Store & System ── */}
-      {activeTab === "store" && (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-6">
-          <div>
-            <h3 className="text-base font-bold text-gray-900 dark:text-white">
-              Store &amp; System Configuration
-            </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Configure global store details, order identifiers, and operating modes.
-            </p>
-          </div>
-
-          <form onSubmit={handleStoreSave} className="space-y-5 text-xs">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1">
-                <label className="font-semibold text-gray-700 dark:text-gray-300">
-                  Store Public Name
-                </label>
-                <Input
-                  type="text"
-                  value={storeName}
-                  onChange={(e) => setStoreName(e.target.value)}
-                  className="w-full h-10 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-sky-500 text-xs"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="font-semibold text-gray-700 dark:text-gray-300">
-                  Support Email
-                </label>
-                <Input
-                  type="email"
-                  value={supportEmail}
-                  onChange={(e) => setSupportEmail(e.target.value)}
-                  className="w-full h-10 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-sky-500 text-xs"
-                />
-              </div>
+      {/* ──────────────────────────────────────────────────────────────────────────
+          TAB 1: IDENTITY & META
+      ────────────────────────────────────────────────────────────────────────── */}
+      {activeTab === "identity" && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <SettingCard
+            title="Store & Brand Identity"
+            subtitle="Change site name, slogan, or switch store category with HeroUI Select"
+            icon={Globe}
+          >
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                Site Name
+              </label>
+              <Input
+                type="text"
+                value={siteName}
+                onChange={(e) => setSiteName(e.target.value)}
+                placeholder="e.g. Sparq, Velvet & Co, Cafe Noir, Golden Crust"
+              />
+              <p className="text-[11px] text-gray-400">
+                Shown in navbar, footer, metadata, and browser tab.
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="space-y-1">
-                <label className="font-semibold text-gray-700 dark:text-gray-300">
-                  Support Phone
-                </label>
-                <Input
-                  type="tel"
-                  value={supportPhone}
-                  onChange={(e) => setSupportPhone(e.target.value)}
-                  className="w-full h-10 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-sky-500 text-xs"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="font-semibold text-gray-700 dark:text-gray-300">
-                  Primary Currency
-                </label>
-                <select
-                  value={currency}
-                  onChange={(e) => setCurrency(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 focus:border-sky-500 focus:outline-none"
-                >
-                  <option value="USD">USD ($) - US Dollar</option>
-                  <option value="EUR">EUR (€) - Euro</option>
-                  <option value="GBP">GBP (£) - British Pound</option>
-                  <option value="BDT">BDT (৳) - Bangladeshi Taka</option>
-                </select>
-              </div>
-
-              <div className="space-y-1">
-                <label className="font-semibold text-gray-700 dark:text-gray-300">
-                  System Timezone
-                </label>
-                <select
-                  value={timezone}
-                  onChange={(e) => setTimezone(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 focus:border-sky-500 focus:outline-none"
-                >
-                  <option value="America/New_York">America/New_York (UTC-5)</option>
-                  <option value="UTC">UTC (UTC+0)</option>
-                  <option value="Asia/Dhaka">Asia/Dhaka (UTC+6)</option>
-                  <option value="Europe/London">Europe/London (UTC+1)</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1">
-                <label className="font-semibold text-gray-700 dark:text-gray-300">
-                  Order ID Prefix
-                </label>
-                <Input
-                  type="text"
-                  value={orderPrefix}
-                  onChange={(e) => setOrderPrefix(e.target.value)}
-                  placeholder="ELC-"
-                  className="w-full h-10 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-sky-500 text-xs"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="font-semibold text-gray-700 dark:text-gray-300">
-                  Low Stock Alert Threshold (Units)
-                </label>
-                <Input
-                  type="number"
-                  min={1}
-                  max={100}
-                  value={String(lowStockThreshold)}
-                  onChange={(e) => setLowStockThreshold(Number(e.target.value))}
-                  className="w-full h-10 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-sky-500 text-xs"
-                />
-              </div>
-            </div>
-
-            {/* Maintenance Mode Toggle */}
-            <div className="flex items-center justify-between p-4 rounded-xl border border-amber-200 dark:border-amber-900/50 bg-amber-50/50 dark:bg-amber-950/20">
-              <div className="space-y-0.5">
-                <div className="flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-amber-500" />
-                  <p className="font-bold text-gray-900 dark:text-white">
-                    Maintenance Mode
-                  </p>
-                </div>
-                <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                  Temporarily disable store checkout for regular customers during updates.
-                </p>
-              </div>
-              <input
-                type="checkbox"
-                checked={maintenanceMode}
-                onChange={(e) => setMaintenanceMode(e.target.checked)}
-                className="w-4 h-4 accent-sky-600 rounded cursor-pointer"
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                Slogan / Tagline
+              </label>
+              <Input
+                type="text"
+                value={siteTagline}
+                onChange={(e) => setSiteTagline(e.target.value)}
+                placeholder="e.g. Better products. A brighter you."
               />
             </div>
 
-            <div className="flex justify-end pt-2">
-              <Button
-                type="submit"
-                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold transition-all shadow-xs cursor-pointer h-10 flex items-center gap-2"
-              >
-                <Save className="w-4 h-4" />
-                Save Store Settings
-              </Button>
-            </div>
-          </form>
-        </Card>
-      )}
+            {/* HeroUI Select for Store Type */}
+            <HeroUISelect
+              label="Store Type / Industry"
+              value={storeType}
+              onChange={(val) => setStoreType(val)}
+              options={STORE_TYPES}
+              placeholder="Select store industry"
+            />
+          </SettingCard>
 
-      {/* ── Tab 2: Notifications ── */}
-      {activeTab === "notifications" && (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-6">
-          <div>
-            <h3 className="text-base font-bold text-gray-900 dark:text-white">
-              Administrator Alert Notifications
-            </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Select which system events trigger email or SMS alerts for your admin account.
-            </p>
-          </div>
-
-          <form onSubmit={handleNotificationsSave} className="space-y-4 text-xs">
-            <div className="space-y-3">
-              <label className="flex items-center justify-between p-3.5 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-950/40 cursor-pointer">
-                <div>
-                  <p className="font-bold text-gray-900 dark:text-white">
-                    New Customer Order Placed
-                  </p>
-                  <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                    Receive immediate email when a payment is processed.
-                  </p>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={emailOnNewOrder}
-                  onChange={(e) => setEmailOnNewOrder(e.target.checked)}
-                  className="w-4 h-4 accent-sky-600 rounded cursor-pointer"
-                />
+          <SettingCard
+            title="SEO & Metadata"
+            subtitle="Control browser title and description for search engines & social shares"
+            icon={Type}
+          >
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                Meta Title
               </label>
+              <Input
+                type="text"
+                value={metaTitle}
+                onChange={(e) => setMetaTitle(e.target.value)}
+                placeholder="Page title shown on Google"
+              />
+              <span className="text-[11px] text-gray-400">
+                {metaTitle.length}/60 characters recommended
+              </span>
+            </div>
 
-              <label className="flex items-center justify-between p-3.5 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-950/40 cursor-pointer">
-                <div>
-                  <p className="font-bold text-gray-900 dark:text-white">
-                    Low Stock Warnings
-                  </p>
-                  <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                    Get alerted when products fall below the threshold.
-                  </p>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={emailOnLowStock}
-                  onChange={(e) => setEmailOnLowStock(e.target.checked)}
-                  className="w-4 h-4 accent-sky-600 rounded cursor-pointer"
-                />
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                Meta Description
               </label>
-
-              <label className="flex items-center justify-between p-3.5 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-950/40 cursor-pointer">
-                <div>
-                  <p className="font-bold text-gray-900 dark:text-white">
-                    New User Registration
-                  </p>
-                  <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                    Notify whenever a new customer account is created.
-                  </p>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={emailOnNewUser}
-                  onChange={(e) => setEmailOnNewUser(e.target.checked)}
-                  className="w-4 h-4 accent-sky-600 rounded cursor-pointer"
-                />
-              </label>
-
-              <label className="flex items-center justify-between p-3.5 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-950/40 cursor-pointer">
-                <div>
-                  <p className="font-bold text-gray-900 dark:text-white">
-                    Critical System Errors (SMS)
-                  </p>
-                  <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                    Send SMS alert on server downtime or payment gateway failure.
-                  </p>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={smsOnCriticalError}
-                  onChange={(e) => setSmsOnCriticalError(e.target.checked)}
-                  className="w-4 h-4 accent-sky-600 rounded cursor-pointer"
-                />
-              </label>
-
-              <label className="flex items-center justify-between p-3.5 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-950/40 cursor-pointer">
-                <div>
-                  <p className="font-bold text-gray-900 dark:text-white">
-                    Daily Sales &amp; Inventory Summary
-                  </p>
-                  <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                    Receive an end-of-day digest at 11:59 PM.
-                  </p>
-                </div>
-                <input
-                  type="checkbox"
-                  checked={dailyDigest}
-                  onChange={(e) => setDailyDigest(e.target.checked)}
-                  className="w-4 h-4 accent-sky-600 rounded cursor-pointer"
-                />
-              </label>
+              <TextArea
+                rows={4}
+                value={metaDescription}
+                onChange={(e) => setMetaDescription(e.target.value)}
+                placeholder="Brief summary of your store for search engine snippets"
+              />
+              <span className="text-[11px] text-gray-400">
+                {metaDescription.length}/160 characters recommended
+              </span>
             </div>
-
-            <div className="flex justify-end pt-2">
-              <Button
-                type="submit"
-                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold transition-all shadow-xs cursor-pointer h-10 flex items-center gap-2"
-              >
-                <Save className="w-4 h-4" />
-                Save Notification Rules
-              </Button>
-            </div>
-          </form>
-        </Card>
-      )}
-
-      {/* ── Tab 3: Security & Sessions ── */}
-      {activeTab === "security" && (
-        <div className="space-y-6">
-          {/* Password Change Card */}
-          <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-5">
-            <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white">
-                Change Admin Password
-              </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                Ensure your administrator account uses a strong, complex password.
-              </p>
-            </div>
-
-            <form onSubmit={handlePasswordChange} className="space-y-4 text-xs">
-              <div className="space-y-1">
-                <label className="font-semibold text-gray-700 dark:text-gray-300">
-                  Current Password
-                </label>
-                <div className="relative">
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    required
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    className="w-full h-10 pr-10 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-sky-500 text-xs"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="font-semibold text-gray-700 dark:text-gray-300">
-                    New Password
-                  </label>
-                  <Input
-                    type="password"
-                    required
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    className="w-full h-10 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-sky-500 text-xs"
-                  />
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-semibold text-gray-700 dark:text-gray-300">
-                    Confirm New Password
-                  </label>
-                  <Input
-                    type="password"
-                    required
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full h-10 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-sky-500 text-xs"
-                  />
-                </div>
-              </div>
-
-              <div className="flex justify-end pt-2">
-                <Button
-                  type="submit"
-                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold transition-all shadow-xs cursor-pointer h-10 flex items-center gap-2"
-                >
-                  <KeyRound className="w-4 h-4" />
-                  Update Password
-                </Button>
-              </div>
-            </form>
-          </Card>
-
-          {/* Active Sessions Card */}
-          <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-4">
-            <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white">
-                Active Admin Sessions
-              </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                Devices currently signed into this administrator account.
-              </p>
-            </div>
-
-            <div className="space-y-3">
-              {activeSessions.map((sess) => (
-                <div
-                  key={sess.id}
-                  className="flex items-center justify-between p-3.5 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-950/40"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400">
-                      <Laptop className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-gray-900 dark:text-white">
-                          {sess.device}
-                        </span>
-                        {sess.isCurrent && (
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300">
-                            Current Device
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-[11px] text-gray-400">
-                        {sess.location} • {sess.lastActive}
-                      </p>
-                    </div>
-                  </div>
-
-                  {!sess.isCurrent && (
-                    <button
-                      onClick={() => handleRevokeSession(sess.id)}
-                      className="text-xs font-semibold text-rose-500 hover:text-rose-600 hover:underline cursor-pointer"
-                    >
-                      Revoke
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
-          </Card>
+          </SettingCard>
         </div>
       )}
 
-      {/* ── Tab 4: Maintenance & Logs ── */}
-      {activeTab === "database" && (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-6">
-          <div>
-            <h3 className="text-base font-bold text-gray-900 dark:text-white">
-              System Maintenance &amp; Cache
-            </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              Administrative tools for cache invalidation and system health diagnostics.
+      {/* ──────────────────────────────────────────────────────────────────────────
+          TAB 2: TYPOGRAPHY & GOOGLE FONTS
+      ────────────────────────────────────────────────────────────────────────── */}
+      {activeTab === "fonts" && (
+        <div className="space-y-6">
+          <SettingCard
+            title="Curated Google Fonts"
+            subtitle="Choose Google Fonts for body text and headings across your storefront"
+            icon={Type}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {/* HeroUI Select for Primary Font */}
+              <HeroUISelect
+                label="Primary Font (Body & UI)"
+                value={primaryFont}
+                onChange={handlePrimaryFontChange}
+                options={GOOGLE_FONTS.map((f) => ({
+                  value: f.name,
+                  label: `${f.name} (${f.category})`,
+                }))}
+                placeholder="Choose primary font"
+              />
+
+              {/* HeroUI Select for Heading Font */}
+              <HeroUISelect
+                label="Heading Font (Titles & Hero)"
+                value={headingFont}
+                onChange={handleHeadingFontChange}
+                options={GOOGLE_FONTS.map((f) => ({
+                  value: f.name,
+                  label: `${f.name} (${f.category})`,
+                }))}
+                placeholder="Choose heading font"
+              />
+            </div>
+
+            {/* Live Typography Preview Card */}
+            <Card className="rounded-2xl border border-slate-200 dark:border-gray-800 p-6 bg-slate-50 dark:bg-gray-950 space-y-4 shadow-2xs">
+              <span className="text-[10px] font-bold tracking-wider text-primary uppercase">
+                Live Font Preview
+              </span>
+              <div
+                style={{
+                  fontFamily: `'${headingFont}', sans-serif`,
+                }}
+              >
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
+                  {siteName} — {siteTagline}
+                </h2>
+              </div>
+              <p
+                className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed"
+                style={{
+                  fontFamily: `'${primaryFont}', sans-serif`,
+                }}
+              >
+                Discover our hand-crafted collection with fast express delivery and seamless checkout.
+                This sentence is rendered live in your selected primary font ({primaryFont}),
+                while the title above is styled in {headingFont}.
+              </p>
+              <div className="flex items-center gap-3 pt-2">
+                <Button
+                  className="bg-sky-500 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-xs"
+                  style={{ fontFamily: `'${primaryFont}', sans-serif` }}
+                >
+                  Shop Now
+                </Button>
+                <span className="text-xs text-gray-400">
+                  Heading: <strong className="text-gray-700 dark:text-gray-200">{headingFont}</strong> • Body:{" "}
+                  <strong className="text-gray-700 dark:text-gray-200">{primaryFont}</strong>
+                </span>
+              </div>
+            </Card>
+          </SettingCard>
+        </div>
+      )}
+
+      {/* ──────────────────────────────────────────────────────────────────────────
+          TAB 3: THEME & COLOR PALETTES (WITH CUSTOM PALETTE CREATOR STUDIO)
+      ────────────────────────────────────────────────────────────────────────── */}
+      {activeTab === "colors" && (
+        <div className="space-y-6">
+          {/* ── Studio: Create Your Own Custom Palette ── */}
+          <SettingCard
+            title="Custom Palette Creator Studio"
+            subtitle="Design, auto-harmonize, and save your own custom color scheme"
+            icon={Wand2}
+          >
+            <div className="p-5 rounded-2xl bg-gradient-to-br from-sky-50/60 via-indigo-50/40 to-purple-50/30 dark:from-sky-950/20 dark:via-gray-900 dark:to-indigo-950/20 border border-sky-100 dark:border-gray-800 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div className="flex-1 max-w-sm flex flex-col gap-1">
+                  <label className="text-xs font-bold text-gray-800 dark:text-gray-200">
+                    Palette Name
+                  </label>
+                  <Input
+                    type="text"
+                    value={customPaletteName}
+                    onChange={(e) => setCustomPaletteName(e.target.value)}
+                    placeholder="e.g. Royal Amethyst, Pastel Peach"
+                  />
+                </div>
+
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                      Seed Color:
+                    </span>
+                    <input
+                      type="color"
+                      value={customSeedColor}
+                      onChange={(e) => setCustomSeedColor(e.target.value)}
+                      className="w-9 h-9 rounded-xl border border-slate-300 dark:border-gray-700 cursor-pointer p-0.5"
+                    />
+                  </div>
+
+                  <Button
+                    onClick={handleAutoHarmonize}
+                    className="bg-white dark:bg-gray-800 border border-slate-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 text-xs font-bold px-4 py-2 rounded-xl shadow-2xs hover:bg-slate-50 dark:hover:bg-gray-700 inline-flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <Wand2 className="w-3.5 h-3.5 text-primary" />
+                    Auto-Harmonize
+                  </Button>
+
+                  <Button
+                    onClick={handleSaveCustomPalette}
+                    className="bg-primary text-white text-xs font-bold px-4 py-2 rounded-xl shadow-xs inline-flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <BookmarkCheck className="w-3.5 h-3.5" />
+                    Save to My Presets
+                  </Button>
+                </div>
+              </div>
+
+              {/* Real-Time Live Preview of Custom Palette */}
+              <div className="pt-3 border-t border-slate-200/60 dark:border-gray-800">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-primary block mb-2">
+                  Live Custom Palette Preview
+                </span>
+                <div
+                  className="rounded-xl px-4 py-2.5 text-white text-xs font-semibold flex items-center justify-between shadow-2xs"
+                  style={{ background: topBarGradient }}
+                >
+                  <span>Announcement Banner in Custom Gradient</span>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="px-3 py-1 rounded-lg font-extrabold text-[11px] shadow-sm transition-colors border border-black/10 dark:border-white/20"
+                      style={{
+                        background: colors.primary,
+                        color: getContrastTextColor(colors.primary),
+                      }}
+                    >
+                      Primary Button
+                    </span>
+                    <span
+                      className="px-3 py-1 rounded-lg font-extrabold text-[11px] shadow-sm transition-colors border border-black/10 dark:border-white/20"
+                      style={{
+                        background: colors.accent,
+                        color: getContrastTextColor(colors.accent),
+                      }}
+                    >
+                      Accent Badge
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </SettingCard>
+
+          {/* Preset Palettes with Category Filter */}
+          <SettingCard
+            title="Industry Color Palettes & Saved Presets"
+            subtitle="Curated professional color schemes for Jewelry, Fashion, Restaurant, Bakery, Coffee Shop, and Tech"
+            icon={Palette}
+          >
+            {/* Category Filter Pills */}
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none">
+              {[
+                { id: "all", label: "All Palettes" },
+                { id: "custom", label: `✨ My Custom (${customPresets.length})` },
+                { id: "jewelry", label: "💎 Jewelry & Luxury" },
+                { id: "fashion", label: "👗 Fashion & Clothes" },
+                { id: "restaurant", label: "🍷 Restaurant & Dining" },
+                { id: "bakery", label: "🥐 Bakery & Pastry" },
+                { id: "coffee", label: "☕ Coffee Shop" },
+                { id: "green", label: "🌿 Plants & Eco" },
+                { id: "tech", label: "⚡ Electronics & Tech" },
+              ].map((pill) => (
+                <button
+                  key={pill.id}
+                  onClick={() => setSelectedCategoryFilter(pill.id)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap cursor-pointer transition-all ${
+                    selectedCategoryFilter === pill.id
+                      ? "bg-sky-500 text-white shadow-xs ring-2 ring-sky-500/20"
+                      : "bg-slate-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 border border-slate-200/80 dark:border-gray-700 hover:bg-slate-200 dark:hover:bg-gray-700/80 shadow-2xs"
+                  }`}
+                >
+                  {pill.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Presets Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-2">
+              {filteredPresets.map((preset) => {
+                const isValidIcon =
+                  preset.badgeIcon &&
+                  (typeof preset.badgeIcon === "function" ||
+                    (typeof preset.badgeIcon === "object" && Boolean((preset.badgeIcon as any)?.$$typeof)));
+                const isCustom = preset.category === "custom";
+                const IconComponent = isValidIcon
+                  ? preset.badgeIcon!
+                  : isCustom
+                  ? Wand2
+                  : Palette;
+                const isActive = colors.primary === preset.palette.primary;
+                const pColor = preset.palette.primary;
+                const textColor = getContrastTextColor(pColor);
+
+                return (
+                  <div
+                    key={preset.id}
+                    onClick={() => applyPreset(preset)}
+                    style={{
+                      "--preset-p": pColor,
+                    } as React.CSSProperties}
+                    className={`p-4 rounded-xl border transition-all duration-200 cursor-pointer bg-white dark:bg-gray-900 group relative hover:-translate-y-1 ${
+                      isActive
+                        ? "border-[var(--preset-p)] ring-2 ring-[var(--preset-p)]/30 shadow-md shadow-[var(--preset-p)]/20"
+                        : "border-slate-200 dark:border-gray-800 hover:border-[var(--preset-p)] hover:shadow-xl hover:shadow-[var(--preset-p)]/25"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="w-6 h-6 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 shadow-2xs"
+                          style={{
+                            backgroundColor: `${pColor}20`,
+                            color: pColor,
+                          }}
+                        >
+                          <IconComponent className="w-3.5 h-3.5" />
+                        </div>
+                        <h4 className="text-xs font-bold text-gray-900 dark:text-white transition-colors group-hover:text-[var(--preset-p)]">
+                          {preset.name}
+                        </h4>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        {isActive && (
+                          <span
+                            className="inline-flex items-center gap-1 text-[9px] font-black uppercase px-2 py-0.5 rounded-full shadow-2xs mr-0.5"
+                            style={{
+                              backgroundColor: pColor,
+                              color: textColor,
+                            }}
+                          >
+                            <CheckCircle2 className="w-2.5 h-2.5" />
+                            Active
+                          </span>
+                        )}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            applyPreset(preset);
+                          }}
+                          className="text-[11px] font-bold hover:underline cursor-pointer transition-colors px-1.5 py-0.5"
+                          style={{ color: pColor }}
+                        >
+                          Preview
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            applyPreset(preset);
+                            handleSavePaletteToDB(preset.palette, preset.name);
+                          }}
+                          disabled={isPending}
+                          className="text-[10px] font-extrabold px-2.5 py-1 rounded-lg shadow-xs transition-all cursor-pointer hover:opacity-90 active:scale-95"
+                          style={{
+                            backgroundColor: pColor,
+                            color: textColor,
+                          }}
+                        >
+                          Save
+                        </button>
+                        {isCustom && (
+                          <button
+                            type="button"
+                            onClick={(e) => handleDeleteCustomPreset(preset.id, e)}
+                            className="p-1 rounded text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 cursor-pointer"
+                            title="Delete custom preset"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Category Badge Themed with Preset's Own Color */}
+                    <span
+                      className="inline-block text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-md mb-2 shadow-2xs border transition-colors"
+                      style={{
+                        backgroundColor: `${pColor}18`,
+                        color: pColor,
+                        borderColor: `${pColor}40`,
+                      }}
+                    >
+                      {preset.categoryLabel}
+                    </span>
+
+                    <p className="text-[11px] text-gray-600 dark:text-gray-300 mb-3 line-clamp-2 font-medium leading-relaxed">
+                      {preset.description}
+                    </p>
+
+                    {/* Color Swatches with interactive hover effects */}
+                    <div className="flex items-center gap-1.5">
+                      <span
+                        className="w-5 h-5 rounded-full ring-1 ring-black/20 dark:ring-white/20 shrink-0 shadow-2xs transition-transform group-hover:scale-110"
+                        style={{ background: preset.palette.primary }}
+                        title={`Primary: ${preset.palette.primary}`}
+                      />
+                      <span
+                        className="w-5 h-5 rounded-full ring-1 ring-black/20 dark:ring-white/20 shrink-0 shadow-2xs transition-transform group-hover:scale-110"
+                        style={{ background: preset.palette.secondary }}
+                        title={`Secondary: ${preset.palette.secondary}`}
+                      />
+                      <span
+                        className="w-5 h-5 rounded-full ring-1 ring-black/20 dark:ring-white/20 shrink-0 shadow-2xs transition-transform group-hover:scale-110"
+                        style={{ background: preset.palette.accent }}
+                        title={`Accent: ${preset.palette.accent}`}
+                      />
+                      <div
+                        className="flex-1 h-5 rounded-md ml-1 ring-1 ring-black/10 dark:ring-white/10 transition-transform group-hover:scale-[1.02]"
+                        style={{
+                          background: `linear-gradient(to right, ${preset.palette.topBarFrom}, ${preset.palette.topBarVia}, ${preset.palette.topBarTo})`,
+                        }}
+                        title="Top Bar Gradient"
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </SettingCard>
+
+          {/* Granular Color Pickers */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <SettingCard title="Brand Colors" icon={Palette}>
+              <ColorPickerRow
+                label="Primary Brand"
+                value={colors.primary}
+                onChange={(v) => setColor("primary", v)}
+              />
+              <ColorPickerRow
+                label="Primary Dark"
+                value={colors.primaryDark}
+                onChange={(v) => setColor("primaryDark", v)}
+              />
+              <ColorPickerRow
+                label="Secondary"
+                value={colors.secondary}
+                onChange={(v) => setColor("secondary", v)}
+              />
+              <ColorPickerRow
+                label="Accent"
+                value={colors.accent}
+                onChange={(v) => setColor("accent", v)}
+              />
+            </SettingCard>
+
+            <SettingCard title="Surfaces & Backgrounds" icon={Palette}>
+              <ColorPickerRow
+                label="Light Background"
+                value={colors.background}
+                onChange={(v) => setColor("background", v)}
+              />
+              <ColorPickerRow
+                label="Dark Background"
+                value={colors.backgroundDark}
+                onChange={(v) => setColor("backgroundDark", v)}
+              />
+              <ColorPickerRow
+                label="Light Surface"
+                value={colors.surface}
+                onChange={(v) => setColor("surface", v)}
+              />
+              <ColorPickerRow
+                label="Dark Surface"
+                value={colors.surfaceDark}
+                onChange={(v) => setColor("surfaceDark", v)}
+              />
+            </SettingCard>
+
+            <SettingCard title="Top Bar Gradient" icon={Sparkles}>
+              <ColorPickerRow
+                label="Gradient From"
+                value={colors.topBarFrom}
+                onChange={(v) => setColor("topBarFrom", v)}
+              />
+              <ColorPickerRow
+                label="Gradient Via"
+                value={colors.topBarVia}
+                onChange={(v) => setColor("topBarVia", v)}
+              />
+              <ColorPickerRow
+                label="Gradient To"
+                value={colors.topBarTo}
+                onChange={(v) => setColor("topBarTo", v)}
+              />
+              <div className="pt-2">
+                <span className="text-[10px] text-gray-400 block mb-1">
+                  Resulting Gradient:
+                </span>
+                <div
+                  className="h-8 rounded-xl shadow-xs"
+                  style={{ background: topBarGradient }}
+                />
+              </div>
+            </SettingCard>
+          </div>
+
+          {/* Quick Save Palette to DB Bar */}
+          <div className="flex items-center justify-between p-4 rounded-xl bg-sky-50/70 dark:bg-sky-950/30 border border-sky-100 dark:border-sky-900/40">
+            <div>
+              <p className="text-xs font-bold text-gray-900 dark:text-white">
+                Save Palette Directly to Database
+              </p>
+              <p className="text-[11px] text-gray-500 dark:text-gray-400">
+                Immediately updates and persists your active light & dark color palette to MongoDB.
+              </p>
+            </div>
+            <Button
+              type="button"
+              onClick={() => handleSavePaletteToDB(colors, "Custom Palette")}
+              isDisabled={isPending}
+              className="bg-primary hover:bg-primary-hover text-white font-bold text-xs rounded-xl px-4 py-2 shadow-sm inline-flex items-center gap-1.5 cursor-pointer"
+            >
+              <Save className="w-3.5 h-3.5" />
+              {isPending ? "Saving..." : "Save Palette to DB"}
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* ──────────────────────────────────────────────────────────────────────────
+          TAB 4: SHIPPING & DELIVERY COSTS
+      ────────────────────────────────────────────────────────────────────────── */}
+      {activeTab === "shipping" && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <SettingCard
+            title="Shipping Rates & Thresholds"
+            subtitle="Configure free shipping threshold, standard delivery cost, and express delivery fee"
+            icon={Truck}
+          >
+            {/* Free Shipping Toggle */}
+            <div className="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-gray-800/40 border border-slate-200/60 dark:border-gray-800">
+              <div>
+                <p className="text-xs font-bold text-gray-900 dark:text-white">
+                  Enable Free Shipping
+                </p>
+                <p className="text-[11px] text-gray-500 dark:text-gray-400">
+                  Waive shipping fees when order subtotal meets threshold
+                </p>
+              </div>
+              <Switch
+                isSelected={freeShippingEnabled}
+                onChange={(isSelected) => setFreeShippingEnabled(isSelected)}
+                className="cursor-pointer"
+              >
+                <Switch.Content className="cursor-pointer">
+                  <Switch.Control className="cursor-pointer">
+                    <Switch.Thumb className="cursor-pointer" />
+                  </Switch.Control>
+                </Switch.Content>
+              </Switch>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                Free Shipping Threshold (${currency})
+              </label>
+              <Input
+                type="number"
+                min="0"
+                step="1"
+                value={String(freeShippingThreshold)}
+                onChange={(e) => setFreeShippingThreshold(Number(e.target.value))}
+                placeholder="50"
+              />
+              <p className="text-[11px] text-gray-400">
+                Orders over ${freeShippingThreshold} receive free express shipping.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                  Standard Delivery Fee (${currency})
+                </label>
+                <Input
+                  type="number"
+                  min="0"
+                  step="0.5"
+                  value={String(standardDeliveryFee)}
+                  onChange={(e) => setStandardDeliveryFee(Number(e.target.value))}
+                  placeholder="15"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                  Express Delivery Fee (${currency})
+                </label>
+                <Input
+                  type="number"
+                  min="0"
+                  step="0.5"
+                  value={String(expressDeliveryFee)}
+                  onChange={(e) => setExpressDeliveryFee(Number(e.target.value))}
+                  placeholder="25"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                Estimated Delivery Duration
+              </label>
+              <Input
+                type="text"
+                value={estimatedDeliveryDays}
+                onChange={(e) => setEstimatedDeliveryDays(e.target.value)}
+                placeholder="e.g. 2-4 business days"
+              />
+            </div>
+          </SettingCard>
+
+          <SettingCard
+            title="Customer View Preview"
+            subtitle="How delivery information and free shipping thresholds appear to shoppers"
+            icon={Eye}
+          >
+            <Card className="p-4 rounded-xl border border-sky-100 dark:border-sky-950 bg-sky-50/50 dark:bg-sky-950/20 space-y-3 shadow-2xs">
+              <div className="flex items-center gap-2 text-primary font-bold text-xs">
+                <Truck className="w-4 h-4" />
+                <span>
+                  {freeShippingEnabled
+                    ? `Free Shipping on Orders $${freeShippingThreshold}+`
+                    : `Standard Delivery Fee: $${standardDeliveryFee}`}
+                </span>
+              </div>
+              <p className="text-xs text-gray-600 dark:text-gray-300">
+                Estimated Delivery: <strong>{estimatedDeliveryDays}</strong>
+              </p>
+              <div className="text-[11px] text-gray-500 space-y-1 border-t border-sky-200/40 dark:border-sky-800/40 pt-2">
+                <p>• Cart subtotal &gt;= ${freeShippingThreshold} → $0.00 Free Delivery</p>
+                <p>• Standard orders → ${standardDeliveryFee.toFixed(2)} Delivery</p>
+                <p>• Express upgrade → ${expressDeliveryFee.toFixed(2)} Delivery</p>
+              </div>
+            </Card>
+          </SettingCard>
+        </div>
+      )}
+
+      {/* ──────────────────────────────────────────────────────────────────────────
+          TAB 5: TOP BAR & LAYOUT
+      ────────────────────────────────────────────────────────────────────────── */}
+      {activeTab === "topbar" && (
+        <div className="space-y-6">
+          <SettingCard
+            title="Announcement Bar"
+            subtitle="Top header announcement text and custom navigation links"
+            icon={Sparkles}
+          >
+            {/* Live Gradient Preview */}
+            <div className="rounded-xl overflow-hidden shadow-xs border border-slate-200 dark:border-gray-800">
+              <div
+                className="px-4 py-2 text-white text-xs font-medium flex items-center justify-between gap-3"
+                style={{ background: topBarGradient }}
+              >
+                <div className="flex items-center gap-2 truncate">
+                  <span className="px-2 py-0.5 rounded-full bg-white/20 text-[10px] font-bold">
+                    Deals
+                  </span>
+                  <span className="truncate">
+                    {topBarText || `Welcome to ${siteName} • Free Shipping on $${freeShippingThreshold}+`}
+                  </span>
+                </div>
+                <span className="text-[10px] opacity-75 shrink-0">Live Preview</span>
+              </div>
+            </div>
+
+            {/* Toggle */}
+            <div className="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-gray-800/40 border border-slate-200/60 dark:border-gray-800">
+              <div>
+                <p className="text-xs font-bold text-gray-900 dark:text-white">
+                  Show Top Header Bar
+                </p>
+                <p className="text-[11px] text-gray-500 dark:text-gray-400">
+                  Display announcement bar on public customer pages
+                </p>
+              </div>
+              <Switch
+                isSelected={topBarEnabled}
+                onChange={(isSelected) => setTopBarEnabled(isSelected)}
+                className="cursor-pointer"
+              >
+                <Switch.Content className="cursor-pointer">
+                  <Switch.Control className="cursor-pointer">
+                    <Switch.Thumb className="cursor-pointer" />
+                  </Switch.Control>
+                </Switch.Content>
+              </Switch>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                Announcement Text
+              </label>
+              <Input
+                type="text"
+                value={topBarText}
+                onChange={(e) => setTopBarText(e.target.value)}
+                placeholder={`Welcome to ${siteName} • Free Express Shipping on $50+`}
+              />
+            </div>
+          </SettingCard>
+
+          <SettingCard
+            title="Top Bar Action Links"
+            subtitle="Custom links shown on the right side of the top announcement bar"
+            icon={Globe}
+          >
+            <div className="space-y-3">
+              {topBarItems.map((item, idx) => (
+                <div key={idx} className="flex items-center gap-2">
+                  <Input
+                    type="text"
+                    value={item.label}
+                    onChange={(e) => updateTopBarItem(idx, "label", e.target.value)}
+                    placeholder="Label (e.g. Store Locator)"
+                  />
+                  <Input
+                    type="text"
+                    value={item.href}
+                    onChange={(e) => updateTopBarItem(idx, "href", e.target.value)}
+                    placeholder="URL (e.g. /store-locator)"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeTopBarItem(idx)}
+                    className="p-2 rounded-xl text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors shrink-0 cursor-pointer"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+              <Button
+                type="button"
+                onClick={addTopBarItem}
+                className="w-full border-2 border-dashed border-slate-200 dark:border-gray-800 text-gray-500 hover:border-primary hover:text-primary bg-transparent text-xs font-bold rounded-xl py-2.5 inline-flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                Add Top Bar Link
+              </Button>
+            </div>
+          </SettingCard>
+        </div>
+      )}
+
+      {/* ──────────────────────────────────────────────────────────────────────────
+          TAB 6: LOGOS & DUAL-THEME MEDIA
+      ────────────────────────────────────────────────────────────────────────── */}
+      {activeTab === "branding" && (
+        <div className="space-y-6">
+          <div className="p-4 rounded-xl border border-sky-100 dark:border-sky-950 bg-sky-50/60 dark:bg-sky-950/20 flex items-start gap-3">
+            <AlertCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+            <p className="text-xs text-sky-700 dark:text-sky-300">
+              Upload separate logos for <strong>Light Theme</strong> and <strong>Dark Theme</strong>, for both Navbar and Footer.
+              Choose <strong>Image Only</strong> to show a logo graphic, <strong>Text Only</strong> for a typographic wordmark, or <strong>Image + Text</strong> for both together.
+              Logos are hosted via ImgBB — use PNG or SVG with transparent backgrounds for best results.
             </p>
           </div>
 
-          <div className="space-y-4 text-xs">
-            <div className="flex items-center justify-between p-4 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-950/40">
-              <div className="space-y-0.5">
-                <p className="font-bold text-gray-900 dark:text-white">
-                  Purge Application Cache
-                </p>
-                <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                  Clear server cache for categories, product filters, and home banner sliders.
-                </p>
-              </div>
-              <Button
-                onClick={handleClearCache}
-                className="px-4 py-2 rounded-xl bg-slate-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-bold hover:bg-slate-300 dark:hover:bg-gray-700 transition-colors h-9 cursor-pointer text-xs"
-              >
-                Clear Cache
-              </Button>
+          {/* Logo Format Selector */}
+          <SettingCard
+            title="Logo Display Format"
+            subtitle="Choose whether your logo displays an uploaded image, custom text, or both together"
+            icon={Sparkles}
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {[
+                {
+                  id: "both",
+                  title: "Image + Text",
+                  desc: "Uploaded logo graphic alongside your custom brand wordmark text",
+                },
+                {
+                  id: "img",
+                  title: "Image Only",
+                  desc: "Standalone logo graphic — no adjacent text shown",
+                },
+                {
+                  id: "text",
+                  title: "Text Only",
+                  desc: "Clean typographic wordmark using your heading font",
+                },
+              ].map((opt) => (
+                <div
+                  key={opt.id}
+                  onClick={() => setLogoType(opt.id as "both" | "img" | "text")}
+                  className={`p-4 rounded-xl border cursor-pointer transition-all ${
+                    logoType === opt.id
+                      ? "border-primary bg-sky-50/50 dark:bg-sky-950/30 shadow-xs"
+                      : "border-slate-200 dark:border-gray-800 hover:border-slate-300 dark:hover:border-gray-700 bg-white dark:bg-gray-900"
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-bold text-gray-900 dark:text-white">
+                      {opt.title}
+                    </span>
+                    <span
+                      className={`w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center ${
+                        logoType === opt.id
+                          ? "border-primary bg-sky-500"
+                          : "border-slate-300 dark:border-gray-600"
+                      }`}
+                    >
+                      {logoType === opt.id && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-white" />
+                      )}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-gray-500 dark:text-gray-400">
+                    {opt.desc}
+                  </p>
+                </div>
+              ))}
             </div>
 
-            <div className="flex items-center justify-between p-4 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-950/40">
-              <div className="space-y-0.5">
-                <p className="font-bold text-gray-900 dark:text-white">
-                  Export System Audit Logs
+            {/* Text Wordmark Input — shown for "both" or "text" mode */}
+            {(logoType === "both" || logoType === "text") && (
+              <div className="mt-5 pt-4 border-t border-slate-100 dark:border-gray-800 space-y-2">
+                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block">
+                  Brand Wordmark Text
+                </label>
+                <Input
+                  type="text"
+                  value={siteName}
+                  onChange={(e) => setSiteName(e.target.value)}
+                  placeholder="e.g. Sparq, Velvet & Co, Matcha Bloom"
+                />
+                <p className="text-[11px] text-gray-400">
+                  This is the text rendered as your logo wordmark — rendered in your selected heading font (<strong>{headingFont}</strong>).
                 </p>
-                <p className="text-[11px] text-gray-500 dark:text-gray-400">
-                  Download a CSV of administrative actions and authentication events.
-                </p>
+
+                {/* Live text wordmark preview */}
+                <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="p-4 rounded-xl bg-white border border-slate-200 flex items-center gap-2.5 shadow-2xs">
+                    <span className="text-[10px] text-gray-400 font-semibold shrink-0 uppercase tracking-wider">Light</span>
+                    <span
+                      className="text-xl font-black tracking-tight text-slate-900 leading-none truncate"
+                      style={{ fontFamily: `'${headingFont}', sans-serif` }}
+                    >
+                      {siteName || "YourBrand"}
+                    </span>
+                  </div>
+                  <div className="p-4 rounded-xl bg-[#0b0f19] border border-gray-800 flex items-center gap-2.5 shadow-2xs">
+                    <span className="text-[10px] text-gray-500 font-semibold shrink-0 uppercase tracking-wider">Dark</span>
+                    <span
+                      className="text-xl font-black tracking-tight text-white leading-none truncate"
+                      style={{ fontFamily: `'${headingFont}', sans-serif` }}
+                    >
+                      {siteName || "YourBrand"}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <Button
-                onClick={() => toast.info("Downloading audit logs CSV...")}
-                className="px-4 py-2 rounded-xl border border-slate-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-bold hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors h-9 cursor-pointer text-xs flex items-center gap-1.5"
+            )}
+          </SettingCard>
+
+          {/* Navbar Logo Uploads */}
+          {(logoType === "img" || logoType === "both") && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <SettingCard
+                title="Navbar Logo — Light Theme"
+                subtitle="Recommended: 160×40px (PNG or SVG, transparent background)"
+                icon={ImageIcon}
               >
-                <Download className="w-3.5 h-3.5" />
-                Export CSV
+                <ImageUploader
+                  label="Upload Light Theme Navbar Logo"
+                  value={navbarLogoLight}
+                  onChange={setNavbarLogoLight}
+                  urlPlaceholder="https://.../logo-light.png"
+                />
+
+                {/* Navbar Light Preview */}
+                <div className="mt-4 pt-4 border-t border-slate-100 dark:border-gray-800">
+                  <span className="text-[10px] font-bold tracking-wider text-primary uppercase block mb-2">
+                    Navbar Preview — Light Theme
+                  </span>
+                  <div className="p-3 rounded-xl bg-white border border-slate-200 flex items-center gap-3 shadow-2xs">
+                    {navbarLogoLight ? (
+                      <Image
+                        src={navbarLogoLight}
+                        alt="Navbar Light"
+                        width={140}
+                        height={36}
+                        className="max-h-9 w-auto object-contain"
+                        unoptimized
+                      />
+                    ) : (
+                      <span className="text-xs text-gray-400 italic">No logo uploaded yet — placeholder shown</span>
+                    )}
+                    {logoType === "both" && (
+                      <span
+                        className="text-lg font-black tracking-tight text-slate-900 leading-none"
+                        style={{ fontFamily: `'${headingFont}', sans-serif` }}
+                      >
+                        {siteName}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </SettingCard>
+
+              <SettingCard
+                title="Navbar Logo — Dark Theme"
+                subtitle="Recommended: 160×40px (PNG or SVG, transparent background). Leave blank to reuse light logo."
+                icon={ImageIcon}
+              >
+                <ImageUploader
+                  label="Upload Dark Theme Navbar Logo"
+                  value={navbarLogoDark}
+                  onChange={setNavbarLogoDark}
+                  urlPlaceholder="https://.../logo-dark.png"
+                />
+
+                {/* Navbar Dark Preview */}
+                <div className="mt-4 pt-4 border-t border-slate-100 dark:border-gray-800">
+                  <span className="text-[10px] font-bold tracking-wider text-primary uppercase block mb-2">
+                    Navbar Preview — Dark Theme
+                  </span>
+                  <div className="p-3 rounded-xl bg-[#0b0f19] border border-gray-800 flex items-center gap-3 shadow-2xs">
+                    {(navbarLogoDark || navbarLogoLight) ? (
+                      <Image
+                        src={navbarLogoDark || navbarLogoLight}
+                        alt="Navbar Dark"
+                        width={140}
+                        height={36}
+                        className="max-h-9 w-auto object-contain"
+                        unoptimized
+                      />
+                    ) : (
+                      <span className="text-xs text-gray-600 italic">No logo uploaded — will fallback to light logo</span>
+                    )}
+                    {logoType === "both" && (
+                      <span
+                        className="text-lg font-black tracking-tight text-white leading-none"
+                        style={{ fontFamily: `'${headingFont}', sans-serif` }}
+                      >
+                        {siteName}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </SettingCard>
+            </div>
+          )}
+
+          {/* Footer Logo Uploads */}
+          {(logoType === "img" || logoType === "both") && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <SettingCard
+                title="Footer Logo — Light Theme"
+                subtitle="Recommended: 200×50px (PNG or SVG, transparent background)"
+                icon={ImageIcon}
+              >
+                <ImageUploader
+                  label="Upload Light Theme Footer Logo"
+                  value={footerLogoLight}
+                  onChange={setFooterLogoLight}
+                  urlPlaceholder="https://.../footer-light.png"
+                />
+
+                {/* Footer Light Preview */}
+                <div className="mt-4 pt-4 border-t border-slate-100 dark:border-gray-800">
+                  <span className="text-[10px] font-bold tracking-wider text-primary uppercase block mb-2">
+                    Footer Preview — Light Theme
+                  </span>
+                  <div className="p-4 rounded-xl bg-white border border-slate-200 flex items-center gap-3 shadow-2xs">
+                    {footerLogoLight ? (
+                      <Image
+                        src={footerLogoLight}
+                        alt="Footer Light"
+                        width={200}
+                        height={50}
+                        className="max-h-12 w-auto object-contain"
+                        unoptimized
+                      />
+                    ) : (
+                      <span className="text-xs text-gray-400 italic">No footer logo uploaded yet</span>
+                    )}
+                    {logoType === "both" && (
+                      <span
+                        className="text-base font-black tracking-tight text-slate-900 leading-none"
+                        style={{ fontFamily: `'${headingFont}', sans-serif` }}
+                      >
+                        {siteName}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </SettingCard>
+
+              <SettingCard
+                title="Footer Logo — Dark Theme"
+                subtitle="Recommended: 200×50px (PNG or SVG, transparent background). Leave blank to reuse light logo."
+                icon={ImageIcon}
+              >
+                <ImageUploader
+                  label="Upload Dark Theme Footer Logo"
+                  value={footerLogoDark}
+                  onChange={setFooterLogoDark}
+                  urlPlaceholder="https://.../footer-dark.png"
+                />
+
+                {/* Footer Dark Preview */}
+                <div className="mt-4 pt-4 border-t border-slate-100 dark:border-gray-800">
+                  <span className="text-[10px] font-bold tracking-wider text-primary uppercase block mb-2">
+                    Footer Preview — Dark Theme
+                  </span>
+                  <div className="p-4 rounded-xl bg-[#0b0f19] border border-gray-800 flex items-center gap-3 shadow-2xs">
+                    {(footerLogoDark || footerLogoLight) ? (
+                      <Image
+                        src={footerLogoDark || footerLogoLight}
+                        alt="Footer Dark"
+                        width={200}
+                        height={50}
+                        className="max-h-12 w-auto object-contain"
+                        unoptimized
+                      />
+                    ) : (
+                      <span className="text-xs text-gray-600 italic">No logo uploaded — will fallback to light logo</span>
+                    )}
+                    {logoType === "both" && (
+                      <span
+                        className="text-base font-black tracking-tight text-white leading-none"
+                        style={{ fontFamily: `'${headingFont}', sans-serif` }}
+                      >
+                        {siteName}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </SettingCard>
+            </div>
+          )}
+
+          {/* Text-only mode — no logo uploads needed, just the wordmark preview */}
+          {logoType === "text" && (
+            <SettingCard
+              title="Text Wordmark Preview"
+              subtitle="Your brand name is rendered in your heading font as the logo across the site"
+              icon={Type}
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Navbar-sized text preview */}
+                <div className="space-y-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Navbar Size</span>
+                  <div className="p-3 rounded-xl bg-white border border-slate-200 flex items-center gap-2 shadow-2xs">
+                    <span className="text-[10px] text-gray-300 uppercase shrink-0">☀</span>
+                    <span className="text-xl font-black tracking-tight text-slate-900 leading-none" style={{ fontFamily: `'${headingFont}', sans-serif` }}>
+                      {siteName || "YourBrand"}
+                    </span>
+                  </div>
+                  <div className="p-3 rounded-xl bg-[#0b0f19] border border-gray-800 flex items-center gap-2 shadow-2xs">
+                    <span className="text-[10px] text-gray-600 uppercase shrink-0">🌙</span>
+                    <span className="text-xl font-black tracking-tight text-white leading-none" style={{ fontFamily: `'${headingFont}', sans-serif` }}>
+                      {siteName || "YourBrand"}
+                    </span>
+                  </div>
+                </div>
+                {/* Footer-sized text preview */}
+                <div className="space-y-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Footer Size</span>
+                  <div className="p-4 rounded-xl bg-white border border-slate-200 flex items-center gap-2 shadow-2xs">
+                    <span className="text-[10px] text-gray-300 uppercase shrink-0">☀</span>
+                    <span className="text-base font-black tracking-tight text-slate-900 leading-none" style={{ fontFamily: `'${headingFont}', sans-serif` }}>
+                      {siteName || "YourBrand"}
+                    </span>
+                  </div>
+                  <div className="p-4 rounded-xl bg-[#0b0f19] border border-gray-800 flex items-center gap-2 shadow-2xs">
+                    <span className="text-[10px] text-gray-600 uppercase shrink-0">🌙</span>
+                    <span className="text-base font-black tracking-tight text-white leading-none" style={{ fontFamily: `'${headingFont}', sans-serif` }}>
+                      {siteName || "YourBrand"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </SettingCard>
+          )}
+
+          {/* Favicon Upload */}
+          <SettingCard
+            title="Browser Favicon"
+            subtitle="Recommended dimensions: 32×32px (.ico or .png)"
+            icon={Globe}
+          >
+            <ImageUploader
+              label="Upload Favicon"
+              value={faviconUrl}
+              onChange={setFaviconUrl}
+              urlPlaceholder="https://.../favicon.png"
+            />
+            {faviconUrl && (
+              <div className="flex items-center gap-3 mt-3 p-3 rounded-xl bg-slate-50 dark:bg-gray-800/40 border border-slate-200/60 dark:border-gray-800">
+                <Image
+                  src={faviconUrl}
+                  alt="Favicon Preview"
+                  width={32}
+                  height={32}
+                  className="w-8 h-8 rounded-md object-contain border border-slate-200 dark:border-gray-700"
+                  unoptimized
+                />
+                <div>
+                  <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">Favicon Preview at 32×32px</p>
+                  <p className="text-[11px] text-gray-400">Shown in browser tabs and bookmarks</p>
+                </div>
+              </div>
+            )}
+          </SettingCard>
+        </div>
+      )}
+
+      {/* ──────────────────────────────────────────────────────────────────────────
+          TAB 7: CONTACT & SOCIALS
+      ────────────────────────────────────────────────────────────────────────── */}
+      {activeTab === "contact" && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <SettingCard
+            title="Store Contact Details"
+            subtitle="Customer support hotline, email, and storefront address"
+            icon={Phone}
+          >
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                Support Phone / Hotline
+              </label>
+              <Input
+                type="text"
+                value={supportPhone}
+                onChange={(e) => setSupportPhone(e.target.value)}
+                placeholder="(800) 8001-8588"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                Support Email
+              </label>
+              <Input
+                type="email"
+                value={supportEmail}
+                onChange={(e) => setSupportEmail(e.target.value)}
+                placeholder="support@sparq.com"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                Physical Address
+              </label>
+              <TextArea
+                rows={3}
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="17 Princess Road, London, UK"
+              />
+            </div>
+          </SettingCard>
+
+          <SettingCard
+            title="Social Media Links"
+            subtitle="Channels displayed in footer and mobile navigation"
+            icon={Globe}
+          >
+            <div className="space-y-3">
+              {socialLinks.map((link, idx) => (
+                <div key={idx} className="flex items-center gap-2">
+                  <div className="w-40 shrink-0">
+                    <HeroUISelect
+                      value={link.platform}
+                      onChange={(val) => updateSocialLink(idx, "platform", val)}
+                      options={SOCIAL_PLATFORMS}
+                      placeholder="Platform"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <Input
+                      type="url"
+                      value={link.url}
+                      onChange={(e) => updateSocialLink(idx, "url", e.target.value)}
+                      placeholder="https://..."
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => removeSocialLink(idx)}
+                    className="p-2 rounded-xl text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors shrink-0 cursor-pointer"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+              <Button
+                type="button"
+                onClick={addSocialLink}
+                className="w-full border-2 border-dashed border-slate-200 dark:border-gray-800 text-gray-500 hover:border-primary hover:text-primary bg-transparent text-xs font-bold rounded-xl py-2.5 inline-flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Plus className="w-4 h-4" />
+                Add Social Link
               </Button>
             </div>
-          </div>
-        </Card>
+          </SettingCard>
+        </div>
       )}
+
+      {/* ──────────────────────────────────────────────────────────────────────────
+          TAB 8: SYSTEM & SECURITY
+      ────────────────────────────────────────────────────────────────────────── */}
+      {activeTab === "system" && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <SettingCard
+            title="Localization & Store Config"
+            subtitle="Currency and timezone settings"
+            icon={Settings}
+          >
+            {/* HeroUI Select for Currency */}
+            <HeroUISelect
+              label="Store Currency"
+              value={currency}
+              onChange={(val) => setCurrency(val)}
+              options={CURRENCIES}
+              placeholder="Select currency"
+            />
+
+            {/* HeroUI Select for Timezone */}
+            <HeroUISelect
+              label="Store Timezone"
+              value={timezone}
+              onChange={(val) => setTimezone(val)}
+              options={TIMEZONES}
+              placeholder="Select timezone"
+            />
+
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                Custom Footer Copyright
+              </label>
+              <Input
+                type="text"
+                value={footerCopyright}
+                onChange={(e) => setFooterCopyright(e.target.value)}
+                placeholder={`© ${new Date().getFullYear()} ${siteName}. All rights reserved.`}
+              />
+            </div>
+          </SettingCard>
+
+          <SettingCard
+            title="Operating Mode"
+            subtitle="Toggle maintenance mode for scheduled store updates"
+            icon={Shield}
+          >
+            <div className="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-gray-800/40 border border-slate-200/60 dark:border-gray-800">
+              <div>
+                <p className="text-xs font-bold text-gray-900 dark:text-white">
+                  Maintenance Mode
+                </p>
+                <p className="text-[11px] text-gray-500 dark:text-gray-400">
+                  When active, non-admin visitors will see a maintenance message
+                </p>
+              </div>
+              <Switch
+                isSelected={maintenanceMode}
+                onChange={(isSelected) => setMaintenanceMode(isSelected)}
+                className="cursor-pointer"
+              >
+                <Switch.Content className="cursor-pointer">
+                  <Switch.Control className="cursor-pointer">
+                    <Switch.Thumb className="cursor-pointer" />
+                  </Switch.Control>
+                </Switch.Content>
+              </Switch>
+            </div>
+
+            {maintenanceMode ? (
+              <div className="p-3.5 rounded-xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-950/20 flex items-center gap-2.5 text-xs text-red-600 dark:text-red-400 font-semibold">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>Store is currently in maintenance mode!</span>
+              </div>
+            ) : (
+              <div className="p-3.5 rounded-xl border border-emerald-200 dark:border-emerald-900/50 bg-emerald-50 dark:bg-emerald-950/20 flex items-center gap-2.5 text-xs text-emerald-600 dark:text-emerald-400 font-semibold">
+                <CheckCircle2 className="w-4 h-4 shrink-0" />
+                <span>Store is live and operational.</span>
+              </div>
+            )}
+          </SettingCard>
+        </div>
+      )}
+
+      {/* ── Sticky Bottom Publish Bar ── */}
+      <div className="fixed bottom-4 right-4 sm:right-10 z-40">
+        <div className="flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border border-slate-200 dark:border-gray-800 shadow-xl shadow-black/10">
+          <span className="text-xs text-gray-500 dark:text-gray-400 hidden sm:inline">
+            Unsaved changes?
+          </span>
+          <Button
+            onClick={handleSave}
+            isDisabled={isPending}
+            className="bg-primary hover:from-sky-600 hover:to-blue-700 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-md shadow-primary/25 transition-all duration-200 cursor-pointer inline-flex items-center gap-2"
+          >
+            {isPending ? (
+              <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            ) : (
+              <Save className="w-3.5 h-3.5" />
+            )}
+            {isPending ? "Publishing..." : "Save Settings"}
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }

@@ -16,7 +16,7 @@ export default function DashboardLayout({ children }: LayoutProps) {
   const isAdmin = pathname.startsWith("/dashboard/admin");
 
   return (
-    <div className="flex min-h-screen bg-slate-50/50 dark:bg-gray-950 text-gray-800 dark:text-gray-100">
+    <div className="flex min-h-screen bg-[var(--surface-alt)] text-[var(--foreground)] transition-colors duration-200">
       {/* Responsive Collapsible Sidebar */}
       {isAdmin ? (
         <AdminSidebar

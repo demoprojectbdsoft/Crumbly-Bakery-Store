@@ -151,7 +151,7 @@ export default function OrdersClient({
         );
       case "confirmed":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 border border-sky-200/50 dark:border-sky-800/40">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-primary/10 text-primary border border-sky-200/50 dark:border-sky-800/40">
             <CheckCircle2 className="w-3 h-3" />
             Confirmed
           </span>
@@ -251,31 +251,31 @@ export default function OrdersClient({
       {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
-            <Link href="/dashboard/admin" className="hover:text-sky-600 transition-colors">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[var(--foreground-muted)] mb-1">
+            <Link href="/dashboard/admin" className="hover:text-primary transition-colors">
               Admin Dashboard
             </Link>
             <span>/</span>
-            <span className="text-sky-600 dark:text-sky-400">Orders</span>
+            <span className="text-primary">Orders</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
             Customer{" "}
-            <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
+            <span className="text-primary">
               Orders
             </span>
           </h1>
-          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-xs md:text-sm text-[var(--foreground-muted)] mt-1">
             Track and process fulfillment, inspect line items, verify shipping and update statuses.
           </p>
         </div>
 
-        <div className="text-xs font-semibold text-gray-500 dark:text-gray-400">
-          Total orders: <span className="font-extrabold text-gray-900 dark:text-white">{total}</span>
+        <div className="text-xs font-semibold text-[var(--foreground-muted)]">
+          Total orders: <span className="font-extrabold text-[var(--foreground)]">{total}</span>
         </div>
       </div>
 
       {/* ── Toolbar: Tabs, Search & Sort ── */}
-      <div className="space-y-4 bg-white dark:bg-gray-900 p-4 rounded-2xl border border-slate-200/80 dark:border-gray-800 shadow-xs">
+      <div className="space-y-4 bg-[var(--surface-elevated)] p-4 rounded-2xl border border-[var(--border-color)] shadow-xs">
         {/* Status Tabs */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
           {FILTER_TABS.map((tab) => {
@@ -286,8 +286,8 @@ export default function OrdersClient({
                 onClick={() => updateParams({ status: tab === "All" ? undefined : tab.toLowerCase() })}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                   isActive
-                    ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-xs"
-                    : "bg-slate-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-gray-700 border border-slate-200/60 dark:border-gray-700"
+                    ? "bg-primary text-white shadow-xs font-bold"
+                    : "bg-[var(--surface-alt)] text-[var(--foreground-muted)] hover:bg-[var(--surface-alt)]/80 hover:text-[var(--foreground)] border border-[var(--border-color)]"
                 }`}
               >
                 <span>{tab}</span>
@@ -300,19 +300,19 @@ export default function OrdersClient({
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-md flex items-center gap-2">
             <div className="relative flex-1">
-              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10" />
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)] z-10" />
               <Input
                 type="text"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder="Search by Order ID, name, city, payment..."
-                className="w-full pl-9 pr-4 h-10 bg-slate-50 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 rounded-xl text-xs"
+                className="w-full pl-9 pr-4 h-10 bg-[var(--surface-alt)] border border-[var(--border-color)] rounded-xl text-xs text-[var(--foreground)]"
               />
             </div>
             <Button
               type="submit"
               size="sm"
-              className="h-10 px-4 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-xs cursor-pointer shrink-0"
+              className="h-10 px-4 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-xs cursor-pointer shrink-0"
             >
               Search
             </Button>
@@ -326,7 +326,7 @@ export default function OrdersClient({
                 selectedKey={currentSort}
                 onSelectionChange={(key) => updateParams({ sort: key ? String(key) : "newest" })}
               >
-                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-sky-400 transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                   <Select.Value className="text-xs font-semibold truncate" />
                   <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
                 </Select.Trigger>
@@ -337,7 +337,7 @@ export default function OrdersClient({
                         key={opt.key}
                         id={opt.key}
                         textValue={opt.label}
-                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-sky-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
                       >
                         {opt.label}
                         <ListBox.ItemIndicator />
@@ -365,12 +365,12 @@ export default function OrdersClient({
       {/* ── Orders Table ── */}
       {isPending ? (
         <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center shadow-xs">
-          <div className="w-8 h-8 border-3 border-sky-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
           <p className="text-xs font-semibold text-gray-500">Loading orders...</p>
         </Card>
       ) : orders.length === 0 ? (
         <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center space-y-4 shadow-sm">
-          <div className="w-16 h-16 rounded-2xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center mx-auto">
+          <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
             <ShoppingBag className="w-8 h-8" />
           </div>
           <div className="space-y-1">
@@ -386,7 +386,7 @@ export default function OrdersClient({
           {(currentSearch || currentTab !== "All") && (
             <Button
               onPress={handleResetFilters}
-              className="px-4 py-2 text-xs font-semibold text-white bg-sky-500 hover:bg-sky-600 rounded-xl transition-colors cursor-pointer inline-flex items-center gap-1.5"
+              className="px-4 py-2 text-xs font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl transition-colors cursor-pointer inline-flex items-center gap-1.5"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               Reset Filters
@@ -437,7 +437,7 @@ export default function OrdersClient({
                       className="hover:bg-slate-50/80 dark:hover:bg-gray-800/40 transition-colors cursor-pointer group"
                     >
                       {/* Order ID */}
-                      <td className="py-3.5 px-4 font-mono font-bold text-sky-600 dark:text-sky-400 whitespace-nowrap">
+                      <td className="py-3.5 px-4 font-mono font-bold text-primary whitespace-nowrap">
                         {shortId}
                       </td>
 
@@ -475,7 +475,7 @@ export default function OrdersClient({
                       {/* Payment Method */}
                       <td className="py-3.5 px-4 whitespace-nowrap">
                         <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-slate-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-[11px] font-semibold uppercase">
-                          <CreditCard className="w-3 h-3 text-sky-500" />
+                          <CreditCard className="w-3 h-3 text-primary" />
                           {order.paymentMethod}
                         </span>
                       </td>
@@ -519,7 +519,7 @@ export default function OrdersClient({
                         <Button
                           size="sm"
                           onPress={() => handleOpenDetail(order)}
-                          className="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 hover:bg-sky-100 dark:hover:bg-sky-900/40 text-xs font-bold transition-colors cursor-pointer"
+                          className="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 dark:hover:bg-sky-900/40 text-xs font-bold transition-colors cursor-pointer"
                         >
                           <Eye className="w-3.5 h-3.5" />
                           <span>View</span>
@@ -538,13 +538,13 @@ export default function OrdersClient({
               <Pagination className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-500 dark:text-gray-400">
                 <Pagination.Summary className="text-xs">
                   Showing <span className="text-gray-800 dark:text-gray-200 font-bold">{startItem}–{endItem}</span> of{" "}
-                  <span className="text-sky-600 dark:text-sky-400 font-bold">{total}</span> orders
+                  <span className="text-primary font-bold">{total}</span> orders
                 </Pagination.Summary>
 
                 <Pagination.Content className="flex items-center gap-1">
                   <Pagination.Item>
                     <Pagination.Previous
-                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-sky-50 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                       isDisabled={page === 1 || isPending}
                       onPress={() => updateParams({ page: String(page - 1) })}
                     >
@@ -566,8 +566,8 @@ export default function OrdersClient({
                           onPress={() => updateParams({ page: String(p) })}
                           className={`w-8 h-8 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
                             p === page
-                              ? "bg-sky-500 text-white shadow-sm shadow-sky-500/30"
-                              : "hover:bg-sky-50 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
+                              ? "bg-sky-500 text-white shadow-sm shadow-primary/30"
+                              : "hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
                           }`}
                         >
                           {p}
@@ -578,7 +578,7 @@ export default function OrdersClient({
 
                   <Pagination.Item>
                     <Pagination.Next
-                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-sky-50 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                       isDisabled={page === totalPages || isPending}
                       onPress={() => updateParams({ page: String(page + 1) })}
                     >
@@ -599,19 +599,19 @@ export default function OrdersClient({
       <Modal isOpen={isDetailOpen} onOpenChange={setIsDetailOpen}>
         <Modal.Backdrop>
           <Modal.Container size="lg">
-            <Modal.Dialog className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-3xl p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <Modal.Dialog className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto text-[var(--foreground)]">
               {selectedOrder && (
                 <>
                   {/* Modal Header */}
-                  <Modal.Header className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 dark:border-gray-800 pb-4">
+                  <Modal.Header className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[var(--border-color)] pb-4">
                     <div>
                       <div className="flex items-center gap-2">
-                        <Modal.Heading className="text-base font-extrabold text-gray-900 dark:text-white">
+                        <Modal.Heading className="text-base font-extrabold text-[var(--foreground)]">
                           Order Details: #{selectedOrder._id?.slice(-8).toUpperCase()}
                         </Modal.Heading>
                         {getStatusBadge(selectedOrder.orderStatus || selectedOrder.status)}
                       </div>
-                      <p className="text-xs text-gray-400 mt-0.5">
+                      <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
                         Placed on{" "}
                         {selectedOrder.createdAt
                           ? new Date(selectedOrder.createdAt).toLocaleString()
@@ -619,7 +619,7 @@ export default function OrdersClient({
                       </p>
                     </div>
 
-                    <Modal.CloseTrigger className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer p-1 rounded-lg self-end sm:self-auto">
+                    <Modal.CloseTrigger className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer p-1 rounded-lg self-end sm:self-auto">
                       ✕
                     </Modal.CloseTrigger>
                   </Modal.Header>
@@ -638,12 +638,12 @@ export default function OrdersClient({
 
                       return (
                         <div className="space-y-3">
-                          <div className="p-4 bg-slate-50 dark:bg-gray-800/50 rounded-2xl border border-slate-200/70 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                          <div className="p-4 bg-[var(--surface-alt)] rounded-2xl border border-[var(--border-color)] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                             <div>
-                              <p className="text-xs font-bold text-gray-900 dark:text-white">
+                              <p className="text-xs font-bold text-[var(--foreground)]">
                                 Update Fulfillment Status
                               </p>
-                              <p className="text-[11px] text-gray-400">
+                              <p className="text-[11px] text-[var(--foreground-muted)]">
                                 Select the new stage for this customer order
                               </p>
                             </div>
@@ -659,11 +659,11 @@ export default function OrdersClient({
                                 disabledKeys={disabledKeys}
                                 placeholder="Select Status"
                               >
-                                <Select.Trigger className="w-full h-10 px-3 rounded-xl border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-sky-400 transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+                                <Select.Trigger className="w-full h-10 px-3 rounded-xl border border-[var(--border-color)] bg-[var(--surface-elevated)] text-xs font-semibold text-[var(--foreground)] flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                                   <Select.Value className="text-xs font-semibold truncate capitalize" />
-                                  <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
+                                  <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-[var(--foreground-muted)] shrink-0" />
                                 </Select.Trigger>
-                                <Select.Popover className="w-56 p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50">
+                                <Select.Popover className="w-56 p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50">
                                   <ListBox disabledKeys={disabledKeys}>
                                     {visibleOptions.map((opt) => {
                                       const isLocked = isResponseLocked && (opt.id === "cancelled" || opt.id === "delivered");
@@ -676,7 +676,7 @@ export default function OrdersClient({
                                           className={`text-xs font-medium px-3 py-2 rounded-lg flex items-center justify-between ${
                                             isLocked
                                               ? "opacity-45 cursor-not-allowed bg-slate-50 dark:bg-gray-800/40 text-gray-400"
-                                              : "hover:bg-sky-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer"
+                                              : "hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer"
                                           }`}
                                         >
                                           <div className="flex items-center gap-1.5">
@@ -852,7 +852,7 @@ export default function OrdersClient({
                         </div>
                         <div className="pt-2 border-t border-slate-200 dark:border-gray-700 flex justify-between text-sm font-black text-gray-900 dark:text-white">
                           <span>Total Amount</span>
-                          <span className="text-sky-600 dark:text-sky-400">
+                          <span className="text-primary">
                             ${selectedOrder.totalAmount?.toFixed(2)}
                           </span>
                         </div>
@@ -864,7 +864,7 @@ export default function OrdersClient({
                       {/* Customer Info */}
                       <div className="p-4 bg-white dark:bg-gray-900 rounded-2xl border border-slate-200/80 dark:border-gray-800 space-y-2 text-xs">
                         <h4 className="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
-                          <UserIcon className="w-4 h-4 text-sky-500" />
+                          <UserIcon className="w-4 h-4 text-primary" />
                           Customer Info
                         </h4>
                         <div className="space-y-1 text-gray-600 dark:text-gray-400 pt-1">
@@ -893,7 +893,7 @@ export default function OrdersClient({
                       {/* Shipping Address */}
                       <div className="p-4 bg-white dark:bg-gray-900 rounded-2xl border border-slate-200/80 dark:border-gray-800 space-y-2 text-xs">
                         <h4 className="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
-                          <MapPin className="w-4 h-4 text-sky-500" />
+                          <MapPin className="w-4 h-4 text-primary" />
                           Shipping Destination
                         </h4>
                         <div className="space-y-1 text-gray-600 dark:text-gray-400 pt-1">
@@ -940,10 +940,10 @@ export default function OrdersClient({
                     </div>
                   </Modal.Body>
 
-                  <Modal.Footer className="flex items-center justify-end pt-4 border-t border-slate-100 dark:border-gray-800">
+                  <Modal.Footer className="flex items-center justify-end pt-4 border-t border-[var(--border-color)]">
                     <Button
                       onPress={() => setIsDetailOpen(false)}
-                      className="px-5 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white text-xs font-bold shadow-sm cursor-pointer"
+                      className="px-5 py-2 rounded-xl bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white text-xs font-bold shadow-md shadow-primary/25 cursor-pointer transition-all"
                     >
                       Close Details
                     </Button>

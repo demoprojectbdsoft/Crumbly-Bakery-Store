@@ -117,16 +117,16 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     <div className="space-y-6 max-w-6xl mx-auto pb-10">
       {/* ── Breadcrumb & Action Bar ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400">
-          <Link href="/dashboard/admin" className="hover:text-sky-600 transition-colors">
+        <div className="flex items-center gap-2 text-xs font-semibold text-[var(--foreground-muted)]">
+          <Link href="/dashboard/admin" className="hover:text-primary transition-colors">
             Admin
           </Link>
           <span>/</span>
-          <Link href="/dashboard/admin/products" className="hover:text-sky-600 transition-colors">
+          <Link href="/dashboard/admin/products" className="hover:text-primary transition-colors">
             Products
           </Link>
           <span>/</span>
-          <span className="text-sky-600 dark:text-sky-400 font-bold truncate max-w-xs">
+          <span className="text-primary font-bold truncate max-w-xs">
             {product.title}
           </span>
         </div>
@@ -136,7 +136,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             href={`/shop/${product.slug}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-sky-200 dark:border-sky-800/60 bg-sky-50 dark:bg-sky-950/40 text-xs font-semibold text-sky-600 dark:text-sky-400 hover:bg-sky-100 dark:hover:bg-sky-900/50 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-primary/20 bg-primary/10 text-xs font-semibold text-primary hover:bg-primary/20 transition-colors"
           >
             <ExternalLink className="w-3.5 h-3.5" />
             <span>View in Store</span>
@@ -144,7 +144,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
           <Link
             href="/dashboard/admin/products"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-gray-800 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-elevated)] text-xs font-semibold text-[var(--foreground)] hover:bg-[var(--surface-alt)] transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Products</span>
@@ -153,10 +153,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       </div>
 
       {/* ── Main Product Header & Summary ── */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white dark:bg-gray-900 p-6 rounded-3xl border border-slate-200/80 dark:border-gray-800 shadow-xs">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-[var(--surface-elevated)] p-6 rounded-3xl border border-[var(--border-color)] shadow-xs">
         <div className="space-y-2.5">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 text-xs font-bold border border-sky-200/50 dark:border-sky-800/40">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-primary/10 text-primary text-xs font-bold border border-primary/20">
               <Layers className="w-3.5 h-3.5" />
               {catName}
             </span>
@@ -200,18 +200,18 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             {product.badges?.map((b) => (
               <span
                 key={b}
-                className="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 uppercase tracking-wider border border-blue-200/50 dark:border-blue-900/40"
+                className="text-xs font-bold px-2.5 py-1 rounded-full bg-primary/10 text-primary uppercase tracking-wider border border-primary/20"
               >
                 {b}
               </span>
             ))}
           </div>
 
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
             {product.title}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500 dark:text-gray-400 font-mono">
+          <div className="flex flex-wrap items-center gap-4 text-xs text-[var(--foreground-muted)] font-mono">
             {product.sku && <span>SKU: {product.sku}</span>}
             <span>Slug: /{product.slug}</span>
             <span>ID: {product.id || product._id}</span>
@@ -250,20 +250,20 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       ══════════════════════════════════════════════════════════════ */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 flex items-center gap-2">
-            <BarChart3 className="w-4 h-4 text-sky-500" />
+          <h2 className="text-sm font-bold uppercase tracking-wider text-[var(--foreground)] flex items-center gap-2">
+            <BarChart3 className="w-4 h-4 text-primary" />
             Financial Performance &amp; Profit / Loss Analytics
           </h2>
-          <span className="text-xs text-gray-400 font-medium">
+          <span className="text-xs text-[var(--foreground-muted)] font-medium">
             Based on {sellCount} total units sold
           </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* 1. Units Sold (Sell Count) */}
-          <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-3xl p-5 shadow-xs relative overflow-hidden">
+          <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-5 shadow-xs relative overflow-hidden">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+              <span className="text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider">
                 Total Units Sold
               </span>
               <div className="w-8 h-8 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center">
@@ -271,12 +271,12 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               </div>
             </div>
             <div className="mt-3">
-              <span className="text-3xl font-black text-gray-900 dark:text-white font-mono">
+              <span className="text-3xl font-black text-[var(--foreground)] font-mono">
                 {sellCount}
               </span>
-              <span className="ml-1.5 text-xs text-gray-400 font-semibold">units</span>
+              <span className="ml-1.5 text-xs text-[var(--foreground-muted)] font-semibold">units</span>
             </div>
-            <div className="mt-2 text-[11px] text-gray-500 dark:text-gray-400">
+            <div className="mt-2 text-[11px] text-[var(--foreground-muted)]">
               {sellCount > 0 ? (
                 <span>Units purchased across customer orders</span>
               ) : (
@@ -286,27 +286,27 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           </Card>
 
           {/* 2. Total Gross Sales Revenue */}
-          <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-3xl p-5 shadow-xs relative overflow-hidden">
+          <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-5 shadow-xs relative overflow-hidden">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+              <span className="text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider">
                 Total Revenue
               </span>
-              <div className="w-8 h-8 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
                 <DollarSign className="w-4 h-4" />
               </div>
             </div>
             <div className="mt-3">
-              <span className="text-3xl font-black text-gray-900 dark:text-white font-mono">
+              <span className="text-3xl font-black text-[var(--foreground)] font-mono">
                 ${totalRevenue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
             </div>
-            <div className="mt-2 text-[11px] text-gray-500 dark:text-gray-400">
+            <div className="mt-2 text-[11px] text-[var(--foreground-muted)]">
               Gross sales ({sellCount} × ${price.toFixed(2)})
             </div>
           </Card>
 
           {/* 3. Unit Profit / Loss */}
-          <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-3xl p-5 shadow-xs relative overflow-hidden">
+          <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-5 shadow-xs relative overflow-hidden">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
                 Unit Profit / Loss
@@ -372,15 +372,15 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           </Card>
 
           {/* 4. Total Realized Profit / Loss */}
-          <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-3xl p-5 shadow-xs relative overflow-hidden">
+          <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-5 shadow-xs relative overflow-hidden">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+              <span className="text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider">
                 Total Realized P/L
               </span>
               <div
                 className={`w-8 h-8 rounded-xl flex items-center justify-center ${
                   !hasInvestPrice
-                    ? "bg-slate-100 dark:bg-gray-800 text-gray-400"
+                    ? "bg-[var(--surface-alt)] text-[var(--foreground-muted)]"
                     : isTotalProfitable
                     ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400"
                     : "bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400"
@@ -410,14 +410,14 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   </span>
                 </div>
               ) : (
-                <span className="text-xl font-bold text-gray-400 italic">—</span>
+                <span className="text-xl font-bold text-[var(--foreground-muted)] italic">—</span>
               )}
             </div>
 
-            <div className="mt-2 text-[11px] text-gray-500 dark:text-gray-400">
+            <div className="mt-2 text-[11px] text-[var(--foreground-muted)]">
               {hasInvestPrice && totalCost != null ? (
                 <span>
-                  Total COGS: <strong className="text-gray-800 dark:text-gray-200">${totalCost.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+                  Total COGS: <strong className="text-[var(--foreground)]">${totalCost.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
                 </span>
               ) : (
                 <span>Requires cost price to compute</span>
@@ -428,43 +428,43 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
         {/* Financial Breakdown Secondary Row */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="p-4 bg-slate-50 dark:bg-gray-800/40 rounded-2xl border border-slate-200/60 dark:border-gray-800 flex items-center justify-between">
+          <div className="p-4 bg-[var(--surface-alt)] rounded-2xl border border-[var(--border-color)] flex items-center justify-between">
             <div>
-              <span className="text-[10px] uppercase font-bold text-gray-400 block">Inventory Stock Value</span>
-              <span className="text-base font-black text-gray-900 dark:text-white font-mono">
+              <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)] block">Inventory Stock Value</span>
+              <span className="text-base font-black text-[var(--foreground)] font-mono">
                 ${inventoryRetailValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
-              <span className="text-[10px] text-gray-400 block mt-0.5">{stockQuantity} units @ retail</span>
+              <span className="text-[10px] text-[var(--foreground-muted)] block mt-0.5">{stockQuantity} units @ retail</span>
             </div>
-            <Boxes className="w-6 h-6 text-sky-500/60" />
+            <Boxes className="w-6 h-6 text-primary/60" />
           </div>
 
-          <div className="p-4 bg-slate-50 dark:bg-gray-800/40 rounded-2xl border border-slate-200/60 dark:border-gray-800 flex items-center justify-between">
+          <div className="p-4 bg-[var(--surface-alt)] rounded-2xl border border-[var(--border-color)] flex items-center justify-between">
             <div>
-              <span className="text-[10px] uppercase font-bold text-gray-400 block">Capital Tied in Stock</span>
-              <span className="text-base font-black text-gray-900 dark:text-white font-mono">
+              <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)] block">Capital Tied in Stock</span>
+              <span className="text-base font-black text-[var(--foreground)] font-mono">
                 {hasInvestPrice && inventoryCostValue != null
                   ? `$${inventoryCostValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                   : "Cost not set"}
               </span>
-              <span className="text-[10px] text-gray-400 block mt-0.5">
+              <span className="text-[10px] text-[var(--foreground-muted)] block mt-0.5">
                 {hasInvestPrice ? `${stockQuantity} units @ $${investPrice.toFixed(2)} cost` : "Add cost price"}
               </span>
             </div>
             <DollarSign className="w-6 h-6 text-emerald-500/60" />
           </div>
 
-          <div className="p-4 bg-slate-50 dark:bg-gray-800/40 rounded-2xl border border-slate-200/60 dark:border-gray-800 flex items-center justify-between">
+          <div className="p-4 bg-[var(--surface-alt)] rounded-2xl border border-[var(--border-color)] flex items-center justify-between">
             <div>
-              <span className="text-[10px] uppercase font-bold text-gray-400 block">Promotion &amp; Offer Status</span>
-              <span className="text-sm font-bold text-gray-900 dark:text-white block mt-0.5">
+              <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)] block">Promotion &amp; Offer Status</span>
+              <span className="text-sm font-bold text-[var(--foreground)] block mt-0.5">
                 {product.offerEndDate
                   ? isOfferExpired
                     ? "Lapsed on " + formatDate(product.offerEndDate)
                     : "Ends " + formatDate(product.offerEndDate)
                   : "Standard Pricing"}
               </span>
-              <span className="text-[10px] text-gray-400 block">
+              <span className="text-[10px] text-[var(--foreground-muted)] block">
                 {product.discountPercentage ? `${product.discountPercentage}% active discount` : "No special discount applied"}
               </span>
             </div>
@@ -477,11 +477,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Product Images Gallery (5 cols) */}
         <div className="lg:col-span-5 space-y-4">
-          <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-3xl p-4 overflow-hidden shadow-xs">
+          <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-4 overflow-hidden shadow-xs">
             {/* Active Image */}
             <div
               onClick={() => openGallery(activeImageIndex)}
-              className="relative w-full aspect-square bg-slate-50 dark:bg-gray-800 rounded-2xl overflow-hidden border border-slate-100 dark:border-gray-700/60 cursor-zoom-in group"
+              className="relative w-full aspect-square bg-[var(--surface-alt)] rounded-2xl overflow-hidden border border-[var(--border-color)] cursor-zoom-in group"
             >
               {allImages[activeImageIndex] ? (
                 <>
@@ -503,12 +503,12 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     title="Click to expand gallery"
                     className="absolute bottom-3 right-3 z-10 px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-900 text-white backdrop-blur-md border border-white/20 shadow-md transition-all hover:scale-105 flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
                   >
-                    <Maximize2 className="w-3.5 h-3.5 text-sky-400" />
+                    <Maximize2 className="w-3.5 h-3.5 text-primary" />
                     <span>View Gallery ({allImages.length})</span>
                   </button>
                 </>
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                <div className="w-full h-full flex items-center justify-center text-[var(--foreground-muted)]">
                   <Package className="w-16 h-16" />
                 </div>
               )}
@@ -524,10 +524,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     onClick={() => setActiveImageIndex(idx)}
                     onDoubleClick={() => openGallery(idx)}
                     title="Click to preview, double click to expand gallery"
-                    className={`relative w-16 h-16 rounded-xl overflow-hidden shrink-0 border-2 transition-all cursor-pointer bg-slate-50 dark:bg-gray-800 p-1 ${
+                    className={`relative w-16 h-16 rounded-xl overflow-hidden shrink-0 border-2 transition-all cursor-pointer bg-[var(--surface-alt)] p-1 ${
                       activeImageIndex === idx
-                        ? "border-sky-500 shadow-xs ring-2 ring-sky-500/20"
-                        : "border-slate-200 dark:border-gray-700 hover:border-sky-300 opacity-70 hover:opacity-100"
+                        ? "border-primary shadow-xs ring-2 ring-primary/20"
+                        : "border-[var(--border-color)] hover:border-primary/50 opacity-70 hover:opacity-100"
                     }`}
                   >
                     <Image
@@ -546,45 +546,45 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
           {/* Quick Stats: Ratings & Inventory */}
           <div className="grid grid-cols-2 gap-3">
-            <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-4 shadow-2xs space-y-1">
-              <span className="text-[10px] uppercase font-bold text-gray-400">
+            <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-4 shadow-2xs space-y-1">
+              <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)]">
                 Customer Rating
               </span>
               <div className="flex items-center gap-1.5">
                 <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                <span className="text-base font-black text-gray-900 dark:text-white">
+                <span className="text-base font-black text-[var(--foreground)]">
                   {product.rating ?? 0}
                 </span>
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-[var(--foreground-muted)]">
                   ({product.reviewCount ?? 0} reviews)
                 </span>
               </div>
             </Card>
 
-            <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-4 shadow-2xs space-y-1">
-              <span className="text-[10px] uppercase font-bold text-gray-400">
+            <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-4 shadow-2xs space-y-1">
+              <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)]">
                 Inventory Units
               </span>
               <div className="flex items-center gap-1.5">
-                <span className="text-base font-black text-gray-900 dark:text-white font-mono">
+                <span className="text-base font-black text-[var(--foreground)] font-mono">
                   {stockQuantity}
                 </span>
-                <span className="text-xs text-gray-400">in stock</span>
+                <span className="text-xs text-[var(--foreground-muted)]">in stock</span>
               </div>
             </Card>
           </div>
 
           {/* System & Audit Information */}
-          <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-3xl p-5 shadow-xs space-y-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-sky-500" />
+          <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-5 shadow-xs space-y-3">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--foreground)] flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-primary" />
               Audit &amp; System Timestamps
             </h3>
 
-            <div className="space-y-2 text-xs divide-y divide-slate-100 dark:divide-gray-800">
+            <div className="space-y-2 text-xs divide-y divide-[var(--border-color)]">
               <div className="flex items-center justify-between pt-1">
-                <span className="text-gray-500 dark:text-gray-400">Created At:</span>
-                <span className="font-mono text-gray-900 dark:text-white font-semibold">
+                <span className="text-[var(--foreground-muted)]">Created At:</span>
+                <span className="font-mono text-[var(--foreground)] font-semibold">
                   {formatDate(product.createdAt)}
                 </span>
               </div>
@@ -620,47 +620,47 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         {/* Right: Specifications, Description & Hierarchy (7 cols) */}
         <div className="lg:col-span-7 space-y-6">
           {/* Description */}
-          <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-3xl p-6 shadow-xs space-y-3">
-            <h2 className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
-              <Info className="w-4 h-4 text-sky-500" />
+          <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-6 shadow-xs space-y-3">
+            <h2 className="text-sm font-bold text-[var(--foreground)] flex items-center gap-2">
+              <Info className="w-4 h-4 text-primary" />
               Product Description
             </h2>
-            <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line">
+            <div className="text-xs sm:text-sm text-[var(--foreground-muted)] leading-relaxed whitespace-pre-line">
               {product.description || "No product description provided."}
             </div>
           </Card>
 
           {/* Pricing & Profit Architecture */}
-          <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-3xl p-6 shadow-xs space-y-4">
-            <h2 className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
+          <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-6 shadow-xs space-y-4">
+            <h2 className="text-sm font-bold text-[var(--foreground)] flex items-center gap-2">
               <DollarSign className="w-4 h-4 text-emerald-500" />
               Complete Pricing &amp; Margin Breakdown
             </h2>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-              <div className="p-3 bg-slate-50 dark:bg-gray-800/40 rounded-xl border border-slate-200/60 dark:border-gray-800">
-                <span className="text-[10px] uppercase font-bold text-gray-400 block">Selling Price</span>
-                <span className="text-base font-black text-gray-900 dark:text-white font-mono block mt-0.5">
+              <div className="p-3 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)]">
+                <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)] block">Selling Price</span>
+                <span className="text-base font-black text-[var(--foreground)] font-mono block mt-0.5">
                   ${price.toFixed(2)}
                 </span>
               </div>
 
-              <div className="p-3 bg-slate-50 dark:bg-gray-800/40 rounded-xl border border-slate-200/60 dark:border-gray-800">
-                <span className="text-[10px] uppercase font-bold text-gray-400 block">Original Price (MSRP)</span>
-                <span className="text-base font-black text-gray-900 dark:text-white font-mono block mt-0.5">
+              <div className="p-3 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)]">
+                <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)] block">Original Price (MSRP)</span>
+                <span className="text-base font-black text-[var(--foreground)] font-mono block mt-0.5">
                   {originalPrice ? `$${originalPrice.toFixed(2)}` : "—"}
                 </span>
               </div>
 
-              <div className="p-3 bg-slate-50 dark:bg-gray-800/40 rounded-xl border border-slate-200/60 dark:border-gray-800">
-                <span className="text-[10px] uppercase font-bold text-gray-400 block">Cost / Invest Price</span>
-                <span className="text-base font-black text-gray-900 dark:text-white font-mono block mt-0.5">
+              <div className="p-3 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)]">
+                <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)] block">Cost / Invest Price</span>
+                <span className="text-base font-black text-[var(--foreground)] font-mono block mt-0.5">
                   {hasInvestPrice ? `$${investPrice.toFixed(2)}` : "—"}
                 </span>
               </div>
 
-              <div className="p-3 bg-slate-50 dark:bg-gray-800/40 rounded-xl border border-slate-200/60 dark:border-gray-800">
-                <span className="text-[10px] uppercase font-bold text-gray-400 block">Discount %</span>
+              <div className="p-3 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)]">
+                <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)] block">Discount %</span>
                 <span className="text-base font-black text-emerald-600 dark:text-emerald-400 font-mono block mt-0.5">
                   {product.discountPercentage ? `${product.discountPercentage}%` : "0%"}
                 </span>
@@ -669,59 +669,59 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           </Card>
 
           {/* Technical Specifications */}
-          <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-3xl p-6 shadow-xs space-y-4">
-            <h2 className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
-              <Layers className="w-4 h-4 text-sky-500" />
+          <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-6 shadow-xs space-y-4">
+            <h2 className="text-sm font-bold text-[var(--foreground)] flex items-center gap-2">
+              <Layers className="w-4 h-4 text-primary" />
               Technical Specifications
             </h2>
 
             {product.specifications && Object.keys(product.specifications).length > 0 ? (
-              <div className="divide-y divide-slate-100 dark:divide-gray-800 border border-slate-100 dark:border-gray-800 rounded-2xl overflow-hidden text-xs">
+              <div className="divide-y divide-[var(--border-color)] border border-[var(--border-color)] rounded-2xl overflow-hidden text-xs">
                 {Object.entries(product.specifications).map(([key, value]) => (
                   <div
                     key={key}
-                    className="grid grid-cols-3 p-3 bg-white dark:bg-gray-900 even:bg-slate-50/60 dark:even:bg-gray-800/30"
+                    className="grid grid-cols-3 p-3 bg-[var(--surface-elevated)] even:bg-[var(--surface-alt)]"
                   >
-                    <span className="font-semibold text-gray-500 dark:text-gray-400">
+                    <span className="font-semibold text-[var(--foreground-muted)]">
                       {key}
                     </span>
-                    <span className="col-span-2 font-medium text-gray-900 dark:text-white">
+                    <span className="col-span-2 font-medium text-[var(--foreground)]">
                       {String(value)}
                     </span>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-gray-400 italic">
+              <p className="text-xs text-[var(--foreground-muted)] italic">
                 No technical specifications available for this product.
               </p>
             )}
           </Card>
 
           {/* Hierarchy & Taxonomy */}
-          <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-3xl p-6 shadow-xs space-y-4">
-            <h2 className="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-2">
-              <Tag className="w-4 h-4 text-sky-500" />
+          <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-6 shadow-xs space-y-4">
+            <h2 className="text-sm font-bold text-[var(--foreground)] flex items-center gap-2">
+              <Tag className="w-4 h-4 text-primary" />
               Categorization &amp; Hierarchy
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-              <div className="p-3.5 bg-slate-50 dark:bg-gray-800/40 rounded-xl border border-slate-200/60 dark:border-gray-800 space-y-1">
-                <span className="text-[10px] uppercase font-bold text-gray-400">
+              <div className="p-3.5 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)] space-y-1">
+                <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)]">
                   Primary Category
                 </span>
-                <p className="font-bold text-gray-900 dark:text-white text-sm">
+                <p className="font-bold text-[var(--foreground)] text-sm">
                   {catName}
                 </p>
                 {product.categoryId?.slug && (
-                  <span className="text-[11px] font-mono text-gray-400 block">
+                  <span className="text-[11px] font-mono text-[var(--foreground-muted)] block">
                     /{product.categoryId.slug}
                   </span>
                 )}
               </div>
 
-              <div className="p-3.5 bg-slate-50 dark:bg-gray-800/40 rounded-xl border border-slate-200/60 dark:border-gray-800 space-y-1">
-                <span className="text-[10px] uppercase font-bold text-gray-400">
+              <div className="p-3.5 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)] space-y-1">
+                <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)]">
                   Subcategories
                 </span>
                 <div className="flex flex-wrap gap-1 mt-1">
@@ -729,13 +729,13 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                     product.subCategoryIds.map((s: any, idx) => (
                       <span
                         key={idx}
-                        className="text-[11px] font-semibold px-2 py-0.5 rounded-lg bg-sky-100 dark:bg-sky-950/60 text-sky-700 dark:text-sky-300"
+                        className="text-[11px] font-semibold px-2 py-0.5 rounded-lg bg-primary/10 text-primary border border-primary/20"
                       >
                         {typeof s === "object" ? s.name : s}
                       </span>
                     ))
                   ) : (
-                    <span className="text-gray-400 italic text-[11px]">None assigned</span>
+                    <span className="text-[var(--foreground-muted)] italic text-[11px]">None assigned</span>
                   )}
                 </div>
               </div>

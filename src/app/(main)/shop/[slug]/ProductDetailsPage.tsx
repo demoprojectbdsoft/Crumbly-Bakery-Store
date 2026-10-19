@@ -529,7 +529,7 @@ export default function ProductDetailsPage({
     if (b.includes("new") || b.includes("feature")) {
       return "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-sm shadow-emerald-500/30 border border-emerald-400/30";
     }
-    return "bg-slate-900/90 dark:bg-slate-800 text-white shadow-sm border border-slate-700/60 dark:border-sky-500/30";
+    return "bg-[var(--surface-elevated)] text-[var(--foreground)] shadow-xs border border-[var(--border-color)]";
   };
 
   return (
@@ -541,17 +541,17 @@ export default function ProductDetailsPage({
     />
 
     <div className="w-full py-6 space-y-8 relative">
-      {/* Subtle ambient bluish gradient in dark mode */}
-      <div className="absolute top-0 right-1/4 w-96 h-96 bg-sky-500/5 dark:bg-sky-500/10 rounded-full blur-3xl pointer-events-none -z-10" />
-      <div className="absolute top-1/2 left-10 w-80 h-80 bg-blue-500/5 dark:bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      {/* Subtle ambient dynamic gradient glow */}
+      <div className="absolute top-0 right-1/4 w-96 h-96 bg-primary/5 dark:bg-primary/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-1/2 left-10 w-80 h-80 bg-primary-hover/5 dark:bg-primary-hover/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
       {/* Breadcrumb Navigation */}
       <nav className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 overflow-x-auto pb-2">
-        <Link href="/" className="hover:text-sky-600 transition-colors cursor-pointer">
+        <Link href="/" className="hover:text-primary transition-colors cursor-pointer">
           Home
         </Link>
         <ChevronRight className="w-3.5 h-3.5 flex-shrink-0 text-gray-400" />
-        <Link href="/shop" className="hover:text-sky-600 transition-colors cursor-pointer">
+        <Link href="/shop" className="hover:text-primary transition-colors cursor-pointer">
           Shop
         </Link>
         {product.categoryId?.name && (
@@ -559,14 +559,14 @@ export default function ProductDetailsPage({
             <ChevronRight className="w-3.5 h-3.5 flex-shrink-0 text-gray-400" />
             <Link
               href={`/shop?category=${product.categoryId?.slug || encodeURIComponent(product.categoryId?.name)}`}
-              className="hover:text-sky-600 transition-colors cursor-pointer"
+              className="hover:text-primary transition-colors cursor-pointer"
             >
               {product.categoryId?.name}
             </Link>
           </>
         )}
         <ChevronRight className="w-3.5 h-3.5 flex-shrink-0 text-gray-400" />
-        <span className="text-slate-900 dark:text-slate-100 font-semibold truncate">
+        <span className="text-[var(--foreground)] font-semibold truncate">
           {product.title}
         </span>
       </nav>
@@ -583,7 +583,7 @@ export default function ProductDetailsPage({
               const activeIdx = allImages.indexOf(currentImage);
               openGallery(activeIdx >= 0 ? activeIdx : 0);
             }}
-            className="relative aspect-square w-full rounded-2xl overflow-hidden bg-gradient-to-br from-white via-sky-50/40 to-slate-50 dark:from-slate-900 dark:via-slate-900/90 dark:to-sky-950/40 border border-sky-100 dark:border-sky-900/40 shadow-xl shadow-sky-950/5 dark:shadow-sky-950/40 backdrop-blur-md group cursor-zoom-in"
+            className="relative aspect-square w-full rounded-2xl overflow-hidden bg-gradient-to-br from-[var(--surface-elevated)] via-[var(--surface-alt)] to-[var(--surface-elevated)] border border-[var(--border-color)] shadow-xl shadow-primary/5 backdrop-blur-md group cursor-zoom-in"
           >
             {/* Badges */}
             <div className="absolute top-4 left-4 z-10 flex flex-col gap-1.5">
@@ -595,7 +595,7 @@ export default function ProductDetailsPage({
               )}
 
               {discountPercent && discountPercent > 0 ? (
-                <span className="px-2.5 py-1 rounded-full bg-gradient-to-r from-sky-500 to-blue-600 text-white text-xs font-extrabold uppercase tracking-wider shadow-sm shadow-sky-500/30 border border-sky-400/30">
+                <span className="px-2.5 py-1 rounded-full bg-gradient-to-r from-primary to-primary-hover text-white text-xs font-extrabold uppercase tracking-wider shadow-sm shadow-primary/30 border border-primary/30">
                   -{discountPercent}% OFF
                 </span>
               ) : null}
@@ -637,7 +637,7 @@ export default function ProductDetailsPage({
               title="Click to expand gallery"
               className="absolute bottom-3 right-3 z-10 px-3 py-1.5 rounded-xl bg-slate-900/75 hover:bg-slate-900 text-white backdrop-blur-md border border-white/20 shadow-lg transition-all hover:scale-105 flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
             >
-              <Maximize2 className="w-3.5 h-3.5 text-sky-400" />
+              <Maximize2 className="w-3.5 h-3.5 text-primary" />
               <span>Gallery ({allImages.length})</span>
             </button>
           </div>
@@ -654,8 +654,8 @@ export default function ProductDetailsPage({
                   title="Click to preview, double click to expand gallery"
                   className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 cursor-pointer ${
                     currentImage === img
-                      ? "border-sky-500 shadow-md ring-2 ring-sky-500/30 scale-95 bg-white dark:bg-slate-900"
-                      : "border-sky-100 dark:border-sky-900/40 bg-white/70 dark:bg-slate-900/60 hover:border-sky-300 dark:hover:border-sky-700 opacity-80 hover:opacity-100"
+                      ? "border-primary shadow-md ring-2 ring-primary/30 scale-95 bg-[var(--surface-elevated)]"
+                      : "border-[var(--border-color)] bg-[var(--surface-alt)] hover:border-primary/50 opacity-80 hover:opacity-100"
                   }`}
                 >
                   <Image
@@ -674,9 +674,9 @@ export default function ProductDetailsPage({
           <div className="lg:col-span-7 space-y-6">
             
             {/* Header Meta */}
-            <div className="space-y-2 border-b border-sky-100 dark:border-gray-800 pb-5">
+            <div className="space-y-2 border-b border-[var(--border-color)] pb-5">
               <div className="flex items-center justify-between">
-                <span className="text-xs uppercase font-extrabold tracking-wider text-sky-600 dark:text-sky-400">
+                <span className="text-xs uppercase font-extrabold tracking-wider text-primary">
                   {product.categoryId?.name}
                 </span>
                 <span className="text-xs text-slate-400 font-mono">
@@ -684,7 +684,7 @@ export default function ProductDetailsPage({
                 </span>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white leading-tight">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--foreground)] leading-tight">
                 {product.title}
               </h1>
 
@@ -701,7 +701,7 @@ export default function ProductDetailsPage({
                       }`}
                     />
                   ))}
-                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300 ml-1">
+                  <span className="text-xs font-bold text-[var(--foreground)] ml-1">
                     {averageRating}
                   </span>
                   <span className="text-xs text-slate-400">
@@ -733,14 +733,14 @@ export default function ProductDetailsPage({
             </div>
 
             {/* Price Banner */}
-            <div className="p-4 rounded-2xl bg-gradient-to-r from-sky-50/90 via-blue-50/40 to-slate-50 dark:from-slate-900 dark:via-sky-950/40 dark:to-slate-900 border border-sky-100 dark:border-sky-900/40 shadow-xs flex items-center justify-between gap-4 flex-wrap">
+            <div className="p-4 rounded-2xl bg-gradient-to-r from-primary/10 via-[var(--surface-alt)] to-[var(--surface-elevated)] border border-[var(--border-color)] shadow-xs flex items-center justify-between gap-4 flex-wrap">
               {/* Left: Price */}
               <div>
                 <span className="text-xs text-slate-500 dark:text-slate-400 block mb-0.5">
                   {showCountdown ? "Deal Price" : "Price"}
                 </span>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-3xl font-black text-slate-900 dark:text-white">
+                  <span className="text-3xl font-black text-[var(--foreground)]">
                     {formattedPrice}
                   </span>
                   {formattedOriginalPrice && !countdown.ended && (
@@ -771,7 +771,7 @@ export default function ProductDetailsPage({
                     ].map(({ v, l }, i, arr) => (
                       <div key={l} className="flex items-center gap-1.5">
                         <div className="flex flex-col items-center">
-                          <span className="min-w-[34px] text-center text-sm font-black text-white bg-gradient-to-b from-sky-500 to-blue-600 rounded-lg px-1.5 py-1 shadow-md shadow-sky-500/30 tabular-nums">
+                          <span className="min-w-[34px] text-center text-sm font-black text-white bg-gradient-to-b from-primary to-primary-hover rounded-lg px-1.5 py-1 shadow-md shadow-primary/30 tabular-nums">
                             {String(v).padStart(2, "0")}
                           </span>
                           <span className="text-[8px] font-bold text-slate-400 uppercase mt-0.5">{l}</span>
@@ -800,23 +800,23 @@ export default function ProductDetailsPage({
             <div className="space-y-4 pt-2">
               <div className="flex items-center gap-3 sm:gap-4">
                 {/* Quantity Box */}
-                <div className="flex items-center justify-between border border-sky-200 dark:border-sky-900/60 rounded-xl bg-white dark:bg-slate-900 p-1 w-32 sm:w-36 h-12 shadow-xs shrink-0">
+                <div className="flex items-center justify-between border border-[var(--border-color)] rounded-xl bg-[var(--surface-elevated)] p-1 w-32 sm:w-36 h-12 shadow-xs shrink-0">
                   <button
                     type="button"
                     onClick={() => handleQuantityChange("dec")}
                     disabled={quantity <= 1 || !product.inStock || (product.stockQuantity !== undefined && product.stockQuantity !== null && product.stockQuantity <= 0)}
-                    className="h-full px-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors flex items-center justify-center"
+                    className="h-full px-2.5 text-[var(--foreground)] hover:bg-[var(--surface-alt)] rounded-lg disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors flex items-center justify-center"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
-                  <span className="font-bold text-sm text-slate-900 dark:text-white">
+                  <span className="font-bold text-sm text-[var(--foreground)]">
                     {quantity}
                   </span>
                   <button
                     type="button"
                     onClick={() => handleQuantityChange("inc")}
                     disabled={!product.inStock || (product.stockQuantity !== undefined && product.stockQuantity !== null && (product.stockQuantity <= 0 || quantity >= product.stockQuantity))}
-                    className="h-full px-2.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors flex items-center justify-center"
+                    className="h-full px-2.5 text-[var(--foreground)] hover:bg-[var(--surface-alt)] rounded-lg disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors flex items-center justify-center"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -831,7 +831,7 @@ export default function ProductDetailsPage({
                       ? "bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-500/25 cursor-default"
                       : (!product.inStock || (product.stockQuantity !== undefined && product.stockQuantity !== null && product.stockQuantity <= 0))
                       ? "bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 shadow-none cursor-not-allowed"
-                      : "bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white shadow-sky-500/25 cursor-pointer"
+                      : "bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white shadow-primary/25 cursor-pointer"
                   } disabled:cursor-not-allowed`}
                 >
                   {isInCart ? (
@@ -854,7 +854,7 @@ export default function ProductDetailsPage({
               </div>
 
               {/* Secondary Actions (Wishlist, Compare, Share) */}
-              <div className="flex items-center gap-4 pt-2 border-t border-sky-100 dark:border-sky-900/40 text-xs">
+              <div className="flex items-center gap-4 pt-2 border-t border-[var(--border-color)] text-xs">
                 <button
                   type="button"
                   onClick={handleToggleWishlist}
@@ -875,14 +875,14 @@ export default function ProductDetailsPage({
                 <button
                   type="button"
                   onClick={handleAddToCompare}
-                  className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 hover:text-sky-600 dark:hover:text-sky-400 transition-colors cursor-pointer"
+                  className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 hover:text-primary transition-colors cursor-pointer"
                 >
                   <Repeat className="w-4 h-4" /> Add to Compare
                 </button>
                 <button
                   type="button"
                   onClick={handleShare}
-                  className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 hover:text-sky-600 dark:hover:text-sky-400 transition-colors ml-auto cursor-pointer"
+                  className="flex items-center gap-1.5 text-slate-600 dark:text-slate-400 hover:text-primary transition-colors ml-auto cursor-pointer"
                 >
                   <Share2 className="w-4 h-4" /> Share
                 </button>
@@ -891,25 +891,25 @@ export default function ProductDetailsPage({
 
             {/* Store Features / Guarantees */}
             <div className="grid grid-cols-3 gap-3 pt-4">
-              <div className="p-3 rounded-xl bg-white/80 dark:bg-slate-900/70 border border-sky-100 dark:border-sky-900/40 text-center hover:border-sky-300 dark:hover:border-sky-700 transition-colors shadow-xs">
-                <Truck className="w-5 h-5 mx-auto text-sky-600 dark:text-sky-400 mb-1" />
-                <p className="text-[11px] font-bold text-slate-800 dark:text-slate-200">
+              <div className="p-3 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)] text-center hover:border-primary/50 transition-colors shadow-xs">
+                <Truck className="w-5 h-5 mx-auto text-primary mb-1" />
+                <p className="text-[11px] font-bold text-[var(--foreground)]">
                   Fast Delivery
                 </p>
                 <p className="text-[10px] text-slate-400">2-3 Business Days</p>
               </div>
 
-              <div className="p-3 rounded-xl bg-white/80 dark:bg-slate-900/70 border border-sky-100 dark:border-sky-900/40 text-center hover:border-sky-300 dark:hover:border-sky-700 transition-colors shadow-xs">
-                <ShieldCheck className="w-5 h-5 mx-auto text-sky-600 dark:text-sky-400 mb-1" />
-                <p className="text-[11px] font-bold text-slate-800 dark:text-slate-200">
+              <div className="p-3 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)] text-center hover:border-primary/50 transition-colors shadow-xs">
+                <ShieldCheck className="w-5 h-5 mx-auto text-primary mb-1" />
+                <p className="text-[11px] font-bold text-[var(--foreground)]">
                   1 Year Warranty
                 </p>
                 <p className="text-[10px] text-slate-400">Official Brand Coverage</p>
               </div>
 
-              <div className="p-3 rounded-xl bg-white/80 dark:bg-slate-900/70 border border-sky-100 dark:border-sky-900/40 text-center hover:border-sky-300 dark:hover:border-sky-700 transition-colors shadow-xs">
-                <RotateCcw className="w-5 h-5 mx-auto text-sky-600 dark:text-sky-400 mb-1" />
-                <p className="text-[11px] font-bold text-slate-800 dark:text-slate-200">
+              <div className="p-3 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)] text-center hover:border-primary/50 transition-colors shadow-xs">
+                <RotateCcw className="w-5 h-5 mx-auto text-primary mb-1" />
+                <p className="text-[11px] font-bold text-[var(--foreground)]">
                   Easy Return
                 </p>
                 <p className="text-[10px] text-slate-400">30-Day Guarantee</p>
@@ -920,23 +920,23 @@ export default function ProductDetailsPage({
         </div>
 
         {/* Tabbed Specs / Description Section */}
-        <Card className="border border-sky-100 dark:border-sky-900/40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-2xl p-6 shadow-sm">
+        <Card className="border border-[var(--border-color)] bg-[var(--surface-elevated)] backdrop-blur-md rounded-2xl p-6 shadow-sm">
           <Tabs>
-            <TabList className="flex gap-1 border-b border-sky-100 dark:border-sky-900/40 pb-0 mb-4">
-              <Tab id="description" className="px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 border-b-2 border-transparent data-[selected]:border-sky-500 data-[selected]:text-sky-600 dark:data-[selected]:text-sky-400 transition-all cursor-pointer bg-transparent rounded-none outline-none">
+            <TabList className="flex gap-1 border-b border-[var(--border-color)] pb-0 mb-4">
+              <Tab id="description" className="px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 border-b-2 border-transparent data-[selected]:border-primary data-[selected]:text-primary transition-all cursor-pointer bg-transparent rounded-none outline-none">
                 Description
               </Tab>
-              <Tab id="specifications" className="px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 border-b-2 border-transparent data-[selected]:border-sky-500 data-[selected]:text-sky-600 dark:data-[selected]:text-sky-400 transition-all cursor-pointer bg-transparent rounded-none outline-none">
+              <Tab id="specifications" className="px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 border-b-2 border-transparent data-[selected]:border-primary data-[selected]:text-primary transition-all cursor-pointer bg-transparent rounded-none outline-none">
                 Specifications
               </Tab>
-              <Tab id="reviews" className="px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 border-b-2 border-transparent data-[selected]:border-sky-500 data-[selected]:text-sky-600 dark:data-[selected]:text-sky-400 transition-all cursor-pointer bg-transparent rounded-none outline-none">
+              <Tab id="reviews" className="px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 border-b-2 border-transparent data-[selected]:border-primary data-[selected]:text-primary transition-all cursor-pointer bg-transparent rounded-none outline-none">
                 Customer Reviews ({totalReviews})
               </Tab>
             </TabList>
 
             <TabPanel id="description">
               <div className="py-4 space-y-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                <h3 className="text-base font-bold text-[var(--foreground)]">
                   Product Overview
                 </h3>
                 <p>{product.description}</p>
@@ -948,22 +948,22 @@ export default function ProductDetailsPage({
 
             <TabPanel id="specifications">
               <div className="py-4">
-                <div className="divide-y divide-sky-100 dark:divide-sky-900/40 text-sm">
+                <div className="divide-y divide-[var(--border-color)] text-sm">
                   <div className="py-2.5 grid grid-cols-3">
                     <span className="font-semibold text-slate-500">Brand / Category</span>
-                    <span className="col-span-2 text-slate-800 dark:text-slate-200 font-medium">
+                    <span className="col-span-2 text-[var(--foreground)] font-medium">
                       {product.categories?.join(", ")}
                     </span>
                   </div>
                   <div className="py-2.5 grid grid-cols-3">
                     <span className="font-semibold text-slate-500">Sub Category</span>
-                    <span className="col-span-2 text-slate-800 dark:text-slate-200 font-medium">
+                    <span className="col-span-2 text-[var(--foreground)] font-medium">
                       {product.subCategoryIds?.map((s) => s.name).join(", ")}
                     </span>
                   </div>
                   <div className="py-2.5 grid grid-cols-3">
                     <span className="font-semibold text-slate-500">Stock SKU</span>
-                    <span className="col-span-2 text-slate-800 dark:text-slate-200 font-mono">
+                    <span className="col-span-2 text-[var(--foreground)] font-mono">
                       {product.sku}
                     </span>
                   </div>
@@ -973,7 +973,7 @@ export default function ProductDetailsPage({
                         <span className="font-semibold text-slate-500 capitalize">
                           {key}
                         </span>
-                        <span className="col-span-2 text-slate-800 dark:text-slate-200">
+                        <span className="col-span-2 text-[var(--foreground)]">
                           {val}
                         </span>
                       </div>
@@ -988,10 +988,10 @@ export default function ProductDetailsPage({
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                   
                   {/* Rating Breakdown & Stats Card (5 cols) */}
-                  <div className="lg:col-span-5 p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-800/40 border border-sky-100 dark:border-sky-900/40 space-y-5">
+                  <div className="lg:col-span-5 p-5 rounded-2xl bg-[var(--surface-alt)] border border-[var(--border-color)] space-y-5">
                     <div className="flex items-center gap-4">
-                      <div className="text-center p-3 rounded-2xl bg-white dark:bg-slate-900 border border-sky-100 dark:border-sky-900/60 shadow-xs min-w-[90px]">
-                        <span className="text-3xl font-black text-slate-900 dark:text-white">
+                      <div className="text-center p-3 rounded-2xl bg-[var(--surface-elevated)] border border-[var(--border-color)] shadow-xs min-w-[90px]">
+                        <span className="text-3xl font-black text-[var(--foreground)]">
                           {averageRating}
                         </span>
                         <div className="flex justify-center text-amber-400 mt-1">
@@ -1012,7 +1012,7 @@ export default function ProductDetailsPage({
                       </div>
 
                       <div>
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                        <h4 className="text-sm font-bold text-[var(--foreground)]">
                           Customer Satisfaction
                         </h4>
                         <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
@@ -1022,7 +1022,7 @@ export default function ProductDetailsPage({
                     </div>
 
                     {/* Star Distribution Progress Bars */}
-                    <div className="space-y-2 pt-2 border-t border-sky-100 dark:border-sky-900/40">
+                    <div className="space-y-2 pt-2 border-t border-[var(--border-color)]">
                       {[5, 4, 3, 2, 1].map((starNum) => {
                         const count = reviews.filter((r) => r.rating === starNum).length;
                         const percent = totalReviews > 0 ? Math.round((count / totalReviews) * 100) : 0;
@@ -1047,11 +1047,11 @@ export default function ProductDetailsPage({
                   </div>
 
                   {/* Write a Review Form Card (7 cols) */}
-                  <div className="lg:col-span-7 p-5 rounded-2xl bg-gradient-to-br from-white via-sky-50/30 to-blue-50/20 dark:from-slate-900 dark:via-slate-900/80 dark:to-sky-950/30 border border-sky-100 dark:border-sky-900/50 shadow-xs space-y-4">
-                    <div className="flex items-center justify-between border-b border-sky-100 dark:border-sky-900/40 pb-3">
+                  <div className="lg:col-span-7 p-5 rounded-2xl bg-gradient-to-br from-[var(--surface-elevated)] via-[var(--surface-alt)] to-[var(--surface-elevated)] border border-[var(--border-color)] shadow-xs space-y-4">
+                    <div className="flex items-center justify-between border-b border-[var(--border-color)] pb-3">
                       <div className="flex items-center gap-2">
-                        <MessageSquare className="w-4 h-4 text-sky-600 dark:text-sky-400" />
-                        <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                        <MessageSquare className="w-4 h-4 text-primary" />
+                        <h4 className="text-sm font-bold text-[var(--foreground)]">
                           Write a Review
                         </h4>
                       </div>
@@ -1082,12 +1082,12 @@ export default function ProductDetailsPage({
                       </div>
                     ) : !user ? (
                       /* ── Not signed in: show sign-in gate ── */
-                      <div className="flex flex-col items-center justify-center gap-4 py-8 px-4 rounded-2xl bg-slate-50/80 dark:bg-slate-800/40 border border-dashed border-sky-200 dark:border-sky-900/50 text-center">
-                        <div className="w-12 h-12 rounded-full bg-sky-100 dark:bg-sky-950/60 flex items-center justify-center shadow-inner">
-                          <UserIcon className="w-5 h-5 text-sky-500 dark:text-sky-400" />
+                      <div className="flex flex-col items-center justify-center gap-4 py-8 px-4 rounded-2xl bg-[var(--surface-alt)] border border-dashed border-[var(--border-color)] text-center">
+                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shadow-inner">
+                          <UserIcon className="w-5 h-5 text-primary" />
                         </div>
                         <div className="space-y-1">
-                          <p className="text-sm font-bold text-slate-900 dark:text-white">
+                          <p className="text-sm font-bold text-[var(--foreground)]">
                             Sign in to leave a review
                           </p>
                           <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs">
@@ -1096,7 +1096,7 @@ export default function ProductDetailsPage({
                         </div>
                         <Link
                           href={`/auth/login?callbackUrl=${encodeURIComponent(pathname || `/shop/${product.slug || product.id}`)}`}
-                          className="inline-flex items-center gap-2 px-5 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white shadow-md shadow-sky-500/25 transition-all"
+                          className="inline-flex items-center gap-2 px-5 py-2 text-xs font-bold rounded-xl bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white shadow-md shadow-primary/25 transition-all"
                         >
                           <UserCheck className="w-3.5 h-3.5" />
                           Sign In
@@ -1109,7 +1109,7 @@ export default function ProductDetailsPage({
                           <ShieldAlert className="w-5 h-5" />
                         </div>
                         <div className="space-y-1">
-                          <p className="text-sm font-bold text-slate-900 dark:text-white">
+                          <p className="text-sm font-bold text-[var(--foreground)]">
                             Purchase Required
                           </p>
                           <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs leading-relaxed">
@@ -1124,7 +1124,7 @@ export default function ProductDetailsPage({
                           <Truck className="w-5 h-5" />
                         </div>
                         <div className="space-y-1">
-                          <p className="text-sm font-bold text-slate-900 dark:text-white">
+                          <p className="text-sm font-bold text-[var(--foreground)]">
                             Awaiting Delivery
                           </p>
                           <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs leading-relaxed">
@@ -1139,7 +1139,7 @@ export default function ProductDetailsPage({
                           <CheckCircle2 className="w-5 h-5" />
                         </div>
                         <div className="space-y-1">
-                          <p className="text-sm font-bold text-slate-900 dark:text-white">
+                          <p className="text-sm font-bold text-[var(--foreground)]">
                             Review Already Submitted
                           </p>
                           <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs leading-relaxed">
@@ -1150,9 +1150,9 @@ export default function ProductDetailsPage({
                     ) : (
                       <form onSubmit={handleSubmitReview} className="space-y-4">
                         {/* Signed-in user identity preview */}
-                          <div className="flex items-center justify-between p-2.5 rounded-xl bg-sky-50/80 dark:bg-sky-950/40 border border-sky-100 dark:border-sky-900/40">
+                          <div className="flex items-center justify-between p-2.5 rounded-xl bg-[var(--surface-alt)] border border-[var(--border-color)]">
                             <div className="flex items-center gap-2.5 min-w-0">
-                              <div className="relative w-8 h-8 rounded-full bg-gradient-to-tr from-sky-500 to-blue-600 flex items-center justify-center text-white font-bold text-xs shrink-0 overflow-hidden shadow-xs">
+                              <div className="relative w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-primary-hover flex items-center justify-center text-white font-bold text-xs shrink-0 overflow-hidden shadow-xs">
                                 {user.image || (user as { avatar?: string })?.avatar ? (
                                   <Image
                                     src={(user.image || (user as { avatar?: string })?.avatar)!}
@@ -1166,7 +1166,7 @@ export default function ProductDetailsPage({
                                 )}
                               </div>
                               <div className="min-w-0">
-                                <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                                <p className="text-xs font-bold text-[var(--foreground)] truncate">
                                   {user.name}
                                 </p>
                                 <p className="text-[10px] text-slate-400 truncate">
@@ -1191,7 +1191,7 @@ export default function ProductDetailsPage({
                               {(hoverRating || rating) === 1 && "1 - Terrible"}
                             </span>
                           </label>
-                          <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-sky-100 dark:border-sky-900/50 w-fit shadow-xs">
+                          <div className="flex items-center gap-1.5 bg-[var(--surface-elevated)] p-2.5 rounded-xl border border-[var(--border-color)] w-fit shadow-xs">
                             {[1, 2, 3, 4, 5].map((star) => {
                               const isFilled = star <= (hoverRating || rating);
                               return (
@@ -1228,7 +1228,7 @@ export default function ProductDetailsPage({
                             onChange={(e) => setDescription(e.target.value)}
                             placeholder="What did you like or dislike? How is the quality, sound, battery, and fit?"
                             required
-                            className="w-full px-3 py-2.5 text-xs rounded-xl bg-white dark:bg-slate-900 border border-sky-200 dark:border-sky-900/60 text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 transition-all resize-none"
+                            className="w-full px-3 py-2.5 text-xs rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)] text-[var(--foreground)] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-none"
                           />
                         </div>
 
@@ -1236,7 +1236,7 @@ export default function ProductDetailsPage({
                         <div className="space-y-2">
                           <div className="flex items-center justify-between">
                             <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                              <Images className="w-3.5 h-3.5 text-sky-500" />
+                              <Images className="w-3.5 h-3.5 text-primary" />
                               Add Photos <span className="text-[10px] font-normal text-slate-400">(optional, max 5)</span>
                             </label>
                             <span className="text-[10px] text-slate-400">{reviewImages.length}/5</span>
@@ -1246,7 +1246,7 @@ export default function ProductDetailsPage({
                           {reviewImages.length > 0 && (
                             <div className="flex flex-wrap gap-2">
                               {reviewImages.map((img, idx) => (
-                                <div key={idx} className="relative w-16 h-16 rounded-xl overflow-hidden border border-sky-200 dark:border-sky-900/60 group">
+                                <div key={idx} className="relative w-16 h-16 rounded-xl overflow-hidden border border-[var(--border-color)] group">
                                   <img src={img} alt={`Review photo ${idx + 1}`} className="w-full h-full object-cover" />
                                   <button
                                     type="button"
@@ -1258,8 +1258,8 @@ export default function ProductDetailsPage({
                                 </div>
                               ))}
                               {isUploadingReviewImage && (
-                                <div className="w-16 h-16 rounded-xl border border-dashed border-sky-300 bg-sky-50 dark:bg-sky-950/30 flex items-center justify-center">
-                                  <Loader2 className="w-4 h-4 text-sky-500 animate-spin" />
+                                <div className="w-16 h-16 rounded-xl border border-dashed border-primary/40 bg-primary/10 flex items-center justify-center">
+                                  <Loader2 className="w-4 h-4 text-primary animate-spin" />
                                 </div>
                               )}
                             </div>
@@ -1267,7 +1267,7 @@ export default function ProductDetailsPage({
 
                           {/* Upload button */}
                           {reviewImages.length < 5 && (
-                            <label className={`flex items-center gap-2 px-3 py-2 rounded-xl border border-dashed border-sky-300 dark:border-sky-800 bg-sky-50/50 dark:bg-sky-950/20 hover:bg-sky-50 dark:hover:bg-sky-950/40 transition-colors cursor-pointer text-xs font-semibold text-sky-600 dark:text-sky-400 w-fit ${isUploadingReviewImage ? "opacity-50 pointer-events-none" : ""}`}>
+                            <label className={`flex items-center gap-2 px-3 py-2 rounded-xl border border-dashed border-[var(--border-color)] bg-[var(--surface-alt)] hover:border-primary/50 transition-colors cursor-pointer text-xs font-semibold text-primary w-fit ${isUploadingReviewImage ? "opacity-50 pointer-events-none" : ""}`}>
                               {isUploadingReviewImage ? (
                                 <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Uploading...</>
                               ) : (
@@ -1289,7 +1289,7 @@ export default function ProductDetailsPage({
                         <Button
                           type="submit"
                           isDisabled={isSubmitting || isUploadingReviewImage}
-                          className="w-full sm:w-auto px-6 h-10 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white text-xs font-bold rounded-xl shadow-md shadow-sky-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                          className="w-full sm:w-auto px-6 h-10 bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white text-xs font-bold rounded-xl shadow-md shadow-primary/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
                         >
                           <Send className="w-3.5 h-3.5" />
                           {isSubmitting ? "Submitting..." : "Submit Review"}
@@ -1300,9 +1300,9 @@ export default function ProductDetailsPage({
                 </div>
 
                 {/* Customer Reviews List */}
-                <div className="space-y-4 pt-4 border-t border-sky-100 dark:border-sky-900/40">
+                <div className="space-y-4 pt-4 border-t border-[var(--border-color)]">
                   <div className="flex items-center justify-between">
-                    <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                    <h4 className="text-sm font-bold text-[var(--foreground)]">
                       All Customer Feedback ({totalReviews})
                     </h4>
                     <span className="text-xs text-slate-400">
@@ -1324,13 +1324,13 @@ export default function ProductDetailsPage({
                         return (
                           <div
                             key={rev.id}
-                            className="p-4 rounded-2xl bg-white/80 dark:bg-slate-900/70 border border-sky-100 dark:border-sky-900/40 hover:border-sky-300 dark:hover:border-sky-700 transition-all shadow-xs flex flex-col justify-between space-y-3"
+                            className="p-4 rounded-2xl bg-[var(--surface-elevated)] border border-[var(--border-color)] hover:border-primary/40 transition-all shadow-xs flex flex-col justify-between space-y-3"
                           >
                             <div className="space-y-2.5">
                               {/* Reviewer Header */}
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-2.5">
-                                  <div className="relative w-8 h-8 rounded-full bg-gradient-to-tr from-sky-500 to-blue-600 flex items-center justify-center text-white font-bold text-xs shrink-0 overflow-hidden shadow-xs">
+                                  <div className="relative w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-primary-hover flex items-center justify-center text-white font-bold text-xs shrink-0 overflow-hidden shadow-xs">
                                     {rev.userAvatar ? (
                                       <Image
                                         src={rev.userAvatar}
@@ -1344,7 +1344,7 @@ export default function ProductDetailsPage({
                                     )}
                                   </div>
                                   <div>
-                                    <span className="font-bold text-xs text-slate-900 dark:text-white block leading-tight">
+                                    <span className="font-bold text-xs text-[var(--foreground)] block leading-tight">
                                       {rev.userName}
                                     </span>
                                     <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-0.5">
@@ -1388,7 +1388,7 @@ export default function ProductDetailsPage({
                                         setReviewGalleryIndex(idx);
                                         setIsReviewGalleryOpen(true);
                                       }}
-                                      className="relative w-14 h-14 rounded-lg overflow-hidden border border-sky-100 dark:border-sky-900/40 hover:border-sky-400 dark:hover:border-sky-600 transition-colors cursor-pointer group"
+                                      className="relative w-14 h-14 rounded-lg overflow-hidden border border-[var(--border-color)] hover:border-primary transition-colors cursor-pointer group"
                                     >
                                       <img src={img} alt={`Review image ${idx + 1}`} className="w-full h-full object-cover" />
                                       <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
@@ -1401,7 +1401,7 @@ export default function ProductDetailsPage({
                             </div>
 
                             {/* Review Footer / Helpful reaction */}
-                            <div className="pt-2 border-t border-sky-100/60 dark:border-sky-900/30 flex items-center justify-between text-[11px]">
+                            <div className="pt-2 border-t border-[var(--border-color)] flex items-center justify-between text-[11px]">
                               <span className="text-slate-400 text-[10px]">
                                 Was this review helpful?
                               </span>
@@ -1410,11 +1410,11 @@ export default function ProductDetailsPage({
                                 onClick={() => handleToggleHelpful(rev.id)}
                                 className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                                   isLiked
-                                    ? "bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/30 font-bold"
-                                    : "text-slate-500 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                                    ? "bg-primary/10 text-primary border border-primary/30 font-bold"
+                                    : "text-slate-500 hover:text-primary hover:bg-[var(--surface-alt)]"
                                 }`}
                               >
-                                <ThumbsUp className={`w-3 h-3 ${isLiked ? "fill-sky-500 text-sky-500" : ""}`} />
+                                <ThumbsUp className={`w-3 h-3 ${isLiked ? "fill-primary text-primary" : ""}`} />
                                 <span>Helpful {helpfulCount > 0 ? `(${helpfulCount})` : ""}</span>
                               </button>
                             </div>

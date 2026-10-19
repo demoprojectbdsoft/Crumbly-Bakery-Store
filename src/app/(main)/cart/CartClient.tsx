@@ -30,14 +30,21 @@ import SuspendedAccountModal from "@/components/shared/SuspendedAccountModal";
 import { updateCartItem, removeFromCart, clearCart } from "@/lib/action/cart";
 import { getCartByUserId } from "@/lib/api/cart";
 import { CartClientProps, CartData, CartItem } from "@/types";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
-// ── Configurable Shipping Settings ───────────────────────────────────────────
-export const STANDARD_SHIPPING_COST = 15.0; // Flat standard shipping rate ($)
-export const FREE_SHIPPING_THRESHOLD = 50.0; // Minimum subtotal for free shipping ($)
+// ── Fallback Shipping Constants (overridden by site settings) ────────────────
+export const STANDARD_SHIPPING_COST = 15.0;
+export const FREE_SHIPPING_THRESHOLD = 50.0;
 
 export default function CartClient({ initialCart, user: initialUser }: CartClientProps) {
   const { data: clientSession } = authClient.useSession();
   const user = initialUser || clientSession?.user;
+  const { settings } = useSiteSettings();
+
+  // Dynamic shipping values from site settings (admin-configurable)
+  const dynamicFreeThreshold = settings.shipping?.freeShippingThreshold ?? FREE_SHIPPING_THRESHOLD;
+  const dynamicStandardCost = settings.shipping?.standardDeliveryFee ?? STANDARD_SHIPPING_COST;
+  const isFreeShippingGloballyEnabled = settings.shipping?.freeShippingEnabled !== false;
 
   const [cart, setCart] = useState<CartData | null>(initialCart || null);
   const [isLoading, setIsLoading] = useState<boolean>(!initialCart && Boolean(user?.id));
@@ -109,15 +116,15 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
     }
   }
 
-  const isFreeShippingEligible = subtotal >= FREE_SHIPPING_THRESHOLD || isCouponFreeShipping;
-  const freeShippingProgress = Math.min(
-    Math.round((subtotal / FREE_SHIPPING_THRESHOLD) * 100),
-    100
-  );
-  const amountToFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
+  const isFreeShippingEligible =
+    isFreeShippingGloballyEnabled && (subtotal >= dynamicFreeThreshold || isCouponFreeShipping);
+  const freeShippingProgress = isFreeShippingGloballyEnabled
+    ? Math.min(Math.round((subtotal / dynamicFreeThreshold) * 100), 100)
+    : 100;
+  const amountToFreeShipping = Math.max(0, dynamicFreeThreshold - subtotal);
 
   // Shipping cost (single standard shipping method)
-  const shippingCost = subtotal === 0 || isFreeShippingEligible ? 0 : STANDARD_SHIPPING_COST;
+  const shippingCost = subtotal === 0 || isFreeShippingEligible ? 0 : dynamicStandardCost;
 
   // Grand Total (no tax)
   const grandTotal = Math.max(0, subtotal - discountValue + shippingCost);
@@ -297,26 +304,26 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
       message="Your account has been suspended. You cannot proceed to checkout. Please contact support for assistance."
     />
 
-    <div className="min-h-screen bg-slate-50/60 dark:bg-[#0b1120] text-slate-800 dark:text-slate-100 transition-colors duration-300">
+    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300">
       {/* ── Breadcrumbs Bar ── */}
-      <div className="bg-white dark:bg-slate-900 border-b border-sky-100 dark:border-slate-800 shadow-xs">
+      <div className="bg-[var(--surface-elevated)] border-b border-[var(--border-color)] shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
-          <nav className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+          <nav className="flex items-center gap-2 text-xs font-medium text-[var(--foreground-muted)]">
             <Link
               href="/"
-              className="hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
+              className="hover:text-primary transition-colors"
             >
               Home
             </Link>
-            <ChevronRight className="w-3 h-3 text-slate-400" />
+            <ChevronRight className="w-3 h-3 text-[var(--foreground-muted)]" />
             <Link
               href="/shop"
-              className="hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
+              className="hover:text-primary transition-colors"
             >
               Shop
             </Link>
-            <ChevronRight className="w-3 h-3 text-slate-400" />
-            <span className="text-slate-900 dark:text-white font-semibold">Shopping Cart</span>
+            <ChevronRight className="w-3 h-3 text-[var(--foreground-muted)]" />
+            <span className="text-[var(--foreground)] font-semibold">Shopping Cart</span>
           </nav>
         </div>
       </div>
@@ -324,18 +331,18 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
         {/* ── Unauthenticated User Alert Banner ── */}
         {!user && (
-          <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-sky-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-sky-950/40 dark:to-slate-900 border border-sky-200/80 dark:border-sky-900/60 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="mb-6 p-4 rounded-2xl bg-[var(--surface-elevated)] border border-[var(--border-color)] shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="flex items-center gap-3 text-sm">
-              <div className="w-9 h-9 rounded-xl bg-sky-500/10 dark:bg-sky-400/10 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0">
+              <div className="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
                 <Sparkles className="w-5 h-5" />
               </div>
-              <p className="text-slate-700 dark:text-slate-200">
-                <span className="font-bold text-slate-900 dark:text-white">Sign in</span> to save your cart items across all your devices and checkout faster.
+              <p className="text-[var(--foreground)]">
+                <span className="font-bold">Sign in</span> to save your cart items across all your devices and checkout faster.
               </p>
             </div>
             <Link
               href="/auth/login?callbackUrl=/cart"
-              className="shrink-0 px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold transition-all shadow-sm hover:shadow-sky-500/20"
+              className="shrink-0 px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold transition-all shadow-sm shadow-primary/20"
             >
               Sign In Now
             </Link>
@@ -346,16 +353,16 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--foreground)] tracking-tight">
                 Shopping Cart
               </h1>
               {itemCount > 0 && (
-                <span className="px-3 py-1 rounded-full text-xs font-bold bg-sky-100 text-sky-700 dark:bg-sky-950/80 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary border border-primary/20">
                   {itemCount} {itemCount === 1 ? "Item" : "Items"}
                 </span>
               )}
             </div>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
+            <p className="text-xs sm:text-sm text-[var(--foreground-muted)] mt-1">
               Review your items, apply promotional discounts, and proceed to secure checkout.
             </p>
           </div>
@@ -363,7 +370,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
           {items.length > 0 && (
             <Link
               href="/shop"
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-primary hover:text-primary-hover transition-colors"
             >
               <ArrowLeft className="w-4 h-4" /> Continue Shopping
             </Link>
@@ -372,14 +379,14 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
 
         {/* ── Free Shipping Progress Bar Meter ── */}
         {items.length > 0 && (
-          <div className="mb-8 p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-900 border border-sky-100/80 dark:border-slate-800 shadow-xs">
+          <div className="mb-8 p-4 sm:p-5 rounded-2xl bg-[var(--surface-elevated)] border border-[var(--border-color)] shadow-xs">
             <div className="flex items-center justify-between text-xs sm:text-sm font-medium mb-2.5">
               <div className="flex items-center gap-2">
                 <Truck
                   className={`w-4 h-4 ${
                     isFreeShippingEligible
                       ? "text-emerald-500"
-                      : "text-sky-600 dark:text-sky-400 animate-pulse"
+                      : "text-primary animate-pulse"
                   }`}
                 />
                 {isFreeShippingEligible ? (
@@ -389,24 +396,24 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                 ) : (
                   <span>
                     Add{" "}
-                    <strong className="text-slate-900 dark:text-white font-bold">
+                    <strong className="text-[var(--foreground)] font-bold">
                       ${amountToFreeShipping.toFixed(2)}
                     </strong>{" "}
-                    more to qualify for <span className="text-sky-600 dark:text-sky-400 font-bold">FREE Shipping</span>!
+                    more to qualify for <span className="text-primary font-bold">FREE Shipping</span>!
                   </span>
                 )}
               </div>
-              <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
+              <span className="text-xs font-bold text-[var(--foreground-muted)]">
                 {freeShippingProgress}%
               </span>
             </div>
 
-            <div className="w-full h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden p-0.5">
+            <div className="w-full h-2.5 bg-[var(--surface-alt)] rounded-full overflow-hidden p-0.5">
               <div
                 className={`h-full rounded-full transition-all duration-500 ease-out ${
                   isFreeShippingEligible
                     ? "bg-gradient-to-r from-emerald-400 to-teal-500"
-                    : "bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500"
+                    : "bg-primary"
                 }`}
                 style={{ width: `${freeShippingProgress}%` }}
               />
@@ -416,44 +423,44 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
 
         {/* ── Loading Spinner State ── */}
         {isLoading && (
-          <div className="py-20 flex flex-col items-center justify-center gap-3 text-slate-500">
-            <RefreshCw className="w-8 h-8 animate-spin text-sky-500" />
+          <div className="py-20 flex flex-col items-center justify-center gap-3 text-[var(--foreground-muted)]">
+            <RefreshCw className="w-8 h-8 animate-spin text-primary" />
             <p className="text-sm font-medium">Loading your cart items...</p>
           </div>
         )}
 
         {/* ── Empty Cart State ── */}
         {!isLoading && items.length === 0 && (
-          <div className="py-16 sm:py-24 px-4 text-center rounded-3xl bg-white dark:bg-slate-900 border border-sky-100 dark:border-slate-800 shadow-sm flex flex-col items-center justify-center max-w-2xl mx-auto">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-sky-100 via-blue-50 to-indigo-100 dark:from-slate-800 dark:via-sky-950/40 dark:to-slate-800 flex items-center justify-center text-sky-600 dark:text-sky-400 mb-6 shadow-inner">
+          <div className="py-16 sm:py-24 px-4 text-center rounded-3xl bg-[var(--surface-elevated)] border border-[var(--border-color)] shadow-sm flex flex-col items-center justify-center max-w-2xl mx-auto">
+            <div className="w-24 h-24 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-6 shadow-inner">
               <ShoppingBag className="w-12 h-12 stroke-[1.5]" />
             </div>
 
-            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mb-2">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-[var(--foreground)] mb-2">
               Your Shopping Cart is Empty
             </h2>
-            <p className="text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto mb-8 leading-relaxed">
+            <p className="text-[var(--foreground-muted)] text-sm max-w-md mx-auto mb-8 leading-relaxed">
               Looks like you haven&apos;t added any items to your cart yet. Explore our wide range of top-notch electronics and grab the best deals today!
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link
                 href="/shop"
-                className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white text-sm font-bold shadow-md shadow-sky-500/25 transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2"
+                className="px-6 py-3.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-sm font-bold shadow-md shadow-primary/25 transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2 cursor-pointer"
               >
                 <ShoppingBag className="w-4 h-4" /> Start Shopping
               </Link>
               <Link
                 href="/dashboard/customer/wishlist"
-                className="px-6 py-3.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-bold transition-all flex items-center gap-2"
+                className="px-6 py-3.5 rounded-xl bg-[var(--surface-alt)] hover:bg-[var(--surface-alt)]/80 text-[var(--foreground)] text-sm font-bold border border-[var(--border-color)] transition-all flex items-center gap-2 cursor-pointer"
               >
                 View Saved Wishlist
               </Link>
             </div>
 
             {/* Popular Category Shortcuts */}
-            <div className="mt-12 pt-8 border-t border-slate-100 dark:border-slate-800/80 w-full">
-              <p className="text-xs uppercase tracking-wider font-bold text-slate-400 mb-4">
+            <div className="mt-12 pt-8 border-t border-[var(--border-color)] w-full">
+              <p className="text-xs uppercase tracking-wider font-bold text-[var(--foreground-muted)] mb-4">
                 Popular Categories to Explore
               </p>
               <div className="flex flex-wrap justify-center gap-2">
@@ -467,7 +474,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                   <Link
                     key={cat.name}
                     href={cat.href}
-                    className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-sky-50 dark:bg-slate-800/60 text-sky-700 dark:text-sky-300 hover:bg-sky-100 dark:hover:bg-slate-800 border border-sky-100 dark:border-slate-700 transition-colors"
+                    className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-primary/10 text-primary hover:bg-primary/20 border border-primary/20 transition-colors cursor-pointer"
                   >
                     {cat.name}
                   </Link>
@@ -482,9 +489,9 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* ── Left Column: Items Table & Actions (8 cols) ── */}
             <div className="lg:col-span-8 flex flex-col gap-6">
-              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-sky-100/80 dark:border-slate-800 shadow-xs overflow-hidden">
+              <div className="bg-[var(--surface-elevated)] rounded-2xl border border-[var(--border-color)] shadow-xs overflow-hidden">
                 {/* Desktop Table Header */}
-                <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-4 bg-slate-50/80 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-4 bg-[var(--surface-alt)]/50 border-b border-[var(--border-color)] text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider">
                   <div className="col-span-6">Product</div>
                   <div className="col-span-2 text-center">Price</div>
                   <div className="col-span-2 text-center">Quantity</div>
@@ -492,11 +499,9 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                 </div>
 
                 {/* Items List */}
-                <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                <div className="divide-y divide-[var(--border-color)]">
                   {items.map((item) => {
                     const product = item.product;
-                    // The backend populates productId — extract the real product MongoDB _id
-                    // product._id comes from mongoose populate; product.id is the virtual getter
                     const productId: string =
                       (product as any)?._id?.toString?.() ||
                       product?.id ||
@@ -517,7 +522,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                       <div
                         key={item.id || productId}
                         className={`p-4 sm:p-6 transition-colors duration-200 ${
-                          isRemoving ? "opacity-40 pointer-events-none" : "hover:bg-sky-50/20 dark:hover:bg-slate-800/30"
+                          isRemoving ? "opacity-40 pointer-events-none" : "hover:bg-[var(--surface-alt)]/50"
                         }`}
                       >
                         {/* Desktop Layout */}
@@ -526,7 +531,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                           <div className="col-span-6 flex items-center gap-4">
                             <Link
                               href={`/shop/${product?.slug || ""}`}
-                              className="relative w-20 h-20 shrink-0 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-sky-100/60 dark:border-slate-700 group cursor-pointer"
+                              className="relative w-20 h-20 shrink-0 rounded-xl overflow-hidden bg-[var(--surface-alt)] border border-[var(--border-color)] group cursor-pointer"
                             >
                               <Image
                                 src={
@@ -541,16 +546,16 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                             </Link>
 
                             <div className="flex-1 min-w-0 pr-2">
-                              <span className="text-[10px] font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-primary">
                                 {primaryCategory}
                               </span>
                               <Link
                                 href={`/shop/${product?.slug || ""}`}
-                                className="block font-bold text-sm text-slate-800 dark:text-slate-100 hover:text-sky-600 dark:hover:text-sky-400 transition-colors line-clamp-2 mt-0.5"
+                                className="block font-bold text-sm text-[var(--foreground)] hover:text-primary transition-colors line-clamp-2 mt-0.5"
                               >
                                 {product?.title || "Unnamed Product"}
                               </Link>
-                              <div className="flex items-center gap-3 mt-1.5 text-xs text-slate-400 flex-wrap">
+                              <div className="flex items-center gap-3 mt-1.5 text-xs text-[var(--foreground-muted)] flex-wrap">
                                 {isOutOfStock ? (
                                   <span className="inline-flex items-center gap-1 text-rose-600 dark:text-rose-400 font-bold text-[11px] bg-rose-50 dark:bg-rose-950/60 px-2 py-0.5 rounded-full border border-rose-200 dark:border-rose-900/60">
                                     <AlertCircle className="w-3 h-3 text-rose-500" /> Out of Stock
@@ -573,11 +578,11 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
 
                           {/* Unit Price (Col 2) */}
                           <div className="col-span-2 text-center">
-                            <div className="font-extrabold text-sm text-slate-900 dark:text-white">
+                            <div className="font-extrabold text-sm text-[var(--foreground)]">
                               ${unitPrice.toFixed(2)}
                             </div>
                             {originalPrice && originalPrice > unitPrice && (
-                              <div className="text-xs text-slate-400 line-through">
+                              <div className="text-xs text-[var(--foreground-muted)] line-through">
                                 ${originalPrice.toFixed(2)}
                               </div>
                             )}
@@ -586,20 +591,20 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                           {/* Quantity Controls (Col 2) */}
                           <div className="col-span-2 flex items-center justify-center">
                             <div className="flex flex-col items-center gap-1">
-                              <div className="inline-flex items-center rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-800 p-1 shadow-2xs">
+                              <div className="inline-flex items-center rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] p-1 shadow-2xs">
                                 <button
                                   type="button"
                                   disabled={item.quantity <= 1 || isUpdating}
                                   onClick={() => handleQuantityChange(productId, item.quantity, -1, maxStock, product?.title)}
                                   aria-label="Decrease quantity"
-                                  className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                                  className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--foreground-muted)] hover:bg-[var(--surface-elevated)] hover:text-[var(--foreground)] transition-all disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
                                 >
                                   <Minus className="w-3.5 h-3.5" />
                                 </button>
 
-                                <span className="w-9 text-center text-xs font-bold text-slate-900 dark:text-white">
+                                <span className="w-9 text-center text-xs font-bold text-[var(--foreground)]">
                                   {isUpdating ? (
-                                    <RefreshCw className="w-3 h-3 animate-spin mx-auto text-sky-500" />
+                                    <RefreshCw className="w-3 h-3 animate-spin mx-auto text-primary" />
                                   ) : (
                                     item.quantity
                                   )}
@@ -617,7 +622,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                                       ? `Max ${maxStock} in stock`
                                       : "Increase quantity"
                                   }
-                                  className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                                  className="w-7 h-7 rounded-lg flex items-center justify-center text-[var(--foreground-muted)] hover:bg-[var(--surface-elevated)] hover:text-[var(--foreground)] transition-all disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
                                 >
                                   <Plus className="w-3.5 h-3.5" />
                                 </button>
@@ -633,14 +638,14 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
 
                           {/* Line Total & Remove Button (Col 2) */}
                           <div className="col-span-2 flex items-center justify-end gap-3">
-                            <span className="font-extrabold text-base text-sky-600 dark:text-sky-400">
+                            <span className="font-extrabold text-base text-primary">
                               ${lineTotal.toFixed(2)}
                             </span>
                             <button
                               type="button"
                               onClick={() => handleRemoveItem(productId, product?.title || "Item")}
                               aria-label="Remove item"
-                              className="p-1.5 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all cursor-pointer"
+                              className="p-1.5 rounded-lg text-[var(--foreground-muted)] hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all cursor-pointer"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -651,7 +656,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                         <div className="md:hidden flex gap-3.5">
                           <Link
                             href={`/shop/${product?.slug || ""}`}
-                            className="relative w-20 h-20 shrink-0 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-sky-100/60 dark:border-slate-700"
+                            className="relative w-20 h-20 shrink-0 rounded-xl overflow-hidden bg-[var(--surface-alt)] border border-[var(--border-color)]"
                           >
                             <Image
                               src={
@@ -668,12 +673,12 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                           <div className="flex-1 min-w-0 flex flex-col justify-between">
                             <div className="flex items-start justify-between gap-2">
                               <div>
-                                <span className="text-[9px] font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
+                                <span className="text-[9px] font-bold uppercase tracking-wider text-primary">
                                   {primaryCategory}
                                 </span>
                                 <Link
                                   href={`/shop/${product?.slug || ""}`}
-                                  className="block font-bold text-xs text-slate-800 dark:text-slate-100 line-clamp-2 mt-0.5"
+                                  className="block font-bold text-xs text-[var(--foreground)] line-clamp-2 mt-0.5"
                                 >
                                   {product?.title || "Unnamed Product"}
                                 </Link>
@@ -779,9 +784,9 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                         {isClearing ? "Clearing..." : "Clear Shopping Cart"}
                       </button>
                     </AlertDialog.Trigger>
-                    <AlertDialog.Backdrop isDismissable className="bg-black/60">
+                    <AlertDialog.Backdrop isDismissable className="bg-black/60 backdrop-blur-xs">
                       <AlertDialog.Container size="sm">
-                        <AlertDialog.Dialog className="rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl p-6 space-y-4">
+                        <AlertDialog.Dialog className="rounded-2xl border border-[var(--border-color)] bg-[var(--surface-elevated)] text-[var(--foreground)] shadow-2xl p-6 space-y-4">
                           {({ close }) => (
                             <>
                               <div className="flex items-start gap-3.5">
@@ -789,21 +794,21 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                                   <Trash2 className="w-5 h-5" />
                                 </div>
                                 <div className="space-y-1">
-                                  <AlertDialog.Heading className="text-base font-bold text-slate-900 dark:text-white">
+                                  <AlertDialog.Heading className="text-base font-bold text-[var(--foreground)]">
                                     Clear Shopping Cart?
                                   </AlertDialog.Heading>
-                                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                                  <p className="text-xs text-[var(--foreground-muted)] leading-relaxed">
                                     Are you sure you want to remove all items from your shopping cart? This action cannot be undone.
                                   </p>
                                 </div>
                               </div>
-                              <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-100 dark:border-slate-800">
+                              <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-[var(--border-color)]">
                                 <Button
                                   variant="outline"
                                   size="sm"
                                   onPress={close}
                                   isDisabled={isClearing}
-                                  className="px-4 py-2 rounded-xl text-xs font-semibold border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                                  className="px-4 py-2 rounded-xl text-xs font-semibold border border-[var(--border-color)] text-[var(--foreground-muted)] hover:bg-[var(--surface-alt)]"
                                 >
                                   Cancel
                                 </Button>
@@ -814,7 +819,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                                     await handleClearCart();
                                     close();
                                   }}
-                                  className="px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white shadow-xs"
+                                  className="px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-white shadow-xs cursor-pointer"
                                 >
                                   {isClearing ? "Clearing..." : "Yes, Clear Cart"}
                                 </Button>
@@ -829,10 +834,10 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
               </div>
 
               {/* ── Coupon & Promo Code Section ── */}
-              <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-slate-900 border border-sky-100/80 dark:border-slate-800 shadow-xs">
+              <div className="p-5 sm:p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border-color)] shadow-xs">
                 <div className="flex items-center gap-2 mb-3">
-                  <Tag className="w-4 h-4 text-sky-600 dark:text-sky-400" />
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+                  <Tag className="w-4 h-4 text-primary" />
+                  <h3 className="text-sm font-bold text-[var(--foreground)]">
                     Promotional & Coupon Code
                   </h3>
                 </div>
@@ -873,13 +878,13 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                           setCouponError(null);
                         }}
                         placeholder="Enter promo code (e.g. ELECTRO10, SAVE15)"
-                        className="w-full h-11 px-4 text-xs font-medium rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-hidden focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 uppercase"
+                        className="w-full h-11 px-4 text-xs font-medium rounded-xl bg-[var(--surface-alt)] border border-[var(--border-color)] text-[var(--foreground)] placeholder-[var(--foreground-muted)] focus:outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20 uppercase"
                       />
                     </div>
                     <button
                       type="submit"
                       disabled={isApplyingCoupon}
-                      className="h-11 px-6 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs shadow-sm hover:shadow-sky-500/20 transition-all cursor-pointer disabled:opacity-50 shrink-0"
+                      className="h-11 px-6 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-xs shadow-sm hover:shadow-primary/20 transition-all cursor-pointer disabled:opacity-50 shrink-0"
                     >
                       {isApplyingCoupon ? "Applying..." : "Apply Coupon"}
                     </button>
@@ -893,19 +898,19 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                   </p>
                 )}
 
-                <div className="mt-3 flex flex-wrap items-center gap-2 text-[11px] text-slate-400">
+                <div className="mt-3 flex flex-wrap items-center gap-2 text-[11px] text-[var(--foreground-muted)]">
                   <span>Available sample codes:</span>
                   <button
                     type="button"
                     onClick={() => setCouponCode("ELECTRO10")}
-                    className="font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 hover:bg-sky-100 text-sky-600 dark:text-sky-400 cursor-pointer font-bold"
+                    className="font-mono px-2 py-0.5 rounded bg-[var(--surface-alt)] hover:bg-primary/10 text-primary border border-[var(--border-color)] cursor-pointer font-bold transition-colors"
                   >
                     ELECTRO10 (-10%)
                   </button>
                   <button
                     type="button"
                     onClick={() => setCouponCode("SAVE15")}
-                    className="font-mono px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 hover:bg-sky-100 text-sky-600 dark:text-sky-400 cursor-pointer font-bold"
+                    className="font-mono px-2 py-0.5 rounded bg-[var(--surface-alt)] hover:bg-primary/10 text-primary border border-[var(--border-color)] cursor-pointer font-bold transition-colors"
                   >
                     SAVE15 (-$15)
                   </button>
@@ -915,27 +920,27 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
 
             {/* ── Right Column: Order Summary Card (4 cols) ── */}
             <div className="lg:col-span-4 flex flex-col gap-6 sticky top-24">
-              <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-sky-100/80 dark:border-slate-800 shadow-sm">
-                <h3 className="text-base font-extrabold text-slate-900 dark:text-white pb-4 border-b border-slate-100 dark:border-slate-800">
+              <div className="p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border-color)] shadow-sm">
+                <h3 className="text-base font-extrabold text-[var(--foreground)] pb-4 border-b border-[var(--border-color)]">
                   Order Summary
                 </h3>
 
-                <div className="py-4 space-y-3.5 text-xs text-slate-600 dark:text-slate-300">
+                <div className="py-4 space-y-3.5 text-xs text-[var(--foreground-muted)]">
                   {/* Subtotal */}
                   <div className="flex items-center justify-between">
                     <span>Subtotal ({itemCount} {itemCount === 1 ? "item" : "items"})</span>
-                    <span className="font-bold text-slate-900 dark:text-white text-sm">
+                    <span className="font-bold text-[var(--foreground)] text-sm">
                       ${subtotal.toFixed(2)}
                     </span>
                   </div>
 
                   {/* Shipping */}
-                  <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/80">
+                  <div className="flex items-center justify-between pt-2 border-t border-[var(--border-color)]">
                     <div>
-                      <span className="font-semibold text-slate-700 dark:text-slate-200">Standard Shipping</span>
-                      <p className="text-[10px] text-slate-400">Estimated delivery in 3-5 business days</p>
+                      <span className="font-semibold text-[var(--foreground)]">Standard Shipping</span>
+                      <p className="text-[10px] text-[var(--foreground-muted)]">Estimated delivery in 3-5 business days</p>
                     </div>
-                    <span className="font-bold text-slate-900 dark:text-white">
+                    <span className="font-bold text-[var(--foreground)]">
                       {shippingCost === 0 ? (
                         <span className="text-emerald-600 dark:text-emerald-400 font-bold uppercase text-[11px] px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60">
                           FREE
@@ -948,21 +953,21 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
 
                   {/* Promo Code Discount */}
                   {discountValue > 0 && (
-                    <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400 font-semibold pt-2 border-t border-slate-100 dark:border-slate-800/80">
+                    <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400 font-semibold pt-2 border-t border-[var(--border-color)]">
                       <span>Discount ({appliedCoupon?.code})</span>
                       <span>-${discountValue.toFixed(2)}</span>
                     </div>
                   )}
 
                   {/* Grand Total */}
-                  <div className="pt-4 border-t-2 border-slate-200 dark:border-slate-700 flex items-baseline justify-between">
+                  <div className="pt-4 border-t-2 border-[var(--border-color)] flex items-baseline justify-between">
                     <div>
-                      <span className="text-sm font-extrabold text-slate-900 dark:text-white">
+                      <span className="text-sm font-extrabold text-[var(--foreground)]">
                         Estimated Total
                       </span>
-                      <p className="text-[10px] text-slate-400">Includes applicable discounts & shipping</p>
+                      <p className="text-[10px] text-[var(--foreground-muted)]">Includes applicable discounts & shipping</p>
                     </div>
-                    <span className="text-xl sm:text-2xl font-black text-sky-600 dark:text-sky-400">
+                    <span className="text-xl sm:text-2xl font-black text-primary">
                       ${grandTotal.toFixed(2)}
                     </span>
                   </div>
@@ -986,7 +991,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                     <button
                       type="button"
                       disabled
-                      className="w-full h-12 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 font-extrabold text-sm flex items-center justify-center gap-2 cursor-not-allowed opacity-80"
+                      className="w-full h-12 rounded-xl bg-[var(--surface-alt)] text-[var(--foreground-muted)] font-extrabold text-sm flex items-center justify-center gap-2 cursor-not-allowed opacity-80"
                     >
                       <Lock className="w-4 h-4" />
                       Resolve Stock Issues to Checkout
@@ -995,7 +1000,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                     <button
                       type="button"
                       onClick={() => setShowSuspendedCheckoutAlert(true)}
-                      className="w-full h-12 rounded-xl bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 hover:from-sky-600 hover:via-blue-700 hover:to-indigo-700 text-white font-extrabold text-sm shadow-md shadow-sky-500/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full h-12 rounded-xl bg-primary hover:bg-primary-hover text-white font-extrabold text-sm shadow-md shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <Lock className="w-4 h-4" />
                       Proceed to Checkout
@@ -1004,7 +1009,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                   ) : (
                     <Link
                       href={user ? "/checkout" : "/auth/login?callbackUrl=/checkout"}
-                      className="w-full h-12 rounded-xl bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 hover:from-sky-600 hover:via-blue-700 hover:to-indigo-700 text-white font-extrabold text-sm shadow-md shadow-sky-500/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full h-12 rounded-xl bg-primary hover:bg-primary-hover text-white font-extrabold text-sm shadow-md shadow-primary/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <Lock className="w-4 h-4" />
                       Proceed to Checkout
@@ -1012,41 +1017,41 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                     </Link>
                   )}
 
-                  <p className="text-[11px] text-center text-slate-400 flex items-center justify-center gap-1">
+                  <p className="text-[11px] text-center text-[var(--foreground-muted)] flex items-center justify-center gap-1">
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
                     Guaranteed 256-bit Encrypted Checkout
                   </p>
                 </div>
 
                 {/* Trust Badges & Guarantees */}
-                <div className="mt-6 pt-6 border-t border-slate-100 dark:border-slate-800 space-y-3">
-                  <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-300">
-                    <div className="w-7 h-7 rounded-lg bg-sky-50 dark:bg-slate-800 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0">
+                <div className="mt-6 pt-6 border-t border-[var(--border-color)] space-y-3">
+                  <div className="flex items-center gap-3 text-xs text-[var(--foreground-muted)]">
+                    <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
                       <Truck className="w-4 h-4" />
                     </div>
                     <div>
-                      <p className="font-bold text-slate-800 dark:text-slate-100">Fast & Tracked Shipping</p>
-                      <p className="text-[10px] text-slate-400">Free delivery on orders over $150</p>
+                      <p className="font-bold text-[var(--foreground)]">Fast & Tracked Shipping</p>
+                      <p className="text-[10px] text-[var(--foreground-muted)]">Free delivery on orders over $150</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-300">
-                    <div className="w-7 h-7 rounded-lg bg-sky-50 dark:bg-slate-800 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0">
+                  <div className="flex items-center gap-3 text-xs text-[var(--foreground-muted)]">
+                    <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
                       <RotateCcw className="w-4 h-4" />
                     </div>
                     <div>
-                      <p className="font-bold text-slate-800 dark:text-slate-100">30-Day Hassle-Free Returns</p>
-                      <p className="text-[10px] text-slate-400">Money back guarantee on all orders</p>
+                      <p className="font-bold text-[var(--foreground)]">30-Day Hassle-Free Returns</p>
+                      <p className="text-[10px] text-[var(--foreground-muted)]">Money back guarantee on all orders</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-300">
-                    <div className="w-7 h-7 rounded-lg bg-sky-50 dark:bg-slate-800 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0">
+                  <div className="flex items-center gap-3 text-xs text-[var(--foreground-muted)]">
+                    <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
                       <CreditCard className="w-4 h-4" />
                     </div>
                     <div>
-                      <p className="font-bold text-slate-800 dark:text-slate-100">Flexible Payment Options</p>
-                      <p className="text-[10px] text-slate-400">Visa, Mastercard, Amex, PayPal</p>
+                      <p className="font-bold text-[var(--foreground)]">Flexible Payment Options</p>
+                      <p className="text-[10px] text-[var(--foreground-muted)]">Visa, Mastercard, Amex, PayPal</p>
                     </div>
                   </div>
                 </div>

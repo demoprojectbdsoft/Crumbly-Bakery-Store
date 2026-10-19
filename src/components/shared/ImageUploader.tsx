@@ -119,22 +119,22 @@ export default function ImageUploader({
 
   // CSS class for the active tab button
   const activeTabClass =
-    "bg-white dark:bg-gray-800 text-sky-600 dark:text-sky-400 shadow-sm";
+    "bg-[var(--surface-elevated)] text-primary shadow-xs border border-[var(--border-color)]";
 
   // CSS class for the inactive tab button
   const inactiveTabClass =
-    "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200";
+    "text-[var(--foreground-muted)] hover:text-[var(--foreground)]";
 
   // CSS class for the drop zone (changes when file is dragged over it)
   const dropZoneClass = isDragOver
-    ? "border-sky-400 bg-sky-50 dark:bg-sky-950/20"
-    : "border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800/30 hover:border-sky-300 dark:hover:border-sky-700 hover:bg-sky-50/50 dark:hover:bg-sky-950/10";
+    ? "border-primary bg-primary/10"
+    : "border-[var(--border-color)] bg-[var(--surface-alt)] hover:border-primary/50 hover:bg-primary/5";
 
   return (
     <div className="flex flex-col gap-2">
 
       {/* Field label */}
-      <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+      <label className="text-xs font-semibold text-[var(--foreground)]">
         {label}
         {required && <span className="text-rose-500 ml-0.5">*</span>}
       </label>
@@ -143,7 +143,7 @@ export default function ImageUploader({
       {name && <input type="hidden" name={name} value={value} />}
 
       {/* Tab switcher: Upload File | Image URL */}
-      <div className="flex gap-1 p-1 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800/40 w-fit">
+      <div className="flex gap-1 p-1 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] w-fit">
         <button
           type="button"
           onClick={() => setActiveTab("upload")}
@@ -188,21 +188,21 @@ export default function ImageUploader({
             {/* Show spinner while uploading, otherwise show the upload prompt */}
             {isUploading ? (
               <>
-                <Loader2 className="w-7 h-7 text-sky-500 animate-spin" />
-                <p className="text-xs font-semibold text-sky-600 dark:text-sky-400">
+                <Loader2 className="w-7 h-7 text-primary animate-spin" />
+                <p className="text-xs font-semibold text-primary">
                   Uploading to ImgBB…
                 </p>
               </>
             ) : (
               <>
-                <div className="w-10 h-10 rounded-xl bg-sky-100 dark:bg-sky-950/40 flex items-center justify-center">
-                  <ImageIcon className="w-5 h-5 text-sky-500" />
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <ImageIcon className="w-5 h-5 text-primary" />
                 </div>
                 <div className="text-center">
-                  <p className="text-xs font-bold text-gray-700 dark:text-gray-300">
+                  <p className="text-xs font-bold text-[var(--foreground)]">
                     Click to browse or drag & drop
                   </p>
-                  <p className="text-[10px] text-gray-400 mt-0.5">
+                  <p className="text-[10px] text-[var(--foreground-muted)] mt-0.5">
                     PNG, JPG, WEBP, GIF — uploaded to ImgBB
                   </p>
                 </div>
@@ -240,9 +240,9 @@ export default function ImageUploader({
 
       {/* Image preview — shown once an image URL is set */}
       {value && !isUploading && (
-        <div className="flex items-center gap-3 mt-1 p-2.5 rounded-xl bg-slate-50 dark:bg-gray-800/40 border border-slate-200 dark:border-gray-700">
+        <div className="flex items-center gap-3 mt-1 p-2.5 rounded-xl bg-[var(--surface-alt)] border border-[var(--border-color)]">
           {/* Thumbnail */}
-          <div className="w-16 h-16 rounded-lg overflow-hidden border border-slate-200 dark:border-gray-700 shrink-0 bg-white dark:bg-gray-800">
+          <div className="w-16 h-16 rounded-lg overflow-hidden border border-[var(--border-color)] shrink-0 bg-[var(--surface-elevated)]">
             <img
               src={value}
               alt="Preview"
@@ -256,10 +256,10 @@ export default function ImageUploader({
 
           {/* URL text + remove button */}
           <div className="flex flex-col gap-1 flex-1 min-w-0">
-            <p className="text-[10px] text-gray-500 dark:text-gray-400 font-medium">
+            <p className="text-[10px] text-[var(--foreground-muted)] font-medium">
               Image preview
             </p>
-            <p className="text-[10px] text-gray-400 truncate">{value}</p>
+            <p className="text-[10px] text-[var(--foreground-muted)] truncate">{value}</p>
             <button
               type="button"
               onClick={handleRemove}

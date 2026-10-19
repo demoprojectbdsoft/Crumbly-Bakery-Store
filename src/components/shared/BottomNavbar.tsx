@@ -11,6 +11,7 @@ import {
   Mail,
   Truck,
 } from "lucide-react";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 // Pages shown in desktop bottom nav
 export const NAV_LINKS = [
@@ -30,9 +31,14 @@ export const DRAWER_PAGE_LINKS = [
 
 export default function BottomNavbar() {
   const pathname = usePathname();
+  const { settings } = useSiteSettings();
+  const freeThreshold = settings.shipping?.freeShippingThreshold ?? 50;
+  const freeShippingEnabled = settings.shipping?.freeShippingEnabled !== false;
+  const currency = settings.currency || "USD";
+  const currencySymbol = currency === "EUR" ? "€" : currency === "GBP" ? "£" : currency === "BDT" ? "৳" : "$";
 
   return (
-    <div className="hidden md:block w-full bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 transition-colors duration-200">
+    <div className="hidden md:block w-full bg-[var(--navbar-bg)] border-b border-[var(--border-color)] transition-colors duration-200">
       <div className="w-full px-4 md:px-14 flex items-center justify-between gap-4">
         
         {/* Navigation Page Links */}
@@ -50,15 +56,15 @@ export default function BottomNavbar() {
                 href={link.href}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-[13px] font-semibold transition-all whitespace-nowrap group ${
                   isActive
-                    ? "text-primary bg-primary/10 dark:bg-primary/20 shadow-2xs"
-                    : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:bg-gray-100/70 dark:hover:bg-gray-900"
+                    ? "text-primary bg-primary/10 shadow-2xs"
+                    : "text-[var(--foreground-muted)] hover:text-primary hover:bg-[var(--surface-alt)]"
                 }`}
               >
                 <Icon
                   className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${
                     isActive
                       ? "text-primary"
-                      : "text-gray-500 dark:text-gray-400 group-hover:text-primary"
+                      : "text-[var(--foreground-muted)] group-hover:text-primary"
                   }`}
                 />
                 <span>{link.label}</span>
@@ -67,11 +73,13 @@ export default function BottomNavbar() {
           })}
         </nav>
 
-        {/* Right: Promotional Text */}
-        <div className="hidden md:flex items-center gap-2 text-xs font-semibold text-gray-600 dark:text-gray-300 shrink-0">
-          <Truck className="w-4 h-4 text-primary shrink-0" />
-          <span>Free Shipping on Orders $50+</span>
-        </div>
+        {/* Right: Promotional Text — dynamic from site settings */}
+        {freeShippingEnabled && (
+          <div className="hidden md:flex items-center gap-2 text-xs font-semibold text-[var(--foreground-muted)] shrink-0">
+            <Truck className="w-4 h-4 text-primary shrink-0" />
+            <span>Free Shipping on Orders {currencySymbol}{freeThreshold}+</span>
+          </div>
+        )}
 
       </div>
     </div>

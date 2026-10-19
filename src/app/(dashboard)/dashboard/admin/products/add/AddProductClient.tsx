@@ -299,37 +299,37 @@ export default function AddProductClient({
 
   // ── Shared CSS classes ──────────────────────────────────────────────────────
   const cardClass =
-    "border border-slate-200/80 dark:border-gray-800 shadow-sm bg-white dark:bg-gray-900 rounded-2xl";
+    "border border-[var(--border-color)] shadow-sm bg-[var(--surface-elevated)] rounded-2xl";
 
-  const labelClass = "text-xs font-semibold text-gray-700 dark:text-gray-300";
+  const labelClass = "text-xs font-semibold text-[var(--foreground)]";
   const fieldClass = "flex flex-col gap-1";
   const sectionHeadingClass =
-    "text-base font-bold text-gray-900 dark:text-white flex items-center gap-2";
+    "text-base font-bold text-[var(--foreground)] flex items-center gap-2";
 
   const addBtnClass =
-    "w-fit text-xs font-semibold text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/30 hover:bg-sky-100 dark:hover:bg-sky-950/50 rounded-xl px-4 py-2 inline-flex items-center gap-1.5 transition-colors cursor-pointer";
+    "w-fit text-xs font-semibold text-primary bg-primary/10 hover:bg-primary/20 border border-primary/20 rounded-xl px-4 py-2 inline-flex items-center gap-1.5 transition-colors cursor-pointer";
 
   const switchRowClass =
-    "flex items-center justify-between p-3 bg-slate-50 dark:bg-gray-800/40 rounded-xl border border-slate-200/60 dark:border-gray-800 cursor-pointer";
+    "flex items-center justify-between p-3 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)] cursor-pointer";
 
   const tabBtnClass = (active: boolean) =>
     `flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
       active
-        ? "bg-white dark:bg-gray-800 text-sky-600 dark:text-sky-400 shadow-sm"
-        : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+        ? "bg-[var(--surface-elevated)] text-primary shadow-sm"
+        : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
     }`;
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       {/* ── Page header ── */}
       <div>
-        <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+        <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
           Add New{" "}
-          <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
+          <span className="text-gradient-primary">
             Product
           </span>
         </h1>
-        <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-xs md:text-sm text-[var(--foreground-muted)] mt-1">
           Create a product entry mapped to your standard Product interface type.
         </p>
       </div>
@@ -344,7 +344,7 @@ export default function AddProductClient({
             <Card className={cardClass}>
               <Card.Content className="p-6 space-y-5">
                 <h2 className={sectionHeadingClass}>
-                  <PackagePlus className="w-4 h-4 text-sky-500" />
+                  <PackagePlus className="w-4 h-4 text-primary" />
                   General Information
                 </h2>
 
@@ -401,7 +401,7 @@ export default function AddProductClient({
             <Card className={cardClass}>
               <Card.Content className="p-6 space-y-6">
                 <h2 className={sectionHeadingClass}>
-                  <ImageIcon className="w-4 h-4 text-sky-500" />
+                  <ImageIcon className="w-4 h-4 text-primary" />
                   Product Media
                 </h2>
 
@@ -416,17 +416,17 @@ export default function AddProductClient({
                 />
 
                 {/* Gallery */}
-                <div className="flex flex-col gap-3 pt-4 border-t border-slate-100 dark:border-gray-800">
+                <div className="flex flex-col gap-3 pt-4 border-t border-[var(--border-color)]">
                   <label className={labelClass}>
                     Gallery Images
                     {galleryImages.length > 0 && (
-                      <span className="ml-1.5 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-sky-100 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400">
+                      <span className="ml-1.5 text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
                         {galleryImages.length}
                       </span>
                     )}
                   </label>
 
-                  <div className="flex gap-1 p-1 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800/40 w-fit">
+                  <div className="flex gap-1 p-1 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] w-fit">
                     <button
                       type="button"
                       onClick={() => setGalleryTab("upload")}
@@ -472,29 +472,29 @@ export default function AddProductClient({
                         className={`flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-xl p-6 transition-all cursor-pointer select-none
                           ${
                             isGalleryDragOver
-                              ? "border-sky-400 bg-sky-50 dark:bg-sky-950/20"
-                              : "border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800/30 hover:border-sky-300 dark:hover:border-sky-700 hover:bg-sky-50/50 dark:hover:bg-sky-950/10"
+                              ? "border-primary bg-primary/10"
+                              : "border-[var(--border-color)] bg-[var(--surface-alt)] hover:border-primary/50 hover:bg-primary/5"
                           }
                           ${isGalleryUploading ? "pointer-events-none opacity-70" : ""}
                         `}
                       >
                         {isGalleryUploading ? (
                           <>
-                            <Loader2 className="w-7 h-7 text-sky-500 animate-spin" />
-                            <p className="text-xs font-semibold text-sky-600 dark:text-sky-400">
+                            <Loader2 className="w-7 h-7 text-primary animate-spin" />
+                            <p className="text-xs font-semibold text-primary">
                               Uploading to ImgBB…
                             </p>
                           </>
                         ) : (
                           <>
-                            <div className="w-10 h-10 rounded-xl bg-sky-100 dark:bg-sky-950/40 flex items-center justify-center">
-                              <ImageIcon className="w-5 h-5 text-sky-500" />
+                            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                              <ImageIcon className="w-5 h-5 text-primary" />
                             </div>
                             <div className="text-center">
-                              <p className="text-xs font-bold text-gray-700 dark:text-gray-300">
+                              <p className="text-xs font-bold text-[var(--foreground)]">
                                 Click to browse or drag & drop
                               </p>
-                              <p className="text-[10px] text-gray-400 mt-0.5">
+                              <p className="text-[10px] text-[var(--foreground-muted)] mt-0.5">
                                 Select multiple images at once — all uploaded to ImgBB
                               </p>
                             </div>
@@ -523,7 +523,7 @@ export default function AddProductClient({
                         placeholder={`https://example.com/image1.webp\nhttps://example.com/image2.webp\n...one URL per line`}
                         value={galleryUrlInput}
                         onChange={(e) => setGalleryUrlInput(e.target.value)}
-                        className="w-full text-xs rounded-xl border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 placeholder:text-gray-400 px-3 py-2.5 resize-none outline-none focus:ring-2 focus:ring-sky-400/40 focus:border-sky-400 transition"
+                        className="w-full text-xs rounded-xl border border-[var(--border-color)] bg-[var(--surface-elevated)] text-[var(--foreground)] placeholder:text-[var(--foreground-muted)] px-3 py-2.5 resize-none outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition"
                       />
                       <button
                         type="button"
@@ -548,7 +548,7 @@ export default function AddProductClient({
                       {galleryImages.map((url, index) => (
                         <div
                           key={index}
-                          className="relative group rounded-xl overflow-hidden border border-slate-200 dark:border-gray-700 aspect-square bg-slate-100 dark:bg-gray-800"
+                          className="relative group rounded-xl overflow-hidden border border-[var(--border-color)] aspect-square bg-[var(--surface-alt)]"
                         >
                           <img
                             src={url}
@@ -581,7 +581,7 @@ export default function AddProductClient({
             <Card className={cardClass}>
               <Card.Content className="p-6 space-y-4">
                 <h2 className={sectionHeadingClass}>
-                  <Layers className="w-4 h-4 text-sky-500" />
+                  <Layers className="w-4 h-4 text-primary" />
                   Specifications
                 </h2>
 
@@ -635,7 +635,7 @@ export default function AddProductClient({
             <Card className={cardClass}>
               <Card.Content className="p-6 space-y-4">
                 <h2 className={sectionHeadingClass}>
-                  <DollarSign className="w-4 h-4 text-sky-500" />
+                  <DollarSign className="w-4 h-4 text-primary" />
                   Pricing & Stock
                 </h2>
 
@@ -857,7 +857,7 @@ export default function AddProductClient({
                             return (
                               <span
                                 key={id}
-                                className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-100 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300"
+                                className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20"
                               >
                                 {label}
                                 <button
@@ -888,7 +888,7 @@ export default function AddProductClient({
             <Card className={cardClass}>
               <Card.Content className="p-6 space-y-4">
                 <h2 className={sectionHeadingClass}>
-                  <Sparkles className="w-4 h-4 text-sky-500" />
+                  <Sparkles className="w-4 h-4 text-primary" />
                   Badges & Visibility
                 </h2>
 
@@ -935,7 +935,7 @@ export default function AddProductClient({
                         return (
                           <span
                             key={bId}
-                            className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300"
+                            className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20"
                           >
                             {badgeObj?.label ?? bId}
                             <button
@@ -961,10 +961,10 @@ export default function AddProductClient({
                 {/* In Stock toggle */}
                 <div className={switchRowClass}>
                   <div>
-                    <p className="text-xs font-bold text-gray-800 dark:text-gray-200">
+                    <p className="text-xs font-bold text-[var(--foreground)]">
                       In Stock
                     </p>
-                    <p className="text-[10px] text-gray-400">
+                    <p className="text-[10px] text-[var(--foreground-muted)]">
                       {hasPositiveStock
                         ? "Automatically enabled (Stock > 0)"
                         : "Mark if product is ready for purchase"}
@@ -991,10 +991,10 @@ export default function AddProductClient({
                 {/* Featured toggle */}
                 <div className={switchRowClass}>
                   <div>
-                    <p className="text-xs font-bold text-gray-800 dark:text-gray-200">
+                    <p className="text-xs font-bold text-[var(--foreground)]">
                       Featured
                     </p>
-                    <p className="text-[10px] text-gray-400">
+                    <p className="text-[10px] text-[var(--foreground-muted)]">
                       Promote in featured grids
                     </p>
                   </div>
@@ -1019,7 +1019,7 @@ export default function AddProductClient({
             <Button
               type="submit"
               isDisabled={isSubmitting || categories.length === 0}
-              className="w-full bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold text-xs py-6 rounded-2xl shadow-sm inline-flex items-center justify-center gap-2 cursor-pointer hover:opacity-95 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-primary hover:bg-primary-hover text-white font-bold text-xs py-6 rounded-2xl shadow-md shadow-primary/20 inline-flex items-center justify-center gap-2 cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Check className="w-4 h-4" />
               {isSubmitting ? "Saving Product..." : "Save Product"}

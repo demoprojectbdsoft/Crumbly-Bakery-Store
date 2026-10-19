@@ -8,69 +8,115 @@ interface ThemeSwitchProps {
   /** 
    * 'sidebar' → original vertical pill fixed on the left (desktop only, hidden on mobile)
    * 'inline'  → horizontal Light/Dark pill toggle (for use inside menus/drawers)
+   * 'topbar'  → compact topbar toggle with icon and text
+   * 'icon'    → minimalist icon-only toggle button for headers
    */
-  variant?: "sidebar" | "inline";
+  variant?: "sidebar" | "inline" | "topbar" | "icon";
 }
 
 export function ThemeSwitch({ variant = "sidebar" }: ThemeSwitchProps) {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   // Prevent hydration mismatch between server and client
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
   if (!mounted) return null;
 
-  const isDark = theme === "dark";
+  const currentTheme = resolvedTheme || theme;
+  const isDark = currentTheme === "dark";
 
-  // ── Inline variant: horizontal Light / Dark pill toggle ──────────────────
+  // ── Topbar variant: compact toggle for top header bar ────────────────────
+  if (variant === "topbar") {
+    return (
+      <button
+        type="button"
+        onClick={() => setTheme(isDark ? "light" : "dark")}
+        aria-label="Toggle Theme"
+        title={isDark ? "Switch to Light mode" : "Switch to Dark mode"}
+        className="group flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-white/90 dark:text-gray-300 hover:text-white dark:hover:text-white hover:bg-white/15 dark:hover:bg-white/10 transition-all duration-200 text-[10px] sm:text-xs font-semibold whitespace-nowrap cursor-pointer"
+      >
+        {isDark ? (
+          <>
+            <Sun className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300 group-hover:rotate-45 transition-transform shrink-0" />
+            <span>Light</span>
+          </>
+        ) : (
+          <>
+            <Moon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-sky-200 group-hover:-rotate-12 transition-transform shrink-0" />
+            <span>Dark</span>
+          </>
+        )}
+      </button>
+    );
+  }
+
+  // ── Icon variant: minimalist icon button for desktop navbar ──────────────
+  if (variant === "icon") {
+    return (
+      <button
+        type="button"
+        onClick={() => setTheme(isDark ? "light" : "dark")}
+        aria-label="Toggle Theme"
+        title={isDark ? "Switch to Light mode" : "Switch to Dark mode"}
+        className="w-9 h-9 rounded-full border border-[var(--border-color)] bg-[var(--surface-elevated)] flex items-center justify-center text-[var(--foreground-muted)] hover:text-primary hover:border-primary/50 transition-all duration-200 cursor-pointer shadow-2xs group"
+      >
+        {isDark ? (
+          <Sun className="w-4 h-4 text-amber-400 group-hover:rotate-45 transition-transform" />
+        ) : (
+          <Moon className="w-4 h-4 text-primary group-hover:-rotate-12 transition-transform" />
+        )}
+      </button>
+    );
+  }
+
+  // ── Inline variant: horizontal Light / Dark pill toggle (compact) ─────────
   if (variant === "inline") {
     return (
-      <div className="flex items-center gap-1 p-1 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+      <div className="flex items-center gap-0.5 p-0.5 rounded-full bg-[var(--surface-alt)] border border-[var(--border-color)]">
         <button
           type="button"
           onClick={() => setTheme("light")}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
+          className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold transition-all duration-200 cursor-pointer ${
             !isDark
-              ? "bg-primary text-white shadow-sm"
-              : "text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
+              ? "bg-primary text-white shadow-xs"
+              : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
           }`}
         >
-          <Sun className="w-3.5 h-3.5" />
-          Light
+          <Sun className="w-3 h-3 text-amber-400" />
+          <span>Light</span>
         </button>
         <button
           type="button"
           onClick={() => setTheme("dark")}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
+          className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold transition-all duration-200 cursor-pointer ${
             isDark
-              ? "bg-gray-700 text-white shadow-sm"
-              : "text-gray-500 hover:text-gray-800"
+              ? "bg-primary text-white shadow-xs"
+              : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
           }`}
         >
-          <Moon className="w-3.5 h-3.5" />
-          Dark
+          <Moon className="w-3 h-3 text-primary" />
+          <span>Dark</span>
         </button>
       </div>
     );
   }
 
-  // ── Sidebar variant: original vertical pill (desktop only) ───────────────
+  // ── Sidebar variant: vertical pill floating capsule (desktop only) ───────
   return (
-    <div className="hidden md:block fixed left-4 top-1/2 -translate-y-1/2 z-50">
+    <div className="hidden md:block fixed left-3 top-1/2 -translate-y-1/2 z-[9999]">
       <div
-        className="relative bg-gray-400/80 dark:bg-gray-700/80 backdrop-blur-sm p-1.5 rounded-2xl border border-gray-300 dark:border-gray-600 shadow-lg flex flex-col items-center justify-between gap-1 w-10 h-[108px] cursor-pointer select-none transition-colors duration-200"
+        className="relative bg-[var(--surface-elevated)]/90 backdrop-blur-md p-1 rounded-2xl border border-[var(--border-color)] shadow-xl flex flex-col items-center justify-between w-9 h-[100px] cursor-pointer select-none transition-colors duration-200"
         onClick={() => setTheme(isDark ? "light" : "dark")}
       >
-        {/* Animated Sliding White Capsule with GPU-accelerated transform */}
+        {/* Animated Sliding Primary Capsule */}
         <div
-          className={`absolute left-1.5 right-1.5 h-11.5 bg-white dark:bg-gray-900 rounded-xl shadow-md transition-transform duration-300 ease-out ${
-            isDark ? "translate-y-12.5" : "translate-y-0"
+          className={`absolute left-1 right-1 h-[44px] bg-primary rounded-xl shadow-xs transition-transform duration-300 ease-out ${
+            isDark ? "translate-y-[46px]" : "translate-y-0"
           }`}
-          style={{ top: "0.375rem" }} // Fixes starting top offset (1.5 / 6 = 0.375rem)
+          style={{ top: "0.25rem" }}
         />
 
         {/* Light Mode Label */}
@@ -80,8 +126,8 @@ export function ThemeSwitch({ variant = "sidebar" }: ThemeSwitchProps) {
             e.stopPropagation();
             setTheme("light");
           }}
-          className={`relative cursor-pointer z-10 w-full h-1/2 flex items-center justify-center text-[11px] font-semibold transition-colors duration-200 ${
-            !isDark ? "text-gray-900 font-bold" : "text-gray-200 hover:text-white"
+          className={`relative cursor-pointer z-10 w-full h-1/2 flex items-center justify-center text-[10px] font-bold uppercase tracking-wider transition-colors duration-200 ${
+            !isDark ? "text-white font-black" : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
           }`}
           style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
         >
@@ -95,8 +141,8 @@ export function ThemeSwitch({ variant = "sidebar" }: ThemeSwitchProps) {
             e.stopPropagation();
             setTheme("dark");
           }}
-          className={`relative cursor-pointer z-10 w-full h-1/2 flex items-center justify-center text-[11px] font-semibold transition-colors duration-200 ${
-            isDark ? "text-white font-bold" : "text-gray-700 hover:text-gray-900"
+          className={`relative cursor-pointer z-10 w-full h-1/2 flex items-center justify-center text-[10px] font-bold uppercase tracking-wider transition-colors duration-200 ${
+            isDark ? "text-white font-black" : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
           }`}
           style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
         >

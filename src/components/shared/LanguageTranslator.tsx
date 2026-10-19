@@ -210,7 +210,7 @@ export default function LanguageTranslator({
         aria-label="Change language"
         className="group flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-white/90 dark:text-gray-300 hover:text-white dark:hover:text-white hover:bg-white/15 dark:hover:bg-white/10 transition-all duration-200 text-[10px] sm:text-xs font-semibold whitespace-nowrap cursor-pointer select-none"
       >
-        <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-sky-200 dark:text-sky-400 group-hover:text-amber-300 transition-colors shrink-0" />
+        <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary group-hover:text-amber-300 transition-colors shrink-0" />
         <span className="text-xs sm:text-sm leading-none shrink-0">
           {activeLanguage.flag}
         </span>
@@ -224,23 +224,23 @@ export default function LanguageTranslator({
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-60 max-h-80 overflow-hidden flex flex-col rounded-2xl bg-white dark:bg-gray-900 border border-gray-200/90 dark:border-gray-800 shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
+        <div className="absolute right-0 top-full mt-2 w-60 max-h-80 overflow-hidden flex flex-col rounded-2xl bg-[var(--surface-elevated)] border border-[var(--border-color)] shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-150">
           {/* Header & Quick Search */}
-          <div className="p-2 border-b border-gray-100 dark:border-gray-800 bg-gray-50/80 dark:bg-gray-900/80 backdrop-blur-xs">
+          <div className="p-2 border-b border-[var(--border-color)] bg-[var(--surface-alt)] backdrop-blur-xs">
             <input
               type="text"
               placeholder="Search language..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-2.5 py-1.5 text-xs bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-gray-800 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:border-primary transition-colors"
+              className="w-full px-2.5 py-1.5 text-xs bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl text-[var(--foreground)] placeholder:[var(--foreground-muted)] focus:outline-none focus:border-primary transition-colors"
               autoFocus
             />
           </div>
 
           {/* Languages List */}
-          <div className="overflow-y-auto p-1.5 space-y-0.5 divide-y divide-gray-100/40 dark:divide-gray-800/40">
+          <div className="overflow-y-auto p-1.5 space-y-0.5 divide-y divide-[var(--border-color)]/40">
             {filteredLanguages.length === 0 ? (
-              <p className="p-3 text-center text-xs text-gray-400">
+              <p className="p-3 text-center text-xs text-[var(--foreground-muted)]">
                 No languages found
               </p>
             ) : (
@@ -254,7 +254,7 @@ export default function LanguageTranslator({
                     className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-xl text-xs transition-all cursor-pointer ${
                       isSelected
                         ? "bg-primary text-white font-bold shadow-xs"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/80"
+                        : "text-[var(--foreground)] hover:bg-[var(--surface-alt)]"
                     }`}
                   >
                     <div className="flex items-center gap-2 text-left min-w-0">

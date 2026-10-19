@@ -115,7 +115,7 @@ function WishlistProductCard({
       message="Your account has been suspended. You are not allowed to add items to the cart. Please contact support for assistance."
     />
 
-    <div className="group relative bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between hover:border-sky-500/40 hover:shadow-lg transition-all">
+    <div className="group relative bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between hover:border-primary/40 hover:shadow-lg transition-all text-[var(--foreground)]">
       {/* Discount Badge */}
       {item.discountPercentage ? (
         <span className="absolute top-3 left-3 z-10 text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-red-500 text-white shadow-xs">
@@ -126,7 +126,7 @@ function WishlistProductCard({
       {/* Image */}
       <Link
         href={`/shop/${item.slug || item.productId}`}
-        className="block relative aspect-square w-full rounded-xl overflow-hidden bg-slate-50 dark:bg-gray-950 mb-3"
+        className="block relative aspect-square w-full rounded-xl overflow-hidden bg-[var(--surface-alt)] mb-3 border border-[var(--border-color)]/50"
       >
         <Image
           src={item.image || "/placeholder.png"}
@@ -140,8 +140,8 @@ function WishlistProductCard({
 
       {/* Details */}
       <div className="space-y-1 flex-1 flex flex-col">
-        <div className="flex items-center justify-between text-[10px] text-gray-400">
-          <span className="font-semibold text-sky-600 dark:text-sky-400 uppercase tracking-wider truncate max-w-[120px]">
+        <div className="flex items-center justify-between text-[10px] text-[var(--foreground-muted)]">
+          <span className="font-semibold text-primary uppercase tracking-wider truncate max-w-[120px]">
             {item.category}
           </span>
           <span>{item.addedAt}</span>
@@ -149,7 +149,7 @@ function WishlistProductCard({
 
         <Link
           href={`/shop/${item.slug || item.productId}`}
-          className="font-bold text-xs sm:text-sm text-gray-900 dark:text-white line-clamp-2 hover:text-sky-600 transition-colors"
+          className="font-bold text-xs sm:text-sm text-[var(--foreground)] line-clamp-2 hover:text-primary transition-colors"
         >
           {item.title}
         </Link>
@@ -162,11 +162,11 @@ function WishlistProductCard({
       </div>
 
       {/* Price & Actions */}
-      <div className="flex items-center justify-between pt-3 mt-2 border-t border-slate-100 dark:border-gray-800">
+      <div className="flex items-center justify-between pt-3 mt-2 border-t border-[var(--border-color)]">
         <div className="flex flex-col">
           {item.originalPrice && item.originalPrice > item.price ? (
             <>
-              <span className="text-[10px] text-gray-400 line-through">
+              <span className="text-[10px] text-[var(--foreground-muted)] line-through">
                 ${item.originalPrice.toFixed(2)}
               </span>
               <span className="text-sm font-extrabold text-red-500">
@@ -174,7 +174,7 @@ function WishlistProductCard({
               </span>
             </>
           ) : (
-            <span className="text-sm font-extrabold text-gray-900 dark:text-white">
+            <span className="text-sm font-extrabold text-[var(--foreground)]">
               ${item.price.toFixed(2)}
             </span>
           )}
@@ -184,7 +184,7 @@ function WishlistProductCard({
           <button
             onClick={() => onRemove(item)}
             title="Remove from wishlist"
-            className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
+            className="w-7 h-7 rounded-full flex items-center justify-center text-[var(--foreground-muted)] hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
           >
             <Trash2 className="w-3.5 h-3.5" />
           </button>
@@ -195,10 +195,10 @@ function WishlistProductCard({
             title={isInCart ? "In cart" : "Add to cart"}
             className={`w-7 h-7 rounded-full flex items-center justify-center transition-all ${
               !item.inStock
-                ? "bg-gray-100 dark:bg-gray-800 text-gray-400 cursor-not-allowed"
+                ? "bg-[var(--surface-alt)] text-[var(--foreground-muted)] cursor-not-allowed"
                 : isInCart
-                ? "bg-sky-500 text-white cursor-default"
-                : "bg-slate-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-sky-500 hover:text-white cursor-pointer"
+                ? "bg-primary text-white cursor-default shadow-xs"
+                : "bg-[var(--surface-alt)] text-[var(--foreground)] hover:bg-primary hover:text-white cursor-pointer border border-[var(--border-color)]"
             }`}
           >
             <ShoppingBag className="w-3.5 h-3.5" />
@@ -273,20 +273,20 @@ export default function CustomerWishlistClient({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
-            <Link href="/dashboard/customer" className="hover:text-sky-600">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[var(--foreground-muted)] mb-1">
+            <Link href="/dashboard/customer" className="hover:text-primary">
               Customer Dashboard
             </Link>
             <span>/</span>
-            <span className="text-sky-600 dark:text-sky-400">Wishlist</span>
+            <span className="text-primary font-bold">Wishlist</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
             My Saved{" "}
-            <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
+            <span className="text-gradient-primary">
               Wishlist
             </span>
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-xs text-[var(--foreground-muted)] mt-1">
             {items.length} saved product{items.length !== 1 ? "s" : ""}
           </p>
         </div>
@@ -295,7 +295,7 @@ export default function CustomerWishlistClient({
           <div className="flex items-center gap-2">
             <Link
               href="/cart"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white text-xs font-bold shadow-xs h-9"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold shadow-md shadow-primary/20 h-9"
             >
               <ShoppingCart className="w-3.5 h-3.5" />
               <span>View Cart</span>
@@ -351,17 +351,17 @@ export default function CustomerWishlistClient({
 
       {/* Toolbar: Search, Real Category Select, Sort Select */}
       {items.length > 0 && (
-        <Card className="bg-white dark:bg-gray-900 p-4 rounded-2xl border border-slate-200/80 dark:border-gray-800 shadow-xs">
+        <Card className="bg-[var(--surface-elevated)] p-4 rounded-2xl border border-[var(--border-color)] shadow-xs">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {/* Search */}
             <div className="relative">
-              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10" />
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)] z-10" />
               <Input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search wishlist..."
-                className="w-full pl-9 pr-3 h-10 bg-slate-50 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 rounded-xl text-xs"
+                className="w-full pl-9 pr-3 h-10 bg-[var(--surface-alt)] border border-[var(--border-color)] rounded-xl text-xs text-[var(--foreground)]"
               />
             </div>
 
@@ -371,20 +371,20 @@ export default function CustomerWishlistClient({
                 selectedKey={category}
                 onSelectionChange={(key) => setCategory(key ? String(key) : "all")}
               >
-                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-sky-400 transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] text-xs font-semibold text-[var(--foreground)] flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                   <div className="flex items-center gap-2 truncate">
-                    <Layers className="w-3.5 h-3.5 text-sky-500 shrink-0" />
+                    <Layers className="w-3.5 h-3.5 text-primary shrink-0" />
                     <Select.Value className="text-xs font-semibold truncate" />
                   </div>
-                  <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
+                  <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-[var(--foreground-muted)] shrink-0" />
                 </Select.Trigger>
-                <Select.Popover className="w-56 p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 max-h-60 overflow-y-auto">
+                <Select.Popover className="w-56 p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50 max-h-60 overflow-y-auto">
                   <ListBox className="space-y-1 p-0">
                     <ListBox.Item
                       key="all"
                       id="all"
                       textValue="All Categories"
-                      className="px-3 py-2 rounded-lg text-xs font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-sky-950/60 hover:text-sky-600 dark:hover:text-sky-400 cursor-pointer flex items-center justify-between data-[selected=true]:bg-sky-500 data-[selected=true]:text-white font-semibold transition-colors"
+                      className="px-3 py-2 rounded-lg text-xs font-medium text-[var(--foreground)] hover:bg-primary/10 hover:text-primary cursor-pointer flex items-center justify-between data-[selected=true]:bg-primary data-[selected=true]:text-white font-semibold transition-colors"
                     >
                       All Categories
                     </ListBox.Item>
@@ -393,7 +393,7 @@ export default function CustomerWishlistClient({
                         key={c.name}
                         id={c.name}
                         textValue={c.name}
-                        className="px-3 py-2 rounded-lg text-xs font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-sky-950/60 hover:text-sky-600 dark:hover:text-sky-400 cursor-pointer flex items-center justify-between data-[selected=true]:bg-sky-500 data-[selected=true]:text-white font-semibold transition-colors"
+                        className="px-3 py-2 rounded-lg text-xs font-medium text-[var(--foreground)] hover:bg-primary/10 hover:text-primary cursor-pointer flex items-center justify-between data-[selected=true]:bg-primary data-[selected=true]:text-white font-semibold transition-colors"
                       >
                         {c.name}
                       </ListBox.Item>
@@ -409,21 +409,21 @@ export default function CustomerWishlistClient({
                 selectedKey={sort}
                 onSelectionChange={(key) => setSort(key ? String(key) : "newest")}
               >
-                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-sky-400 transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] text-xs font-semibold text-[var(--foreground)] flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                   <div className="flex items-center gap-2 truncate">
-                    <ArrowUpDown className="w-3.5 h-3.5 text-sky-500 shrink-0" />
+                    <ArrowUpDown className="w-3.5 h-3.5 text-primary shrink-0" />
                     <Select.Value className="text-xs font-semibold truncate" />
                   </div>
-                  <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
+                  <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-[var(--foreground-muted)] shrink-0" />
                 </Select.Trigger>
-                <Select.Popover className="w-56 p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50">
+                <Select.Popover className="w-56 p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50">
                   <ListBox className="space-y-1 p-0">
                     {SORT_OPTIONS.map((opt) => (
                       <ListBox.Item
                         key={opt.key}
                         id={opt.key}
                         textValue={opt.label}
-                        className="px-3 py-2 rounded-lg text-xs font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-sky-950/60 hover:text-sky-600 dark:hover:text-sky-400 cursor-pointer flex items-center justify-between data-[selected=true]:bg-sky-500 data-[selected=true]:text-white font-semibold transition-colors"
+                        className="px-3 py-2 rounded-lg text-xs font-medium text-[var(--foreground)] hover:bg-primary/10 hover:text-primary cursor-pointer flex items-center justify-between data-[selected=true]:bg-primary data-[selected=true]:text-white font-semibold transition-colors"
                       >
                         {opt.label}
                       </ListBox.Item>
@@ -438,21 +438,21 @@ export default function CustomerWishlistClient({
 
       {/* Grid */}
       {items.length === 0 ? (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-3xl p-12 text-center space-y-4 max-w-lg mx-auto shadow-sm">
-          <div className="w-14 h-14 rounded-2xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 flex items-center justify-center mx-auto">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-12 text-center space-y-4 max-w-lg mx-auto shadow-sm">
+          <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
             <Heart className="w-7 h-7" />
           </div>
           <div className="space-y-1">
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-bold text-[var(--foreground)]">
               Your Wishlist is Empty
             </h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-[var(--foreground-muted)]">
               Save your favorite electronics to find them quickly later.
             </p>
           </div>
           <Link
             href="/shop"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white text-xs font-bold shadow-sm"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold shadow-md shadow-primary/20"
           >
             <span>Explore Products</span>
             <ArrowRight className="w-4 h-4" />

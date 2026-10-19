@@ -161,37 +161,37 @@ export default function AddCategoryClient({
 
   // ── Shared CSS classes ──────────────────────────────────────────────────────
   const tabClass =
-    "flex items-center gap-2 h-10 px-4 text-xs font-bold rounded-xl cursor-pointer transition-all outline-none text-gray-700 dark:text-gray-200 data-[selected]:bg-gradient-to-r data-[selected]:from-sky-500 data-[selected]:to-blue-600 data-[selected]:text-white data-[selected]:shadow-sm";
+    "flex items-center gap-2 h-10 px-4 text-xs font-bold rounded-xl cursor-pointer transition-all outline-none text-[var(--foreground-muted)] data-[selected]:bg-primary data-[selected]:text-white data-[selected]:shadow-sm";
 
   const cardClass =
-    "border border-slate-200/80 dark:border-gray-800 shadow-sm bg-white dark:bg-gray-900 rounded-2xl mt-4";
+    "border border-[var(--border-color)] shadow-sm bg-[var(--surface-elevated)] rounded-2xl mt-4";
 
-  const labelClass = "text-xs font-semibold text-gray-700 dark:text-gray-300";
+  const labelClass = "text-xs font-semibold text-[var(--foreground)]";
 
   const visibilityRowClass =
-    "flex items-center justify-between p-4 bg-slate-50 dark:bg-gray-800/40 rounded-xl border border-slate-200/60 dark:border-gray-800 cursor-pointer";
+    "flex items-center justify-between p-4 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)] cursor-pointer";
 
   const saveBtnClass =
-    "bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold text-xs px-6 py-2.5 rounded-xl shadow-sm inline-flex items-center gap-1.5 cursor-pointer hover:opacity-95 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed";
+    "bg-primary hover:bg-primary-hover text-white font-bold text-xs px-6 py-2.5 rounded-xl shadow-sm inline-flex items-center gap-1.5 cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* ── Page header ── */}
       <div>
-        <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+        <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
           Manage{" "}
-          <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
+          <span className="text-primary">
             Categories
           </span>
         </h1>
-        <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-xs md:text-sm text-[var(--foreground-muted)] mt-1">
           Add new product categories or assign subcategories to existing ones.
         </p>
       </div>
 
       {/* ── Tabs: switch between Add Category and Add Subcategory ── */}
       <Tabs>
-        <TabList className="flex gap-1 p-1 rounded-2xl border border-slate-200/80 dark:border-gray-800 bg-white dark:bg-gray-900 w-fit">
+        <TabList className="flex gap-1 p-1 rounded-2xl border border-[var(--border-color)] bg-[var(--surface)] w-fit">
           <Tab id="category" className={tabClass}>
             <FolderPlus className="w-4 h-4" />
             Add Category

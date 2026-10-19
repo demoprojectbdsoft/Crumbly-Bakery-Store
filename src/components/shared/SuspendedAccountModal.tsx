@@ -21,9 +21,9 @@ export default function SuspendedAccountModal({
 }: SuspendedAccountModalProps) {
   return (
     <AlertDialog.Root isOpen={isOpen} onOpenChange={onOpenChange}>
-      <AlertDialog.Backdrop isDismissable className="bg-black/60">
+      <AlertDialog.Backdrop isDismissable className="bg-black/60 backdrop-blur-xs">
         <AlertDialog.Container size="sm">
-          <AlertDialog.Dialog className="rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl p-6 space-y-4">
+          <AlertDialog.Dialog className="rounded-2xl border border-[var(--border-color)] bg-[var(--surface-elevated)] text-[var(--foreground)] shadow-2xl p-6 space-y-4">
             {({ close }) => (
               <>
                 <div className="flex items-start gap-3.5">
@@ -31,15 +31,15 @@ export default function SuspendedAccountModal({
                     <Ban className="w-5 h-5" />
                   </div>
                   <div className="space-y-1">
-                    <AlertDialog.Heading className="text-base font-bold text-slate-900 dark:text-white">
+                    <AlertDialog.Heading className="text-base font-bold text-[var(--foreground)]">
                       {title}
                     </AlertDialog.Heading>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                    <p className="text-xs text-[var(--foreground-muted)] leading-relaxed">
                       {message}
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center justify-end pt-2 border-t border-slate-100 dark:border-slate-800">
+                <div className="flex items-center justify-end pt-2 border-t border-[var(--border-color)]">
                   <Button
                     size="sm"
                     onPress={close}

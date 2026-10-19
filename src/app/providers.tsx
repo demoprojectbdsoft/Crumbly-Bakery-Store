@@ -1,8 +1,16 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
+import { SiteSettingsProvider } from "@/context/SiteSettingsContext";
+import { SiteSettingsData } from "@/types";
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({
+  children,
+  initialSettings,
+}: {
+  children: React.ReactNode;
+  initialSettings?: Partial<SiteSettingsData> | null;
+}) {
   return (
     <ThemeProvider
       attribute="class"
@@ -10,7 +18,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
       enableColorScheme={true}
       enableSystem={false}
     >
-      {children}
+      <SiteSettingsProvider initialSettings={initialSettings}>
+        {children}
+      </SiteSettingsProvider>
     </ThemeProvider>
   );
 }

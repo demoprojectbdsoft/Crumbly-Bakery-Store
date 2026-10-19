@@ -403,20 +403,20 @@ export default function ProductsClient({
       {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
-            <Link href="/dashboard/admin" className="hover:text-sky-600 transition-colors">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[var(--foreground-muted)] mb-1">
+            <Link href="/dashboard/admin" className="hover:text-primary transition-colors">
               Admin Dashboard
             </Link>
             <span>/</span>
-            <span className="text-sky-600 dark:text-sky-400">Products</span>
+            <span className="text-primary">Products</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
             Product{" "}
-            <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
+            <span className="text-primary">
               Catalog
             </span>
           </h1>
-          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-xs md:text-sm text-[var(--foreground-muted)] mt-1">
             Manage inventory, view detailed specifications, update pricing and edit items.
           </p>
         </div>
@@ -424,7 +424,7 @@ export default function ProductsClient({
         <div className="flex items-center gap-2.5 self-start sm:self-auto">
           <Link
             href="/dashboard/admin/products/add"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white text-xs font-bold shadow-sm transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold shadow-sm transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Add New Product</span>
@@ -433,7 +433,7 @@ export default function ProductsClient({
       </div>
 
       {/* ── Filters & Search Toolbar ── */}
-      <div className="space-y-4 bg-white dark:bg-gray-900 p-4 rounded-2xl border border-slate-200/80 dark:border-gray-800 shadow-xs">
+      <div className="space-y-4 bg-[var(--surface-elevated)] p-4 rounded-2xl border border-[var(--border-color)] shadow-xs">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-3">
             {/* Category Filter */}
@@ -446,7 +446,7 @@ export default function ProductsClient({
                     updateParams({ category: key && String(key) !== "all" ? String(key) : undefined })
                   }
                 >
-                  <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-sky-400 transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+                  <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                     <Select.Value className="text-xs font-semibold truncate" />
                     <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
                   </Select.Trigger>
@@ -455,7 +455,7 @@ export default function ProductsClient({
                       <ListBox.Item
                         id="all"
                         textValue="All Categories"
-                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-sky-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
                       >
                         All Categories
                         <ListBox.ItemIndicator />
@@ -467,7 +467,7 @@ export default function ProductsClient({
                             key={c._id || c.id || c.name}
                             id={val}
                             textValue={c.name}
-                            className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-sky-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                            className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
                           >
                             {c.name}
                             <ListBox.ItemIndicator />
@@ -494,7 +494,7 @@ export default function ProductsClient({
                   onClick={() => updateParams({ inStock: st.id === "all" ? undefined : st.id })}
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all cursor-pointer ${
                     currentStock === st.id
-                      ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-xs"
+                      ? "bg-primary text-white shadow-xs"
                       : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                   }`}
                 >
@@ -525,7 +525,7 @@ export default function ProductsClient({
             <Button
               type="submit"
               size="sm"
-              className="h-10 px-4 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-xs cursor-pointer shrink-0"
+              className="h-10 px-4 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-xs cursor-pointer shrink-0"
             >
               Search
             </Button>
@@ -539,7 +539,7 @@ export default function ProductsClient({
                 selectedKey={currentSort}
                 onSelectionChange={(key) => updateParams({ sort: key ? String(key) : "newest" })}
               >
-                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-sky-400 transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                   <Select.Value className="text-xs font-semibold truncate" />
                   <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
                 </Select.Trigger>
@@ -550,7 +550,7 @@ export default function ProductsClient({
                         key={opt.key}
                         id={opt.key}
                         textValue={opt.label}
-                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-sky-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
                       >
                         {opt.label}
                         <ListBox.ItemIndicator />
@@ -578,12 +578,12 @@ export default function ProductsClient({
       {/* ── Products Table ── */}
       {isPending ? (
         <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center shadow-xs">
-          <div className="w-8 h-8 border-3 border-sky-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
           <p className="text-xs font-semibold text-gray-500">Loading products...</p>
         </Card>
       ) : products.length === 0 ? (
         <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center space-y-4 shadow-sm">
-          <div className="w-16 h-16 rounded-2xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center mx-auto">
+          <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
             <Package className="w-8 h-8" />
           </div>
           <div className="space-y-1">
@@ -598,7 +598,7 @@ export default function ProductsClient({
           </div>
           <Link
             href="/dashboard/admin/products/add"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white text-xs font-bold shadow-sm"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-bold shadow-sm"
           >
             <Plus className="w-4 h-4" />
             <span>Add First Product</span>
@@ -653,7 +653,7 @@ export default function ProductsClient({
                           <div className="min-w-0 max-w-xs">
                             <Link
                               href={`/dashboard/admin/products/${product.slug}`}
-                              className="font-bold text-gray-900 dark:text-white text-xs sm:text-sm hover:text-sky-600 dark:hover:text-sky-400 transition-colors line-clamp-1"
+                              className="font-bold text-gray-900 dark:text-white text-xs sm:text-sm hover:text-primary dark:hover:text-primary transition-colors line-clamp-1"
                             >
                               {product.title}
                             </Link>
@@ -676,7 +676,7 @@ export default function ProductsClient({
                       {/* Category */}
                       <td className="py-3.5 px-4">
                         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-semibold">
-                          <Layers className="w-3 h-3 text-sky-500" />
+                          <Layers className="w-3 h-3 text-primary" />
                           {catName}
                         </span>
                       </td>
@@ -778,7 +778,7 @@ export default function ProductsClient({
                         <div className="flex items-center justify-end gap-1">
                           <Link
                             href={`/dashboard/admin/products/${product.slug}`}
-                            className="p-1.5 rounded-lg text-gray-400 hover:text-sky-600 hover:bg-sky-50 dark:hover:bg-sky-950/50 transition-colors"
+                            className="p-1.5 rounded-lg text-gray-400 hover:text-primary hover:bg-primary/10 transition-colors"
                             title="View Product Page"
                           >
                             <Eye className="w-4 h-4" />
@@ -814,13 +814,13 @@ export default function ProductsClient({
               <Pagination className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-500 dark:text-gray-400">
                 <Pagination.Summary className="text-xs">
                   Showing <span className="text-gray-800 dark:text-gray-200 font-bold">{startItem}–{endItem}</span> of{" "}
-                  <span className="text-sky-600 dark:text-sky-400 font-bold">{total}</span> products
+                  <span className="text-primary font-bold">{total}</span> products
                 </Pagination.Summary>
 
                 <Pagination.Content className="flex items-center gap-1">
                   <Pagination.Item>
                     <Pagination.Previous
-                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-sky-50 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                       isDisabled={page === 1 || isPending}
                       onPress={() => updateParams({ page: String(page - 1) })}
                     >
@@ -842,8 +842,8 @@ export default function ProductsClient({
                           onPress={() => updateParams({ page: String(p) })}
                           className={`w-8 h-8 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
                             p === page
-                              ? "bg-sky-500 text-white shadow-sm shadow-sky-500/30"
-                              : "hover:bg-sky-50 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
+                              ? "bg-sky-500 text-white shadow-sm shadow-primary/30"
+                              : "hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
                           }`}
                         >
                           {p}
@@ -854,7 +854,7 @@ export default function ProductsClient({
 
                   <Pagination.Item>
                     <Pagination.Next
-                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-sky-50 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                       isDisabled={page === totalPages || isPending}
                       onPress={() => updateParams({ page: String(page + 1) })}
                     >
@@ -875,17 +875,17 @@ export default function ProductsClient({
       <Modal isOpen={isEditOpen} onOpenChange={setIsEditOpen}>
         <Modal.Backdrop>
           <Modal.Container size="lg">
-            <Modal.Dialog className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
-              <Modal.Header className="flex items-center justify-between border-b border-slate-100 dark:border-gray-800 pb-4">
+            <Modal.Dialog className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto text-[var(--foreground)]">
+              <Modal.Header className="flex items-center justify-between border-b border-[var(--border-color)] pb-4">
                 <div>
-                  <Modal.Heading className="text-lg font-extrabold text-gray-900 dark:text-white">
+                  <Modal.Heading className="text-lg font-extrabold text-[var(--foreground)]">
                     Quick Edit Product
                   </Modal.Heading>
-                  <p className="text-xs text-gray-400 mt-0.5">
+                  <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
                     Update inventory count, pricing, media and attributes.
                   </p>
                 </div>
-                <Modal.CloseTrigger className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer p-1 rounded-lg">
+                <Modal.CloseTrigger className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer p-1 rounded-lg">
                   ✕
                 </Modal.CloseTrigger>
               </Modal.Header>
@@ -893,7 +893,7 @@ export default function ProductsClient({
               <form onSubmit={handleSaveProduct} className="space-y-6">
                 {/* 1. Core Info */}
                 <div className="space-y-4">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-primary">
                     Basic Info
                   </h3>
 
@@ -969,7 +969,7 @@ export default function ProductsClient({
 
                 {/* 2. Pricing & Inventory */}
                 <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-gray-800">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-primary">
                     Pricing & Inventory
                   </h3>
 
@@ -1150,7 +1150,7 @@ export default function ProductsClient({
 
                 {/* 3. Media Upload */}
                 <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-gray-800">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-primary">
                     Product Media
                   </h3>
 
@@ -1180,7 +1180,7 @@ export default function ProductsClient({
 
                 {/* 4. Taxonomy & Badges */}
                 <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-gray-800">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-primary">
                     Category & Badges
                   </h3>
 
@@ -1201,7 +1201,7 @@ export default function ProductsClient({
                         }
                         placeholder="Select Category"
                       >
-                        <Select.Trigger className="w-full h-10 px-3 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-sky-400 transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+                        <Select.Trigger className="w-full h-10 px-3 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                           <Select.Value className="text-xs font-semibold truncate" />
                           <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
                         </Select.Trigger>
@@ -1214,7 +1214,7 @@ export default function ProductsClient({
                                   key={cid}
                                   id={cid}
                                   textValue={c.name}
-                                  className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-sky-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                                  className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
                                 >
                                   {c.name}
                                   <ListBox.ItemIndicator />
@@ -1279,7 +1279,7 @@ export default function ProductsClient({
                             }}
                             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                               isSelected
-                                ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-xs"
+                                ? "bg-primary text-white shadow-xs"
                                 : "bg-slate-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-slate-200"
                             }`}
                           >
@@ -1294,14 +1294,14 @@ export default function ProductsClient({
                 {/* 5. Specifications */}
                 <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-gray-800">
                   <div className="flex items-center justify-between">
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-sky-600 dark:text-sky-400">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-primary">
                       Technical Specs
                     </h3>
                     <Button
                       size="sm"
                       type="button"
                       onPress={() => setEditSpecs((prev) => [...prev, { key: "", value: "" }])}
-                      className="px-3 py-1 bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 text-xs font-bold rounded-lg cursor-pointer flex items-center gap-1"
+                      className="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-lg cursor-pointer flex items-center gap-1"
                     >
                       <Plus className="w-3.5 h-3.5" /> Add Row
                     </Button>
@@ -1355,14 +1355,14 @@ export default function ProductsClient({
                   <Button
                     type="button"
                     onPress={() => setIsEditOpen(false)}
-                    className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-bold text-xs cursor-pointer"
+                    className="px-4 py-2 rounded-xl bg-[var(--surface-alt)] border border-[var(--border-color)] text-[var(--foreground)] font-bold text-xs cursor-pointer"
                   >
                     Cancel
                   </Button>
                   <Button
                     type="submit"
                     isDisabled={isUpdating}
-                    className="px-6 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold text-xs shadow-md cursor-pointer"
+                    className="px-6 py-2 rounded-xl bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white font-bold text-xs shadow-md shadow-primary/25 cursor-pointer transition-all"
                   >
                     {isUpdating ? "Saving..." : "Save Product"}
                   </Button>
@@ -1379,18 +1379,18 @@ export default function ProductsClient({
       <Modal isOpen={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
         <Modal.Backdrop>
           <Modal.Container size="sm">
-            <Modal.Dialog className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-3xl p-6 shadow-2xl space-y-4">
+            <Modal.Dialog className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-6 shadow-2xl space-y-4 text-[var(--foreground)]">
               <div className="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center mx-auto">
                 <AlertTriangle className="w-6 h-6" />
               </div>
 
               <div className="text-center space-y-1">
-                <h3 className="text-base font-extrabold text-gray-900 dark:text-white">
+                <h3 className="text-base font-extrabold text-[var(--foreground)]">
                   Delete Product?
                 </h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-[var(--foreground-muted)]">
                   Are you sure you want to delete{" "}
-                  <span className="font-bold text-gray-900 dark:text-white">
+                  <span className="font-bold text-[var(--foreground)]">
                     &ldquo;{deletingProduct?.title}&rdquo;
                   </span>
                   ? This action cannot be undone.
@@ -1400,7 +1400,7 @@ export default function ProductsClient({
               <div className="flex items-center justify-center gap-3 pt-2">
                 <Button
                   onPress={() => setIsDeleteOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-bold text-xs cursor-pointer"
+                  className="px-4 py-2 rounded-xl bg-[var(--surface-alt)] border border-[var(--border-color)] text-[var(--foreground)] font-bold text-xs cursor-pointer"
                 >
                   Cancel
                 </Button>

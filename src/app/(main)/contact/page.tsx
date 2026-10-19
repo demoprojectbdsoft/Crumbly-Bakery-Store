@@ -36,8 +36,8 @@ export default function ContactPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Contact Info Cards */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="p-6 rounded-2xl border border-gray-200/80 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm space-y-6">
-            <h3 className="text-base font-bold text-gray-900 dark:text-white border-b border-gray-100 dark:border-gray-800 pb-3">
+          <div className="p-6 rounded-2xl border border-[var(--border-color)] bg-[var(--surface-elevated)] shadow-sm space-y-6">
+            <h3 className="text-base font-bold text-[var(--foreground)] border-b border-[var(--border-color)] pb-3">
               Customer Support
             </h3>
 
@@ -46,11 +46,11 @@ export default function ContactPage() {
                 <Phone className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-xs font-semibold text-gray-400 block">Phone Support</span>
-                <span className="text-sm font-bold text-gray-800 dark:text-gray-200">
+                <span className="text-xs font-semibold text-[var(--foreground-muted)] block">Phone Support</span>
+                <span className="text-sm font-bold text-[var(--foreground)]">
                   (800) 8001-8588
                 </span>
-                <p className="text-xs text-gray-500">Mon - Fri: 9:00 AM - 8:00 PM</p>
+                <p className="text-xs text-[var(--foreground-muted)]">Mon - Fri: 9:00 AM - 8:00 PM</p>
               </div>
             </div>
 
@@ -59,11 +59,11 @@ export default function ContactPage() {
                 <Mail className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-xs font-semibold text-gray-400 block">Email Us</span>
-                <span className="text-sm font-bold text-gray-800 dark:text-gray-200">
+                <span className="text-xs font-semibold text-[var(--foreground-muted)] block">Email Us</span>
+                <span className="text-sm font-bold text-[var(--foreground)]">
                   support@electro.com
                 </span>
-                <p className="text-xs text-gray-500">We reply within 24 business hours</p>
+                <p className="text-xs text-[var(--foreground-muted)]">We reply within 24 business hours</p>
               </div>
             </div>
 
@@ -72,11 +72,11 @@ export default function ContactPage() {
                 <MapPin className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-xs font-semibold text-gray-400 block">Headquarters</span>
-                <span className="text-sm font-bold text-gray-800 dark:text-gray-200">
+                <span className="text-xs font-semibold text-[var(--foreground-muted)] block">Headquarters</span>
+                <span className="text-sm font-bold text-[var(--foreground)]">
                   17 Princess Road, London
                 </span>
-                <p className="text-xs text-gray-500">Greater London, NW1 8JR, UK</p>
+                <p className="text-xs text-[var(--foreground-muted)]">Greater London, NW1 8JR, UK</p>
               </div>
             </div>
           </div>
@@ -84,70 +84,70 @@ export default function ContactPage() {
 
         {/* Contact Form */}
         <div className="lg:col-span-7">
-          <div className="p-6 md:p-8 rounded-2xl border border-gray-200/80 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
+          <div className="p-6 md:p-8 rounded-2xl border border-[var(--border-color)] bg-[var(--surface-elevated)] shadow-sm">
             {submitted ? (
               <div className="py-12 flex flex-col items-center justify-center text-center space-y-3">
                 <div className="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                <h3 className="text-lg font-bold text-[var(--foreground)]">
                   Message Sent Successfully!
                 </h3>
-                <p className="text-xs text-gray-500 max-w-sm">
+                <p className="text-xs text-[var(--foreground-muted)] max-w-sm">
                   Thank you for getting in touch. One of our customer service representatives will reach out shortly.
                 </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <h3 className="text-base font-bold text-gray-900 dark:text-white border-b border-gray-100 dark:border-gray-800 pb-3">
+                <h3 className="text-base font-bold text-[var(--foreground)] border-b border-[var(--border-color)] pb-3">
                   Send Us a Message
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                    <label className="text-xs font-semibold text-[var(--foreground)]">
                       Your Name *
                     </label>
                     <input
                       type="text"
                       required
                       placeholder="John Doe"
-                      className="w-full px-3.5 py-2 text-xs rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      className="w-full px-3.5 py-2 text-xs rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                    <label className="text-xs font-semibold text-[var(--foreground)]">
                       Email Address *
                     </label>
                     <input
                       type="email"
                       required
                       placeholder="john@example.com"
-                      className="w-full px-3.5 py-2 text-xs rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                      className="w-full px-3.5 py-2 text-xs rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                  <label className="text-xs font-semibold text-[var(--foreground)]">
                     Subject
                   </label>
                   <input
                     type="text"
                     placeholder="Product inquiry, warranty, etc."
-                    className="w-full px-3.5 py-2 text-xs rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    className="w-full px-3.5 py-2 text-xs rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                  <label className="text-xs font-semibold text-[var(--foreground)]">
                     Your Message *
                   </label>
                   <textarea
                     required
                     rows={4}
                     placeholder="How can we help you today?"
-                    className="w-full px-3.5 py-2 text-xs rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
+                    className="w-full px-3.5 py-2 text-xs rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none"
                   />
                 </div>
 

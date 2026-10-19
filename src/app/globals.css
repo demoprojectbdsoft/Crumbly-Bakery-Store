@@ -1,7 +1,7 @@
 @import "tailwindcss";
-@import "@heroui/styles"; 
+@import "@heroui/styles";
 
-@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *)); 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
 
 @theme {
   --font-sans: var(--font-open-sans), sans-serif;
@@ -9,28 +9,68 @@
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-primary-light: var(--primary-light);
-} 
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-sky-400: var(--primary-light);
+  --color-sky-500: var(--primary);
+  --color-sky-600: var(--primary-hover);
+  --color-blue-500: var(--primary);
+  --color-blue-600: var(--primary-hover);
+  --color-blue-700: color-mix(in srgb, var(--primary-hover) 80%, black);
+  --color-indigo-500: var(--secondary);
+  --color-indigo-600: var(--secondary);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--foreground-muted);
+  --color-border: var(--border-color);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-alt: var(--surface-alt);
+  --color-navbar-bg: var(--navbar-bg);
+}
 
 :root {
   color-scheme: light;
-  /* Soft UI blue gradient values */
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
-  --primary-light: #eff6ff;
-  --accent: oklch(0.7 0.25 260);
+  --primary: var(--site-primary, #0284c7);
+  --primary-hover: var(--site-primary-dark, #0369a1);
+  --primary-light: color-mix(in srgb, var(--primary) 15%, white);
+  --secondary: var(--site-secondary, #6366f1);
+  --accent: var(--site-accent, #f59e0b);
+  --background: var(--site-bg, #ffffff);
+  --surface: var(--site-surface, #f8fafc);
   --success: oklch(0.65 0.15 155);
+  --foreground: #0f172a;
+  --foreground-muted: #64748b;
+  --border-color: #e2e8f0;
+  --navbar-bg: var(--site-bg, #ffffff);
+  --surface-elevated: #ffffff;
+  --surface-alt: #f1f5f9;
 }
 
 html.dark,
 :root.dark,
 .dark {
   color-scheme: dark;
-  --primary: #3b82f6;
-  --primary-hover: #60a5fa;
-  --primary-light: #1e3a8a;
+  --primary: var(--site-primary, #0284c7);
+  --primary-hover: var(--site-primary-dark, #0369a1);
+  --primary-light: color-mix(in srgb, var(--primary) 25%, black);
+  --secondary: var(--site-secondary, #818cf8);
+  --accent: var(--site-accent, #fbbf24);
+  --background: var(--site-bg-dark, #0b0f19);
+  --surface: var(--site-surface-dark, #131d2e);
+  --foreground: #f1f5f9;
+  --foreground-muted: #94a3b8;
+  --border-color: #1e293b;
+  --navbar-bg: var(--site-surface-dark, #131d2e);
+  --surface-elevated: #1e293b;
+  --surface-alt: #0f172a;
 }
 
-/* Prevent OS/Browser dark mode from overriding app when in light mode */
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
 @media (prefers-color-scheme: dark) {
   html:not(.dark),
   :root:not(.dark) {
@@ -45,15 +85,39 @@ html.dark,
   }
 }
 
-/* Form controls & autofill styling to ensure text readability in both modes */
 input,
 textarea,
 select {
   color: inherit;
 }
 
+.dark input,
+.dark textarea,
+.dark select {
+  color: var(--foreground);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--foreground-muted);
+  opacity: 0.7;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #94a3b8;
+  opacity: 0.85;
+}
+
+.dark input:-webkit-autofill,
+.dark textarea:-webkit-autofill,
+.dark select:-webkit-autofill {
+  -webkit-text-fill-color: #f1f5f9 !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
+input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 textarea:-webkit-autofill,
 textarea:-webkit-autofill:hover,
@@ -66,16 +130,15 @@ select:-webkit-autofill:focus {
 }
 
 select option {
-  background-color: #ffffff;
-  color: #0f172a;
+  background-color: var(--surface-elevated, #ffffff);
+  color: var(--foreground, #0f172a);
 }
 
 .dark select option {
-  background-color: #0f172a;
-  color: #f8fafc;
+  background-color: var(--surface-elevated, #1e293b);
+  color: var(--foreground, #f1f5f9);
 }
 
-/* ─── Hero Slider Animations ─────────────────────────────────────────── */
 @keyframes slideInLeft {
   from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -92,16 +155,15 @@ select option {
 .slide-anim-image { animation: popIn        0.6s  0.07s ease-out both; }
 .slide-anim-right { animation: slideInRight 0.5s  0.14s ease-out both; }
 
-/* ─── Price Range Slider Thumbs ─────────────────────────────────────── */
 .range-thumb::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #fff;
-  border: 2.5px solid #0ea5e9;
-  box-shadow: 0 1px 4px rgba(14, 165, 233, 0.35);
+  background: var(--surface-elevated, #fff);
+  border: 2.5px solid var(--primary, #0ea5e9);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
   cursor: pointer;
   transition: transform 0.15s, box-shadow 0.15s;
   pointer-events: all;
@@ -109,21 +171,19 @@ select option {
 .range-thumb::-webkit-slider-thumb:hover,
 .range-thumb::-webkit-slider-thumb:active {
   transform: scale(1.2);
-  box-shadow: 0 2px 8px rgba(14, 165, 233, 0.5);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
 }
 .range-thumb::-moz-range-thumb {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #fff;
-  border: 2.5px solid #0ea5e9;
-  box-shadow: 0 1px 4px rgba(14, 165, 233, 0.35);
+  background: var(--surface-elevated, #fff);
+  border: 2.5px solid var(--primary, #0ea5e9);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
   cursor: pointer;
 }
-/* Stack both range inputs so thumbs don't overlap the track */
 .range-thumb { pointer-events: none; }
 
-/* ─── Google Translate UI Cleaner ───────────────────────────────────── */
 .goog-te-banner-frame.skiptranslate,
 .goog-te-banner-frame,
 iframe.goog-te-banner-frame {
@@ -160,4 +220,102 @@ body {
 .VIpgJd-ZVi9dl-ORHb-OEVmcd,
 .VIpgJd-ZVi9dl-x3G2ab {
   display: none !important;
+}
+
+/* ─── Universal Table & Card Theming ────────────────────────────────────────── */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+thead th {
+  background-color: var(--surface-alt) !important;
+  color: var(--foreground-muted) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.15s ease;
+}
+
+tbody tr:hover {
+  background-color: color-mix(in srgb, var(--primary) 5%, transparent);
+}
+
+.dark tbody tr:hover {
+  background-color: color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+/* ─── Recharts SVG Palette Harmony ──────────────────────────────────────────── */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: var(--border-color) !important;
+  opacity: 0.6;
+}
+
+.recharts-text {
+  fill: var(--foreground-muted) !important;
+}
+
+.recharts-default-tooltip {
+  background-color: var(--surface-elevated) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4) !important;
+  color: var(--foreground) !important;
+}
+
+.recharts-tooltip-item {
+  color: var(--foreground) !important;
+}
+
+.recharts-tooltip-label {
+  color: var(--foreground-muted) !important;
+  font-weight: 600 !important;
+}
+
+/* ─── Universal Modal, Alert Dialog & Popover Theming ────────────────────────── */
+[role="dialog"],
+dialog,
+[data-slot="dialog"],
+[data-slot="content"],
+[data-slot="base"] {
+  background-color: var(--surface-elevated);
+  color: var(--foreground);
+}
+
+[data-slot="backdrop"] {
+  backdrop-filter: blur(4px);
+}
+
+/* ─── Dynamic Palette Gradient Utilities ─────────────────────────────────────── */
+.bg-gradient-primary {
+  background-image: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+}
+
+.bg-gradient-primary-rich {
+  background-image: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 50%, var(--secondary) 100%);
+}
+
+.bg-gradient-primary-horizontal {
+  background-image: linear-gradient(90deg, var(--primary) 0%, var(--primary-hover) 50%, var(--secondary) 100%);
+}
+
+.text-gradient-primary {
+  background-image: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 50%, var(--secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn-gradient-primary {
+  background-image: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px 0 color-mix(in srgb, var(--primary) 30%, transparent);
+  transition: all 0.25s ease;
+}
+
+.btn-gradient-primary:hover {
+  background-image: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary) 100%);
+  box-shadow: 0 6px 20px 0 color-mix(in srgb, var(--primary) 45%, transparent);
 }

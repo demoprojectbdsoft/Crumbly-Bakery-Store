@@ -9,6 +9,8 @@ import {
   Input,
   Switch,
   Modal,
+  Select,
+  ListBox,
 } from "@heroui/react";
 import {
   Settings,
@@ -27,9 +29,39 @@ import {
   Laptop,
   Loader2,
   X,
+  Check,
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { authClient } from "@/lib/auth-client";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
+
+// ── Supported Currencies ────────────────────────────────────────────────────────
+const CURRENCIES = [
+  { value: "USD", label: "USD ($) – US Dollar", symbol: "$" },
+  { value: "EUR", label: "EUR (€) – Euro", symbol: "€" },
+  { value: "GBP", label: "GBP (£) – British Pound", symbol: "£" },
+  { value: "BDT", label: "BDT (৳) – Bangladeshi Taka", symbol: "৳" },
+  { value: "AUD", label: "AUD (A$) – Australian Dollar", symbol: "A$" },
+  { value: "CAD", label: "CAD (C$) – Canadian Dollar", symbol: "C$" },
+  { value: "JPY", label: "JPY (¥) – Japanese Yen", symbol: "¥" },
+  { value: "INR", label: "INR (₹) – Indian Rupee", symbol: "₹" },
+  { value: "SGD", label: "SGD (S$) – Singapore Dollar", symbol: "S$" },
+  { value: "AED", label: "AED (د.إ) – UAE Dirham", symbol: "د.إ" },
+];
+
+// ── Supported Languages ─────────────────────────────────────────────────────────
+const LANGUAGES = [
+  { value: "en", label: "English (US)" },
+  { value: "en-gb", label: "English (UK)" },
+  { value: "es", label: "Español" },
+  { value: "fr", label: "Français" },
+  { value: "de", label: "Deutsch" },
+  { value: "bn", label: "বাংলা (Bengali)" },
+  { value: "ar", label: "العربية (Arabic)" },
+  { value: "zh", label: "中文 (Chinese)" },
+  { value: "ja", label: "日本語 (Japanese)" },
+  { value: "hi", label: "हिन्दी (Hindi)" },
+];
 
 const SETTING_TABS = [
   { id: "preferences", label: "Preferences & Localization", icon: Globe },
@@ -68,14 +100,87 @@ interface CustomerSettingsClientProps {
   initialSettings?: CustomerSettingsData;
 }
 
+// ── HeroUI v3 Select Wrapper ────────────────────────────────────────────────────
+function CustomerSelect({
+  label,
+  value,
+  onChange,
+  options,
+  placeholder = "Select an option",
+  className = "",
+}: {
+  label?: string;
+  value: string;
+  onChange: (val: string) => void;
+  options: { value: string; label: string }[];
+  placeholder?: string;
+  className?: string;
+}) {
+  const currentOption = options.find((opt) => opt.value === value);
+
+  return (
+    <div className={`flex flex-col gap-1.5 ${className}`}>
+      {label && (
+        <label className="text-xs font-semibold text-[var(--foreground)]">
+          {label}
+        </label>
+      )}
+      <Select
+        selectedKey={value || null}
+        onSelectionChange={(key) => {
+          if (key !== null && key !== undefined) {
+            onChange(String(key));
+          }
+        }}
+        placeholder={placeholder}
+        aria-label={label || placeholder}
+      >
+        <Select.Trigger className="w-full h-10 px-3.5 py-2.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] text-xs font-semibold text-[var(--foreground)] flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-2xs outline-hidden focus:border-primary focus:ring-2 focus:ring-primary/20">
+          <Select.Value className="text-xs truncate font-medium text-[var(--foreground)]">
+            {({ selectedText, isPlaceholder }) => (
+              <span className={isPlaceholder ? "text-[var(--foreground-muted)]" : "text-[var(--foreground)] font-semibold"}>
+                {selectedText || currentOption?.label || placeholder}
+              </span>
+            )}
+          </Select.Value>
+          <Select.Indicator className="text-[var(--foreground-muted)] shrink-0" />
+        </Select.Trigger>
+        <Select.Popover className="min-w-[var(--trigger-width)] w-full p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto">
+          <ListBox className="outline-hidden space-y-0.5">
+            {options.map((opt) => {
+              const isSelected = opt.value === value;
+              return (
+                <ListBox.Item
+                  key={opt.value}
+                  id={opt.value}
+                  textValue={opt.label}
+                  className={`text-xs font-medium px-3 py-2 rounded-lg cursor-pointer flex items-center justify-between transition-colors outline-hidden ${
+                    isSelected
+                      ? "bg-primary text-white font-bold"
+                      : "text-[var(--foreground)] hover:bg-primary/10 hover:text-primary"
+                  }`}
+                >
+                  <span>{opt.label}</span>
+                  {isSelected && <Check className="w-3.5 h-3.5 stroke-[2.5]" />}
+                </ListBox.Item>
+              );
+            })}
+          </ListBox>
+        </Select.Popover>
+      </Select>
+    </div>
+  );
+}
+
 export default function CustomerSettingsClient({
   initialSettings,
 }: CustomerSettingsClientProps) {
   const [activeTab, setActiveTab] = useState("preferences");
+  const { settings: siteSettings } = useSiteSettings();
 
-  // Preferences State
+  // Preferences State — currency defaults to site-wide currency from backend
   const [currency, setCurrency] = useState(
-    initialSettings?.preferences.currency || "USD"
+    initialSettings?.preferences.currency || siteSettings.currency || "USD"
   );
   const [language, setLanguage] = useState(
     initialSettings?.preferences.language || "en"
@@ -106,6 +211,7 @@ export default function CustomerSettingsClient({
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
 
   // Delete Account State
   const router = useRouter();
@@ -143,8 +249,14 @@ export default function CustomerSettingsClient({
     toast.success("Notification settings saved!");
   };
 
-  const handlePasswordChange = (e: React.FormEvent) => {
+  // ── Real better-auth changePassword ────────────────────────────────────────────
+  const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!currentPassword) {
+      toast.error("Please enter your current password.");
+      return;
+    }
     if (newPassword !== confirmPassword) {
       toast.error("New passwords do not match!");
       return;
@@ -153,10 +265,30 @@ export default function CustomerSettingsClient({
       toast.error("Password must be at least 8 characters long.");
       return;
     }
-    toast.success("Password updated securely!");
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
+
+    setIsChangingPassword(true);
+    try {
+      const { error } = await authClient.changePassword({
+        currentPassword,
+        newPassword,
+        revokeOtherSessions: true,
+      });
+
+      if (error) {
+        toast.error(error.message || "Failed to update password. Please try again.");
+        return;
+      }
+
+      toast.success("Password updated securely! Other sessions have been revoked.");
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to update password.";
+      toast.error(msg);
+    } finally {
+      setIsChangingPassword(false);
+    }
   };
 
   const handleToggle2FA = () => {
@@ -186,6 +318,7 @@ export default function CustomerSettingsClient({
     setIsDeleteModalOpen(true);
   };
 
+  // ── Real better-auth deleteUser ────────────────────────────────────────────────
   const handleConfirmDeleteAccount = async () => {
     if (deleteConfirmText.trim().toUpperCase() !== "DELETE") {
       toast.error("Please type DELETE to confirm.");
@@ -211,7 +344,7 @@ export default function CustomerSettingsClient({
       try {
         await authClient.signOut();
       } catch {
-        // ignore
+        // ignore signout errors
       }
 
       router.push("/");
@@ -224,24 +357,27 @@ export default function CustomerSettingsClient({
     }
   };
 
+  // Current site currency label for info badge
+  const siteCurrencyLabel = CURRENCIES.find((c) => c.value === siteSettings.currency)?.label || siteSettings.currency;
+
   return (
     <div className="space-y-8">
       {/* ── Page Header ── */}
       <div>
-        <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
-          <Link href="/dashboard/customer" className="hover:text-sky-600 transition-colors">
+        <div className="flex items-center gap-2 text-xs font-semibold text-[var(--foreground-muted)] mb-1">
+          <Link href="/dashboard/customer" className="hover:text-primary transition-colors">
             Customer Dashboard
           </Link>
           <span>/</span>
-          <span className="text-sky-600 dark:text-sky-400">Settings</span>
+          <span className="text-primary font-bold">Settings</span>
         </div>
-        <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+        <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
           Account{" "}
-          <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
+          <span className="text-gradient-primary">
             Settings
           </span>
         </h1>
-        <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+        <p className="text-xs md:text-sm text-[var(--foreground-muted)] mt-1">
           Manage your system preferences, notifications, security, and account privacy.
         </p>
       </div>
@@ -260,8 +396,8 @@ export default function CustomerSettingsClient({
                 onClick={() => setActiveTab(tab.id)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-bold transition-all cursor-pointer text-left ${
                   isActive
-                    ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-xs"
-                    : "bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-gray-800 border border-slate-200/80 dark:border-gray-800"
+                    ? "bg-primary text-white shadow-xs font-bold"
+                    : "bg-[var(--surface-elevated)] text-[var(--foreground-muted)] hover:bg-[var(--surface-alt)] hover:text-[var(--foreground)] border border-[var(--border-color)]"
                 }`}
               >
                 <Icon className="w-4 h-4 shrink-0" />
@@ -273,57 +409,53 @@ export default function CustomerSettingsClient({
 
         {/* Tab Content Panel */}
         <div className="lg:col-span-3">
+
           {/* ── 1. Preferences & Localization ── */}
           {activeTab === "preferences" && (
-            <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-6">
+            <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs space-y-6">
               <div>
-                <h3 className="text-base font-bold text-gray-900 dark:text-white">
+                <h3 className="text-base font-bold text-[var(--foreground)]">
                   Preferences &amp; Localization
                 </h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-[var(--foreground-muted)]">
                   Configure default currency, regional language, and shopping display options.
                 </p>
               </div>
 
+              {/* Site Currency Notice */}
+              <div className="p-3.5 rounded-xl border border-sky-200/60 dark:border-sky-900/40 bg-sky-50/60 dark:bg-sky-950/20 flex items-start gap-2.5 text-xs text-sky-700 dark:text-sky-300">
+                <Globe className="w-4 h-4 shrink-0 mt-0.5 text-sky-500" />
+                <span>
+                  The store&apos;s default currency is currently set to{" "}
+                  <strong>{siteCurrencyLabel}</strong> by the admin. Your preference below overrides your display only.
+                </span>
+              </div>
+
               <form onSubmit={handlePreferencesSave} className="space-y-4 text-xs">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="font-semibold text-gray-700 dark:text-gray-300">
-                      Display Currency
-                    </label>
-                    <select
-                      value={currency}
-                      onChange={(e) => setCurrency(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 focus:border-sky-500 focus:outline-none"
-                    >
-                      <option value="USD">USD ($) - US Dollar</option>
-                      <option value="EUR">EUR (€) - Euro</option>
-                      <option value="GBP">GBP (£) - British Pound</option>
-                      <option value="BDT">BDT (৳) - Bangladeshi Taka</option>
-                    </select>
-                  </div>
+                  {/* Currency HeroUI Select */}
+                  <CustomerSelect
+                    label="Display Currency"
+                    value={currency}
+                    onChange={setCurrency}
+                    placeholder="Select currency"
+                    options={CURRENCIES}
+                  />
 
-                  <div className="space-y-1">
-                    <label className="font-semibold text-gray-700 dark:text-gray-300">
-                      Language
-                    </label>
-                    <select
-                      value={language}
-                      onChange={(e) => setLanguage(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 focus:border-sky-500 focus:outline-none"
-                    >
-                      <option value="en">English (US)</option>
-                      <option value="es">Español</option>
-                      <option value="fr">Français</option>
-                      <option value="bn">বাংলা (Bengali)</option>
-                    </select>
-                  </div>
+                  {/* Language HeroUI Select */}
+                  <CustomerSelect
+                    label="Language"
+                    value={language}
+                    onChange={setLanguage}
+                    placeholder="Select language"
+                    options={LANGUAGES}
+                  />
                 </div>
 
                 <div className="pt-2 flex justify-end">
                   <Button
                     type="submit"
-                    className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold transition-all shadow-xs cursor-pointer h-10"
+                    className="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold transition-all shadow-md shadow-primary/20 cursor-pointer h-10"
                   >
                     Save Preferences
                   </Button>
@@ -334,24 +466,24 @@ export default function CustomerSettingsClient({
 
           {/* ── 2. Notifications & Alerts ── */}
           {activeTab === "notifications" && (
-            <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-6">
+            <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs space-y-6">
               <div>
-                <h3 className="text-base font-bold text-gray-900 dark:text-white">
+                <h3 className="text-base font-bold text-[var(--foreground)]">
                   Notification Channels &amp; Alerts
                 </h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-[var(--foreground-muted)]">
                   Choose what alerts you want to receive via Email and SMS.
                 </p>
               </div>
 
               <form onSubmit={handleNotificationsSave} className="space-y-4 text-xs">
                 {/* Order Updates */}
-                <div className="p-4 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-950/40 flex items-center justify-between">
+                <div className="p-4 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] flex items-center justify-between">
                   <div>
-                    <p className="font-bold text-gray-900 dark:text-white">
+                    <p className="font-bold text-[var(--foreground)]">
                       Order Confirmations &amp; Shipping Updates
                     </p>
-                    <p className="text-gray-500 dark:text-gray-400 mt-0.5">
+                    <p className="text-[var(--foreground-muted)] mt-0.5">
                       Receive tracking links and delivery status changes.
                     </p>
                   </div>
@@ -361,29 +493,29 @@ export default function CustomerSettingsClient({
                         type="checkbox"
                         checked={notifOrdersEmail}
                         onChange={(e) => setNotifOrdersEmail(e.target.checked)}
-                        className="w-4 h-4 rounded text-sky-600 accent-sky-600 cursor-pointer"
+                        className="w-4 h-4 rounded text-primary accent-primary cursor-pointer"
                       />
-                      <span>Email</span>
+                      <span className="text-[var(--foreground)]">Email</span>
                     </label>
                     <label className="flex items-center gap-1.5 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={notifOrdersSms}
                         onChange={(e) => setNotifOrdersSms(e.target.checked)}
-                        className="w-4 h-4 rounded text-sky-600 accent-sky-600 cursor-pointer"
+                        className="w-4 h-4 rounded text-primary accent-primary cursor-pointer"
                       />
-                      <span>SMS</span>
+                      <span className="text-[var(--foreground)]">SMS</span>
                     </label>
                   </div>
                 </div>
 
                 {/* Promotional Deals */}
-                <div className="p-4 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-950/40 flex items-center justify-between">
+                <div className="p-4 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] flex items-center justify-between">
                   <div>
-                    <p className="font-bold text-gray-900 dark:text-white">
+                    <p className="font-bold text-[var(--foreground)]">
                       Discounts, Flash Sales &amp; Promo Codes
                     </p>
-                    <p className="text-gray-500 dark:text-gray-400 mt-0.5">
+                    <p className="text-[var(--foreground-muted)] mt-0.5">
                       Receive coupon alerts and seasonal sales.
                     </p>
                   </div>
@@ -393,29 +525,29 @@ export default function CustomerSettingsClient({
                         type="checkbox"
                         checked={notifPromosEmail}
                         onChange={(e) => setNotifPromosEmail(e.target.checked)}
-                        className="w-4 h-4 rounded text-sky-600 accent-sky-600 cursor-pointer"
+                        className="w-4 h-4 rounded text-primary accent-primary cursor-pointer"
                       />
-                      <span>Email</span>
+                      <span className="text-[var(--foreground)]">Email</span>
                     </label>
                     <label className="flex items-center gap-1.5 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={notifPromosSms}
                         onChange={(e) => setNotifPromosSms(e.target.checked)}
-                        className="w-4 h-4 rounded text-sky-600 accent-sky-600 cursor-pointer"
+                        className="w-4 h-4 rounded text-primary accent-primary cursor-pointer"
                       />
-                      <span>SMS</span>
+                      <span className="text-[var(--foreground)]">SMS</span>
                     </label>
                   </div>
                 </div>
 
                 {/* Newsletter & Security */}
-                <div className="p-4 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-950/40 flex items-center justify-between">
+                <div className="p-4 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] flex items-center justify-between">
                   <div>
-                    <p className="font-bold text-gray-900 dark:text-white">
+                    <p className="font-bold text-[var(--foreground)]">
                       Electro Weekly Tech Digest &amp; Security Alerts
                     </p>
-                    <p className="text-gray-500 dark:text-gray-400 mt-0.5">
+                    <p className="text-[var(--foreground-muted)] mt-0.5">
                       Curated hardware reviews and important account safety notifications.
                     </p>
                   </div>
@@ -424,16 +556,16 @@ export default function CustomerSettingsClient({
                       type="checkbox"
                       checked={notifNewsletter}
                       onChange={(e) => setNotifNewsletter(e.target.checked)}
-                      className="w-4 h-4 rounded text-sky-600 accent-sky-600 cursor-pointer"
+                      className="w-4 h-4 rounded text-primary accent-primary cursor-pointer"
                     />
-                    <span>Enabled</span>
+                    <span className="text-[var(--foreground)]">Enabled</span>
                   </label>
                 </div>
 
                 <div className="pt-2 flex justify-end">
                   <Button
                     type="submit"
-                    className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold transition-all shadow-xs cursor-pointer h-10"
+                    className="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold transition-all shadow-md shadow-primary/20 cursor-pointer h-10"
                   >
                     Save Notifications
                   </Button>
@@ -446,19 +578,19 @@ export default function CustomerSettingsClient({
           {activeTab === "security" && (
             <div className="space-y-6">
               {/* Password Change Form */}
-              <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-5">
+              <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs space-y-5">
                 <div>
-                  <h3 className="text-base font-bold text-gray-900 dark:text-white">
+                  <h3 className="text-base font-bold text-[var(--foreground)]">
                     Change Password
                   </h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Ensure your account is using a long, random password.
+                  <p className="text-xs text-[var(--foreground-muted)]">
+                    Ensure your account is using a long, random password. Changing your password will revoke all other active sessions.
                   </p>
                 </div>
 
                 <form onSubmit={handlePasswordChange} className="space-y-4 text-xs max-w-md">
                   <div className="space-y-1">
-                    <label className="font-semibold text-gray-700 dark:text-gray-300">
+                    <label className="font-semibold text-[var(--foreground)]">
                       Current Password
                     </label>
                     <Input
@@ -467,12 +599,12 @@ export default function CustomerSettingsClient({
                       value={currentPassword}
                       onChange={(e) => setCurrentPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full h-10 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-sky-500 text-xs"
+                      className="w-full h-10 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] focus:border-primary text-xs"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="font-semibold text-gray-700 dark:text-gray-300">
+                    <label className="font-semibold text-[var(--foreground)]">
                       New Password
                     </label>
                     <Input
@@ -481,12 +613,12 @@ export default function CustomerSettingsClient({
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                       placeholder="At least 8 characters"
-                      className="w-full h-10 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-sky-500 text-xs"
+                      className="w-full h-10 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] focus:border-primary text-xs"
                     />
                   </div>
 
                   <div className="space-y-1">
-                    <label className="font-semibold text-gray-700 dark:text-gray-300">
+                    <label className="font-semibold text-[var(--foreground)]">
                       Confirm New Password
                     </label>
                     <Input
@@ -495,15 +627,59 @@ export default function CustomerSettingsClient({
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Repeat new password"
-                      className="w-full h-10 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-sky-500 text-xs"
+                      className="w-full h-10 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] focus:border-primary text-xs"
                     />
                   </div>
+
+                  {/* Password strength indicator */}
+                  {newPassword.length > 0 && (
+                    <div className="space-y-1">
+                      <div className="flex gap-1">
+                        {[1, 2, 3, 4].map((i) => (
+                          <div
+                            key={i}
+                            className={`h-1 flex-1 rounded-full transition-all ${
+                              newPassword.length >= i * 3
+                                ? i <= 1 ? "bg-red-400"
+                                : i <= 2 ? "bg-amber-400"
+                                : i <= 3 ? "bg-emerald-400"
+                                : "bg-emerald-500"
+                                : "bg-[var(--border-color)]"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <p className={`text-[10px] font-medium ${
+                        newPassword.length < 4 ? "text-red-500"
+                        : newPassword.length < 7 ? "text-amber-500"
+                        : newPassword.length < 10 ? "text-emerald-500"
+                        : "text-emerald-600"
+                      }`}>
+                        {newPassword.length < 4 ? "Very weak"
+                          : newPassword.length < 7 ? "Weak"
+                          : newPassword.length < 10 ? "Good"
+                          : "Strong"} password
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Confirm match indicator */}
+                  {confirmPassword.length > 0 && (
+                    <div className={`flex items-center gap-1.5 text-[10px] font-semibold ${
+                      newPassword === confirmPassword ? "text-emerald-500" : "text-red-500"
+                    }`}>
+                      {newPassword === confirmPassword
+                        ? <><Check className="w-3.5 h-3.5" /> Passwords match</>
+                        : <><X className="w-3.5 h-3.5" /> Passwords do not match</>
+                      }
+                    </div>
+                  )}
 
                   <div className="flex items-center justify-between pt-1">
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 flex items-center gap-1 font-semibold cursor-pointer"
+                      className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] flex items-center gap-1 font-semibold cursor-pointer transition-colors"
                     >
                       {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                       <span>{showPassword ? "Hide Passwords" : "Show Passwords"}</span>
@@ -511,21 +687,32 @@ export default function CustomerSettingsClient({
 
                     <Button
                       type="submit"
-                      className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold transition-all shadow-xs cursor-pointer h-10"
+                      isDisabled={isChangingPassword}
+                      className="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold transition-all shadow-md shadow-primary/20 cursor-pointer h-10 inline-flex items-center gap-2 disabled:opacity-60"
                     >
-                      Update Password
+                      {isChangingPassword ? (
+                        <>
+                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          <span>Updating...</span>
+                        </>
+                      ) : (
+                        <>
+                          <KeyRound className="w-3.5 h-3.5" />
+                          <span>Update Password</span>
+                        </>
+                      )}
                     </Button>
                   </div>
                 </form>
               </Card>
 
               {/* Two-Factor Authentication Card */}
-              <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs flex items-center justify-between">
+              <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs flex items-center justify-between">
                 <div>
-                  <h3 className="text-base font-bold text-gray-900 dark:text-white">
+                  <h3 className="text-base font-bold text-[var(--foreground)]">
                     Two-Factor Authentication (2FA)
                   </h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
                     Add an extra layer of security with an Authenticator app.
                   </p>
                 </div>
@@ -533,8 +720,8 @@ export default function CustomerSettingsClient({
                   onClick={handleToggle2FA}
                   className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer h-9 ${
                     twoFactor
-                      ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white"
-                      : "bg-slate-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-slate-200"
+                      ? "bg-primary text-white"
+                      : "bg-[var(--surface-alt)] text-[var(--foreground)] hover:bg-[var(--surface-alt)]/80 border border-[var(--border-color)]"
                   }`}
                 >
                   {twoFactor ? "Enabled" : "Enable 2FA"}
@@ -542,12 +729,12 @@ export default function CustomerSettingsClient({
               </Card>
 
               {/* Active Sessions */}
-              <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-4">
+              <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs space-y-4">
                 <div>
-                  <h3 className="text-base font-bold text-gray-900 dark:text-white">
+                  <h3 className="text-base font-bold text-[var(--foreground)]">
                     Active Login Sessions
                   </h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <p className="text-xs text-[var(--foreground-muted)]">
                     Devices currently signed into your Electro customer account.
                   </p>
                 </div>
@@ -556,20 +743,20 @@ export default function CustomerSettingsClient({
                   {activeSessions.map((session) => (
                     <div
                       key={session.id}
-                      className="p-3.5 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-950/40 flex items-center justify-between text-xs"
+                      className="p-3.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] flex items-center justify-between text-xs"
                     >
                       <div className="flex items-center gap-3">
-                        <Laptop className="w-5 h-5 text-sky-500" />
+                        <Laptop className="w-5 h-5 text-primary" />
                         <div>
-                          <p className="font-bold text-gray-900 dark:text-white">
+                          <p className="font-bold text-[var(--foreground)]">
                             {session.device}{" "}
                             {session.isCurrent && (
-                              <span className="text-[10px] text-sky-600 dark:text-sky-400 font-extrabold ml-1">
+                              <span className="text-[10px] text-primary font-extrabold ml-1">
                                 (This Device)
                               </span>
                             )}
                           </p>
-                          <p className="text-[11px] text-gray-400">
+                          <p className="text-[11px] text-[var(--foreground-muted)]">
                             {session.location} • {session.lastActive}
                           </p>
                         </div>
@@ -594,19 +781,19 @@ export default function CustomerSettingsClient({
           {activeTab === "privacy" && (
             <div className="space-y-6">
               {/* Export Data */}
-              <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h3 className="text-base font-bold text-gray-900 dark:text-white">
+                  <h3 className="text-base font-bold text-[var(--foreground)]">
                     Export Account Data
                   </h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
                     Download an archive containing your full purchase history, saved addresses, and profile metadata.
                   </p>
                 </div>
                 <Button
                   variant="outline"
                   onClick={handleExportData}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 hover:bg-slate-100 dark:hover:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-300 transition-colors cursor-pointer shrink-0 h-10"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[var(--border-color)] hover:bg-[var(--surface-alt)] text-xs font-semibold text-[var(--foreground)] transition-colors cursor-pointer shrink-0 h-10"
                 >
                   <Download className="w-4 h-4" />
                   <span>Export JSON</span>
@@ -619,7 +806,7 @@ export default function CustomerSettingsClient({
                   <AlertTriangle className="w-5 h-5" />
                   <h3 className="text-base font-bold">Danger Zone</h3>
                 </div>
-                <p className="text-xs text-gray-600 dark:text-gray-300">
+                <p className="text-xs text-[var(--foreground-muted)]">
                   Once you delete your account, there is no going back. All orders, reward points, and saved addresses will be permanently wiped from our databases.
                 </p>
                 <div>
@@ -637,22 +824,30 @@ export default function CustomerSettingsClient({
         </div>
       </div>
 
-      {/* ── Better-Auth Delete Account Confirmation Modal ── */}
+      {/* ── Delete Account Confirmation Modal ── */}
       <Modal isOpen={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
-        <Modal.Backdrop className="bg-black/50 backdrop-blur-sm fixed inset-0 z-50 flex items-center justify-center p-4">
+        <Modal.Backdrop className="bg-black/60 backdrop-blur-sm fixed inset-0 z-50 flex items-center justify-center p-4">
           <Modal.Container className="w-full max-w-md">
-            <Modal.Dialog className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-2xl shadow-2xl overflow-hidden p-6 space-y-5">
+            <Modal.Dialog className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl shadow-2xl overflow-hidden p-6 space-y-5">
               {/* Modal Header */}
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-rose-100 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-900/50 flex items-center justify-center text-rose-600 dark:text-rose-400 shrink-0">
                   <AlertTriangle className="w-6 h-6" />
                 </div>
-                <div className="space-y-1">
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white leading-snug">
-                    Delete Your Account?
-                  </h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
-                    This action is <strong className="text-rose-600 dark:text-rose-400">permanent and irreversible</strong>. All your personal data, order records, and rewards will be deleted according to Better-Auth protocols.
+                <div className="space-y-1 flex-1">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-bold text-[var(--foreground)] leading-snug">
+                      Delete Your Account?
+                    </h3>
+                    <button
+                      onClick={() => setIsDeleteModalOpen(false)}
+                      className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer transition-colors"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                  <p className="text-xs text-[var(--foreground-muted)] leading-relaxed">
+                    This action is <strong className="text-rose-600 dark:text-rose-400">permanent and irreversible</strong>. All your personal data, order records, and rewards will be deleted.
                   </p>
                 </div>
               </div>
@@ -660,7 +855,7 @@ export default function CustomerSettingsClient({
               {/* Confirmation Input Form */}
               <div className="space-y-3.5 pt-2">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                  <label className="text-xs font-semibold text-[var(--foreground)]">
                     Type <span className="font-mono font-bold text-rose-600 dark:text-rose-400">DELETE</span> to confirm:
                   </label>
                   <Input
@@ -668,32 +863,37 @@ export default function CustomerSettingsClient({
                     placeholder="DELETE"
                     value={deleteConfirmText}
                     onChange={(e) => setDeleteConfirmText(e.target.value)}
-                    className="w-full text-xs rounded-xl border border-slate-200 dark:border-gray-800 bg-slate-50 dark:bg-gray-950 text-gray-900 dark:text-white focus:border-rose-500 font-mono"
+                    className="w-full text-xs rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] focus:border-rose-500 font-mono"
                     autoFocus
                   />
+                  {deleteConfirmText.length > 0 && deleteConfirmText.trim().toUpperCase() !== "DELETE" && (
+                    <p className="text-[10px] text-rose-500 font-semibold">
+                      Must type exactly: DELETE
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
-                    Account Password <span className="text-[10px] text-gray-400">(if applicable)</span>:
+                  <label className="text-xs font-semibold text-[var(--foreground)]">
+                    Account Password <span className="text-[10px] text-[var(--foreground-muted)]">(if applicable)</span>:
                   </label>
                   <Input
                     type="password"
                     placeholder="Enter your current password"
                     value={deletePassword}
                     onChange={(e) => setDeletePassword(e.target.value)}
-                    className="w-full text-xs rounded-xl border border-slate-200 dark:border-gray-800 bg-slate-50 dark:bg-gray-950 text-gray-900 dark:text-white focus:border-rose-500"
+                    className="w-full text-xs rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] focus:border-rose-500"
                   />
                 </div>
               </div>
 
               {/* Modal Actions */}
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-gray-800">
+              <div className="flex items-center justify-end gap-3 pt-3 border-t border-[var(--border-color)]">
                 <Button
                   variant="outline"
                   onPress={() => setIsDeleteModalOpen(false)}
                   isDisabled={isDeletingAccount}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold text-gray-700 dark:text-gray-300 border-slate-200 dark:border-gray-700 hover:bg-slate-100 dark:hover:bg-gray-800 cursor-pointer h-10"
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-[var(--foreground)] border border-[var(--border-color)] hover:bg-[var(--surface-alt)] cursor-pointer h-10"
                 >
                   Cancel
                 </Button>

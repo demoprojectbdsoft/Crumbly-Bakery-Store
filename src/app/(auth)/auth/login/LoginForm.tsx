@@ -115,22 +115,22 @@ export function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-slate-50 dark:bg-gray-950">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[var(--surface-alt)] transition-colors duration-200">
       <div className="w-full max-w-md space-y-4">
         {/* Brand Header */}
         <div className="text-center space-y-2 flex flex-col items-center">
           <SparqLogo size="lg" />
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-[var(--foreground-muted)]">
             Welcome back! Please enter your details to sign in
           </p>
         </div>
 
-        <Card className="w-full border border-slate-200/80 dark:border-gray-800 shadow-xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-2xl">
+        <Card className="w-full border border-[var(--border-color)] shadow-xl bg-[var(--surface-elevated)]/95 backdrop-blur-md rounded-2xl">
           <CardHeader className="flex flex-col gap-1 text-center pb-2 pt-6">
-            <CardTitle className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+            <CardTitle className="text-2xl font-bold tracking-tight text-[var(--foreground)]">
               Sign In
             </CardTitle>
-            <CardDescription className="text-xs text-slate-500 dark:text-slate-400">
+            <CardDescription className="text-xs text-[var(--foreground-muted)]">
               Access your account and manage your dashboard
             </CardDescription>
           </CardHeader>
@@ -150,9 +150,9 @@ export function LoginForm() {
             {demoMessage && (
               <Alert
                 status="accent"
-                className="p-3 text-xs rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50 dark:bg-blue-950/40"
+                className="p-3 text-xs rounded-xl border border-primary/20 bg-primary/10"
               >
-                <AlertDescription className="text-blue-700 dark:text-blue-300 font-medium">
+                <AlertDescription className="text-primary font-medium">
                   {demoMessage}
                 </AlertDescription>
               </Alert>
@@ -165,7 +165,7 @@ export function LoginForm() {
               onClick={handleGoogleLogin}
               fullWidth
               isDisabled={loading}
-              className="flex items-center justify-center gap-2 h-11 text-xs font-semibold border-slate-300 dark:border-gray-700 rounded-xl hover:bg-slate-50 dark:hover:bg-gray-800 cursor-pointer transition-colors w-full"
+              className="flex items-center justify-center gap-2 h-11 text-xs font-semibold border-[var(--border-color)] text-[var(--foreground)] rounded-xl hover:bg-[var(--surface-alt)] cursor-pointer transition-colors w-full"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
                 <path
@@ -189,21 +189,21 @@ export function LoginForm() {
             </Button>
 
             <div className="flex items-center gap-4 my-3">
-              <Separator className="flex-1 bg-slate-200 dark:bg-gray-800" />
-              <span className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+              <Separator className="flex-1 bg-[var(--border-color)]" />
+              <span className="text-[11px] font-semibold text-[var(--foreground-muted)] uppercase tracking-wider">
                 Or with Email
               </span>
-              <Separator className="flex-1 bg-slate-200 dark:bg-gray-800" />
+              <Separator className="flex-1 bg-[var(--border-color)]" />
             </div>
 
             {/* Login Form */}
             <Form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-1 w-full">
-                <Label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                <Label className="text-xs font-semibold text-[var(--foreground)]">
                   Email Address <span className="text-red-500">*</span>
                 </Label>
                 <div className="relative w-full">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none z-10" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--foreground-muted)] pointer-events-none z-10" />
                   <Input
                     ref={emailRef}
                     name="email"
@@ -211,7 +211,7 @@ export function LoginForm() {
                     placeholder="john@example.com"
                     variant="primary"
                     fullWidth
-                    className="w-full pl-9 h-10 text-xs rounded-xl border border-slate-200 dark:border-gray-800 focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-9 h-10 text-xs rounded-xl border border-[var(--border-color)] bg-[var(--surface)] text-[var(--foreground)] focus:ring-2 focus:ring-primary"
                     required
                   />
                 </div>
@@ -219,18 +219,18 @@ export function LoginForm() {
 
               <div className="space-y-1 w-full">
                 <div className="flex items-center justify-between">
-                  <Label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  <Label className="text-xs font-semibold text-[var(--foreground)]">
                     Password <span className="text-red-500">*</span>
                   </Label>
                   <Link
                     href="/auth/forgot-password"
-                    className="text-[11px] font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+                    className="text-[11px] font-semibold text-primary hover:text-primary-hover hover:underline"
                   >
                     Forgot password?
                   </Link>
                 </div>
                 <div className="relative w-full">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none z-10" />
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--foreground-muted)] pointer-events-none z-10" />
                   <Input
                     ref={passwordRef}
                     name="password"
@@ -238,13 +238,13 @@ export function LoginForm() {
                     placeholder="••••••••"
                     variant="primary"
                     fullWidth
-                    className="w-full pl-9 pr-9 h-10 text-xs rounded-xl border border-slate-200 dark:border-gray-800 focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-9 pr-9 h-10 text-xs rounded-xl border border-[var(--border-color)] bg-[var(--surface)] text-[var(--foreground)] focus:ring-2 focus:ring-primary"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer z-10"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer z-10"
                   >
                     {showPassword ? (
                       <EyeOff className="w-4 h-4" />
@@ -255,15 +255,12 @@ export function LoginForm() {
                 </div>
               </div>
 
-              {/* Checkboxes / Selection Options */}
-              
-
               <Button
                 type="submit"
                 variant="primary"
                 fullWidth
                 isDisabled={loading}
-                className="h-11 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 mt-4 w-full"
+                className="h-11 text-xs font-bold bg-primary hover:bg-primary-hover text-white rounded-xl shadow-md shadow-primary/20 hover:shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 mt-4 w-full"
               >
                 {loading ? (
                   "Signing in..."
@@ -277,16 +274,16 @@ export function LoginForm() {
             </Form>
 
             {/* Demo Credentials Banner */}
-            <div className="rounded-xl border border-amber-200 dark:border-amber-800/60 bg-amber-50 dark:bg-amber-950/30 p-3">
+            <div className="rounded-xl border border-amber-300/40 dark:border-amber-800/60 bg-amber-500/10 p-3">
               <p className="text-[11px] font-bold text-amber-700 dark:text-amber-400 mb-1.5 flex items-center gap-1">
                 <span>🔐</span> Demo Admin Access
               </p>
               <div className="flex items-center justify-between gap-2">
                 <div className="space-y-0.5">
-                  <p className="text-[11px] text-amber-800 dark:text-amber-300">
+                  <p className="text-[11px] text-amber-900 dark:text-amber-300">
                     <span className="font-semibold">Email:</span> demoadmin@gmail.com
                   </p>
-                  <p className="text-[11px] text-amber-800 dark:text-amber-300">
+                  <p className="text-[11px] text-amber-900 dark:text-amber-300">
                     <span className="font-semibold">Password:</span> root@123
                   </p>
                 </div>
@@ -300,11 +297,11 @@ export function LoginForm() {
               </div>
             </div>
 
-            <div className="text-center text-xs text-slate-500 dark:text-slate-400 pt-2">
+            <div className="text-center text-xs text-[var(--foreground-muted)] pt-2">
               Don&apos;t have an account?{" "}
               <Link
                 href={callbackUrl !== "/" ? `/auth/register?callbackUrl=${encodeURIComponent(callbackUrl)}` : "/auth/register"}
-                className="font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 hover:underline"
+                className="font-semibold text-primary hover:text-primary-hover hover:underline"
               >
                 Create Account
               </Link>

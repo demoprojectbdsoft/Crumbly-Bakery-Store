@@ -66,26 +66,26 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
   return (
     <div className="w-full py-6">
       {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mb-6 flex-wrap">
-        <Link href="/" className="hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+      <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-[var(--foreground-muted)] mb-6 flex-wrap">
+        <Link href="/" className="hover:text-primary transition-colors">
           Home
         </Link>
-        <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
+        <ChevronRight className="w-3.5 h-3.5 text-[var(--foreground-muted)]" />
         <Link
           href="/shop"
-          className={`hover:text-sky-600 dark:hover:text-sky-400 transition-colors ${
-            !activeCategory ? "font-semibold text-gray-800 dark:text-gray-200" : ""
+          className={`hover:text-primary transition-colors ${
+            !activeCategory ? "font-semibold text-[var(--foreground)]" : ""
           }`}
         >
           Shop
         </Link>
         {activeCategory && (
           <>
-            <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
+            <ChevronRight className="w-3.5 h-3.5 text-[var(--foreground-muted)]" />
             <Link
               href={`/shop?category=${encodeURIComponent(activeCategory.slug || activeCategory.name)}`}
-              className={`hover:text-sky-600 dark:hover:text-sky-400 transition-colors ${
-                !activeSubCategory ? "font-semibold text-sky-600 dark:text-sky-400" : "text-gray-600 dark:text-gray-400"
+              className={`hover:text-primary transition-colors ${
+                !activeSubCategory ? "font-semibold text-primary" : "text-[var(--foreground-muted)]"
               }`}
             >
               {activeCategory.name}
@@ -94,8 +94,8 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         )}
         {activeSubCategory && (
           <>
-            <ChevronRight className="w-3.5 h-3.5 text-gray-400" />
-            <span className="font-semibold text-sky-600 dark:text-sky-400">{activeSubCategory.name}</span>
+            <ChevronRight className="w-3.5 h-3.5 text-[var(--foreground-muted)]" />
+            <span className="font-semibold text-primary">{activeSubCategory.name}</span>
           </>
         )}
       </nav>

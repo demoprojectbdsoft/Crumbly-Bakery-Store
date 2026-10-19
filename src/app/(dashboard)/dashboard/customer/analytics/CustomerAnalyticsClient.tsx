@@ -81,15 +81,15 @@ export default function CustomerAnalyticsClient() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
-            <Link href="/dashboard/customer" className="hover:text-sky-600 transition-colors">
+            <Link href="/dashboard/customer" className="hover:text-primary transition-colors">
               Customer Dashboard
             </Link>
             <span>/</span>
-            <span className="text-sky-600 dark:text-sky-400">Analytics</span>
+            <span className="text-primary">Analytics</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
             Spending &amp; Order{" "}
-            <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
+            <span className="text-gradient-primary">
               Analytics
             </span>
           </h1>
@@ -107,7 +107,7 @@ export default function CustomerAnalyticsClient() {
                 onClick={() => setSelectedTimeframe(tf)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   selectedTimeframe === tf
-                    ? "bg-white dark:bg-gray-900 text-sky-600 dark:text-sky-400 shadow-xs"
+                    ? "bg-white dark:bg-gray-900 text-primary shadow-xs"
                     : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                 }`}
               >
@@ -118,7 +118,7 @@ export default function CustomerAnalyticsClient() {
 
           <Button
             onClick={handleExport}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white text-xs font-bold shadow-xs transition-all cursor-pointer h-9"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold shadow-xs transition-all cursor-pointer h-9"
           >
             <Download className="w-4 h-4" />
             <span>Export CSV</span>
@@ -134,7 +134,7 @@ export default function CustomerAnalyticsClient() {
             <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
               Total Spend ({selectedTimeframe})
             </span>
-            <div className="p-2 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 border border-sky-100 dark:border-sky-900/40">
+            <div className="p-2 rounded-xl bg-primary/10 text-primary border border-primary/20">
               <DollarSign className="w-4 h-4" />
             </div>
           </div>
@@ -152,7 +152,7 @@ export default function CustomerAnalyticsClient() {
             <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
               Average Order Value (AOV)
             </span>
-            <div className="p-2 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 border border-sky-100 dark:border-sky-900/40">
+            <div className="p-2 rounded-xl bg-primary/10 text-primary border border-primary/20">
               <TrendingUp className="w-4 h-4" />
             </div>
           </div>
@@ -168,13 +168,13 @@ export default function CustomerAnalyticsClient() {
             <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
               Discounts &amp; Promo Savings
             </span>
-            <div className="p-2 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 border border-sky-100 dark:border-sky-900/40">
+            <div className="p-2 rounded-xl bg-primary/10 text-primary border border-primary/20">
               <Tag className="w-4 h-4" />
             </div>
           </div>
           <div>
             <p className="text-2xl font-bold text-gray-900 dark:text-white">$280.00</p>
-            <p className="text-xs text-sky-600 dark:text-sky-400 font-semibold mt-1">
+            <p className="text-xs text-primary font-semibold mt-1">
               13.2% saved on retail MSRP
             </p>
           </div>
@@ -186,7 +186,7 @@ export default function CustomerAnalyticsClient() {
             <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
               Purchase Frequency
             </span>
-            <div className="p-2 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 border border-sky-100 dark:border-sky-900/40">
+            <div className="p-2 rounded-xl bg-primary/10 text-primary border border-primary/20">
               <Calendar className="w-4 h-4" />
             </div>
           </div>
@@ -214,7 +214,7 @@ export default function CustomerAnalyticsClient() {
             </div>
             <div className="flex items-center gap-4 text-xs font-semibold">
               <div className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded-md bg-sky-600" />
+                <span className="w-3 h-3 rounded-md bg-primary" />
                 <span className="text-gray-600 dark:text-gray-300">Spent ($)</span>
               </div>
               <div className="flex items-center gap-1.5">
@@ -249,8 +249,8 @@ export default function CustomerAnalyticsClient() {
                   }}
                   formatter={(val: ValueType | undefined) => [`$${Number(val ?? 0)}`, "Amount"]}
                 />
-                <Bar dataKey="spending" fill="#0284c7" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="savings" fill="#38bdf8" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="spending" fill="var(--primary)" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="savings" fill="var(--secondary)" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -348,7 +348,7 @@ export default function CustomerAnalyticsClient() {
                 <span className="text-sm font-bold text-gray-900 dark:text-white">
                   {brand.brand}
                 </span>
-                <span className="text-xs font-extrabold text-sky-600 dark:text-sky-400">
+                <span className="text-xs font-extrabold text-primary">
                   {brand.percentage}%
                 </span>
               </div>

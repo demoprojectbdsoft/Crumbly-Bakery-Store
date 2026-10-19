@@ -372,11 +372,10 @@ export default function ProductCard({
 
     <div
       className={`group relative flex flex-col justify-between p-2.5 sm:p-4 
-        bg-gradient-to-br from-sky-50/80 via-blue-50/30 to-slate-50 
-        dark:from-gray-900 dark:via-gray-900/90 dark:to-gray-950 
+        bg-[var(--surface-elevated)] 
         transition-all duration-300 ease-out h-full 
-        hover:shadow-xl hover:shadow-sky-900/10 dark:hover:shadow-black/60 z-0 hover:z-20 rounded-xl ${
-        hasRightBorder ? "border-r border-sky-100/80 dark:border-gray-800" : ""
+        hover:shadow-xl hover:shadow-black/5 dark:hover:shadow-black/40 z-0 hover:z-20 rounded-xl border border-[var(--border-color)]/60 ${
+        hasRightBorder ? "border-r border-[var(--border-color)]" : ""
       }`}
     >
       {/* Active Wishlist Badge (visible when wishlisted) */}
@@ -403,13 +402,13 @@ export default function ProductCard({
 
       {/* Top-Right Badge: Discount Only */}
       {showDiscountBadge && discountPercent && discountPercent > 0 ? (
-        <div className="absolute top-2 sm:top-3 right-2 sm:right-3 z-10 px-1.5 sm:px-2 py-0.5 rounded-full bg-gradient-to-r from-sky-500 to-blue-600 text-white text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider shadow-sm shadow-sky-500/20">
+        <div className="absolute top-2 sm:top-3 right-2 sm:right-3 z-10 px-1.5 sm:px-2 py-0.5 rounded-full bg-primary text-white text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider shadow-sm shadow-primary/20">
           -{discountPercent}%
         </div>
       ) : null}
 
       {/* Top Image Area */}
-      <div className="relative w-full h-32 sm:h-44 md:h-48 overflow-hidden rounded-lg bg-white/60 dark:bg-gray-800/40 border border-sky-100/50 dark:border-gray-800/50 backdrop-blur-xs mb-2 sm:mb-3">
+      <div className="relative w-full h-32 sm:h-44 md:h-48 overflow-hidden rounded-lg bg-[var(--surface-alt)] border border-[var(--border-color)]/60 backdrop-blur-xs mb-2 sm:mb-3">
         <Link
           href={`/shop/${product.slug}`}
           className="relative w-full h-full block cursor-pointer"
@@ -431,7 +430,7 @@ export default function ProductCard({
         </Link>
 
         {/* Floating Actions (Glassmorphism Pill overlay) — reveals on hover */}
-        <div className="flex absolute bottom-2 left-1/2 -translate-x-1/2 items-center gap-1 p-1 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-full border border-sky-100 dark:border-gray-700/80 shadow-md translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 ease-out z-10">
+        <div className="flex absolute bottom-2 left-1/2 -translate-x-1/2 items-center gap-1 p-1 bg-[var(--surface-elevated)]/95 backdrop-blur-md rounded-full border border-[var(--border-color)] shadow-md translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 ease-out z-10">
           <button
             type="button"
             aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
@@ -440,7 +439,7 @@ export default function ProductCard({
             className={`p-1.5 rounded-full transition-all cursor-pointer group/btn ${
               isWishlisted
                 ? "text-red-500 bg-red-50 dark:bg-red-950/40"
-                : "text-gray-500 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30"
+                : "text-[var(--foreground-muted)] hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30"
             }`}
           >
             <Heart
@@ -451,20 +450,20 @@ export default function ProductCard({
               }`}
             />
           </button>
-          <span className="w-[1px] h-3 bg-gray-200 dark:bg-gray-700" />
+          <span className="w-[1px] h-3 bg-[var(--border-color)]" />
           <button
             type="button"
             aria-label="Add to compare"
             onClick={handleAddToCompare}
-            className="p-1.5 rounded-full text-gray-500 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-sky-50 dark:hover:bg-sky-950/30 transition-all cursor-pointer"
+            className="p-1.5 rounded-full text-[var(--foreground-muted)] hover:text-primary hover:bg-primary/10 transition-all cursor-pointer"
           >
             <Repeat className="w-3.5 h-3.5" />
           </button>
-          <span className="w-[1px] h-3 bg-gray-200 dark:bg-gray-700" />
+          <span className="w-[1px] h-3 bg-[var(--border-color)]" />
           <Link
             href={`/shop/${product.slug}`}
             aria-label="Quick View"
-            className="p-1.5 rounded-full text-gray-500 hover:text-sky-600 dark:hover:text-sky-400 hover:bg-sky-50 dark:hover:bg-sky-950/30 transition-all cursor-pointer"
+            className="p-1.5 rounded-full text-[var(--foreground-muted)] hover:text-primary hover:bg-primary/10 transition-all cursor-pointer"
           >
             <Eye className="w-3.5 h-3.5" />
           </Link>
@@ -474,7 +473,7 @@ export default function ProductCard({
       {/* Below Image: Category, Title, Rating & Description */}
       <div className="flex-1 flex flex-col space-y-1 mb-2 sm:mb-3">
         <div className="flex items-center justify-between gap-1">
-          <p className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-sky-600/80 dark:text-sky-400/80 truncate">
+          <p className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-primary truncate opacity-90">
             {categoryText}
           </p>
           {product.isFeatured && (
@@ -490,24 +489,24 @@ export default function ProductCard({
         <Link href={`/shop/${product.slug}`} className="block group/title">
           {/* Star Rating */}
           <StarRating rating={rating} reviewCount={reviewCount} />
-          <h3 className="text-xs sm:text-[13px] font-semibold text-gray-800 dark:text-gray-100 leading-snug line-clamp-2 group-hover/title:text-sky-600 dark:group-hover/title:text-sky-400 transition-colors cursor-pointer mt-0.5">
+          <h3 className="text-xs sm:text-[13px] font-semibold text-[var(--foreground)] leading-snug line-clamp-2 group-hover/title:text-primary transition-colors cursor-pointer mt-0.5">
             {product.title}
           </h3>
         </Link>
 
         {product.description && (
-          <p className="hidden sm:block text-[11px] text-gray-500 dark:text-gray-400 truncate leading-relaxed">
+          <p className="hidden sm:block text-[11px] text-[var(--foreground-muted)] truncate leading-relaxed">
             {product.description}
           </p>
         )}
       </div>
 
       {/* Bottom Footer: Price & Add To Cart */}
-      <div className="flex items-end justify-between pt-1.5 sm:pt-2 border-t border-sky-100/50 dark:border-gray-800/60">
+      <div className="flex items-end justify-between pt-1.5 sm:pt-2 border-t border-[var(--border-color)]">
         <div className="flex flex-col">
           {formattedOriginalPrice ? (
             <div className="flex flex-col">
-              <span className="text-[10px] sm:text-[11px] text-gray-400 dark:text-gray-500 line-through leading-none pb-0.5">
+              <span className="text-[10px] sm:text-[11px] text-[var(--foreground-muted)] line-through leading-none pb-0.5">
                 {formattedOriginalPrice}
               </span>
               <span className="text-sm sm:text-base font-extrabold text-red-500 dark:text-red-400 leading-tight">
@@ -515,7 +514,7 @@ export default function ProductCard({
               </span>
             </div>
           ) : (
-            <span className="text-sm sm:text-base font-extrabold text-gray-900 dark:text-white leading-tight">
+            <span className="text-sm sm:text-base font-extrabold text-[var(--foreground)] leading-tight">
               {formattedPrice}
             </span>
           )}
@@ -546,10 +545,10 @@ export default function ProductCard({
             disabled={isOutOfStock || isInCart}
             className={`w-7 h-7 sm:w-9 sm:h-9 rounded-full shadow-xs flex items-center justify-center transition-all duration-300 ${
               isOutOfStock
-                ? "bg-gray-100 dark:bg-gray-800/60 text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700/60 cursor-not-allowed opacity-60 shadow-none"
+                ? "bg-[var(--surface-alt)] text-[var(--foreground-muted)] border border-[var(--border-color)] cursor-not-allowed opacity-60 shadow-none"
                 : isInCart
-                ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white border-transparent shadow-lg shadow-sky-500/30 cursor-default"
-                : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-sky-100 dark:border-gray-700 hover:bg-gradient-to-r hover:from-sky-500 hover:to-blue-600 hover:text-white hover:border-transparent hover:shadow-lg hover:shadow-sky-500/30 hover:scale-105 active:scale-95 cursor-pointer"
+                ? "bg-primary text-white border-transparent shadow-lg shadow-primary/30 cursor-default"
+                : "bg-[var(--surface)] text-[var(--foreground)] border border-[var(--border-color)] hover:bg-primary hover:text-white hover:border-transparent hover:shadow-lg hover:shadow-primary/30 hover:scale-105 active:scale-95 cursor-pointer"
             }`}
             title={
               isOutOfStock

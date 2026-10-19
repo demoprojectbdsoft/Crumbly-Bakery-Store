@@ -11,7 +11,7 @@ const FEATURES = [
   {
     icon: Truck,
     title: "Fast Delivery",
-    desc: "Free shipping on all orders over $50 with guaranteed timely delivery.",
+    desc: "Free shipping on qualifying orders with guaranteed timely delivery across the globe.",
   },
   {
     icon: ShieldCheck,
@@ -62,15 +62,15 @@ export default function AboutPage() {
           return (
             <div
               key={item.title}
-              className="p-6 rounded-2xl border border-gray-200/80 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition-shadow space-y-3"
+              className="p-6 rounded-2xl border border-[var(--border-color)] bg-[var(--surface-elevated)] shadow-sm hover:shadow-md transition-shadow space-y-3"
             >
               <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
                 <Icon className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white">
+              <h3 className="text-base font-bold text-[var(--foreground)]">
                 {item.title}
               </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+              <p className="text-xs text-[var(--foreground-muted)] leading-relaxed">
                 {item.desc}
               </p>
             </div>
@@ -79,16 +79,16 @@ export default function AboutPage() {
       </div>
 
       {/* CTA Box */}
-      <div className="rounded-2xl bg-gradient-to-r from-primary to-blue-700 text-white p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+      <div className="rounded-2xl bg-gradient-primary text-white p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl shadow-primary/20">
         <div className="space-y-2 text-center md:text-left">
           <h2 className="text-2xl md:text-3xl font-bold">Ready to explore our latest arrivals?</h2>
-          <p className="text-xs md:text-sm text-blue-100 max-w-xl">
+          <p className="text-xs md:text-sm text-white/80 max-w-xl">
             Browse our wide selection of consumer tech, laptops, smartphones, and gaming consoles today.
           </p>
         </div>
         <Link
           href="/shop"
-          className="px-6 py-3.5 rounded-full bg-white text-primary font-bold text-xs md:text-sm hover:bg-gray-100 transition-colors shrink-0 flex items-center gap-2"
+          className="px-6 py-3.5 rounded-full bg-white text-primary font-bold text-xs md:text-sm hover:bg-white/90 transition-colors shrink-0 flex items-center gap-2 cursor-pointer"
         >
           <span>Shop Now</span>
           <ArrowRight className="w-4 h-4" />

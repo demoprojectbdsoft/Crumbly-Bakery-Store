@@ -169,7 +169,7 @@ export default function OverviewClient({
           </div>
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
             Admin{" "}
-            <span className="bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-primary via-primary-hover to-secondary bg-clip-text text-transparent">
               Overview
             </span>
           </h1>
@@ -181,7 +181,7 @@ export default function OverviewClient({
         <div className="flex items-center gap-2.5">
           <button
             onClick={handleExportAnalytics}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white text-xs font-bold shadow-md shadow-sky-500/20 transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:from-sky-600 hover:to-blue-700 text-white text-xs font-bold shadow-md shadow-primary/20 transition-all cursor-pointer"
           >
             <Download className="w-4 h-4" />
             <span>Export Analytics</span>
@@ -196,21 +196,21 @@ export default function OverviewClient({
           return (
             <div
               key={idx}
-              className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4 relative overflow-hidden group"
+              className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4 relative overflow-hidden group"
             >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-sky-500/5 to-transparent rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform" />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/10 via-primary-hover/5 to-transparent rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform" />
               
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-gray-500 dark:text-gray-400">
+                <span className="text-xs font-bold text-[var(--foreground-muted)]">
                   {stat.title}
                 </span>
-                <div className="p-2.5 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 border border-sky-100 dark:border-sky-900/40 group-hover:bg-sky-500 group-hover:text-white transition-colors">
+                <div className="p-2.5 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 text-primary border border-primary/20 group-hover:from-primary group-hover:to-primary-hover group-hover:text-white transition-all shadow-xs">
                   <IconComponent className="w-4 h-4" />
                 </div>
               </div>
 
               <div>
-                <div className="text-2xl lg:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
+                <div className="text-2xl lg:text-3xl font-black text-[var(--foreground)] tracking-tight">
                   {stat.value}
                 </div>
                 <div className="flex items-center gap-1.5 mt-2">
@@ -236,14 +236,14 @@ export default function OverviewClient({
       </div>
 
       {/* ── KPI Highlight Banner ── */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-2xl bg-gradient-to-r from-sky-50 via-blue-50/50 to-indigo-50 dark:from-sky-950/30 dark:via-blue-950/20 dark:to-indigo-950/30 border border-sky-100 dark:border-sky-900/40">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-2xl bg-gradient-to-r from-primary/10 via-primary/5 to-secondary/10 border border-primary/20">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-sky-500/10 text-sky-600 dark:text-sky-400">
+          <div className="p-2 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 text-primary">
             <Activity className="w-4 h-4" />
           </div>
           <div>
-            <p className="text-[11px] font-medium text-gray-500 dark:text-gray-400">Avg. Order Value</p>
-            <p className="text-sm font-extrabold text-gray-900 dark:text-white">${kpis.avgOrderValue.toFixed(2)}</p>
+            <p className="text-[11px] font-medium text-[var(--foreground-muted)]">Avg. Order Value</p>
+            <p className="text-sm font-extrabold text-[var(--foreground)]">${kpis.avgOrderValue.toFixed(2)}</p>
           </div>
         </div>
 
@@ -316,9 +316,9 @@ export default function OverviewClient({
 
         {/* KPI Row */}
         <div className="grid grid-cols-3 gap-4">
-          <div className="p-3 rounded-xl bg-sky-50 dark:bg-sky-950/30 border border-sky-100 dark:border-sky-900/40">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-sky-500">Total Revenue</p>
-            <p className="text-lg font-black text-gray-900 dark:text-white mt-0.5">
+          <div className="p-3 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/20">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-primary">Total Revenue</p>
+            <p className="text-lg font-black text-[var(--foreground)] mt-0.5">
               ${kpis.totalProfit != null
                 ? (profitChartData?.reduce((s, d) => s + d.revenue, 0) ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
                 : "0.00"}
@@ -326,7 +326,7 @@ export default function OverviewClient({
           </div>
           <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-100 dark:border-rose-900/40">
             <p className="text-[10px] font-bold uppercase tracking-wider text-rose-500">Total Cost</p>
-            <p className="text-lg font-black text-gray-900 dark:text-white mt-0.5">
+            <p className="text-lg font-black text-[var(--foreground)] mt-0.5">
               ${(profitChartData?.reduce((s, d) => s + d.cost, 0) ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
           </div>
@@ -338,7 +338,7 @@ export default function OverviewClient({
             <p className={`text-[10px] font-bold uppercase tracking-wider ${kpis.totalProfit >= 0 ? "text-emerald-500" : "text-amber-500"}`}>
               {kpis.totalProfit >= 0 ? "Net Profit" : "Net Loss"}
             </p>
-            <p className="text-lg font-black text-gray-900 dark:text-white mt-0.5">
+            <p className="text-lg font-black text-[var(--foreground)] mt-0.5">
               ${kpis.totalProfit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               <span className="ml-1.5 text-xs font-semibold text-gray-400">({kpis.profitMargin}%)</span>
             </p>
@@ -352,8 +352,8 @@ export default function OverviewClient({
               <defs>
                 {/* Sell Price (Revenue) gradient */}
                 <linearGradient id="sellAreaGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#0284c7" stopOpacity={0.22} />
-                  <stop offset="95%" stopColor="#0284c7" stopOpacity={0.0} />
+                  <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.25} />
+                  <stop offset="95%" stopColor="var(--primary-hover)" stopOpacity={0.0} />
                 </linearGradient>
                 {/* Invest Price (Cost) gradient */}
                 <linearGradient id="investAreaGrad" x1="0" y1="0" x2="0" y2="1">
@@ -409,15 +409,15 @@ export default function OverviewClient({
                 }
                 wrapperStyle={{ fontSize: "11px", paddingTop: "10px" }}
               />
-              {/* Sell Price line — blue, thick */}
+              {/* Sell Price line — gradient primary */}
               <Line
                 type="monotone"
                 dataKey="revenue"
                 name="revenue"
-                stroke="#0284c7"
+                stroke="var(--primary)"
                 strokeWidth={2.5}
-                dot={{ r: 3, fill: "#0284c7", strokeWidth: 0 }}
-                activeDot={{ r: 6, fill: "#0284c7", strokeWidth: 2, stroke: "#fff" }}
+                dot={{ r: 3, fill: "var(--primary)", strokeWidth: 0 }}
+                activeDot={{ r: 6, fill: "var(--primary-hover)", strokeWidth: 2, stroke: "#fff" }}
               />
               {/* Invest Price line — red, dashed */}
               <Line
@@ -471,7 +471,7 @@ export default function OverviewClient({
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400">
+                <div className="p-1.5 rounded-lg bg-primary/10 text-primary">
                   <BarChart3 className="w-4 h-4" />
                 </div>
                 <h3 className="text-base font-bold text-gray-900 dark:text-white">
@@ -516,8 +516,8 @@ export default function OverviewClient({
               <AreaChart data={revenueData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                 <defs>
                   <linearGradient id="adminRevenueGlow" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#0284c7" stopOpacity={0.45} />
-                    <stop offset="95%" stopColor="#0284c7" stopOpacity={0.0} />
+                    <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.45} />
+                    <stop offset="95%" stopColor="var(--primary-hover)" stopOpacity={0.0} />
                   </linearGradient>
                   <linearGradient id="adminOrdersGlow" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#6366f1" stopOpacity={0.35} />
@@ -569,7 +569,7 @@ export default function OverviewClient({
                     type="monotone"
                     dataKey="revenue"
                     name="revenue"
-                    stroke="#0284c7"
+                    stroke="var(--primary)"
                     strokeWidth={3}
                     fillOpacity={1}
                     fill="url(#adminRevenueGlow)"
@@ -605,7 +605,7 @@ export default function OverviewClient({
             </div>
             <Link
               href="/dashboard/admin/orders"
-              className="font-bold text-sky-600 dark:text-sky-400 hover:underline flex items-center gap-1"
+              className="font-bold text-primary hover:underline flex items-center gap-1"
             >
               <span>View All Orders</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -779,7 +779,7 @@ export default function OverviewClient({
             </div>
             <Link
               href="/dashboard/admin/transactions"
-              className="text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline"
+              className="text-xs font-bold text-primary hover:underline"
             >
               Transactions
             </Link>
@@ -858,7 +858,7 @@ export default function OverviewClient({
             </div>
             <Link
               href="/dashboard/admin/products"
-              className="text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline flex items-center gap-1"
+              className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
             >
               <span>Manage Products</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -869,7 +869,7 @@ export default function OverviewClient({
             {topProducts.map((p, idx) => (
               <div
                 key={p.id || idx}
-                className="group p-4 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-800/30 hover:border-sky-500/30 hover:shadow-sm transition-all flex flex-col justify-between"
+                className="group p-4 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-800/30 hover:border-primary/30 hover:shadow-sm transition-all flex flex-col justify-between"
               >
                 <div>
                   <div className="relative w-full h-28 mb-3 bg-white dark:bg-gray-800 rounded-lg overflow-hidden flex items-center justify-center p-2">
@@ -887,7 +887,7 @@ export default function OverviewClient({
                       #{idx + 1}
                     </span>
                   </div>
-                  <p className="text-[11px] font-semibold text-sky-600 dark:text-sky-400 uppercase tracking-wider">
+                  <p className="text-[11px] font-semibold text-primary uppercase tracking-wider">
                     {p.category}
                   </p>
                   <h4 className="text-xs font-bold text-gray-900 dark:text-white line-clamp-2 mt-0.5">
@@ -1080,7 +1080,7 @@ export default function OverviewClient({
 
                           {/* Category */}
                           <td className="py-3.5">
-                            <span className="px-2 py-0.5 rounded-md bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-400 text-[10px] font-bold">
+                            <span className="px-2 py-0.5 rounded-md bg-primary/10 text-primary text-[10px] font-bold">
                               {item.category}
                             </span>
                           </td>
@@ -1158,7 +1158,7 @@ export default function OverviewClient({
           </div>
           <Link
             href="/dashboard/admin/orders"
-            className="text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline flex items-center gap-1"
+            className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
           >
             <span>View All ({recentOrders.length})</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -1190,7 +1190,7 @@ export default function OverviewClient({
                     key={order.id || i}
                     className="hover:bg-slate-50/70 dark:hover:bg-gray-800/40 transition-colors"
                   >
-                    <td className="py-3.5 pl-2 font-bold text-sky-600 dark:text-sky-400 font-mono">
+                    <td className="py-3.5 pl-2 font-bold text-primary font-mono">
                       {order.id}
                     </td>
                     <td className="py-3.5">
@@ -1211,7 +1211,7 @@ export default function OverviewClient({
                           order.status === "Completed" || order.status === "Delivered"
                             ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-800/40"
                             : order.status === "Processing" || order.status === "Shipped"
-                            ? "bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 border border-sky-200/50 dark:border-sky-800/40"
+                            ? "bg-primary/10 text-primary border border-sky-200/50 dark:border-sky-800/40"
                             : order.status === "Pending"
                             ? "bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-200/50 dark:border-amber-800/40"
                             : "bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200/50 dark:border-rose-800/40"

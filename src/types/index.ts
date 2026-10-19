@@ -186,6 +186,77 @@ export interface SubCategory {
   isActive?: boolean;
 }
 
+// ─── Site Settings (CMS / Branding) ──────────────────────────────────────────
+export interface SiteColorPalette {
+  primary: string;
+  primaryDark: string;
+  secondary: string;
+  accent: string;
+  background: string;
+  backgroundDark: string;
+  surface: string;
+  surfaceDark: string;
+  topBarFrom: string;
+  topBarVia: string;
+  topBarTo: string;
+}
+
+export interface SiteLogoSet {
+  light: string;
+  dark: string;
+}
+
+export interface SiteTopBarItem {
+  label: string;
+  href: string;
+}
+
+export interface SiteSocialLink {
+  platform: string;
+  url: string;
+}
+
+export interface SiteShippingConfig {
+  freeShippingEnabled: boolean;
+  freeShippingThreshold: number;
+  standardDeliveryFee: number;
+  expressDeliveryFee: number;
+  estimatedDeliveryDays: string;
+}
+
+export interface SiteTypographyConfig {
+  primaryFont: string;
+  headingFont: string;
+  baseFontSize?: string;
+}
+
+export interface SiteSettingsData {
+  _id?: string;
+  siteName: string;
+  siteTagline: string;
+  storeType: string;
+  supportEmail: string;
+  supportPhone: string;
+  address: string;
+  metaTitle: string;
+  metaDescription: string;
+  topBarText: string;
+  topBarEnabled: boolean;
+  topBarItems: SiteTopBarItem[];
+  logoType: "both" | "img" | "text";
+  navbarLogo: SiteLogoSet;
+  footerLogo: SiteLogoSet;
+  faviconUrl: string;
+  colorPalette: SiteColorPalette;
+  typography: SiteTypographyConfig;
+  shipping: SiteShippingConfig;
+  socialLinks: SiteSocialLink[];
+  currency: string;
+  timezone: string;
+  maintenanceMode: boolean;
+  footerCopyright: string;
+}
+
 // ─── Page Specific Types (Re-exports) ─────────────────────────────────────────
 export * from "./home";
 export * from "./adminDashboard";

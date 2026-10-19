@@ -226,8 +226,8 @@ export default function CustomerOverviewClient({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse" />
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary/10 text-primary border border-primary/20">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
               Live Shopping Hub
             </span>
             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
@@ -237,7 +237,7 @@ export default function CustomerOverviewClient({
           </div>
           <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
             Customer{" "}
-            <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
+            <span className="text-gradient-primary">
               Overview
             </span>
           </h1>
@@ -251,13 +251,13 @@ export default function CustomerOverviewClient({
             href="/dashboard/customer/analytics"
             className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700 text-xs font-bold text-gray-700 dark:text-gray-200 transition-colors"
           >
-            <Activity className="w-4 h-4 text-sky-500" />
+            <Activity className="w-4 h-4 text-primary" />
             <span>Detailed Analytics</span>
           </Link> */}
 
           <Button
             onClick={handleExportReport}
-            className="self-start sm:self-auto bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white text-xs font-bold shadow-md shadow-sky-500/20 transition-all cursor-pointer h-10 px-4 rounded-xl flex items-center gap-2"
+            className="self-start sm:self-auto bg-primary hover:bg-primary-hover text-white text-xs font-bold shadow-md shadow-primary/20 transition-all cursor-pointer h-10 px-4 rounded-xl flex items-center gap-2"
           >
             <Download className="w-4 h-4" />
             <span>Export Report</span>
@@ -272,15 +272,15 @@ export default function CustomerOverviewClient({
           return (
             <Card
               key={idx}
-              className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4 relative overflow-hidden group"
+              className="bg-[var(--surface)] border border-[var(--border-color)] rounded-2xl p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4 relative overflow-hidden group"
             >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-sky-500/5 to-transparent rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform" />
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/5 to-transparent rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform" />
 
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-gray-500 dark:text-gray-400">
                   {stat.title}
                 </span>
-                <div className="p-2.5 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 border border-sky-100 dark:border-sky-900/40 group-hover:bg-sky-500 group-hover:text-white transition-colors">
+                <div className="p-2.5 rounded-xl bg-primary/10 text-primary border border-primary/20 group-hover:bg-primary group-hover:text-white transition-colors">
                   <IconComponent className="w-4 h-4" />
                 </div>
               </div>
@@ -314,11 +314,11 @@ export default function CustomerOverviewClient({
       {/* ── Charts Grid Row 1: Graph 1 (Spending Activity) & Graph 2 (Category Breakdown) ── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* GRAPH 1: Monthly Spending Activity (Area Chart) */}
-        <Card className="lg:col-span-2 bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-4">
+        <Card className="lg:col-span-2 bg-[var(--surface)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-lg bg-sky-500/10 text-sky-600 dark:text-sky-400">
+                <div className="p-1.5 rounded-lg bg-primary/10 text-primary">
                   <BarChart3 className="w-4 h-4" />
                 </div>
                 <h3 className="text-base font-bold text-gray-900 dark:text-white">
@@ -334,7 +334,7 @@ export default function CustomerOverviewClient({
               <button
                 onClick={() => setActiveSpendingView("both")}
                 className={`px-2.5 py-1 rounded-md font-semibold transition-all cursor-pointer ${
-                  activeSpendingView === "both" ? "bg-white dark:bg-gray-900 text-sky-600 shadow-xs" : "text-gray-500"
+                  activeSpendingView === "both" ? "bg-[var(--surface)] text-primary shadow-xs" : "text-gray-500"
                 }`}
               >
                 All
@@ -342,7 +342,7 @@ export default function CustomerOverviewClient({
               <button
                 onClick={() => setActiveSpendingView("spending")}
                 className={`px-2.5 py-1 rounded-md font-semibold transition-all cursor-pointer ${
-                  activeSpendingView === "spending" ? "bg-white dark:bg-gray-900 text-sky-600 shadow-xs" : "text-gray-500"
+                  activeSpendingView === "spending" ? "bg-[var(--surface)] text-primary shadow-xs" : "text-gray-500"
                 }`}
               >
                 Spent ($)
@@ -350,7 +350,7 @@ export default function CustomerOverviewClient({
               <button
                 onClick={() => setActiveSpendingView("orders")}
                 className={`px-2.5 py-1 rounded-md font-semibold transition-all cursor-pointer ${
-                  activeSpendingView === "orders" ? "bg-white dark:bg-gray-900 text-indigo-600 shadow-xs" : "text-gray-500"
+                  activeSpendingView === "orders" ? "bg-[var(--surface)] text-indigo-600 shadow-xs" : "text-gray-500"
                 }`}
               >
                 Orders
@@ -363,8 +363,8 @@ export default function CustomerOverviewClient({
               <AreaChart data={spendingData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                 <defs>
                   <linearGradient id="customerSpendingGlow" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#0284c7" stopOpacity={0.4} />
-                    <stop offset="95%" stopColor="#0284c7" stopOpacity={0.0} />
+                    <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="var(--primary-hover)" stopOpacity={0.0} />
                   </linearGradient>
                   <linearGradient id="customerOrdersGlow" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
@@ -415,7 +415,7 @@ export default function CustomerOverviewClient({
                     type="monotone"
                     dataKey="amount"
                     name="amount"
-                    stroke="#0284c7"
+                    stroke="var(--primary)"
                     strokeWidth={3}
                     fillOpacity={1}
                     fill="url(#customerSpendingGlow)"
@@ -441,7 +441,7 @@ export default function CustomerOverviewClient({
           <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-gray-800 text-xs">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded-full bg-sky-500" />
+                <span className="w-3 h-3 rounded-full bg-primary" />
                 <span className="text-gray-600 dark:text-gray-300 font-semibold">Net Spend</span>
               </div>
               <div className="flex items-center gap-1.5">
@@ -451,7 +451,7 @@ export default function CustomerOverviewClient({
             </div>
             <Link
               href="/dashboard/customer/orders"
-              className="font-bold text-sky-600 dark:text-sky-400 hover:underline flex items-center gap-1"
+              className="font-bold text-primary hover:underline flex items-center gap-1"
             >
               <span>Order History</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -460,7 +460,7 @@ export default function CustomerOverviewClient({
         </Card>
 
         {/* GRAPH 2: Category Purchase Breakdown (Donut Chart) */}
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs flex flex-col justify-between space-y-4">
+        <Card className="bg-[var(--surface)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs flex flex-col justify-between space-y-4">
           <div>
             <div className="flex items-center gap-2">
               <div className="p-1.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400">
@@ -539,7 +539,7 @@ export default function CustomerOverviewClient({
       {/* ── Charts Grid Row 2: Graph 3 (Spending vs Savings) & Graph 4 (Order Fulfillment & Gateways) ── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* GRAPH 3: Spending vs Promo Savings (Dual Bar Chart) */}
-        <Card className="lg:col-span-2 bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-4">
+        <Card className="lg:col-span-2 bg-[var(--surface)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <div className="flex items-center gap-2">
@@ -556,7 +556,7 @@ export default function CustomerOverviewClient({
             </div>
             <div className="flex items-center gap-4 text-xs font-semibold">
               <div className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded-md bg-sky-600" />
+                <span className="w-3 h-3 rounded-md bg-primary" />
                 <span className="text-gray-600 dark:text-gray-300">Spent ($)</span>
               </div>
               <div className="flex items-center gap-1.5">
@@ -594,7 +594,7 @@ export default function CustomerOverviewClient({
                     String(name) === "spending" ? "Spent" : "Savings",
                   ]}
                 />
-                <Bar dataKey="spending" name="spending" fill="#0284c7" radius={[6, 6, 0, 0]} />
+                <Bar dataKey="spending" name="spending" fill="var(--primary)" radius={[6, 6, 0, 0]} />
                 <Bar dataKey="savings" name="savings" fill="#10b981" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
@@ -602,7 +602,7 @@ export default function CustomerOverviewClient({
         </Card>
 
         {/* GRAPH 4: Order Fulfillment Journey & Delivery Status */}
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs flex flex-col justify-between space-y-4">
+        <Card className="bg-[var(--surface)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs flex flex-col justify-between space-y-4">
           <div>
             <div className="flex items-center gap-2">
               <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
@@ -677,9 +677,9 @@ export default function CustomerOverviewClient({
 
       {/* ── GRAPH 5 / Payment Channels Row (Bonus real-time insight) ── */}
       {paymentMethodData.length > 0 && (
-        <div className="p-4 rounded-2xl bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border-color)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 border border-sky-100 dark:border-sky-900/40">
+            <div className="p-2.5 rounded-xl bg-primary/10 text-primary border border-primary/20">
               <Wallet className="w-5 h-5" />
             </div>
             <div>
@@ -713,7 +713,7 @@ export default function CustomerOverviewClient({
           </div>
           <Link
             href="/dashboard/customer/orders"
-            className="text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline flex items-center gap-1"
+            className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
           >
             <span>View All Orders ({recentOrders.length})</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -721,7 +721,7 @@ export default function CustomerOverviewClient({
         </div>
 
         {recentOrders.length === 0 ? (
-          <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-8 text-center space-y-3">
+          <Card className="bg-[var(--surface)] border border-[var(--border-color)] rounded-2xl p-8 text-center space-y-3">
             <ShoppingBag className="w-10 h-10 text-gray-400 mx-auto" />
             <p className="text-sm font-bold text-gray-700 dark:text-gray-300">No orders placed yet</p>
             <p className="text-xs text-gray-400 max-w-sm mx-auto">
@@ -729,7 +729,7 @@ export default function CustomerOverviewClient({
             </p>
             <Link
               href="/shop"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-sky-600 text-white text-xs font-bold shadow-xs hover:bg-sky-700 transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold shadow-xs hover:bg-primary-hover transition-colors"
             >
               <span>Explore Products</span>
             </Link>
@@ -744,11 +744,11 @@ export default function CustomerOverviewClient({
               return (
                 <Card
                   key={order.id}
-                  className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4"
+                  className="bg-[var(--surface)] border border-[var(--border-color)] rounded-2xl p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4"
                 >
                   <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-gray-800">
                     <div>
-                      <span className="text-xs font-bold font-mono text-sky-600 dark:text-sky-400">
+                      <span className="text-xs font-bold font-mono text-primary">
                         {order.orderNumber}
                       </span>
                       <p className="text-[11px] text-gray-400">{order.date}</p>
@@ -759,13 +759,13 @@ export default function CustomerOverviewClient({
                         isDelivered
                           ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-800/40"
                           : isShipped
-                          ? "bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 border border-sky-200/50 dark:border-sky-800/40"
+                          ? "bg-primary/10 text-primary border border-primary/20"
                           : isProcessing
                           ? "bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200/50 dark:border-indigo-800/40"
                           : "bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200/50 dark:border-rose-800/40"
                       }`}
                     >
-                      {isShipped && <span className="w-1.5 h-1.5 rounded-full bg-sky-500 animate-ping" />}
+                      {isShipped && <span className="w-1.5 h-1.5 rounded-full bg-primary animate-ping" />}
                       {isDelivered && <CheckCircle2 className="w-3 h-3" />}
                       {order.status}
                     </span>
@@ -798,7 +798,7 @@ export default function CustomerOverviewClient({
                       </div>
                     ))}
                     {order.items.length > 2 && (
-                      <p className="text-[11px] font-semibold text-sky-600 dark:text-sky-400">
+                      <p className="text-[11px] font-semibold text-primary">
                         +{order.items.length - 2} more item(s)
                       </p>
                     )}
@@ -814,7 +814,7 @@ export default function CustomerOverviewClient({
 
                     <Button
                       onClick={() => setSelectedOrderForTracking(order)}
-                      className="text-xs font-bold bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 border border-sky-200/60 dark:border-sky-800/60 hover:bg-sky-500 hover:text-white transition-all h-8 px-3 rounded-lg"
+                      className="text-xs font-bold bg-primary/10 text-primary border border-primary/20 hover:bg-primary hover:text-white transition-all h-8 px-3 rounded-lg"
                     >
                       <Truck className="w-3.5 h-3.5 mr-1" />
                       <span>Track Order</span>
@@ -830,7 +830,7 @@ export default function CustomerOverviewClient({
       {/* ── Wishlist Quick Preview & Recent Transactions Row ── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Wishlist Preview */}
-        <Card className="lg:col-span-2 bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-4">
+        <Card className="lg:col-span-2 bg-[var(--surface)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400">
@@ -842,7 +842,7 @@ export default function CustomerOverviewClient({
             </div>
             <Link
               href="/dashboard/customer/wishlist"
-              className="text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline flex items-center gap-1"
+              className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
             >
               <span>View Full Wishlist</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -859,7 +859,7 @@ export default function CustomerOverviewClient({
               {wishlist.slice(0, 4).map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center gap-3 p-3 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-800/30 hover:border-sky-500/30 transition-all"
+                  className="flex items-center gap-3 p-3 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-800/30 hover:border-primary/30 transition-all"
                 >
                   <div className="relative w-14 h-14 rounded-lg bg-white dark:bg-gray-800 shrink-0 overflow-hidden flex items-center justify-center p-1 border border-slate-200/60 dark:border-gray-700">
                     {item.image ? (
@@ -892,7 +892,7 @@ export default function CustomerOverviewClient({
 
                   <Button
                     onClick={() => handleAddToCart(item)}
-                    className="p-2 h-8 w-8 min-w-8 rounded-lg bg-sky-600 hover:bg-sky-700 text-white shrink-0 cursor-pointer shadow-xs"
+                    className="p-2 h-8 w-8 min-w-8 rounded-lg bg-primary hover:bg-primary-hover text-white shrink-0 cursor-pointer shadow-xs"
                     aria-label="Add to Cart"
                   >
                     <ShoppingCart className="w-3.5 h-3.5" />
@@ -904,7 +904,7 @@ export default function CustomerOverviewClient({
         </Card>
 
         {/* Recent Transactions List */}
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs flex flex-col justify-between space-y-4">
+        <Card className="bg-[var(--surface)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs flex flex-col justify-between space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
@@ -916,7 +916,7 @@ export default function CustomerOverviewClient({
             </div>
             <Link
               href="/dashboard/customer/transactions"
-              className="text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline"
+              className="text-xs font-bold text-primary hover:underline"
             >
               View All
             </Link>
@@ -952,7 +952,7 @@ export default function CustomerOverviewClient({
 
           <div className="pt-3 border-t border-slate-100 dark:border-gray-800 flex items-center justify-between text-xs">
             <span className="text-gray-400">Lifetime Checkout Total</span>
-            <span className="font-extrabold text-sky-600 dark:text-sky-400">${totalSpentAll.toFixed(2)}</span>
+            <span className="font-extrabold text-primary">${totalSpentAll.toFixed(2)}</span>
           </div>
         </Card>
       </div>
@@ -960,11 +960,11 @@ export default function CustomerOverviewClient({
       {/* ── Interactive Order Tracking Modal ── */}
       {selectedOrderForTracking && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-3xl p-6 max-w-lg w-full shadow-2xl space-y-6">
+          <div className="bg-[var(--surface)] border border-slate-200 dark:border-gray-800 rounded-3xl p-6 max-w-lg w-full shadow-2xl space-y-6">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-gray-800">
               <div>
                 <div className="flex items-center gap-2">
-                  <Truck className="w-5 h-5 text-sky-600" />
+                  <Truck className="w-5 h-5 text-primary" />
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                     Tracking {selectedOrderForTracking.orderNumber}
                   </h3>
@@ -983,16 +983,16 @@ export default function CustomerOverviewClient({
             </div>
 
             {/* Timeline progression */}
-            <div className="space-y-4 relative pl-6 border-l-2 border-sky-500/30 ml-2">
+            <div className="space-y-4 relative pl-6 border-l-2 border-primary/30 ml-2">
               {selectedOrderForTracking.timeline.map((step, idx) => (
                 <div key={idx} className="relative">
                   <div
                     className={`absolute -left-[31px] top-0.5 w-4 h-4 rounded-full border-2 ${
                       step.completed
-                        ? "bg-sky-500 border-sky-500 text-white"
+                        ? "bg-primary border-primary text-white"
                         : step.current
-                        ? "bg-white dark:bg-gray-900 border-sky-500 animate-pulse"
-                        : "bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700"
+                        ? "bg-[var(--surface)] border-primary animate-pulse"
+                        : "bg-[var(--surface)] border-gray-300 dark:border-gray-700"
                     }`}
                   />
                   <div>
@@ -1019,7 +1019,7 @@ export default function CustomerOverviewClient({
 
             <Button
               onClick={() => setSelectedOrderForTracking(null)}
-              className="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs h-10 rounded-xl"
+              className="w-full bg-primary hover:bg-primary-hover text-white font-bold text-xs h-10 rounded-xl"
             >
               Close Tracker
             </Button>

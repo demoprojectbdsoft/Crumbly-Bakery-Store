@@ -9,7 +9,7 @@ const BRANDS: BrandType[] = [
     id: "1",
     name: "Airbnb",
     renderLogo: () => (
-      <div className="flex items-center gap-1.5 font-bold tracking-tight text-xl text-slate-400 dark:text-gray-500 hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+      <div className="flex items-center gap-1.5 font-bold tracking-tight text-xl text-slate-400 dark:text-gray-500 hover:text-primary transition-colors">
         <span className="text-2xl font-black">Δ</span>
         <span>airbnb</span>
       </div>
@@ -19,7 +19,7 @@ const BRANDS: BrandType[] = [
     id: "2",
     name: "Coinbase",
     renderLogo: () => (
-      <div className="font-semibold text-xl tracking-tighter text-slate-400 dark:text-gray-500 hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+      <div className="font-semibold text-xl tracking-tighter text-slate-400 dark:text-gray-500 hover:text-primary transition-colors">
         coin<span className="font-bold">base</span>
       </div>
     ),
@@ -28,7 +28,7 @@ const BRANDS: BrandType[] = [
     id: "3",
     name: "Dribbble",
     renderLogo: () => (
-      <div className="font-serif italic text-2xl tracking-normal text-slate-400 dark:text-gray-500 hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+      <div className="font-serif italic text-2xl tracking-normal text-slate-400 dark:text-gray-500 hover:text-primary transition-colors">
         dribbble
       </div>
     ),
@@ -37,7 +37,7 @@ const BRANDS: BrandType[] = [
     id: "4",
     name: "Instagram",
     renderLogo: () => (
-      <div className="font-serif text-2xl tracking-wide text-slate-400 dark:text-gray-500 hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+      <div className="font-serif text-2xl tracking-wide text-slate-400 dark:text-gray-500 hover:text-primary transition-colors">
         Instagram
       </div>
     ),
@@ -46,7 +46,7 @@ const BRANDS: BrandType[] = [
     id: "5",
     name: "Netflix",
     renderLogo: () => (
-      <div className="font-black text-2xl tracking-widest uppercase text-slate-400 dark:text-gray-500 hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+      <div className="font-black text-2xl tracking-widest uppercase text-slate-400 dark:text-gray-500 hover:text-primary transition-colors">
         NETFLIX
       </div>
     ),
@@ -56,7 +56,7 @@ const BRANDS: BrandType[] = [
     id: "6",
     name: "Spotify",
     renderLogo: () => (
-      <div className="flex items-center gap-1 font-extrabold text-2xl tracking-tighter text-slate-400 dark:text-gray-500 hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+      <div className="flex items-center gap-1 font-extrabold text-2xl tracking-tighter text-slate-400 dark:text-gray-500 hover:text-primary transition-colors">
         <span>Spotify</span>
         <span className="w-1.5 h-1.5 rounded-full bg-current mb-3" />
       </div>
@@ -66,7 +66,7 @@ const BRANDS: BrandType[] = [
     id: "7",
     name: "Slack",
     renderLogo: () => (
-      <div className="font-black text-2xl tracking-tight text-slate-400 dark:text-gray-500 hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+      <div className="font-black text-2xl tracking-tight text-slate-400 dark:text-gray-500 hover:text-primary transition-colors">
         #slack
       </div>
     ),
@@ -75,7 +75,7 @@ const BRANDS: BrandType[] = [
     id: "8",
     name: "Stripe",
     renderLogo: () => (
-      <div className="font-black text-2xl tracking-tight text-slate-400 dark:text-gray-500 hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+      <div className="font-black text-2xl tracking-tight text-slate-400 dark:text-gray-500 hover:text-primary transition-colors">
         stripe
       </div>
     ),
@@ -84,7 +84,7 @@ const BRANDS: BrandType[] = [
     id: "9",
     name: "Shopify",
     renderLogo: () => (
-      <div className="font-bold text-xl tracking-wide text-slate-400 dark:text-gray-500 hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+      <div className="font-bold text-xl tracking-wide text-slate-400 dark:text-gray-500 hover:text-primary transition-colors">
         shopify<span className="font-light">.</span>
       </div>
     ),
@@ -93,7 +93,7 @@ const BRANDS: BrandType[] = [
     id: "10",
     name: "Discord",
     renderLogo: () => (
-      <div className="font-black text-xl tracking-wider uppercase text-slate-400 dark:text-gray-500 hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+      <div className="font-black text-xl tracking-wider uppercase text-slate-400 dark:text-gray-500 hover:text-primary transition-colors">
         DISCORD
       </div>
     ),
@@ -102,7 +102,7 @@ const BRANDS: BrandType[] = [
     id: "11",
     name: "Figma",
     renderLogo: () => (
-      <div className="font-serif italic text-2xl tracking-tight text-slate-400 dark:text-gray-500 hover:text-sky-600 dark:hover:text-sky-400 transition-colors">
+      <div className="font-serif italic text-2xl tracking-tight text-slate-400 dark:text-gray-500 hover:text-primary transition-colors">
         Figma
       </div>
     ),

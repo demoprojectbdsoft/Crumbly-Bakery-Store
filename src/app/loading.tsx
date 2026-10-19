@@ -1,52 +1,183 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
+
+/** Resolves human-friendly page context from the active URL */
+function getPageLabel(pathname: string | null): { label: string; emoji: string } {
+  if (!pathname || pathname === "/") return { label: "Storefront", emoji: "🏪" };
+  if (pathname.startsWith("/shop/")) return { label: "Product Details", emoji: "📦" };
+  if (pathname.startsWith("/shop")) return { label: "Products Catalog", emoji: "🛍️" };
+  if (pathname.startsWith("/cart")) return { label: "Shopping Cart", emoji: "🛒" };
+  if (pathname.startsWith("/checkout")) return { label: "Secure Checkout", emoji: "🔒" };
+  if (pathname.startsWith("/order-success")) return { label: "Order Receipt", emoji: "🎉" };
+  if (pathname.startsWith("/track-order")) return { label: "Order Tracking", emoji: "📍" };
+  if (pathname.startsWith("/store-locator")) return { label: "Store Locator", emoji: "🗺️" };
+  if (pathname.startsWith("/about")) return { label: "About Us", emoji: "✨" };
+  if (pathname.startsWith("/contact")) return { label: "Contact Us", emoji: "💬" };
+  if (pathname.startsWith("/dashboard/admin")) return { label: "Admin Panel", emoji: "⚙️" };
+  if (pathname.startsWith("/dashboard/customer")) return { label: "My Dashboard", emoji: "👤" };
+  if (pathname.startsWith("/dashboard")) return { label: "Dashboard", emoji: "📊" };
+  if (pathname.startsWith("/auth/login")) return { label: "Sign In", emoji: "🔑" };
+  if (pathname.startsWith("/auth/register")) return { label: "Create Account", emoji: "🚀" };
+  return { label: "Loading", emoji: "⚡" };
+}
+
 export default function Loading() {
+  const { settings } = useSiteSettings();
+  const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [dotCount, setDotCount] = useState(1);
+
+  useEffect(() => {
+    setMounted(true);
+
+    // Animate progress bar 0 → 85% quickly, then stall waiting for real load
+    const timer = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 85) { clearInterval(timer); return prev; }
+        const jump = prev < 40 ? 8 : prev < 70 ? 4 : 1;
+        return Math.min(prev + jump, 85);
+      });
+    }, 80);
+
+    // Animate dots
+    const dotTimer = setInterval(() => {
+      setDotCount((prev) => (prev >= 3 ? 1 : prev + 1));
+    }, 500);
+
+    return () => { clearInterval(timer); clearInterval(dotTimer); };
+  }, []);
+
+  const siteName = settings.siteName || "Sparq";
+  const { label: pageLabel, emoji } = mounted ? getPageLabel(pathname) : { label: "Loading", emoji: "⚡" };
+
+  // First letter of site name as monogram
+  const monogram = siteName.charAt(0).toUpperCase();
+
   return (
-    <div className="fixed inset-0 z-50 h-screen w-screen flex flex-col items-center justify-center px-4 overflow-hidden bg-gradient-to-b from-sky-50/40 via-white to-slate-50/50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
-      
-      {/* ── Ambient Background Glow ── */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-112.5 h-112.5 bg-gradient-to-tr from-sky-400/20 to-blue-600/20 dark:from-sky-500/10 dark:to-blue-600/10 rounded-full blur-3xl pointer-events-none animate-pulse" />
+    <div className="fixed inset-0 z-50 h-screen w-screen overflow-hidden bg-[var(--background)] flex flex-col items-center justify-center select-none">
 
-      {/* ── Main Loading Container ── */}
-      <div className="relative z-10 flex flex-col items-center justify-center space-y-6">
-        
-        {/* 1. Concentric Spinner Assembly */}
+      {/* ── Diagonal Grid Pattern Background ── */}
+      <div
+        className="absolute inset-0 opacity-[0.04] dark:opacity-[0.06] pointer-events-none"
+        style={{
+          backgroundImage: `linear-gradient(var(--foreground) 1px, transparent 1px), linear-gradient(90deg, var(--foreground) 1px, transparent 1px)`,
+          backgroundSize: "40px 40px",
+        }}
+      />
+
+      {/* ── Soft Corner Glow ── */}
+      <div className="absolute -top-48 -left-48 w-96 h-96 bg-primary/15 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute -bottom-48 -right-48 w-96 h-96 bg-primary/10 rounded-full blur-[100px] pointer-events-none" />
+
+      {/* ── Main Content ── */}
+      <div className="relative z-10 flex flex-col items-center gap-10 w-full max-w-xs px-6">
+
+        {/* ── Logo Block — Letter Mark + Ring ── */}
         <div className="relative flex items-center justify-center">
-          {/* Outer Ping Aura */}
-          <div className="absolute w-20 h-20 rounded-full border-2 border-sky-400/30 dark:border-sky-500/20 animate-ping opacity-75" />
+          {/* Outer rotating segmented ring */}
+          <svg
+            className="absolute w-28 h-28 animate-[spin_3s_linear_infinite]"
+            viewBox="0 0 100 100"
+            fill="none"
+          >
+            <circle cx="50" cy="50" r="45" stroke="var(--border-color)" strokeWidth="2" />
+            <circle
+              cx="50" cy="50" r="45"
+              stroke="var(--primary)"
+              strokeWidth="2.5"
+              strokeDasharray="50 232"
+              strokeLinecap="round"
+            />
+          </svg>
 
-          {/* Gradient Rotating Ring */}
-          <div className="w-16 h-16 rounded-full border-4 border-transparent border-t-sky-500 border-r-blue-600 dark:border-t-sky-400 dark:border-r-blue-500 animate-spin" />
+          {/* Inner counter-rotating arc */}
+          <svg
+            className="absolute w-20 h-20 animate-[spin_2s_linear_infinite_reverse]"
+            viewBox="0 0 100 100"
+            fill="none"
+          >
+            <circle
+              cx="50" cy="50" r="45"
+              stroke="var(--primary)"
+              strokeWidth="2"
+              strokeDasharray="20 262"
+              strokeOpacity="0.4"
+              strokeLinecap="round"
+            />
+          </svg>
 
-          {/* Inner Core */}
-          <div className="absolute w-8 h-8 rounded-full bg-gradient-to-r from-sky-500 to-blue-600 shadow-lg shadow-sky-500/40 animate-pulse" />
+          {/* Center monogram tile */}
+          <div
+            className="relative w-14 h-14 rounded-2xl flex items-center justify-center text-white font-black text-2xl shadow-xl"
+            style={{ background: "linear-gradient(135deg, var(--primary), var(--primary-hover, var(--primary)))" }}
+          >
+            {monogram}
+            {/* Shine overlay */}
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 via-transparent to-transparent" />
+          </div>
         </div>
 
-        {/* 2. Text Indicator */}
-        <div className="text-center space-y-1.5">
-          <h3 className="text-base md:text-lg font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-blue-600 to-indigo-600 dark:from-sky-400 dark:via-blue-400 dark:to-indigo-400 uppercase animate-pulse">
-            Loading Sparq
-          </h3>
-          <p className="text-xs font-medium text-gray-400 dark:text-gray-500 tracking-wider">
-            Preparing your experience...
+        {/* ── Text Block ── */}
+        <div className="flex flex-col items-center gap-3 text-center">
+          {/* Site name */}
+          <h1 className="text-3xl font-black tracking-tight text-[var(--foreground)]">
+            {siteName}
+          </h1>
+
+          {/* Page context pill */}
+          <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--surface-elevated)] border border-[var(--border-color)] shadow-xs">
+            <span className="text-sm leading-none">{emoji}</span>
+            <span className="text-xs font-semibold text-[var(--foreground-muted)] tracking-wide">
+              {pageLabel}
+            </span>
+          </div>
+
+          {/* Loading dots text */}
+          <p className="text-[11px] font-medium text-[var(--foreground-muted)] tracking-widest uppercase">
+            Loading{".".repeat(dotCount)}
           </p>
         </div>
 
-        {/* 3. Progress Shimmer Line */}
-        <div className="w-48 h-1.5 bg-sky-100 dark:bg-gray-800 rounded-full overflow-hidden relative shadow-inner">
-          <div className="absolute inset-y-0 left-0 w-full bg-gradient-to-r from-sky-500 to-blue-600 rounded-full animate-[shimmer_1.8s_infinite] -translate-x-full" />
+        {/* ── Progress Track ── */}
+        <div className="w-full space-y-2">
+          <div className="w-full h-[3px] bg-[var(--surface-alt)] rounded-full overflow-hidden">
+            <div
+              className="h-full rounded-full transition-all duration-300 ease-out"
+              style={{
+                width: `${progress}%`,
+                background: "linear-gradient(90deg, var(--primary), var(--primary-hover, var(--primary)))",
+                boxShadow: "0 0 8px var(--primary)",
+              }}
+            />
+          </div>
+          <div className="flex items-center justify-between text-[10px] text-[var(--foreground-muted)] font-medium">
+            <span>Fetching data</span>
+            <span>{progress}%</span>
+          </div>
         </div>
 
       </div>
 
-      {/* Global Inline Keyframe for Smooth 60fps Shimmer */}
-      <style jsx global>{`
-        @keyframes shimmer {
-          100% {
-            transform: translateX(100%);
-          }
-        }
-      `}</style>
+      {/* ── Bottom Tagline ── */}
+      <div className="absolute bottom-8 flex flex-col items-center gap-1.5">
+        <div className="flex items-center gap-1.5">
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className="w-1.5 h-1.5 rounded-full bg-primary animate-bounce"
+              style={{ animationDelay: `${i * 0.15}s`, animationDuration: "1s" }}
+            />
+          ))}
+        </div>
+        <p className="text-[10px] text-[var(--foreground-muted)] font-medium tracking-widest uppercase">
+          {settings.siteTagline || "Premium Store Experience"}
+        </p>
+      </div>
+
     </div>
   );
 }

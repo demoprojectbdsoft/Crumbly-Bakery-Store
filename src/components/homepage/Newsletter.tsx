@@ -29,13 +29,13 @@ export default function NewsletterBanner({
   };
 
   return (
-    <section className="w-full bg-gradient-to-r from-sky-500 via-blue-600 to-sky-600 text-white py-3.5 sm:py-4 px-3 sm:px-4 shadow-md">
+    <section className="w-full bg-gradient-to-r from-primary via-primary-hover to-primary text-white py-3.5 sm:py-4 px-3 sm:px-4 shadow-md transition-colors duration-200">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-3 sm:gap-4">
         
         {/* Left Side: Paper Plane Icon + Text Content */}
         <div className="flex items-center gap-2.5 sm:gap-3 w-full lg:w-auto text-left">
           {/* Paper Plane Icon */}
-          <div className="p-1.5 sm:p-2 rounded-full bg-white/10 backdrop-blur-xs text-white shrink-0">
+          <div className="p-1.5 sm:p-2 rounded-full bg-white/15 backdrop-blur-xs text-white shrink-0">
             <Send className="w-4 h-4 sm:w-5 sm:h-5 -rotate-12 stroke-[2]" />
           </div>
 
@@ -43,7 +43,7 @@ export default function NewsletterBanner({
             <span className="font-bold text-white text-sm sm:text-base md:text-lg tracking-tight truncate">
               Sign up to Newsletter
             </span>
-            <span className="text-sky-100 text-[11px] sm:text-xs md:text-sm font-normal">
+            <span className="text-white/85 text-[11px] sm:text-xs md:text-sm font-normal">
               ...and receive{" "}
               <strong className="font-bold text-white bg-white/20 px-1.5 py-0.5 rounded text-[10px] sm:text-xs inline-block">
                 {couponAmount} coupon
@@ -62,7 +62,7 @@ export default function NewsletterBanner({
           ) : (
             <form
               onSubmit={handleSubmit}
-              className="flex items-center w-full bg-white dark:bg-gray-900 rounded-full overflow-hidden p-0.5 sm:p-1 shadow-md border border-sky-100/30 focus-within:ring-2 focus-within:ring-white/50 transition-all"
+              className="flex items-center w-full bg-[var(--surface-elevated)] rounded-full overflow-hidden p-0.5 sm:p-1 shadow-md border border-white/20 focus-within:ring-2 focus-within:ring-white/50 transition-all"
             >
               <input
                 type="email"
@@ -70,11 +70,12 @@ export default function NewsletterBanner({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email address"
-                className="w-full px-3.5 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 bg-transparent focus:outline-none"
-              />
+                className="w-full px-3.5 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm text-[var(--foreground)] placeholder:text-[var(--foreground-muted)] bg-transparent focus:outline-none"
+              >
+              </input>
               <button
                 type="submit"
-                className="bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold px-4 sm:px-7 py-2 sm:py-2.5 rounded-full transition-colors shrink-0 cursor-pointer shadow-xs"
+                className="bg-gray-900 hover:bg-black dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 text-white text-xs sm:text-sm font-semibold px-4 sm:px-7 py-2 sm:py-2.5 rounded-full transition-colors shrink-0 cursor-pointer shadow-xs"
               >
                 SignUp
               </button>

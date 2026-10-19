@@ -41,30 +41,30 @@ export default function TrackOrderPage() {
         
         {/* ── Page Header ── */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-100/80 dark:bg-sky-950/80 text-sky-700 dark:text-sky-300 border border-sky-200/60 dark:border-sky-800/50 text-xs font-semibold tracking-wide uppercase">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-semibold tracking-wide uppercase">
             <PackageSearch className="w-4 h-4 stroke-[2.2]" />
             Order Lookup
           </div>
-          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white">
-            Track Your <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">Order</span>
+          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-[var(--foreground)]">
+            Track Your <span className="text-gradient-primary">Order</span>
           </h1>
-          <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 max-w-lg mx-auto">
+          <p className="text-sm md:text-base text-[var(--foreground-muted)] max-w-lg mx-auto">
             To track your order please enter your Order ID in the box below and press the &quot;Track Order&quot; button. This was given to you on your receipt and in the confirmation email.
           </p>
         </div>
 
         {/* ── Tracking Form Card ── */}
-        <div className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-3xl p-6 md:p-10 shadow-xs">
+        <div className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-6 md:p-10 shadow-xs">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               
               {/* Order ID Input */}
               <div className="space-y-2">
-                <label htmlFor="orderId" className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+                <label htmlFor="orderId" className="block text-xs font-bold uppercase tracking-wider text-[var(--foreground)]">
                   Order ID <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[var(--foreground-muted)]">
                     <Receipt className="w-5 h-5" />
                   </div>
                   <input
@@ -74,18 +74,18 @@ export default function TrackOrderPage() {
                     value={orderId}
                     onChange={(e) => setOrderId(e.target.value)}
                     placeholder="Found in your confirmation email. e.g. 3456"
-                    className="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-600"
+                    className="w-full pl-11 pr-4 py-3 bg-[var(--surface-alt)] border border-[var(--border-color)] rounded-2xl text-sm text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-[var(--foreground-muted)]"
                   />
                 </div>
               </div>
 
               {/* Billing Email Input */}
               <div className="space-y-2">
-                <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+                <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-[var(--foreground)]">
                   Billing Email <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                  <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[var(--foreground-muted)]">
                     <Mail className="w-5 h-5" />
                   </div>
                   <input
@@ -95,7 +95,7 @@ export default function TrackOrderPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email used during checkout"
-                    className="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-600"
+                    className="w-full pl-11 pr-4 py-3 bg-[var(--surface-alt)] border border-[var(--border-color)] rounded-2xl text-sm text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-[var(--foreground-muted)]"
                   />
                 </div>
               </div>
@@ -107,7 +107,7 @@ export default function TrackOrderPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-10 py-3.5 rounded-2xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold text-sm shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-70 group cursor-pointer"
+                className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-10 py-3.5 rounded-2xl bg-primary hover:bg-primary-hover text-white font-bold text-sm shadow-md shadow-primary/20 transition-all duration-300 disabled:opacity-70 group cursor-pointer"
               >
                 {isSubmitting ? (
                   <>
@@ -127,20 +127,20 @@ export default function TrackOrderPage() {
 
         {/* ── Results Block (Triggers when submitted) ── */}
         {hasSearched && (
-          <div className="bg-white dark:bg-gray-900 border border-sky-100 dark:border-gray-800 rounded-3xl p-6 md:p-8 shadow-xs space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-6 md:p-8 shadow-xs space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             
             {/* Status Summary Banner */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-gray-100 dark:border-gray-800">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-[var(--border-color)]">
               <div>
-                <p className="text-xs font-semibold text-sky-600 dark:text-sky-400 uppercase tracking-wider">
+                <p className="text-xs font-semibold text-primary uppercase tracking-wider">
                   Order #{orderId || "3456"}
                 </p>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-1">
-                  Status: <span className="text-sky-600 dark:text-sky-400">In Transit</span>
+                <h3 className="text-xl font-bold text-[var(--foreground)] mt-1">
+                  Status: <span className="text-primary">In Transit</span>
                 </h3>
               </div>
-              <div className="flex items-center gap-2 text-xs bg-slate-100 dark:bg-gray-800 px-3.5 py-2 rounded-xl text-gray-600 dark:text-gray-300 font-medium">
-                <Clock className="w-4 h-4 text-sky-500" />
+              <div className="flex items-center gap-2 text-xs bg-[var(--surface-alt)] px-3.5 py-2 rounded-xl text-[var(--foreground-muted)] font-medium">
+                <Clock className="w-4 h-4 text-primary" />
                 <span>Estimated Delivery: <strong>August 10, 2026</strong></span>
               </div>
             </div>
@@ -159,19 +159,19 @@ export default function TrackOrderPage() {
                     <div
                       className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 transition-colors ${
                         step.done
-                          ? "bg-sky-500 text-white shadow-xs"
+                          ? "bg-primary text-white shadow-xs"
                           : step.active
-                          ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white ring-4 ring-sky-100 dark:ring-sky-950 shadow-md animate-pulse"
-                          : "bg-slate-100 dark:bg-gray-800 text-gray-400"
+                          ? "bg-primary text-white ring-4 ring-primary/20 shadow-md animate-pulse"
+                          : "bg-[var(--surface-alt)] text-[var(--foreground-muted)]"
                       }`}
                     >
                       <StepIcon className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className={`text-sm font-bold ${step.active || step.done ? "text-gray-900 dark:text-white" : "text-gray-400"}`}>
+                      <h4 className={`text-sm font-bold ${step.active || step.done ? "text-[var(--foreground)]" : "text-[var(--foreground-muted)]"}`}>
                         {step.title}
                       </h4>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{step.date}</p>
+                      <p className="text-xs text-[var(--foreground-muted)] mt-0.5">{step.date}</p>
                     </div>
                   </div>
                 );
@@ -183,27 +183,27 @@ export default function TrackOrderPage() {
 
         {/* ── Help Cards ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-          <div className="flex items-start gap-3.5 p-5 bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl">
-            <ShieldCheck className="w-6 h-6 text-sky-500 shrink-0 mt-0.5" />
+          <div className="flex items-start gap-3.5 p-5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl">
+            <ShieldCheck className="w-6 h-6 text-primary shrink-0 mt-0.5" />
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-gray-900 dark:text-white">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--foreground)]">
                 Secure Tracking
               </h4>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+              <p className="text-xs text-[var(--foreground-muted)] mt-1 leading-relaxed">
                 Your order data is encrypted. Make sure to enter the exact billing email address used during purchase.
               </p>
             </div>
           </div>
 
-          <div className="flex items-start gap-3.5 p-5 bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl">
-            <HelpCircle className="w-6 h-6 text-sky-500 shrink-0 mt-0.5" />
+          <div className="flex items-start gap-3.5 p-5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl">
+            <HelpCircle className="w-6 h-6 text-primary shrink-0 mt-0.5" />
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-gray-900 dark:text-white">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--foreground)]">
                 Need Support?
               </h4>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+              <p className="text-xs text-[var(--foreground-muted)] mt-1 leading-relaxed">
                 Can’t find your Order ID? Check your spam folder or{" "}
-                <Link href="/contact" className="text-sky-600 dark:text-sky-400 font-medium hover:underline">
+                <Link href="/contact" className="text-primary font-medium hover:underline">
                   contact support
                 </Link>.
               </p>

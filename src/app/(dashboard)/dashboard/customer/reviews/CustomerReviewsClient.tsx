@@ -221,14 +221,14 @@ export default function CustomerReviewsClient({
       {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
-            <Link href="/dashboard/customer" className="hover:text-sky-600 transition-colors">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[var(--foreground-muted)] mb-1">
+            <Link href="/dashboard/customer" className="hover:text-primary transition-colors">
               Customer Dashboard
             </Link>
             <span>/</span>
-            <span className="text-sky-600 dark:text-sky-400">My Reviews</span>
+            <span className="text-primary font-bold">My Reviews</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
             My{" "}
             <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
               Reviews
@@ -247,7 +247,7 @@ export default function CustomerReviewsClient({
       </div>
 
       {/* ── Filters & Search Bar ── */}
-      <div className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-4 md:p-5 shadow-xs space-y-4">
+      <div className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-4 md:p-5 shadow-xs space-y-4">
         {/* Rating Filter Tabs */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-slate-100 dark:border-gray-800/80 pb-3">
           <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mr-1">
@@ -278,13 +278,13 @@ export default function CustomerReviewsClient({
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-md flex items-center gap-2">
             <div className="relative flex-1">
-              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10" />
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)] z-10" />
               <Input
                 type="text"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder="Search by review text or product..."
-                className="w-full pl-9 pr-4 h-10 bg-slate-50 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 rounded-xl text-xs"
+                className="w-full pl-9 pr-4 h-10 bg-[var(--surface-alt)] border border-[var(--border-color)] rounded-xl text-xs text-[var(--foreground)]"
               />
             </div>
             <Button
@@ -454,8 +454,8 @@ export default function CustomerReviewsClient({
                         </p>
                         {rev.images && rev.images.length > 0 && (
                           <div className="flex items-center gap-1 mt-1">
-                            <Images className="w-3 h-3 text-sky-400" />
-                            <span className="text-[10px] text-sky-500 font-semibold">{rev.images.length} photo{rev.images.length > 1 ? "s" : ""}</span>
+                            <Images className="w-3 h-3 text-primary" />
+                            <span className="text-[10px] text-primary font-semibold">{rev.images.length} photo{rev.images.length > 1 ? "s" : ""}</span>
                           </div>
                         )}
                       </td>
@@ -632,7 +632,7 @@ export default function CustomerReviewsClient({
                       <Link
                         href={`/shop/${selectedReview.productSlug || selectedReview.productId}`}
                         target="_blank"
-                        className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white text-xs font-bold flex items-center gap-1.5 shrink-0 transition-all shadow-xs"
+                        className="px-3.5 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold flex items-center gap-1.5 shrink-0 transition-all shadow-md shadow-primary/20"
                       >
                         <span>View Product</span>
                         <ExternalLink className="w-3.5 h-3.5" />
@@ -672,8 +672,8 @@ export default function CustomerReviewsClient({
                     {/* Review Images */}
                     {selectedReview.images && selectedReview.images.length > 0 && (
                       <div className="space-y-2">
-                        <div className="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-gray-300">
-                          <Images className="w-4 h-4 text-sky-500" />
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)]">
+                          <Images className="w-4 h-4 text-primary" />
                           <span>Review Photos ({selectedReview.images.length})</span>
                         </div>
                         <div className="flex flex-wrap gap-2">

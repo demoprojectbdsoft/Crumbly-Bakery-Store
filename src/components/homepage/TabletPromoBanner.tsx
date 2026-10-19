@@ -20,7 +20,7 @@ export default function TabletPromoBanner({ tabletPromoData }: TabletPromoBanner
   } = tabletPromoData || {};
   return (
     /* Full-bleed outer wrapper spanning 100% viewport width */
-    <section className="w-full bg-linear-to-r from-slate-100 via-sky-50 to-blue-100/50 dark:from-gray-900 dark:via-gray-900 dark:to-slate-950 border-y border-sky-100/60 dark:border-gray-800 my-10">
+    <section className="w-full bg-linear-to-r from-[var(--surface)] via-primary/5 to-[var(--surface-alt)] border-y border-[var(--border-color)] my-10">
       
       {/* Constrained container centered within the full-width strip */}
       <div className="max-w-7xl mx-auto px-4">
@@ -34,9 +34,9 @@ export default function TabletPromoBanner({ tabletPromoData }: TabletPromoBanner
             <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 z-10 text-center">
               
               {/* Banner Text */}
-              <h2 className="text-base md:text-xl font-light text-gray-700 dark:text-gray-200 tracking-wider uppercase leading-snug">
+              <h2 className="text-base md:text-xl font-light text-[var(--foreground-muted)] tracking-wider uppercase leading-snug">
                 {titlePrefix}{" "}
-                <span className="font-extrabold text-gray-900 dark:text-white">
+                <span className="font-extrabold text-[var(--foreground)]">
                   {highlightText}
                 </span>{" "}
                 {titleSuffix}

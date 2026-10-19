@@ -169,27 +169,27 @@ export default function CustomerTransactionsClient({
       {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
-            <Link href="/dashboard/customer" className="hover:text-sky-600 transition-colors">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[var(--foreground-muted)] mb-1">
+            <Link href="/dashboard/customer" className="hover:text-primary transition-colors">
               Customer Dashboard
             </Link>
             <span>/</span>
-            <span className="text-sky-600 dark:text-sky-400">Transactions</span>
+            <span className="text-primary font-bold">Transactions</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
             Transactions &amp;{" "}
-            <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
+            <span className="text-gradient-primary">
               Invoices
             </span>
           </h1>
-          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-xs md:text-sm text-[var(--foreground-muted)] mt-1">
             View your actual billing history, payment settlements, and receipts.
           </p>
         </div>
 
         <button
           onClick={() => setIsAddCardOpen(true)}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white text-xs font-bold shadow-xs transition-all cursor-pointer self-start sm:self-auto"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold shadow-md shadow-primary/20 transition-all cursor-pointer self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Add Payment Method</span>
@@ -231,31 +231,31 @@ export default function CustomerTransactionsClient({
         </div>
 
         {/* Total Invoices */}
-        <div className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-5 shadow-xs space-y-2">
+        <div className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-5 shadow-xs space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+            <span className="text-xs font-semibold text-[var(--foreground-muted)]">
               Invoices Available
             </span>
-            <Receipt className="w-4 h-4 text-sky-500" />
+            <Receipt className="w-4 h-4 text-primary" />
           </div>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">
+          <p className="text-2xl font-bold text-[var(--foreground)]">
             {transactions.length}
           </p>
-          <p className="text-[11px] text-gray-400">PDF receipt ready</p>
+          <p className="text-[11px] text-[var(--foreground-muted)]">PDF receipt ready</p>
         </div>
 
         {/* Saved Cards */}
-        <div className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-5 shadow-xs space-y-2">
+        <div className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-5 shadow-xs space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+            <span className="text-xs font-semibold text-[var(--foreground-muted)]">
               Saved Cards
             </span>
-            <CreditCard className="w-4 h-4 text-indigo-500" />
+            <CreditCard className="w-4 h-4 text-secondary" />
           </div>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">
+          <p className="text-2xl font-bold text-[var(--foreground)]">
             {savedCards.length}
           </p>
-          <p className="text-[11px] text-sky-600 dark:text-sky-400 font-semibold">
+          <p className="text-[11px] text-primary font-semibold">
             Protected with 256-bit SSL
           </p>
         </div>
@@ -263,19 +263,19 @@ export default function CustomerTransactionsClient({
 
       {/* ── Saved Payment Cards Manager ── */}
       {savedCards.length > 0 && (
-        <div className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-4">
+        <div className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white">
+              <h3 className="text-base font-bold text-[var(--foreground)]">
                 Saved Payment Cards
               </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-[var(--foreground-muted)]">
                 Cards saved for rapid checkout
               </p>
             </div>
             <button
               onClick={() => setIsAddCardOpen(true)}
-              className="text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline flex items-center gap-1"
+              className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add New Card</span>
@@ -288,22 +288,22 @@ export default function CustomerTransactionsClient({
                 key={card.id}
                 className={`p-5 rounded-2xl border transition-all ${
                   card.isDefault
-                    ? "border-sky-500/50 bg-gradient-to-br from-sky-500/5 to-blue-500/10 shadow-xs"
-                    : "border-slate-200 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-950/40"
+                    ? "border-primary/50 bg-primary/5 shadow-xs"
+                    : "border-[var(--border-color)] bg-[var(--surface-alt)]"
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-black tracking-wider uppercase text-gray-800 dark:text-gray-200">
+                  <span className="text-xs font-black tracking-wider uppercase text-[var(--foreground)]">
                     {card.brand}
                   </span>
                   {card.isDefault ? (
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-100 dark:bg-sky-950 text-sky-700 dark:text-sky-300">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary">
                       Default
                     </span>
                   ) : (
                     <button
                       onClick={() => handleSetDefaultCard(card.id)}
-                      className="text-[10px] font-semibold text-gray-400 hover:text-sky-600 transition-colors"
+                      className="text-[10px] font-semibold text-[var(--foreground-muted)] hover:text-primary transition-colors"
                     >
                       Set as Default
                     </button>
@@ -311,23 +311,23 @@ export default function CustomerTransactionsClient({
                 </div>
 
                 <div className="my-4">
-                  <p className="text-sm font-mono font-bold tracking-widest text-gray-900 dark:text-white">
+                  <p className="text-sm font-mono font-bold tracking-widest text-[var(--foreground)]">
                     •••• •••• •••• {card.last4}
                   </p>
-                  <p className="text-[11px] text-gray-400 mt-1">
+                  <p className="text-[11px] text-[var(--foreground-muted)] mt-1">
                     Expires {card.expMonth}/{card.expYear} • {card.holderName}
                   </p>
                 </div>
 
-                <div className="pt-2 border-t border-slate-100 dark:border-gray-800 flex items-center justify-between">
-                  <div className="flex items-center gap-1 text-[10px] text-gray-400">
-                    <ShieldCheck className="w-3.5 h-3.5 text-sky-500" />
+                <div className="pt-2 border-t border-[var(--border-color)] flex items-center justify-between">
+                  <div className="flex items-center gap-1 text-[10px] text-[var(--foreground-muted)]">
+                    <ShieldCheck className="w-3.5 h-3.5 text-primary" />
                     <span>Encrypted</span>
                   </div>
                   {!card.isDefault && (
                     <button
                       onClick={() => handleDeleteCard(card.id)}
-                      className="text-gray-400 hover:text-rose-600 p-1 cursor-pointer"
+                      className="text-[var(--foreground-muted)] hover:text-rose-600 p-1 cursor-pointer"
                       title="Remove card"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -354,22 +354,22 @@ export default function CustomerTransactionsClient({
         </div>
 
         {/* HeroUI v3 Toolbar: Search, Status Select, Sort Select */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 bg-slate-50 dark:bg-gray-950/60 rounded-xl border border-slate-100 dark:border-gray-800">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)]">
           {/* HeroUI Input Search */}
           <div className="relative">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10" />
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)] z-10" />
             <Input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search invoice / order..."
-              className="w-full pl-9 pr-8 h-10 bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-700 focus:border-sky-500 rounded-xl text-xs"
+              className="w-full pl-9 pr-8 h-10 bg-[var(--surface-elevated)] border border-[var(--border-color)] focus:border-primary rounded-xl text-xs text-[var(--foreground)]"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -382,21 +382,21 @@ export default function CustomerTransactionsClient({
               selectedKey={statusFilter}
               onSelectionChange={(key) => setStatusFilter(key ? String(key) : "all")}
             >
-              <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-sky-400 transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+              <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-elevated)] text-xs font-semibold text-[var(--foreground)] flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                 <div className="flex items-center gap-2 truncate">
-                  <Filter className="w-3.5 h-3.5 text-sky-500 shrink-0" />
+                  <Filter className="w-3.5 h-3.5 text-primary shrink-0" />
                   <Select.Value className="text-xs font-semibold truncate" />
                 </div>
-                <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
+                <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-[var(--foreground-muted)] shrink-0" />
               </Select.Trigger>
-              <Select.Popover className="w-56 p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50">
+              <Select.Popover className="w-56 p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50">
                 <ListBox className="space-y-1 p-0">
                   {STATUS_OPTIONS.map((opt) => (
                     <ListBox.Item
                       key={opt.key}
                       id={opt.key}
                       textValue={opt.label}
-                      className="px-3 py-2 rounded-lg text-xs font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-sky-950/60 hover:text-sky-600 dark:hover:text-sky-400 cursor-pointer flex items-center justify-between data-[selected=true]:bg-sky-500 data-[selected=true]:text-white font-semibold transition-colors"
+                      className="px-3 py-2 rounded-lg text-xs font-medium text-[var(--foreground)] hover:bg-primary/10 hover:text-primary cursor-pointer flex items-center justify-between data-[selected=true]:bg-primary data-[selected=true]:text-white font-semibold transition-colors"
                     >
                       {opt.label}
                     </ListBox.Item>
@@ -412,21 +412,21 @@ export default function CustomerTransactionsClient({
               selectedKey={sortOrder}
               onSelectionChange={(key) => setSortOrder(key ? String(key) : "newest")}
             >
-              <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-sky-400 transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+              <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-elevated)] text-xs font-semibold text-[var(--foreground)] flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                 <div className="flex items-center gap-2 truncate">
-                  <ArrowUpDown className="w-3.5 h-3.5 text-sky-500 shrink-0" />
+                  <ArrowUpDown className="w-3.5 h-3.5 text-primary shrink-0" />
                   <Select.Value className="text-xs font-semibold truncate" />
                 </div>
-                <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
+                <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-[var(--foreground-muted)] shrink-0" />
               </Select.Trigger>
-              <Select.Popover className="w-56 p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50">
+              <Select.Popover className="w-56 p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50">
                 <ListBox className="space-y-1 p-0">
                   {SORT_OPTIONS.map((opt) => (
                     <ListBox.Item
                       key={opt.key}
                       id={opt.key}
                       textValue={opt.label}
-                      className="px-3 py-2 rounded-lg text-xs font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-sky-950/60 hover:text-sky-600 dark:hover:text-sky-400 cursor-pointer flex items-center justify-between data-[selected=true]:bg-sky-500 data-[selected=true]:text-white font-semibold transition-colors"
+                      className="px-3 py-2 rounded-lg text-xs font-medium text-[var(--foreground)] hover:bg-primary/10 hover:text-primary cursor-pointer flex items-center justify-between data-[selected=true]:bg-primary data-[selected=true]:text-white font-semibold transition-colors"
                     >
                       {opt.label}
                     </ListBox.Item>
@@ -449,7 +449,7 @@ export default function CustomerTransactionsClient({
             <button
               type="button"
               onClick={handleResetFilters}
-              className="flex items-center gap-1.5 text-sky-600 dark:text-sky-400 hover:underline font-semibold cursor-pointer"
+              className="flex items-center gap-1.5 text-primary hover:underline font-semibold cursor-pointer"
             >
               <RotateCcw className="w-3 h-3" />
               <span>Reset Filters</span>
@@ -508,7 +508,7 @@ export default function CustomerTransactionsClient({
                       </span>
                     </td>
                     <td className="py-3.5">
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-primary/10 text-primary">
                         {tx.type}
                       </span>
                     </td>
@@ -572,7 +572,7 @@ export default function CustomerTransactionsClient({
                   placeholder="e.g. John Doe"
                   value={cardHolder}
                   onChange={(e) => setCardHolder(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-sky-500 focus:outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-primary focus:outline-none"
                 />
               </div>
 
@@ -588,7 +588,7 @@ export default function CustomerTransactionsClient({
                     placeholder="4242 •••• •••• 4242"
                     value={cardNumber}
                     onChange={(e) => setCardNumber(e.target.value)}
-                    className="w-full px-3.5 py-2.5 pl-9 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-sky-500 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 pl-9 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-primary focus:outline-none"
                   />
                   <CreditCard className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 </div>
@@ -606,7 +606,7 @@ export default function CustomerTransactionsClient({
                     maxLength={5}
                     value={cardExp}
                     onChange={(e) => setCardExp(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-sky-500 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-primary focus:outline-none"
                   />
                 </div>
                 <div className="space-y-1">
@@ -620,22 +620,22 @@ export default function CustomerTransactionsClient({
                     maxLength={4}
                     value={cardCvv}
                     onChange={(e) => setCardCvv(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-sky-500 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-primary focus:outline-none"
                   />
                 </div>
               </div>
 
-              <div className="pt-3 flex items-center justify-end gap-2 border-t border-slate-100 dark:border-gray-800">
+              <div className="pt-3 flex items-center justify-end gap-2 border-t border-[var(--border-color)]">
                 <button
                   type="button"
                   onClick={() => setIsAddCardOpen(false)}
-                  className="px-4 py-2 rounded-xl border border-slate-200 dark:border-gray-700 hover:bg-slate-100 dark:hover:bg-gray-800 font-semibold"
+                  className="px-4 py-2 rounded-xl border border-[var(--border-color)] hover:bg-[var(--surface-alt)] font-semibold text-[var(--foreground)]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold transition-all shadow-xs cursor-pointer"
+                  className="px-5 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold transition-all shadow-md shadow-primary/20 cursor-pointer"
                 >
                   Save Card
                 </button>

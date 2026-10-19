@@ -47,22 +47,22 @@ export function ForgotPasswordForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-slate-50 dark:bg-gray-950">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[var(--surface-alt)]">
       <div className="w-full max-w-md space-y-4">
         {/* Brand logo & tagline */}
         <div className="text-center space-y-2 flex flex-col items-center">
           <SparqLogo size="lg" />
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-[var(--foreground-muted)]">
             Password Recovery Service
           </p>
         </div>
 
-        <Card className="w-full border border-slate-200/80 dark:border-gray-800 shadow-xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-2xl">
+        <Card className="w-full border border-[var(--border-color)] shadow-xl bg-[var(--surface-elevated)] rounded-2xl">
           <CardHeader className="flex flex-col gap-1 text-center pb-2 pt-6">
-            <CardTitle className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+            <CardTitle className="text-2xl font-bold tracking-tight text-[var(--foreground)]">
               Forgot Password?
             </CardTitle>
-            <CardDescription className="text-xs text-slate-500 dark:text-slate-400">
+            <CardDescription className="text-xs text-[var(--foreground-muted)]">
               No worries! Enter your email address and we&apos;ll send you instructions to reset your password.
             </CardDescription>
           </CardHeader>
@@ -95,7 +95,7 @@ export function ForgotPasswordForm() {
                   variant="outline"
                   fullWidth
                   onClick={() => setSubmitted(false)}
-                  className="h-10 text-xs font-semibold border-slate-300 dark:border-gray-700 rounded-xl hover:bg-slate-50 dark:hover:bg-gray-800 cursor-pointer w-full"
+                  className="h-10 text-xs font-semibold border-[var(--border-color)] rounded-xl hover:bg-[var(--surface-alt)] cursor-pointer w-full text-[var(--foreground)]"
                 >
                   Resend Instructions
                 </Button>
@@ -103,7 +103,7 @@ export function ForgotPasswordForm() {
             ) : (
               <Form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-1 w-full">
-                  <Label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  <Label className="text-xs font-semibold text-[var(--foreground)]">
                     Email Address <span className="text-red-500">*</span>
                   </Label>
                   <div className="relative w-full">
@@ -112,11 +112,10 @@ export function ForgotPasswordForm() {
                       name="email"
                       type="email"
                       placeholder="john@example.com"
-                      variant="primary"
                       fullWidth
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full pl-9 h-10 text-xs rounded-xl border border-slate-200 dark:border-gray-800 focus:ring-2 focus:ring-blue-500"
+                      className="w-full pl-9 h-10 text-xs rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] text-[var(--foreground)] focus:ring-2 focus:ring-primary"
                       required
                     />
                   </div>
@@ -124,10 +123,9 @@ export function ForgotPasswordForm() {
 
                 <Button
                   type="submit"
-                  variant="primary"
                   fullWidth
                   isDisabled={loading}
-                  className="h-11 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 mt-2 w-full"
+                  className="h-11 text-xs font-bold bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white rounded-xl shadow-md shadow-primary/20 hover:shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 mt-2 w-full"
                 >
                   {loading ? (
                     "Sending Reset Link..."
@@ -144,7 +142,7 @@ export function ForgotPasswordForm() {
             <div className="text-center pt-2">
               <Link
                 href="/auth/login"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--foreground-muted)] hover:text-primary transition-colors"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 Back to Sign In

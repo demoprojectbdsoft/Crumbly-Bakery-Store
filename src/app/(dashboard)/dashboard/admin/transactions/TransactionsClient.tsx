@@ -198,31 +198,31 @@ export default function TransactionsClient({
       {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
-            <Link href="/dashboard/admin" className="hover:text-sky-600 transition-colors">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[var(--foreground-muted)] mb-1">
+            <Link href="/dashboard/admin" className="hover:text-primary transition-colors">
               Admin Dashboard
             </Link>
             <span>/</span>
-            <span className="text-sky-600 dark:text-sky-400">Transactions</span>
+            <span className="text-primary">Transactions</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
             Payment{" "}
-            <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
+            <span className="text-primary">
               Transactions
             </span>
           </h1>
-          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-xs md:text-sm text-[var(--foreground-muted)] mt-1">
             Read-only ledger of all gateway settlements, COD orders, and wallet transaction logs.
           </p>
         </div>
 
-        <div className="text-xs font-semibold text-gray-500 dark:text-gray-400">
-          Total transactions: <span className="font-extrabold text-gray-900 dark:text-white">{total}</span>
+        <div className="text-xs font-semibold text-[var(--foreground-muted)]">
+          Total transactions: <span className="font-extrabold text-[var(--foreground)]">{total}</span>
         </div>
       </div>
 
       {/* ── Toolbar: Status Tabs, Method Filter, Search, Sort ── */}
-      <div className="space-y-4 bg-white dark:bg-gray-900 p-4 rounded-2xl border border-slate-200/80 dark:border-gray-800 shadow-xs">
+      <div className="space-y-4 bg-[var(--surface-elevated)] p-4 rounded-2xl border border-[var(--border-color)] shadow-xs">
         <div className="flex flex-wrap items-center justify-between gap-3">
           {/* Status Tabs */}
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
@@ -234,8 +234,8 @@ export default function TransactionsClient({
                   onClick={() => updateParams({ status: tab === "All" ? undefined : tab.toLowerCase() })}
                   className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     isActive
-                      ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-xs"
-                      : "bg-slate-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-gray-700 border border-slate-200/60 dark:border-gray-700"
+                      ? "bg-primary text-white shadow-xs font-bold"
+                      : "bg-[var(--surface-alt)] text-[var(--foreground-muted)] hover:bg-[var(--surface-alt)]/80 hover:text-[var(--foreground)] border border-[var(--border-color)]"
                   }`}
                 >
                   <span>{tab}</span>
@@ -278,7 +278,7 @@ export default function TransactionsClient({
             <Button
               type="submit"
               size="sm"
-              className="h-10 px-4 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-xs cursor-pointer shrink-0"
+              className="h-10 px-4 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-xs cursor-pointer shrink-0"
             >
               Search
             </Button>
@@ -292,7 +292,7 @@ export default function TransactionsClient({
                 selectedKey={currentSort}
                 onSelectionChange={(key) => updateParams({ sort: key ? String(key) : "newest" })}
               >
-                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-sky-400 transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                   <Select.Value className="text-xs font-semibold truncate" />
                   <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
                 </Select.Trigger>
@@ -303,7 +303,7 @@ export default function TransactionsClient({
                         key={opt.key}
                         id={opt.key}
                         textValue={opt.label}
-                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-sky-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
                       >
                         {opt.label}
                         <ListBox.ItemIndicator />
@@ -331,12 +331,12 @@ export default function TransactionsClient({
       {/* ── Transactions Table ── */}
       {isPending ? (
         <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center shadow-xs">
-          <div className="w-8 h-8 border-3 border-sky-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
           <p className="text-xs font-semibold text-gray-500">Loading transactions...</p>
         </Card>
       ) : transactions.length === 0 ? (
         <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center space-y-4 shadow-sm">
-          <div className="w-16 h-16 rounded-2xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center mx-auto">
+          <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
             <CreditCard className="w-8 h-8" />
           </div>
           <div className="space-y-1">
@@ -352,7 +352,7 @@ export default function TransactionsClient({
           {(currentSearch || currentTab !== "All" || currentMethod !== "all") && (
             <Button
               onPress={handleResetFilters}
-              className="px-4 py-2 text-xs font-semibold text-white bg-sky-500 hover:bg-sky-600 rounded-xl transition-colors cursor-pointer inline-flex items-center gap-1.5"
+              className="px-4 py-2 text-xs font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl transition-colors cursor-pointer inline-flex items-center gap-1.5"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               Reset Filters
@@ -403,7 +403,7 @@ export default function TransactionsClient({
                       className="hover:bg-slate-50/80 dark:hover:bg-gray-800/40 transition-colors cursor-pointer group"
                     >
                       {/* Reference */}
-                      <td className="py-3.5 px-4 font-mono font-bold text-sky-600 dark:text-sky-400 whitespace-nowrap">
+                      <td className="py-3.5 px-4 font-mono font-bold text-primary whitespace-nowrap">
                         {ref}
                       </td>
 
@@ -434,7 +434,7 @@ export default function TransactionsClient({
                       {/* Payment Method */}
                       <td className="py-3.5 px-4 whitespace-nowrap">
                         <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-slate-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-[11px] font-semibold uppercase">
-                          <CreditCard className="w-3 h-3 text-sky-500" />
+                          <CreditCard className="w-3 h-3 text-primary" />
                           {t.method}
                         </span>
                       </td>
@@ -459,7 +459,7 @@ export default function TransactionsClient({
                         <Button
                           size="sm"
                           onPress={() => handleOpenDetail(t)}
-                          className="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 hover:bg-sky-100 dark:hover:bg-sky-900/40 text-xs font-bold transition-colors cursor-pointer"
+                          className="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 dark:hover:bg-sky-900/40 text-xs font-bold transition-colors cursor-pointer"
                         >
                           <Eye className="w-3.5 h-3.5" />
                           <span>View</span>
@@ -478,13 +478,13 @@ export default function TransactionsClient({
               <Pagination className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-500 dark:text-gray-400">
                 <Pagination.Summary className="text-xs">
                   Showing <span className="text-gray-800 dark:text-gray-200 font-bold">{startItem}–{endItem}</span> of{" "}
-                  <span className="text-sky-600 dark:text-sky-400 font-bold">{total}</span> transactions
+                  <span className="text-primary font-bold">{total}</span> transactions
                 </Pagination.Summary>
 
                 <Pagination.Content className="flex items-center gap-1">
                   <Pagination.Item>
                     <Pagination.Previous
-                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-sky-50 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                       isDisabled={page === 1 || isPending}
                       onPress={() => updateParams({ page: String(page - 1) })}
                     >
@@ -506,8 +506,8 @@ export default function TransactionsClient({
                           onPress={() => updateParams({ page: String(p) })}
                           className={`w-8 h-8 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
                             p === page
-                              ? "bg-sky-500 text-white shadow-sm shadow-sky-500/30"
-                              : "hover:bg-sky-50 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
+                              ? "bg-sky-500 text-white shadow-sm shadow-primary/30"
+                              : "hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
                           }`}
                         >
                           {p}
@@ -518,7 +518,7 @@ export default function TransactionsClient({
 
                   <Pagination.Item>
                     <Pagination.Next
-                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-sky-50 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                       isDisabled={page === totalPages || isPending}
                       onPress={() => updateParams({ page: String(page + 1) })}
                     >
@@ -539,27 +539,27 @@ export default function TransactionsClient({
       <Modal isOpen={isDetailOpen} onOpenChange={setIsDetailOpen}>
         <Modal.Backdrop>
           <Modal.Container size="lg">
-            <Modal.Dialog className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-3xl p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <Modal.Dialog className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto text-[var(--foreground)]">
               {selectedTrans && (
                 <>
-                  <Modal.Header className="flex items-center justify-between border-b border-slate-100 dark:border-gray-800 pb-4">
-                    <Modal.Heading className="text-base font-extrabold text-gray-900 dark:text-white flex items-center gap-2">
-                      <ShieldCheck className="w-5 h-5 text-sky-500" />
+                  <Modal.Header className="flex items-center justify-between border-b border-[var(--border-color)] pb-4">
+                    <Modal.Heading className="text-base font-extrabold text-[var(--foreground)] flex items-center gap-2">
+                      <ShieldCheck className="w-5 h-5 text-primary" />
                       Transaction Ledger Entry
                     </Modal.Heading>
-                    <Modal.CloseTrigger className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer p-1 rounded-lg">
+                    <Modal.CloseTrigger className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer p-1 rounded-lg">
                       ✕
                     </Modal.CloseTrigger>
                   </Modal.Header>
 
                   <Modal.Body className="space-y-5">
                     {/* Amount & Status Banner */}
-                    <div className="p-5 bg-gradient-to-br from-slate-50 to-sky-50/40 dark:from-gray-800/60 dark:to-sky-950/20 rounded-2xl border border-slate-200/80 dark:border-gray-700/60 flex items-center justify-between">
+                    <div className="p-5 bg-gradient-to-br from-primary/10 via-[var(--surface-alt)] to-[var(--surface-elevated)] rounded-2xl border border-[var(--border-color)] flex items-center justify-between">
                       <div>
-                        <span className="text-[10px] font-bold uppercase text-gray-400 block">
+                        <span className="text-[10px] font-bold uppercase text-[var(--foreground-muted)] block">
                           Transaction Amount
                         </span>
-                        <span className="text-3xl font-black text-gray-900 dark:text-white">
+                        <span className="text-3xl font-black text-[var(--foreground)]">
                           ${selectedTrans.amount?.toFixed(2)}
                         </span>
                       </div>
@@ -567,18 +567,18 @@ export default function TransactionsClient({
                     </div>
 
                     {/* Reference Box with Copy */}
-                    <div className="p-3.5 bg-slate-50 dark:bg-gray-800/40 rounded-xl border border-slate-200/60 dark:border-gray-800 flex items-center justify-between gap-2 text-xs">
+                    <div className="p-3.5 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)] flex items-center justify-between gap-2 text-xs">
                       <div>
-                        <span className="text-[10px] uppercase font-bold text-gray-400 block">
+                        <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)] block">
                           Payment Reference Code
                         </span>
-                        <span className="font-mono font-bold text-gray-900 dark:text-white">
+                        <span className="font-mono font-bold text-[var(--foreground)]">
                           {selectedTrans.reference}
                         </span>
                       </div>
                       <button
                         onClick={() => handleCopy(selectedTrans.reference)}
-                        className="p-1.5 rounded-lg bg-white dark:bg-gray-700 border border-slate-200 dark:border-gray-600 text-gray-600 dark:text-gray-200 hover:text-sky-600 cursor-pointer transition-colors"
+                        className="p-1.5 rounded-lg bg-white dark:bg-gray-700 border border-slate-200 dark:border-gray-600 text-gray-600 dark:text-gray-200 hover:text-primary cursor-pointer transition-colors"
                         title="Copy Reference"
                       >
                         {copiedRef ? (
@@ -592,7 +592,7 @@ export default function TransactionsClient({
                     {/* Associated Order */}
                     <div className="p-4 bg-white dark:bg-gray-900 rounded-2xl border border-slate-200/80 dark:border-gray-800 space-y-2 text-xs">
                       <h4 className="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
-                        <ShoppingBag className="w-4 h-4 text-sky-500" />
+                        <ShoppingBag className="w-4 h-4 text-primary" />
                         Associated Order
                       </h4>
                       <div className="grid grid-cols-2 gap-2 text-gray-600 dark:text-gray-400 pt-1">
@@ -622,7 +622,7 @@ export default function TransactionsClient({
                     {/* Customer Information */}
                     <div className="p-4 bg-white dark:bg-gray-900 rounded-2xl border border-slate-200/80 dark:border-gray-800 space-y-2 text-xs">
                       <h4 className="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
-                        <UserIcon className="w-4 h-4 text-sky-500" />
+                        <UserIcon className="w-4 h-4 text-primary" />
                         Customer Information
                       </h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-600 dark:text-gray-400 pt-1">
@@ -651,20 +651,20 @@ export default function TransactionsClient({
 
                     {/* Method & Timestamps */}
                     <div className="grid grid-cols-2 gap-3 text-xs">
-                      <div className="p-3.5 bg-slate-50 dark:bg-gray-800/40 rounded-xl border border-slate-200/60 dark:border-gray-800 space-y-1">
-                        <span className="text-[10px] uppercase font-bold text-gray-400">
+                      <div className="p-3.5 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)] space-y-1">
+                        <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)]">
                           Payment Method
                         </span>
-                        <p className="font-bold text-gray-900 dark:text-white uppercase">
+                        <p className="font-bold text-[var(--foreground)] uppercase">
                           {selectedTrans.method}
                         </p>
                       </div>
 
-                      <div className="p-3.5 bg-slate-50 dark:bg-gray-800/40 rounded-xl border border-slate-200/60 dark:border-gray-800 space-y-1">
-                        <span className="text-[10px] uppercase font-bold text-gray-400">
+                      <div className="p-3.5 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)] space-y-1">
+                        <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)]">
                           Date Settled
                         </span>
-                        <p className="font-medium text-gray-700 dark:text-gray-300">
+                        <p className="font-medium text-[var(--foreground)]">
                           {selectedTrans.createdAt
                             ? new Date(selectedTrans.createdAt).toLocaleString()
                             : "N/A"}
@@ -673,10 +673,10 @@ export default function TransactionsClient({
                     </div>
                   </Modal.Body>
 
-                  <Modal.Footer className="flex items-center justify-end pt-4 border-t border-slate-100 dark:border-gray-800">
+                  <Modal.Footer className="flex items-center justify-end pt-4 border-t border-[var(--border-color)]">
                     <Button
                       onPress={() => setIsDetailOpen(false)}
-                      className="px-5 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white text-xs font-bold shadow-sm cursor-pointer"
+                      className="px-5 py-2 rounded-xl bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white text-xs font-bold shadow-md shadow-primary/25 cursor-pointer transition-all"
                     >
                       Close
                     </Button>

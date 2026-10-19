@@ -53,11 +53,11 @@ function useCountdown(targetDate?: Date) {
 // ─── Countdown Box ───────────────────────────────────────────────────────────
 function CountdownBox({ value, label }: { value: number; label: string }) {
   return (
-    <div className="border-2 border-primary rounded-md p-1.5 w-12 text-center bg-white dark:bg-gray-800 shadow-xs">
-      <span className="block text-lg font-bold text-gray-800 dark:text-white leading-none">
+    <div className="border-2 border-primary rounded-md p-1.5 w-12 text-center bg-[var(--surface)] text-[var(--foreground)] shadow-xs">
+      <span className="block text-lg font-bold text-[var(--foreground)] leading-none">
         {String(value).padStart(2, "0")}
       </span>
-      <span className="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-semibold">{label}</span>
+      <span className="text-[9px] text-[var(--foreground-muted)] uppercase font-semibold">{label}</span>
     </div>
   );
 }
@@ -117,21 +117,21 @@ export default function HeroSlider({ initialSlides = [] }: HeroSliderProps) {
   if (slides.length === 0) {
     return (
       <div className="w-full">
-        <div className="relative bg-gradient-to-br from-slate-50 via-sky-50/40 to-blue-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-950 rounded-xl overflow-hidden border border-gray-200/80 dark:border-gray-800 p-8 md:p-12 flex flex-col items-center justify-center text-center min-h-[360px] space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-sky-100 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center">
+        <div className="relative bg-[var(--surface-elevated)] rounded-2xl overflow-hidden border border-[var(--border-color)] p-8 md:p-12 flex flex-col items-center justify-center text-center min-h-[360px] space-y-4">
+          <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 text-primary flex items-center justify-center shadow-xs">
             <Sparkles className="w-6 h-6" />
           </div>
           <div className="max-w-md space-y-1.5">
-            <h3 className="text-xl font-extrabold text-gray-900 dark:text-white">
+            <h3 className="text-xl font-extrabold text-[var(--foreground)]">
               Discover Exclusive Tech Deals
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-[var(--foreground-muted)]">
               Browse our complete catalog of electronics, gadgets, and top accessories.
             </p>
           </div>
           <Link
             href="/shop"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary hover:bg-primary/90 text-white text-xs font-bold shadow-md transition-all"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary hover:bg-primary-hover text-white text-xs font-bold shadow-md shadow-primary/25 transition-all"
           >
             <span>Explore Shop</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -148,7 +148,7 @@ export default function HeroSlider({ initialSlides = [] }: HeroSliderProps) {
   return (
     <div className="w-full">
       <div
-        className="relative bg-gradient-to-b from-[#f8f9fa] via-[#f3f4f6] to-[#eef0f3] dark:from-gray-900 dark:via-gray-900 dark:to-gray-950 rounded-xl overflow-hidden border border-gray-200/80 dark:border-gray-800 shadow-xs"
+        className="relative bg-[var(--surface-elevated)] rounded-xl overflow-hidden border border-[var(--border-color)] shadow-xs transition-colors duration-200"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
@@ -160,17 +160,17 @@ export default function HeroSlider({ initialSlides = [] }: HeroSliderProps) {
             key={`left-${activeIndex}`}
             className="slide-anim-left md:col-span-4 space-y-3 text-center md:text-left"
           >
-            <h3 className="text-3xl md:text-4xl lg:text-5xl font-light text-gray-800 dark:text-gray-100 tracking-tight leading-none uppercase">
+            <h3 className="text-3xl md:text-4xl lg:text-5xl font-light text-[var(--foreground)] tracking-tight leading-none uppercase">
               {slide.subtitle?.split(" ")[0]} <br />
               <span className="font-bold">{slide.subtitle?.split(" ").slice(1).join(" ")}</span>
             </h3>
-            <p className="text-xs font-semibold tracking-wider text-gray-500 dark:text-gray-300 uppercase">
+            <p className="text-xs font-semibold tracking-wider text-[var(--foreground-muted)] uppercase">
               {slide.tagline}
             </p>
             <div className="pt-2">
               <Link
                 href={slide.href}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary hover:bg-primary/90 text-white text-xs font-bold shadow-md hover:shadow-lg transition-all transform active:scale-95 group"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary hover:bg-primary-hover text-white text-xs font-bold shadow-md hover:shadow-lg transition-all transform active:scale-95 group"
               >
                 <span>Shop Now</span>
                 <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
@@ -206,7 +206,7 @@ export default function HeroSlider({ initialSlides = [] }: HeroSliderProps) {
             className="slide-anim-right md:col-span-3 space-y-4 text-center md:text-left"
           >
             <Link href={slide.href} className="block group">
-              <h4 className="text-base font-bold text-sky-600 dark:text-sky-400 group-hover:underline leading-tight">
+              <h4 className="text-base font-bold text-primary group-hover:underline leading-tight">
                 {slide.productName}
               </h4>
             </Link>
@@ -214,7 +214,7 @@ export default function HeroSlider({ initialSlides = [] }: HeroSliderProps) {
             <div className="flex items-baseline justify-center md:justify-start gap-2">
               <span className="text-3xl font-normal text-red-500 dark:text-red-400">{slide.price}</span>
               {slide.originalPrice && !countdownEnded && (
-                <span className="text-sm text-gray-400 dark:text-gray-500 line-through">{slide.originalPrice}</span>
+                <span className="text-sm text-[var(--foreground-muted)] line-through">{slide.originalPrice}</span>
               )}
             </div>
 
@@ -227,7 +227,7 @@ export default function HeroSlider({ initialSlides = [] }: HeroSliderProps) {
             <div className="pt-1">
               <Link
                 href={slide.href}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-gray-200 hover:text-primary transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] hover:text-primary transition-colors"
               >
                 <ShoppingCart className="w-3.5 h-3.5 text-primary" />
                 <span>View Product Details</span>
@@ -240,7 +240,7 @@ export default function HeroSlider({ initialSlides = [] }: HeroSliderProps) {
         {/* Tab bar */}
         {slides.length > 1 && (
           <div
-            className="grid border-t border-gray-200/90 dark:border-gray-800 bg-white/90 dark:bg-gray-950/95 backdrop-blur-xs"
+            className="grid border-t border-[var(--border-color)] bg-[var(--surface)]/90 backdrop-blur-xs"
             style={{
               gridTemplateColumns: `repeat(${Math.min(slides.length, 5)}, minmax(0, 1fr))`,
             }}
@@ -251,8 +251,8 @@ export default function HeroSlider({ initialSlides = [] }: HeroSliderProps) {
                 onClick={() => setCurrentSlide(i)}
                 className={`relative px-3 py-4 text-center transition-all duration-200 cursor-pointer select-none ${
                   activeIndex === i
-                    ? "bg-[#f3f4f6] dark:bg-gray-900/90 font-bold text-gray-900 dark:text-white"
-                    : "hover:bg-gray-100/60 dark:hover:bg-gray-900/40 text-gray-500 dark:text-gray-400 font-medium"
+                    ? "bg-[var(--surface-alt)] font-bold text-[var(--foreground)]"
+                    : "hover:bg-[var(--surface-alt)]/60 text-[var(--foreground-muted)] font-medium"
                 }`}
               >
                 {activeIndex === i && (

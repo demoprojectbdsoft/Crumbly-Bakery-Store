@@ -79,25 +79,25 @@ export default function ProductsTopBar({ categories = [], subCategories = [], to
   };
 
   return (
-    <div className="w-full bg-white dark:bg-gray-900 rounded-2xl border border-sky-100/80 dark:border-gray-800 shadow-xs p-3 sm:p-4 mb-4 sm:mb-6">
+    <div className="w-full bg-[var(--surface-elevated)] rounded-2xl border border-[var(--border-color)] shadow-xs p-3 sm:p-4 mb-4 sm:mb-6">
       <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 sm:gap-4">
 
         {/* Search Input */}
         <div className="flex-1 flex items-center gap-2 sm:gap-3">
           <div className="relative flex-1 max-w-xl">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none z-10" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--foreground-muted)] pointer-events-none z-10" />
             <input
               type="text"
               value={localSearch}
               onChange={(e) => setLocalSearch(e.target.value)}
               placeholder="Search products..."
-              className="w-full h-10 sm:h-11 pl-9 sm:pl-10 pr-9 sm:pr-10 text-xs sm:text-sm rounded-xl border border-sky-100/80 dark:border-gray-700 bg-gray-50/70 dark:bg-gray-800/60 text-gray-800 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sky-400/40 transition-all"
+              className="w-full h-10 sm:h-11 pl-9 sm:pl-10 pr-9 sm:pr-10 text-xs sm:text-sm rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] text-[var(--foreground)] placeholder-[var(--foreground-muted)] focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all"
             />
             {localSearch && (
               <button
                 type="button"
                 onClick={() => { setLocalSearch(""); updateParams({ search: null, page: null }); }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -106,9 +106,9 @@ export default function ProductsTopBar({ categories = [], subCategories = [], to
 
           {/* Results count + Clear All button */}
           <div className="flex items-center gap-2">
-            <div className="hidden sm:flex items-center px-3 py-1.5 rounded-xl bg-sky-50/60 dark:bg-sky-950/30 border border-sky-100 dark:border-sky-900/50 text-xs text-sky-700 dark:text-sky-300 whitespace-nowrap">
+            <div className="hidden sm:flex items-center px-3 py-1.5 rounded-xl bg-primary/10 border border-primary/20 text-xs text-primary whitespace-nowrap">
               <span className="font-bold mr-1">{totalResults}</span> products
-              {isPending && <span className="ml-1.5 animate-pulse text-gray-400">…</span>}
+              {isPending && <span className="ml-1.5 animate-pulse text-[var(--foreground-muted)]">…</span>}
             </div>
 
             {hasAnyFilter && (
@@ -133,13 +133,13 @@ export default function ProductsTopBar({ categories = [], subCategories = [], to
               selectedKey={currentCategory || "all"}
               onSelectionChange={(key) => updateParams({ category: String(key || ""), subCategory: null, page: null })}
             >
-              <Select.Trigger className="h-10 sm:h-11 w-full px-3 sm:px-4 rounded-xl sm:rounded-2xl border border-sky-100/80 dark:border-gray-800 bg-white dark:bg-gray-900 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-sky-400 transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+              <Select.Trigger className="h-10 sm:h-11 w-full px-3 sm:px-4 rounded-xl sm:rounded-2xl border border-[var(--border-color)] bg-[var(--surface-elevated)] text-xs font-semibold text-[var(--foreground)] flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                 <Select.Value className="text-xs font-semibold truncate" />
-                <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
+                <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-[var(--foreground-muted)] shrink-0" />
               </Select.Trigger>
-              <Select.Popover className="w-56 p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto">
+              <Select.Popover className="w-56 p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto">
                 <ListBox>
-                  <ListBox.Item id="all" textValue="All Categories" className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-sky-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between">
+                  <ListBox.Item id="all" textValue="All Categories" className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 hover:text-primary text-[var(--foreground)] cursor-pointer flex items-center justify-between">
                     All Categories
                     <ListBox.ItemIndicator />
                   </ListBox.Item>
@@ -148,7 +148,7 @@ export default function ProductsTopBar({ categories = [], subCategories = [], to
                       key={cat.slug}
                       id={cat.slug}
                       textValue={cat.name}
-                      className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-sky-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                      className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 hover:text-primary text-[var(--foreground)] cursor-pointer flex items-center justify-between"
                     >
                       {cat.name}
                       <ListBox.ItemIndicator />
@@ -167,13 +167,13 @@ export default function ProductsTopBar({ categories = [], subCategories = [], to
               selectedKey={currentSubCategory}
               onSelectionChange={(key) => updateParams({ subCategory: String(key || ""), page: null })}
             >
-              <Select.Trigger className="h-10 sm:h-11 w-full px-3 sm:px-4 rounded-xl sm:rounded-2xl border border-sky-100/80 dark:border-gray-800 bg-white dark:bg-gray-900 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-sky-400 transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+              <Select.Trigger className="h-10 sm:h-11 w-full px-3 sm:px-4 rounded-xl sm:rounded-2xl border border-[var(--border-color)] bg-[var(--surface-elevated)] text-xs font-semibold text-[var(--foreground)] flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                 <Select.Value className="text-xs font-semibold truncate" />
-                <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
+                <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-[var(--foreground-muted)] shrink-0" />
               </Select.Trigger>
-              <Select.Popover className="w-56 p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto">
+              <Select.Popover className="w-56 p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto">
                 <ListBox>
-                  <ListBox.Item id="all" textValue="All Subcategories" className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-sky-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between">
+                  <ListBox.Item id="all" textValue="All Subcategories" className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 hover:text-primary text-[var(--foreground)] cursor-pointer flex items-center justify-between">
                     All Subcategories
                     <ListBox.ItemIndicator />
                   </ListBox.Item>
@@ -182,7 +182,7 @@ export default function ProductsTopBar({ categories = [], subCategories = [], to
                       key={sub.slug}
                       id={sub.slug}
                       textValue={sub.name}
-                      className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-sky-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                      className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 hover:text-primary text-[var(--foreground)] cursor-pointer flex items-center justify-between"
                     >
                       {sub.name}
                       <ListBox.ItemIndicator />
@@ -201,14 +201,14 @@ export default function ProductsTopBar({ categories = [], subCategories = [], to
               selectedKey={currentSort}
               onSelectionChange={(key) => updateParams({ sort: String(key || ""), page: null })}
             >
-              <Select.Trigger className="h-10 sm:h-11 w-full px-3 sm:px-4 rounded-xl sm:rounded-2xl border border-sky-100/80 dark:border-gray-800 bg-white dark:bg-gray-900 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-sky-400 transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+              <Select.Trigger className="h-10 sm:h-11 w-full px-3 sm:px-4 rounded-xl sm:rounded-2xl border border-[var(--border-color)] bg-[var(--surface-elevated)] text-xs font-semibold text-[var(--foreground)] flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                 <Select.Value className="text-xs font-semibold truncate" />
-                <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
+                <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-[var(--foreground-muted)] shrink-0" />
               </Select.Trigger>
-              <Select.Popover className="w-52 p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50">
+              <Select.Popover className="w-52 p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50">
                 <ListBox>
                   {SORT_OPTIONS.map((opt) => (
-                    <ListBox.Item key={opt.id} id={opt.id} textValue={opt.label} className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-sky-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between">
+                    <ListBox.Item key={opt.id} id={opt.id} textValue={opt.label} className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 hover:text-primary text-[var(--foreground)] cursor-pointer flex items-center justify-between">
                       {opt.label}
                       <ListBox.ItemIndicator />
                     </ListBox.Item>

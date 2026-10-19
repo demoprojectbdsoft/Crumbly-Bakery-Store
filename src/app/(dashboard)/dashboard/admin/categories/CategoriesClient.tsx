@@ -283,20 +283,20 @@ export default function CategoriesClient({
       {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
-            <Link href="/dashboard/admin" className="hover:text-sky-600 transition-colors">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[var(--foreground-muted)] mb-1">
+            <Link href="/dashboard/admin" className="hover:text-primary transition-colors">
               Admin Dashboard
             </Link>
             <span>/</span>
-            <span className="text-sky-600 dark:text-sky-400">Categories</span>
+            <span className="text-primary">Categories</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
             Category{" "}
-            <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
+            <span className="text-primary">
               Management
             </span>
           </h1>
-          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-xs md:text-sm text-[var(--foreground-muted)] mt-1">
             Organize catalog hierarchy with categories and nested subcategories.
           </p>
         </div>
@@ -304,7 +304,7 @@ export default function CategoriesClient({
         <div className="flex items-center gap-2.5 self-start sm:self-auto">
           <Link
             href="/dashboard/admin/categories/add"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white text-xs font-bold shadow-sm transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold shadow-sm transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             <span>Add Category / Subcategory</span>
@@ -335,7 +335,7 @@ export default function CategoriesClient({
                 onClick={() => setStatusFilter(st)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all cursor-pointer ${
                   statusFilter === st
-                    ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-xs"
+                    ? "bg-primary text-white shadow-xs"
                     : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                 }`}
               >
@@ -364,7 +364,7 @@ export default function CategoriesClient({
       {/* ── Categories & Subcategories Nested Table / Tree ── */}
       {filteredCategories.length === 0 ? (
         <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center space-y-4 shadow-sm">
-          <div className="w-16 h-16 rounded-2xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center mx-auto">
+          <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
             <FolderTree className="w-8 h-8" />
           </div>
           <div className="space-y-1">
@@ -379,7 +379,7 @@ export default function CategoriesClient({
           </div>
           <Link
             href="/dashboard/admin/categories/add"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white text-xs font-bold shadow-sm"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-bold shadow-sm"
           >
             <Plus className="w-4 h-4" />
             <span>Create New Category</span>
@@ -420,7 +420,7 @@ export default function CategoriesClient({
                               title={isExpanded ? "Collapse" : "Expand"}
                             >
                               {isExpanded ? (
-                                <ChevronDown className="w-4 h-4 text-sky-600 dark:text-sky-400" />
+                                <ChevronDown className="w-4 h-4 text-primary" />
                               ) : (
                                 <ChevronRight className="w-4 h-4 text-gray-400" />
                               )}
@@ -444,7 +444,7 @@ export default function CategoriesClient({
                                   unoptimized
                                 />
                               ) : (
-                                <Folder className="w-5 h-5 text-sky-500" />
+                                <Folder className="w-5 h-5 text-primary" />
                               )}
                             </div>
                             <div className="min-w-0">
@@ -453,7 +453,7 @@ export default function CategoriesClient({
                                   {category.name}
                                 </span>
                                 {hasSubs && (
-                                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 border border-sky-200/60 dark:border-sky-800/40">
+                                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-sky-200/60 dark:border-sky-800/40">
                                     {childSubs.length} subcategories
                                   </span>
                                 )}
@@ -495,7 +495,7 @@ export default function CategoriesClient({
                           <div className="inline-flex items-center gap-1.5">
                             <button
                               onClick={() => handleOpenEditCategory(category)}
-                              className="p-1.5 rounded-lg text-sky-600 hover:bg-sky-50 dark:hover:bg-sky-950/40 transition-colors cursor-pointer"
+                              className="p-1.5 rounded-lg text-sky-600 hover:bg-primary/10 dark:hover:bg-sky-950/40 transition-colors cursor-pointer"
                               title="Edit Category"
                             >
                               <Edit2 className="w-4 h-4" />
@@ -588,7 +588,7 @@ export default function CategoriesClient({
                                 <div className="inline-flex items-center gap-1.5">
                                   <button
                                     onClick={() => handleOpenEditSubCategory(sub)}
-                                    className="p-1.5 rounded-lg text-sky-600 hover:bg-sky-50 dark:hover:bg-sky-950/40 transition-colors cursor-pointer"
+                                    className="p-1.5 rounded-lg text-sky-600 hover:bg-primary/10 dark:hover:bg-sky-950/40 transition-colors cursor-pointer"
                                     title="Edit Subcategory"
                                   >
                                     <Edit2 className="w-3.5 h-3.5" />
@@ -620,13 +620,13 @@ export default function CategoriesClient({
       <Modal isOpen={isEditOpen} onOpenChange={setIsEditOpen}>
         <Modal.Backdrop>
           <Modal.Container size="lg">
-            <Modal.Dialog className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-3xl p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
-              <Modal.Header className="flex items-center justify-between border-b border-slate-100 dark:border-gray-800 pb-4">
-                <Modal.Heading className="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
-                  <Edit2 className="w-4 h-4 text-sky-500" />
+            <Modal.Dialog className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto text-[var(--foreground)]">
+              <Modal.Header className="flex items-center justify-between border-b border-[var(--border-color)] pb-4">
+                <Modal.Heading className="text-base font-bold text-[var(--foreground)] flex items-center gap-2">
+                  <Edit2 className="w-4 h-4 text-primary" />
                   Edit {editTargetType === "category" ? "Category" : "Subcategory"}
                 </Modal.Heading>
-                <Modal.CloseTrigger className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer p-1 rounded-lg">
+                <Modal.CloseTrigger className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer p-1 rounded-lg">
                   ✕
                 </Modal.CloseTrigger>
               </Modal.Header>
@@ -800,11 +800,11 @@ export default function CategoriesClient({
                 </form>
               </Modal.Body>
 
-              <Modal.Footer className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-gray-800">
+              <Modal.Footer className="flex items-center justify-end gap-3 pt-4 border-t border-[var(--border-color)]">
                 <Button
                   variant="outline"
                   onPress={() => setIsEditOpen(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer border border-slate-200 dark:border-gray-700"
+                  className="px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer border border-[var(--border-color)] text-[var(--foreground)]"
                 >
                   Cancel
                 </Button>
@@ -812,7 +812,7 @@ export default function CategoriesClient({
                   type="submit"
                   form="edit-cat-form"
                   isDisabled={isUpdating}
-                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white text-xs font-bold shadow-sm cursor-pointer hover:opacity-95 transition-opacity"
+                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white text-xs font-bold shadow-md shadow-primary/25 cursor-pointer hover:opacity-95 transition-all"
                 >
                   <Check className="w-4 h-4" />
                   {isUpdating ? "Saving..." : "Save Changes"}
@@ -829,18 +829,18 @@ export default function CategoriesClient({
       <Modal isOpen={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
         <Modal.Backdrop>
           <Modal.Container size="sm">
-            <Modal.Dialog className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-3xl p-6 shadow-2xl space-y-4">
+            <Modal.Dialog className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-6 shadow-2xl space-y-4 text-[var(--foreground)]">
               <div className="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/60 text-rose-500 flex items-center justify-center mx-auto border border-rose-100 dark:border-rose-900/40">
                 <AlertTriangle className="w-6 h-6" />
               </div>
 
               <div className="text-center space-y-2">
-                <h3 className="text-base font-bold text-gray-900 dark:text-white">
+                <h3 className="text-base font-bold text-[var(--foreground)]">
                   Delete {deleteTarget?.type === "category" ? "Category" : "Subcategory"}?
                 </h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-[var(--foreground-muted)]">
                   Are you sure you want to delete{" "}
-                  <span className="font-bold text-gray-800 dark:text-gray-200">
+                  <span className="font-bold text-[var(--foreground)]">
                     &ldquo;{deleteTarget?.item.name}&rdquo;
                   </span>
                   ?
@@ -861,7 +861,7 @@ export default function CategoriesClient({
                 <Button
                   variant="outline"
                   onPress={() => setIsDeleteOpen(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer border border-slate-200 dark:border-gray-700"
+                  className="px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer border border-[var(--border-color)] text-[var(--foreground)]"
                 >
                   Cancel
                 </Button>

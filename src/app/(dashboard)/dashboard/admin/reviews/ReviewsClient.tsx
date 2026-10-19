@@ -221,36 +221,36 @@ export default function ReviewsClient({
       {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
-            <Link href="/dashboard/admin" className="hover:text-sky-600 transition-colors">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[var(--foreground-muted)] mb-1">
+            <Link href="/dashboard/admin" className="hover:text-primary transition-colors">
               Admin Dashboard
             </Link>
             <span>/</span>
-            <span className="text-sky-600 dark:text-sky-400">Reviews</span>
+            <span className="text-primary">Reviews</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
             Product{" "}
-            <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
+            <span className="text-primary">
               Reviews
             </span>
           </h1>
-          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-xs md:text-sm text-[var(--foreground-muted)] mt-1">
             Manage and inspect user feedback, ratings, and testimonials across the store.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="px-3.5 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200/60 dark:border-amber-800/40 text-xs font-bold text-amber-700 dark:text-amber-300">
-            Total Reviews: <span className="font-extrabold text-amber-600 dark:text-white">{total}</span>
+          <div className="px-3.5 py-1.5 rounded-xl bg-primary/10 border border-primary/20 text-xs font-bold text-primary">
+            Total Reviews: <span className="font-extrabold text-primary">{total}</span>
           </div>
         </div>
       </div>
 
       {/* ── Filters & Search Bar ── */}
-      <div className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-4 md:p-5 shadow-xs space-y-4">
+      <div className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-4 md:p-5 shadow-xs space-y-4">
         {/* Rating Filter Tabs */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-slate-100 dark:border-gray-800/80 pb-3">
-          <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mr-1">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-[var(--border-color)] pb-3">
+          <span className="text-[11px] font-bold text-[var(--foreground-muted)] uppercase tracking-wider mr-1">
             Rating:
           </span>
           {RATING_FILTER_TABS.map((tab) => {
@@ -263,8 +263,8 @@ export default function ReviewsClient({
                 onClick={() => updateParams({ rating: rawRating === "All" ? undefined : rawRating })}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
                   isActive
-                    ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs"
-                    : "bg-slate-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-gray-700 border border-slate-200/60 dark:border-gray-700"
+                    ? "bg-primary text-white shadow-xs font-bold"
+                    : "bg-[var(--surface-alt)] text-[var(--foreground-muted)] hover:bg-[var(--surface-alt)]/80 hover:text-[var(--foreground)] border border-[var(--border-color)]"
                 }`}
               >
                 {rawRating !== "All" && <Star className={`w-3 h-3 ${isActive ? "fill-white" : "fill-amber-400 text-amber-400"}`} />}
@@ -478,8 +478,8 @@ export default function ReviewsClient({
                         </p>
                         {rev.images && rev.images.length > 0 && (
                           <div className="flex items-center gap-1 mt-1">
-                            <Images className="w-3 h-3 text-sky-400" />
-                            <span className="text-[10px] text-sky-500 font-semibold">{rev.images.length} photo{rev.images.length > 1 ? "s" : ""}</span>
+                            <Images className="w-3 h-3 text-primary" />
+                            <span className="text-[10px] text-primary font-semibold">{rev.images.length} photo{rev.images.length > 1 ? "s" : ""}</span>
                           </div>
                         )}
                       </td>
@@ -599,25 +599,25 @@ export default function ReviewsClient({
       >
         <Modal.Backdrop>
           <Modal.Container size="md">
-            <Modal.Dialog className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-3xl p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <Modal.Dialog className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto text-[var(--foreground)]">
               {selectedReview && (
                 <>
                   {/* Modal Header */}
-                  <Modal.Header className="flex items-center justify-between border-b border-slate-100 dark:border-gray-800 pb-4">
+                  <Modal.Header className="flex items-center justify-between border-b border-[var(--border-color)] pb-4">
                     <div className="flex items-center gap-2.5">
                       <div className="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-500 flex items-center justify-center">
                         <Star className="w-5 h-5 fill-amber-500" />
                       </div>
                       <div>
-                        <Modal.Heading className="text-base font-bold text-gray-900 dark:text-white">
+                        <Modal.Heading className="text-base font-bold text-[var(--foreground)]">
                           Review Details
                         </Modal.Heading>
-                        <p className="text-xs text-gray-400">
+                        <p className="text-xs text-[var(--foreground-muted)]">
                           ID: {selectedReview.id || selectedReview._id}
                         </p>
                       </div>
                     </div>
-                    <Modal.CloseTrigger className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer p-1 rounded-lg">
+                    <Modal.CloseTrigger className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer p-1 rounded-lg">
                       ✕
                     </Modal.CloseTrigger>
                   </Modal.Header>
@@ -656,7 +656,7 @@ export default function ReviewsClient({
                       <Link
                         href={`/shop/${selectedReview.productSlug || selectedReview.productId}`}
                         target="_blank"
-                        className="px-3 py-1.5 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 hover:bg-sky-100 text-xs font-bold flex items-center gap-1 shrink-0 transition-colors"
+                        className="px-3 py-1.5 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 text-xs font-bold flex items-center gap-1 shrink-0 transition-colors"
                       >
                         <span>View Product</span>
                         <ExternalLink className="w-3.5 h-3.5" />
@@ -724,7 +724,7 @@ export default function ReviewsClient({
                     {selectedReview.images && selectedReview.images.length > 0 && (
                       <div className="space-y-2">
                         <div className="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-gray-300">
-                          <Images className="w-4 h-4 text-sky-500" />
+                          <Images className="w-4 h-4 text-primary" />
                           <span>Review Photos ({selectedReview.images.length})</span>
                         </div>
                         <div className="flex flex-wrap gap-2">
@@ -751,7 +751,7 @@ export default function ReviewsClient({
                   </Modal.Body>
 
                   {/* Modal Footer Actions */}
-                  <Modal.Footer className="flex items-center justify-between gap-3 pt-4 border-t border-slate-100 dark:border-gray-800">
+                  <Modal.Footer className="flex items-center justify-between gap-3 pt-4 border-t border-[var(--border-color)]">
                     <Button
                       size="sm"
                       variant="danger-soft"
@@ -766,7 +766,7 @@ export default function ReviewsClient({
                     <Button
                       size="sm"
                       onPress={() => setIsModalOpen(false)}
-                      className="px-5 h-9 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold text-xs cursor-pointer"
+                      className="px-5 h-9 rounded-xl bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white font-bold text-xs shadow-md shadow-primary/20 cursor-pointer transition-all"
                     >
                       Close
                     </Button>
@@ -784,16 +784,16 @@ export default function ReviewsClient({
       <Modal isOpen={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
         <Modal.Backdrop>
           <Modal.Container size="sm">
-            <Modal.Dialog className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-3xl p-6 shadow-2xl space-y-4">
+            <Modal.Dialog className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-6 shadow-2xl space-y-4 text-[var(--foreground)]">
               <div className="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center mx-auto border border-rose-100 dark:border-rose-900/40">
                 <AlertTriangle className="w-6 h-6" />
               </div>
 
               <div className="text-center space-y-2">
-                <h3 className="text-base font-extrabold text-gray-900 dark:text-white">
+                <h3 className="text-base font-extrabold text-[var(--foreground)]">
                   Delete Review?
                 </h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-[var(--foreground-muted)]">
                   Are you sure you want to permanently delete this customer review? This action cannot be undone.
                 </p>
 

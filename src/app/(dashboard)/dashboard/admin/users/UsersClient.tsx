@@ -388,38 +388,38 @@ export default function UsersClient({
       {/* ── Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
-            <Link href="/dashboard/admin" className="hover:text-sky-600 transition-colors">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[var(--foreground-muted)] mb-1">
+            <Link href="/dashboard/admin" className="hover:text-primary transition-colors">
               Admin Dashboard
             </Link>
             <span>/</span>
-            <span className="text-sky-600 dark:text-sky-400">Users</span>
+            <span className="text-primary">Users</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
             Manage{" "}
-            <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
+            <span className="text-primary">
               Users
             </span>
           </h1>
-          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-xs md:text-sm text-[var(--foreground-muted)] mt-1">
             Click on any user row to view complete profile details, purchase history, and control status & role.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <div className="px-3.5 py-1.5 rounded-xl bg-sky-50 dark:bg-sky-950/60 border border-sky-200/60 dark:border-sky-800/40 text-xs font-bold text-sky-700 dark:text-sky-300">
-            Total Users: <span className="font-extrabold text-sky-600 dark:text-white">{total}</span>
+          <div className="px-3.5 py-1.5 rounded-xl bg-primary/10 border border-primary/20 text-xs font-bold text-primary">
+            Total Users: <span className="font-extrabold text-primary">{total}</span>
           </div>
         </div>
       </div>
 
       {/* ── Filters & Search Bar ── */}
-      <div className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-4 md:p-5 shadow-xs space-y-4">
+      <div className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-4 md:p-5 shadow-xs space-y-4">
         {/* Filter Pills */}
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 dark:border-gray-800/80 pb-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border-color)] pb-4">
           {/* Role Filter Tabs */}
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
-            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mr-1">
+            <span className="text-[11px] font-bold text-[var(--foreground-muted)] uppercase tracking-wider mr-1">
               Role:
             </span>
             {FILTER_TABS.map((tab) => {
@@ -431,8 +431,8 @@ export default function UsersClient({
                   onClick={() => updateParams({ role: tab === "All" ? undefined : tab.toLowerCase() })}
                   className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     isActive
-                      ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-xs"
-                      : "bg-slate-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-gray-700 border border-slate-200/60 dark:border-gray-700"
+                      ? "bg-primary text-white shadow-xs font-bold"
+                      : "bg-[var(--surface-alt)] text-[var(--foreground-muted)] hover:bg-[var(--surface-alt)]/80 hover:text-[var(--foreground)] border border-[var(--border-color)]"
                   }`}
                 >
                   {tab}
@@ -482,7 +482,7 @@ export default function UsersClient({
             <Button
               type="submit"
               size="sm"
-              className="h-10 px-4 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-xs cursor-pointer shrink-0"
+              className="h-10 px-4 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-xs cursor-pointer shrink-0"
             >
               Search
             </Button>
@@ -495,7 +495,7 @@ export default function UsersClient({
                 selectedKey={currentSort}
                 onSelectionChange={(key) => updateParams({ sort: key ? String(key) : "newest" })}
               >
-                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-sky-400 transition-colors shadow-xs">
+                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs">
                   <Select.Value className="text-xs font-semibold truncate" />
                   <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
                 </Select.Trigger>
@@ -506,7 +506,7 @@ export default function UsersClient({
                         key={opt.key}
                         id={opt.key}
                         textValue={opt.label}
-                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-sky-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
                       >
                         {opt.label}
                         <ListBox.ItemIndicator />
@@ -535,12 +535,12 @@ export default function UsersClient({
       {/* ── Users Table ── */}
       {isPending ? (
         <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center shadow-xs">
-          <div className="w-8 h-8 border-3 border-sky-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
           <p className="text-xs font-semibold text-gray-500">Loading users...</p>
         </Card>
       ) : users.length === 0 ? (
         <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center space-y-4 shadow-sm">
-          <div className="w-16 h-16 rounded-2xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center mx-auto">
+          <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
             <Users className="w-8 h-8" />
           </div>
           <div className="space-y-1">
@@ -556,7 +556,7 @@ export default function UsersClient({
           {(currentSearch || currentRoleTab !== "All" || currentStatusTab !== "All") && (
             <Button
               onPress={handleResetFilters}
-              className="px-4 py-2 text-xs font-semibold text-white bg-sky-500 hover:bg-sky-600 rounded-xl transition-colors cursor-pointer inline-flex items-center gap-1.5"
+              className="px-4 py-2 text-xs font-semibold text-white bg-primary hover:bg-primary-hover rounded-xl transition-colors cursor-pointer inline-flex items-center gap-1.5"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               Reset Filters
@@ -614,7 +614,7 @@ export default function UsersClient({
                             size={32}
                             rounded="rounded-full"
                           />
-                          <p className="font-bold text-gray-900 dark:text-white truncate max-w-[150px] group-hover:text-sky-600 transition-colors">
+                          <p className="font-bold text-gray-900 dark:text-white truncate max-w-[150px] group-hover:text-primary transition-colors">
                             {name}
                           </p>
                         </div>
@@ -634,7 +634,7 @@ export default function UsersClient({
                           className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold border ${
                             role === "admin"
                               ? "bg-violet-50 dark:bg-violet-950/70 text-violet-600 dark:text-violet-300 border-violet-200/80 dark:border-violet-800/60"
-                              : "bg-sky-50 dark:bg-sky-950/70 text-sky-600 dark:text-sky-300 border-sky-200/80 dark:border-sky-800/60"
+                              : "bg-sky-50 dark:bg-sky-950/70 text-primary border-sky-200/80 dark:border-sky-800/60"
                           }`}
                         >
                           {role === "admin" ? (
@@ -700,7 +700,7 @@ export default function UsersClient({
                             variant="ghost"
                             onPress={() => handleOpenModal(user)}
                             aria-label={`View ${name}`}
-                            className="w-8 h-8 rounded-lg text-gray-500 hover:text-sky-600 hover:bg-sky-50 dark:hover:bg-sky-950/50 cursor-pointer transition-colors"
+                            className="w-8 h-8 rounded-lg text-gray-500 hover:text-primary hover:bg-primary/10 cursor-pointer transition-colors"
                           >
                             <Eye className="w-3.5 h-3.5" />
                           </Button>
@@ -785,11 +785,11 @@ export default function UsersClient({
       >
         <Modal.Backdrop>
           <Modal.Container size="lg">
-            <Modal.Dialog className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-3xl p-6 sm:p-7 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <Modal.Dialog className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-6 sm:p-7 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto text-[var(--foreground)]">
               {selectedUser && (
                 <>
                   {/* Modal Header */}
-                  <Modal.Header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-gray-800 pb-5">
+                  <Modal.Header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[var(--border-color)] pb-5">
                     <div className="flex items-center gap-3.5">
                       <SafeAvatar
                         src={
@@ -804,7 +804,7 @@ export default function UsersClient({
                       />
                       <div>
                         <div className="flex items-center gap-2">
-                          <Modal.Heading className="text-lg font-extrabold text-gray-900 dark:text-white">
+                          <Modal.Heading className="text-lg font-extrabold text-[var(--foreground)]">
                             {selectedUser.name || "User Profile"}
                           </Modal.Heading>
                           <span
@@ -820,13 +820,13 @@ export default function UsersClient({
 
                         {/* Full User ID with Copy Button */}
                         <div className="flex items-center gap-1.5 mt-1">
-                          <span className="text-[11px] font-mono text-gray-500 dark:text-gray-400 bg-slate-100 dark:bg-gray-800 px-2 py-0.5 rounded-md select-all">
+                          <span className="text-[11px] font-mono text-[var(--foreground-muted)] bg-[var(--surface-alt)] px-2 py-0.5 rounded-md select-all border border-[var(--border-color)]">
                             ID: {selectedUser._id || selectedUser.id}
                           </span>
                           <button
                             type="button"
                             onClick={() => copyUserId(selectedUser._id || selectedUser.id || "")}
-                            className="p-1 rounded-md text-gray-400 hover:text-sky-600 hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+                            className="p-1 rounded-md text-[var(--foreground-muted)] hover:text-primary hover:bg-[var(--surface-alt)] transition-colors cursor-pointer"
                             title="Copy User ID"
                           >
                             {copiedId ? (
@@ -839,7 +839,7 @@ export default function UsersClient({
                       </div>
                     </div>
 
-                    <Modal.CloseTrigger className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-gray-800 self-end sm:self-auto transition-colors">
+                    <Modal.CloseTrigger className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer p-1.5 rounded-xl hover:bg-[var(--surface-alt)] self-end sm:self-auto transition-colors">
                       ✕
                     </Modal.CloseTrigger>
                   </Modal.Header>
@@ -848,42 +848,42 @@ export default function UsersClient({
                   <Modal.Body className="space-y-6">
                     {/* User Metadata Grid */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                      <div className="p-3 rounded-2xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-700/50 space-y-1">
-                        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-400">
+                      <div className="p-3 rounded-2xl bg-[var(--surface-alt)] border border-[var(--border-color)] space-y-1">
+                        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[var(--foreground-muted)]">
                           <Mail className="w-3.5 h-3.5" />
                           <span>Email</span>
                         </div>
-                        <p className="text-xs font-bold text-gray-900 dark:text-white truncate" title={selectedUser.email}>
+                        <p className="text-xs font-bold text-[var(--foreground)] truncate" title={selectedUser.email}>
                           {selectedUser.email || "—"}
                         </p>
                       </div>
 
-                      <div className="p-3 rounded-2xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-700/50 space-y-1">
-                        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-400">
+                      <div className="p-3 rounded-2xl bg-[var(--surface-alt)] border border-[var(--border-color)] space-y-1">
+                        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[var(--foreground-muted)]">
                           <Sparkles className="w-3.5 h-3.5 text-amber-500" />
                           <span>Tier</span>
                         </div>
-                        <p className="text-xs font-bold text-gray-900 dark:text-white capitalize truncate">
+                        <p className="text-xs font-bold text-[var(--foreground)] capitalize truncate">
                           {selectedUser.member || "Standard"}
                         </p>
                       </div>
 
-                      <div className="p-3 rounded-2xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-700/50 space-y-1">
-                        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-400">
+                      <div className="p-3 rounded-2xl bg-[var(--surface-alt)] border border-[var(--border-color)] space-y-1">
+                        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[var(--foreground-muted)]">
                           <Award className="w-3.5 h-3.5 text-amber-500" />
                           <span>Points</span>
                         </div>
-                        <p className="text-xs font-bold text-gray-900 dark:text-white truncate">
+                        <p className="text-xs font-bold text-[var(--foreground)] truncate">
                           {selectedUser.points ?? 0} pts
                         </p>
                       </div>
 
-                      <div className="p-3 rounded-2xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-700/50 space-y-1">
-                        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-400">
+                      <div className="p-3 rounded-2xl bg-[var(--surface-alt)] border border-[var(--border-color)] space-y-1">
+                        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[var(--foreground-muted)]">
                           <Calendar className="w-3.5 h-3.5" />
                           <span>Joined</span>
                         </div>
-                        <p className="text-xs font-bold text-gray-900 dark:text-white truncate">
+                        <p className="text-xs font-bold text-[var(--foreground)] truncate">
                           {selectedUser.createdAt
                             ? new Date(selectedUser.createdAt).toLocaleDateString(undefined, {
                                 month: "short",
@@ -896,13 +896,13 @@ export default function UsersClient({
                     </div>
 
                     {/* Status & Role Controls */}
-                    <div className="p-4 rounded-2xl bg-slate-50/70 dark:bg-gray-800/40 border border-slate-200/70 dark:border-gray-700/60 space-y-3">
+                    <div className="p-4 rounded-2xl bg-[var(--surface-alt)] border border-[var(--border-color)] space-y-3">
                       <div className="flex items-center justify-between">
-                        <h4 className="text-xs font-extrabold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+                        <h4 className="text-xs font-extrabold uppercase tracking-wider text-[var(--foreground)]">
                           Account Role & Status Controls
                         </h4>
                         {isUpdating && (
-                          <span className="text-[11px] font-semibold text-sky-500 animate-pulse">
+                          <span className="text-[11px] font-semibold text-primary animate-pulse">
                             Updating...
                           </span>
                         )}
@@ -911,7 +911,7 @@ export default function UsersClient({
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         {/* Role Select Control */}
                         <div className="space-y-1.5">
-                          <label className="text-[11px] font-bold text-gray-600 dark:text-gray-400">
+                          <label className="text-[11px] font-bold text-[var(--foreground-muted)]">
                             User Role
                           </label>
                           <Select
@@ -925,21 +925,21 @@ export default function UsersClient({
                             }}
                             isDisabled={isUpdating}
                           >
-                            <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs font-bold text-gray-800 dark:text-gray-200 flex items-center justify-between gap-2 cursor-pointer hover:border-violet-400 transition-colors shadow-xs [&>span]:text-xs [&>span]:font-bold [&>span]:truncate [&>span]:text-left">
+                            <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-elevated)] text-xs font-bold text-[var(--foreground)] flex items-center justify-between gap-2 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-bold [&>span]:truncate [&>span]:text-left">
                               <Select.Value className="text-xs font-bold capitalize truncate flex-1 text-left" />
-                              <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
+                              <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-[var(--foreground-muted)] shrink-0" />
                             </Select.Trigger>
-                            <Select.Popover className="w-(--trigger-width) min-w-[200px] p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50">
+                            <Select.Popover className="w-(--trigger-width) min-w-[200px] p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50">
                               <ListBox>
                                 {ROLE_OPTIONS.map((opt) => (
                                   <ListBox.Item
                                     key={opt.id}
                                     id={opt.id}
                                     textValue={opt.label}
-                                    className="text-xs font-semibold px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                                    className="text-xs font-semibold px-3 py-2 rounded-lg hover:bg-[var(--surface-alt)] text-[var(--foreground)] cursor-pointer flex items-center justify-between"
                                   >
                                     <div className="flex items-center gap-2">
-                                      <opt.icon className="w-3.5 h-3.5 text-violet-500" />
+                                      <opt.icon className="w-3.5 h-3.5 text-primary" />
                                       <span>{opt.label}</span>
                                     </div>
                                     <ListBox.ItemIndicator />
@@ -952,7 +952,7 @@ export default function UsersClient({
 
                         {/* Status Select Control */}
                         <div className="space-y-1.5">
-                          <label className="text-[11px] font-bold text-gray-600 dark:text-gray-400">
+                          <label className="text-[11px] font-bold text-[var(--foreground-muted)]">
                             Account Status
                           </label>
                           <Select
@@ -966,18 +966,18 @@ export default function UsersClient({
                             }}
                             isDisabled={isUpdating}
                           >
-                            <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs font-bold text-gray-800 dark:text-gray-200 flex items-center justify-between gap-2 cursor-pointer hover:border-emerald-400 transition-colors shadow-xs [&>span]:text-xs [&>span]:font-bold [&>span]:truncate [&>span]:text-left">
+                            <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-elevated)] text-xs font-bold text-[var(--foreground)] flex items-center justify-between gap-2 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-bold [&>span]:truncate [&>span]:text-left">
                               <Select.Value className="text-xs font-bold capitalize truncate flex-1 text-left" />
-                              <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
+                              <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-[var(--foreground-muted)] shrink-0" />
                             </Select.Trigger>
-                            <Select.Popover className="w-(--trigger-width) min-w-[200px] p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50">
+                            <Select.Popover className="w-(--trigger-width) min-w-[200px] p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50">
                               <ListBox>
                                 {STATUS_OPTIONS.map((opt) => (
                                   <ListBox.Item
                                     key={opt.id}
                                     id={opt.id}
                                     textValue={opt.label}
-                                    className="text-xs font-semibold px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                                    className="text-xs font-semibold px-3 py-2 rounded-lg hover:bg-[var(--surface-alt)] text-[var(--foreground)] cursor-pointer flex items-center justify-between"
                                   >
                                     <div className="flex items-center gap-2">
                                       <opt.icon className="w-3.5 h-3.5 text-emerald-500" />
@@ -996,27 +996,27 @@ export default function UsersClient({
                     {/* Customer's Ordered Products Section */}
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-xs font-extrabold text-gray-900 dark:text-white uppercase tracking-wider">
-                          <Package className="w-4 h-4 text-sky-500" />
+                        <div className="flex items-center gap-2 text-xs font-extrabold text-[var(--foreground)] uppercase tracking-wider">
+                          <Package className="w-4 h-4 text-primary" />
                           <span>Purchased Products ({purchasedProducts.length})</span>
                         </div>
-                        <span className="text-[11px] font-semibold text-gray-400">
+                        <span className="text-[11px] font-semibold text-[var(--foreground-muted)]">
                           {userOrders.length} {userOrders.length === 1 ? "Order" : "Orders"}
                         </span>
                       </div>
 
                       {loadingOrders ? (
-                        <div className="p-8 text-center bg-slate-50 dark:bg-gray-800/30 rounded-2xl border border-slate-100 dark:border-gray-800">
-                          <div className="w-6 h-6 border-2 border-sky-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-                          <p className="text-xs text-gray-400">Loading purchase history...</p>
+                        <div className="p-8 text-center bg-[var(--surface-alt)] rounded-2xl border border-[var(--border-color)]">
+                          <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+                          <p className="text-xs text-[var(--foreground-muted)]">Loading purchase history...</p>
                         </div>
                       ) : purchasedProducts.length === 0 ? (
-                        <div className="p-6 text-center bg-slate-50 dark:bg-gray-800/30 rounded-2xl border border-slate-100 dark:border-gray-800 space-y-1">
-                          <ShoppingBag className="w-8 h-8 text-gray-300 dark:text-gray-600 mx-auto" />
-                          <p className="text-xs font-bold text-gray-600 dark:text-gray-400">
+                        <div className="p-6 text-center bg-[var(--surface-alt)] rounded-2xl border border-[var(--border-color)] space-y-1">
+                          <ShoppingBag className="w-8 h-8 text-[var(--foreground-muted)]/60 mx-auto" />
+                          <p className="text-xs font-bold text-[var(--foreground)]">
                             No orders placed yet
                           </p>
-                          <p className="text-[11px] text-gray-400">
+                          <p className="text-[11px] text-[var(--foreground-muted)]">
                             This customer has not made any purchases on the store.
                           </p>
                         </div>
@@ -1050,7 +1050,7 @@ export default function UsersClient({
                             return (
                               <div
                                 key={`${prod.orderId}-${idx}`}
-                                className="p-2.5 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-slate-100 dark:border-gray-700/50 flex items-center justify-between gap-3 hover:bg-slate-100/80 dark:hover:bg-gray-800 transition-colors"
+                                className="p-2.5 rounded-xl bg-[var(--surface-alt)] border border-[var(--border-color)] flex items-center justify-between gap-3 hover:bg-[var(--surface-alt)]/80 transition-colors"
                               >
                                 <div className="flex items-center gap-3 min-w-0">
                                   <SafeProductImage
@@ -1059,17 +1059,17 @@ export default function UsersClient({
                                     size={44}
                                   />
                                   <div className="min-w-0">
-                                    <p className="text-xs font-bold text-gray-900 dark:text-white truncate">
+                                    <p className="text-xs font-bold text-[var(--foreground)] truncate">
                                       {pTitle}
                                     </p>
-                                    <div className="flex items-center gap-2 mt-0.5 text-[11px] text-gray-500 dark:text-gray-400">
+                                    <div className="flex items-center gap-2 mt-0.5 text-[11px] text-[var(--foreground-muted)]">
                                       <span className="font-extrabold text-emerald-600 dark:text-emerald-400">
                                         ${pPrice.toFixed(2)}
                                       </span>
                                       <span>•</span>
                                       <span>Qty: {pQty}</span>
                                       <span>•</span>
-                                      <span className="capitalize text-[10px] font-semibold text-sky-600 dark:text-sky-400 bg-sky-50 dark:bg-sky-950/60 px-1.5 py-0.2 rounded">
+                                      <span className="capitalize text-[10px] font-semibold text-primary bg-primary/10 px-1.5 py-0.2 rounded">
                                         {prod.orderStatus}
                                       </span>
                                     </div>
@@ -1077,14 +1077,14 @@ export default function UsersClient({
                                 </div>
 
                                 <div className="flex items-center gap-2 shrink-0">
-                                  <span className="text-[10px] text-gray-400 hidden sm:inline">
+                                  <span className="text-[10px] text-[var(--foreground-muted)] hidden sm:inline">
                                     {pDate}
                                   </span>
                                   {pSlug && (
                                     <Link
                                       href={`/shop/${pSlug}`}
                                       target="_blank"
-                                      className="p-1.5 rounded-lg bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:text-sky-600 hover:bg-sky-50 dark:hover:bg-gray-600 transition-colors shadow-2xs"
+                                      className="p-1.5 rounded-lg bg-[var(--surface-elevated)] border border-[var(--border-color)] text-[var(--foreground-muted)] hover:text-primary transition-colors shadow-2xs"
                                       title="View Product in Store"
                                     >
                                       <ExternalLink className="w-3.5 h-3.5" />
@@ -1100,11 +1100,11 @@ export default function UsersClient({
                   </Modal.Body>
 
                   {/* Modal Footer */}
-                  <Modal.Footer className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100 dark:border-gray-800">
+                  <Modal.Footer className="flex items-center justify-end gap-3 pt-4 border-t border-[var(--border-color)]">
                     <Button
                       size="sm"
                       onPress={() => setIsModalOpen(false)}
-                      className="px-5 h-9 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold text-xs cursor-pointer"
+                      className="px-5 h-9 rounded-xl bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white font-bold text-xs shadow-md shadow-primary/20 cursor-pointer"
                     >
                       Close
                     </Button>

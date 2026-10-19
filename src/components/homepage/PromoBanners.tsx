@@ -17,7 +17,7 @@ export default function PromoBanners({ banners = [] }: PromoBannersProps) {
         {banners.map((banner) => (
           <div
             key={banner.id}
-            className="group relative bg-gradient-to-r from-sky-50/80 via-blue-50/40 to-slate-50 dark:from-gray-900 dark:via-gray-900/90 dark:to-gray-950 rounded-xl p-6 md:p-8 border border-sky-100/80 dark:border-gray-800 shadow-sm transition-all duration-300 hover:shadow-md flex items-center justify-between overflow-hidden"
+            className="group relative bg-gradient-to-r from-primary/10 via-[var(--surface-alt)] to-[var(--surface-elevated)] rounded-2xl p-6 md:p-8 border border-[var(--border-color)] shadow-xs transition-all duration-300 hover:shadow-md flex items-center justify-between overflow-hidden"
           >
             {/* Left Side: Product Image Container */}
             <div className="relative w-1/2 h-44 md:h-48 flex items-center justify-center">
@@ -84,7 +84,7 @@ export default function PromoBanners({ banners = [] }: PromoBannersProps) {
               {banner.buttonText && (
                 <Link
                   href={banner.href}
-                  className="inline-flex items-center gap-2 pt-1 text-xs font-bold uppercase tracking-wider text-gray-800 dark:text-gray-200 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-2 pt-1 text-xs font-bold uppercase tracking-wider text-[var(--foreground)] group-hover:text-primary transition-colors cursor-pointer"
                 >
                   <span>{banner.buttonText}</span>
                   <span className="w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center transition-transform group-hover:translate-x-1 shadow-sm">

@@ -38,7 +38,7 @@ function ReceiptItemImage({
   const validSrc = src && src.trim().length > 0 && !hasError ? src.trim() : null;
 
   return (
-    <div className="relative w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 overflow-hidden shrink-0 border border-slate-200/80 dark:border-slate-700 shadow-2xs flex items-center justify-center">
+    <div className="relative w-12 h-12 rounded-xl bg-[var(--surface-alt)] overflow-hidden shrink-0 border border-[var(--border-color)] shadow-2xs flex items-center justify-center">
       {validSrc ? (
         <img
           src={validSrc}
@@ -49,7 +49,7 @@ function ReceiptItemImage({
           loading="eager"
         />
       ) : (
-        <div className="w-full h-full flex items-center justify-center bg-gradient-to-tr from-sky-50 to-indigo-50 dark:from-slate-800 dark:to-slate-700 text-sky-600 dark:text-sky-400">
+        <div className="w-full h-full flex items-center justify-center bg-primary/10 text-primary">
           <ShoppingBag className="w-5 h-5 opacity-80" />
         </div>
       )}
@@ -286,26 +286,26 @@ export default function OrderSuccessClient({
   return (
     <div className="py-8 md:py-14 max-w-2xl mx-auto px-4 space-y-8 relative">
       {/* ── Ambient Background Lighting Effects ── */}
-      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-96 h-96 bg-gradient-to-tr from-sky-500/15 via-blue-500/10 to-indigo-500/15 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-12 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
       {/* ── Loading State ── */}
       {isFetchingOrder ? (
         <div className="text-center space-y-6 py-16">
-          <div className="w-16 h-16 rounded-full border-4 border-sky-500 border-t-transparent animate-spin mx-auto" />
-          <p className="text-sm font-semibold text-slate-600 dark:text-slate-400">
+          <div className="w-16 h-16 rounded-full border-4 border-primary border-t-transparent animate-spin mx-auto" />
+          <p className="text-sm font-semibold text-[var(--foreground-muted)]">
             Loading your order details…
           </p>
         </div>
       ) : !order ? (
         <div className="text-center space-y-4 py-16">
-          <p className="text-base font-bold text-slate-800 dark:text-white">Order not found</p>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <p className="text-base font-bold text-[var(--foreground)]">Order not found</p>
+          <p className="text-sm text-[var(--foreground-muted)]">
             We couldn&apos;t retrieve order <span className="font-mono font-bold">#{orderId}</span>.
             It may still be processing.
           </p>
           <Link
             href="/dashboard/customer/orders"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-sky-600 text-white font-bold text-sm"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm transition-colors"
           >
             My Orders <ArrowRight className="w-4 h-4" />
           </Link>
@@ -329,12 +329,12 @@ export default function OrderSuccessClient({
                 <CircleDot className="w-2 h-2 fill-emerald-500 animate-pulse text-emerald-500" />
                 Order Placed &amp; Processing
               </div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-slate-900 dark:text-white">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-[var(--foreground)]">
                 Thank You for Your Order!
               </h1>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-md mx-auto">
+              <p className="text-xs sm:text-sm text-[var(--foreground-muted)] max-w-md mx-auto">
                 Your package has entered fulfillment and is scheduled for fast delivery by{" "}
-                <span className="font-bold text-slate-800 dark:text-slate-200">
+                <span className="font-bold text-[var(--foreground)]">
                   {formattedDeliveryDate}
                 </span>.
               </p>
@@ -347,36 +347,36 @@ export default function OrderSuccessClient({
           <div
             ref={receiptRef}
             id="order-receipt"
-            className="relative bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800/90 rounded-3xl shadow-2xl overflow-hidden print:border-none print:shadow-none print:p-0 print:m-0"
+            className="relative bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl shadow-2xl overflow-hidden print:border-none print:shadow-none print:p-0 print:m-0"
           >
             {/* Top Decorative Gradient Line */}
-            <div className="h-2 w-full bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600" />
+            <div className="h-2 w-full bg-gradient-primary" />
 
             {/* ── Section A: Header & Meta ── */}
             <div className="p-6 sm:p-8 pb-5 space-y-4">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-2xl font-black tracking-tight bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                    <span className="text-2xl font-black tracking-tight text-gradient-primary">
                       ELECTRO
                     </span>
-                    <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-sky-100 dark:bg-sky-950/80 text-sky-700 dark:text-sky-300 tracking-wider uppercase border border-sky-200 dark:border-sky-800">
+                    <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-primary/10 text-primary tracking-wider uppercase border border-primary/20">
                       Tax Invoice
                     </span>
                   </div>
-                  <p className="text-[11px] text-slate-400 font-medium">
+                  <p className="text-[11px] text-[var(--foreground-muted)] font-medium">
                     Official Purchase Receipt &amp; Warranty Certificate
                   </p>
                 </div>
 
                 {/* Order Reference Badge & Actions */}
                 <div className="flex flex-col sm:items-end gap-2">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-mono font-bold text-slate-900 dark:text-white">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-[var(--surface-alt)] border border-[var(--border-color)] text-xs font-mono font-bold text-[var(--foreground)]">
                     <span>#{orderId}</span>
                     <button
                       type="button"
                       onClick={handleCopyOrderId}
-                      className="hover:text-sky-500 transition-colors p-0.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 print:hidden cursor-pointer"
+                      className="hover:text-primary transition-colors p-0.5 text-[var(--foreground-muted)] hover:text-[var(--foreground)] print:hidden cursor-pointer"
                       title="Copy Order ID"
                     >
                       {isCopiedId ? (
@@ -391,15 +391,15 @@ export default function OrderSuccessClient({
                     <button
                       type="button"
                       onClick={handleDownloadReceipt}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold text-[11px] shadow-xs transition-colors cursor-pointer print:hidden"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-[11px] shadow-xs transition-colors cursor-pointer print:hidden"
                       title="Download or Print Receipt"
                     >
                       <Download className="w-3.5 h-3.5" />
                       Download Receipt
                     </button>
 
-                    <p className="text-[10px] text-slate-400 flex items-center gap-1 font-medium">
-                      <Calendar className="w-3 h-3 text-slate-400" />
+                    <p className="text-[10px] text-[var(--foreground-muted)] flex items-center gap-1 font-medium">
+                      <Calendar className="w-3 h-3 text-[var(--foreground-muted)]" />
                       {formattedDate}
                     </p>
                   </div>
@@ -407,18 +407,18 @@ export default function OrderSuccessClient({
               </div>
 
               {/* Mini Live Order Status Tracker */}
-              <div className="p-3.5 rounded-2xl bg-gradient-to-r from-sky-50/70 via-blue-50/40 to-indigo-50/70 dark:from-slate-800/60 dark:via-slate-800/40 dark:to-slate-800/60 border border-sky-100 dark:border-slate-700/80">
+              <div className="p-3.5 rounded-2xl bg-primary/5 border border-primary/20">
                 <div className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
-                    <span className="font-bold text-slate-900 dark:text-white text-xs">
+                    <span className="font-bold text-[var(--foreground)] text-xs">
                       Status:{" "}
                       {order?.orderStatus
                         ? order.orderStatus.charAt(0).toUpperCase() + order.orderStatus.slice(1)
                         : "Processing"}
                     </span>
                   </div>
-                  <span className="text-[11px] font-semibold text-sky-600 dark:text-sky-400 flex items-center gap-1">
+                  <span className="text-[11px] font-semibold text-primary flex items-center gap-1">
                     <Truck className="w-3.5 h-3.5" />
                     Est. Delivery: {formattedDeliveryDate}
                   </span>
@@ -440,19 +440,19 @@ export default function OrderSuccessClient({
             <div className="p-6 sm:p-8 pt-4 space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Delivery Destination */}
-                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-xs space-y-2">
-                  <div className="flex items-center gap-1.5 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
-                    <MapPin className="w-3.5 h-3.5 text-sky-500" />
+                <div className="p-4 rounded-2xl bg-[var(--surface-alt)] border border-[var(--border-color)] text-xs space-y-2">
+                  <div className="flex items-center gap-1.5 text-[var(--foreground-muted)] font-bold uppercase tracking-wider text-[10px]">
+                    <MapPin className="w-3.5 h-3.5 text-primary" />
                     Shipping Destination
                   </div>
                   <div>
-                    <p className="font-bold text-slate-900 dark:text-white text-sm">
+                    <p className="font-bold text-[var(--foreground)] text-sm">
                       {order?.shippingAddress?.fullName || "Valued Customer"}
                     </p>
-                    <p className="text-slate-600 dark:text-slate-300 font-medium text-[11px] mt-0.5">
+                    <p className="text-[var(--foreground-muted)] font-medium text-[11px] mt-0.5">
                       📞 {order?.shippingAddress?.phone || "Phone on file"}
                     </p>
-                    <p className="text-slate-500 dark:text-slate-400 text-[11px] mt-1 leading-relaxed">
+                    <p className="text-[var(--foreground-muted)] text-[11px] mt-1 leading-relaxed">
                       {order?.shippingAddress?.address ? (
                         <>
                           {order.shippingAddress.address}, {order.shippingAddress.city} - {order.shippingAddress.postalCode}
@@ -465,10 +465,10 @@ export default function OrderSuccessClient({
                 </div>
 
                 {/* Payment Summary */}
-                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-xs space-y-2">
-                  <div className="flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                <div className="p-4 rounded-2xl bg-[var(--surface-alt)] border border-[var(--border-color)] text-xs space-y-2">
+                  <div className="flex items-center justify-between text-[10px] font-bold text-[var(--foreground-muted)] uppercase tracking-wider">
                     <span className="flex items-center gap-1.5">
-                      <CreditCard className="w-3.5 h-3.5 text-sky-500" />
+                      <CreditCard className="w-3.5 h-3.5 text-primary" />
                       Payment Details
                     </span>
                     <span className="text-emerald-600 dark:text-emerald-400 font-semibold">
@@ -478,7 +478,7 @@ export default function OrderSuccessClient({
 
                   <div>
                     <div className="flex flex-wrap items-center gap-1.5">
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border font-bold text-xs text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700">
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border font-bold text-xs text-[var(--foreground)] bg-[var(--surface-elevated)] border-[var(--border-color)]">
                         {paymentBadge.icon}
                         {paymentBadge.name}
                       </div>
@@ -500,14 +500,14 @@ export default function OrderSuccessClient({
                     </div>
 
                     {order?.transactionId && order.paymentMethod !== "cod" ? (
-                      <div className="mt-2 flex items-center justify-between p-2 rounded-xl bg-sky-50 dark:bg-sky-950/40 border border-sky-100 dark:border-sky-900/60">
-                        <span className="text-[10px] text-sky-700 dark:text-sky-300 font-medium">Trx ID:</span>
-                        <span className="font-mono font-bold text-[11px] text-sky-900 dark:text-sky-100 flex items-center gap-1">
+                      <div className="mt-2 flex items-center justify-between p-2 rounded-xl bg-primary/10 border border-primary/20">
+                        <span className="text-[10px] text-primary font-medium">Trx ID:</span>
+                        <span className="font-mono font-bold text-[11px] text-primary flex items-center gap-1">
                           {order.transactionId}
                           <button
                             type="button"
                             onClick={handleCopyTrxId}
-                            className="hover:text-sky-500 p-0.5 print:hidden cursor-pointer"
+                            className="hover:text-primary p-0.5 print:hidden cursor-pointer"
                             title="Copy Trx ID"
                           >
                             {isCopiedTrx ? (
@@ -519,7 +519,7 @@ export default function OrderSuccessClient({
                         </span>
                       </div>
                     ) : (
-                      <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-2">
+                      <p className="text-[11px] text-[var(--foreground-muted)] mt-2">
                         Payment collection upon parcel receipt at doorstep.
                       </p>
                     )}
@@ -529,12 +529,12 @@ export default function OrderSuccessClient({
 
               {/* ── Purchased Items Table (Full List - No Scroll Limit) ── */}
               <div className="space-y-3">
-                <div className="flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase tracking-wider px-1 pb-1 border-b border-slate-100 dark:border-slate-800">
+                <div className="flex items-center justify-between text-[11px] font-bold text-[var(--foreground-muted)] uppercase tracking-wider px-1 pb-1 border-b border-[var(--border-color)]">
                   <span>Item &amp; Specification</span>
                   <span>Total Price</span>
                 </div>
 
-                <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                <div className="divide-y divide-[var(--border-color)]">
                   {order?.items && order.items.length > 0 ? (
                     order.items.map((item, idx) => {
                       const productObj =
@@ -561,12 +561,12 @@ export default function OrderSuccessClient({
                           <div className="flex items-center gap-3.5 min-w-0">
                             <ReceiptItemImage src={image} alt={title} />
                             <div className="min-w-0">
-                              <p className="font-bold text-slate-900 dark:text-white truncate text-xs sm:text-sm">
+                              <p className="font-bold text-[var(--foreground)] truncate text-xs sm:text-sm">
                                 {title}
                               </p>
-                              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                              <p className="text-[11px] text-[var(--foreground-muted)] mt-0.5">
                                 Unit: ${price.toFixed(2)} × Qty:{" "}
-                                <span className="font-bold text-slate-800 dark:text-slate-200">
+                                <span className="font-bold text-[var(--foreground)]">
                                   {item.quantity}
                                 </span>
                               </p>
@@ -574,7 +574,7 @@ export default function OrderSuccessClient({
                           </div>
 
                           <div className="text-right shrink-0">
-                            <span className="font-bold text-slate-900 dark:text-white text-xs sm:text-sm">
+                            <span className="font-bold text-[var(--foreground)] text-xs sm:text-sm">
                               ${total.toFixed(2)}
                             </span>
                           </div>
@@ -582,7 +582,7 @@ export default function OrderSuccessClient({
                       );
                     })
                   ) : (
-                    <div className="py-4 text-center text-xs text-slate-400">
+                    <div className="py-4 text-center text-xs text-[var(--foreground-muted)]">
                       Items verified and recorded.
                     </div>
                   )}
@@ -590,17 +590,17 @@ export default function OrderSuccessClient({
               </div>
 
               {/* ── Financial Breakdown ── */}
-              <div className="pt-4 border-t-2 border-slate-200 dark:border-slate-700 space-y-2.5 text-xs text-slate-600 dark:text-slate-300">
+              <div className="pt-4 border-t-2 border-[var(--border-color)] space-y-2.5 text-xs text-[var(--foreground-muted)]">
                 <div className="flex items-center justify-between">
                   <span>Items Subtotal</span>
-                  <span className="font-bold text-slate-900 dark:text-white">
+                  <span className="font-bold text-[var(--foreground)]">
                     ${(order?.subtotal || order?.totalAmount || 0).toFixed(2)}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <span>Delivery &amp; Shipping Fee</span>
-                  <span className="font-bold text-slate-900 dark:text-white">
+                  <span className="font-bold text-[var(--foreground)]">
                     {order?.shippingFee === 0 || !order?.shippingFee ? (
                       <span className="text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-md border border-emerald-200 dark:border-emerald-800">
                         FREE DELIVERY
@@ -613,39 +613,39 @@ export default function OrderSuccessClient({
 
                 <div className="flex items-center justify-between">
                   <span>Estimated Tax &amp; VAT</span>
-                  <span className="text-slate-400 text-[11px]">Included in total (0% extra)</span>
+                  <span className="text-[var(--foreground-muted)] text-[11px]">Included in total (0% extra)</span>
                 </div>
 
                 {/* Grand Total Highlight */}
-                <div className="pt-4 border-t-2 border-dashed border-slate-200 dark:border-slate-700 flex items-baseline justify-between">
+                <div className="pt-4 border-t-2 border-dashed border-[var(--border-color)] flex items-baseline justify-between">
                   <div>
-                    <span className="text-base font-black text-slate-900 dark:text-white">
+                    <span className="text-base font-black text-[var(--foreground)]">
                       Total Paid / Payable
                     </span>
-                    <p className="text-[10px] text-slate-400">
+                    <p className="text-[10px] text-[var(--foreground-muted)]">
                       Official Authorized Invoice Total
                     </p>
                   </div>
-                  <span className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  <span className="text-2xl sm:text-3xl font-black text-gradient-primary">
                     ${(order?.totalAmount || 0).toFixed(2)}
                   </span>
                 </div>
               </div>
 
               {/* ── Security Stamp & Barcode Footer ── */}
-              <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col items-center justify-center space-y-3">
+              <div className="pt-6 border-t border-[var(--border-color)] flex flex-col items-center justify-center space-y-3">
                 {/* Realistic Barcode Generator */}
                 <div className="flex items-center justify-center gap-1 opacity-70">
                   {[3, 1, 5, 2, 4, 1, 6, 2, 3, 5, 1, 4, 2, 6, 3, 1, 5, 2, 4, 1, 6, 2, 3, 5, 1, 4, 2].map((h, i) => (
                     <div
                       key={i}
-                      className="w-1 bg-slate-900 dark:bg-slate-100 rounded-2xs"
+                      className="w-1 bg-[var(--foreground)] rounded-2xs"
                       style={{ height: `${h * 3.5 + 8}px` }}
                     />
                   ))}
                 </div>
 
-                <div className="flex items-center gap-2 text-[10px] text-slate-400 font-mono text-center">
+                <div className="flex items-center gap-2 text-[10px] text-[var(--foreground-muted)] font-mono text-center">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                   <span>OFFICIAL ELECTRO VERIFIED DIGITAL RECEIPT • #{orderId}</span>
                 </div>
@@ -658,7 +658,7 @@ export default function OrderSuccessClient({
 
             <Link
               href="/shop"
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 hover:from-sky-600 hover:via-blue-700 hover:to-indigo-700 text-white font-extrabold text-xs shadow-lg shadow-sky-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover text-white font-extrabold text-xs shadow-md shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
             >
               <ShoppingBag className="w-4 h-4" />
               Continue Shopping
@@ -666,15 +666,15 @@ export default function OrderSuccessClient({
 
             <Link
               href="/track-order"
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs border border-slate-200 dark:border-slate-700 transition-colors text-center flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[var(--surface-elevated)] hover:bg-[var(--surface-alt)] text-[var(--foreground)] font-bold text-xs border border-[var(--border-color)] transition-colors text-center flex items-center justify-center gap-2 shadow-xs cursor-pointer"
             >
-              <Truck className="w-4 h-4 text-sky-500" />
+              <Truck className="w-4 h-4 text-primary" />
               Track Order Live
             </Link>
 
             <Link
               href="/dashboard/customer/orders"
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs border border-slate-200 dark:border-slate-700 transition-colors text-center flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[var(--surface-elevated)] hover:bg-[var(--surface-alt)] text-[var(--foreground)] font-bold text-xs border border-[var(--border-color)] transition-colors text-center flex items-center justify-center gap-2 shadow-xs cursor-pointer"
             >
               My Orders
               <ArrowRight className="w-4 h-4" />

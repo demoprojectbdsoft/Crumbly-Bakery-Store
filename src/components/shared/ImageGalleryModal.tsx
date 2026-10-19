@@ -95,14 +95,14 @@ export default function ImageGalleryModal({
       {/* ── Top Header Bar ── */}
       <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-white/10 bg-slate-900/60 backdrop-blur-md z-20">
         <div className="flex items-center gap-3 min-w-0 pr-4">
-          <div className="w-8 h-8 rounded-lg bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0 border border-sky-500/30">
+          <div className="w-8 h-8 rounded-lg bg-primary/20 text-primary flex items-center justify-center shrink-0 border border-primary/30">
             <Layers className="w-4 h-4" />
           </div>
           <div className="min-w-0">
             <h3 className="text-sm font-bold text-white truncate max-w-xs sm:max-w-md">
               {productTitle}
             </h3>
-            <p className="text-[11px] font-mono text-sky-400 font-medium">
+            <p className="text-[11px] font-mono text-primary font-medium">
               Image {currentIndex + 1} of {images.length}
             </p>
           </div>
@@ -154,7 +154,7 @@ export default function ImageGalleryModal({
               handlePrev();
             }}
             aria-label="Previous Image"
-            className="absolute left-3 sm:left-6 z-20 w-11 h-11 rounded-2xl bg-black/50 hover:bg-sky-600 text-white flex items-center justify-center backdrop-blur-md border border-white/15 transition-all hover:scale-105 shadow-xl cursor-pointer"
+            className="absolute left-3 sm:left-6 z-20 w-11 h-11 rounded-2xl bg-black/50 hover:bg-gradient-to-r hover:from-primary hover:to-primary-hover text-white flex items-center justify-center backdrop-blur-md border border-white/15 transition-all hover:scale-105 shadow-xl cursor-pointer"
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
@@ -185,7 +185,7 @@ export default function ImageGalleryModal({
               handleNext();
             }}
             aria-label="Next Image"
-            className="absolute right-3 sm:right-6 z-20 w-11 h-11 rounded-2xl bg-black/50 hover:bg-sky-600 text-white flex items-center justify-center backdrop-blur-md border border-white/15 transition-all hover:scale-105 shadow-xl cursor-pointer"
+            className="absolute right-3 sm:right-6 z-20 w-11 h-11 rounded-2xl bg-black/50 hover:bg-gradient-to-r hover:from-primary hover:to-primary-hover text-white flex items-center justify-center backdrop-blur-md border border-white/15 transition-all hover:scale-105 shadow-xl cursor-pointer"
           >
             <ChevronRight className="w-6 h-6" />
           </button>
@@ -207,7 +207,7 @@ export default function ImageGalleryModal({
                 }}
                 className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden shrink-0 border-2 transition-all cursor-pointer bg-slate-800 ${
                   isActive
-                    ? "border-sky-400 ring-2 ring-sky-400/50 scale-105 opacity-100 shadow-lg shadow-sky-500/30"
+                    ? "border-primary ring-2 ring-primary/50 scale-105 opacity-100 shadow-lg shadow-primary/30"
                     : "border-white/15 opacity-50 hover:opacity-90 hover:border-white/40"
                 }`}
               >

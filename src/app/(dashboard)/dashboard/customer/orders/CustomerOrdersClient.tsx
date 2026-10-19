@@ -202,27 +202,27 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
       {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
-            <Link href="/dashboard/customer" className="hover:text-sky-600 transition-colors">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[var(--foreground-muted)] mb-1">
+            <Link href="/dashboard/customer" className="hover:text-primary transition-colors">
               Customer Dashboard
             </Link>
             <span>/</span>
-            <span className="text-sky-600 dark:text-sky-400">My Orders</span>
+            <span className="text-primary font-bold">My Orders</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
             Order History &amp;{" "}
-            <span className="bg-gradient-to-r from-sky-500 to-blue-600 bg-clip-text text-transparent">
+            <span className="text-gradient-primary">
               Tracking
             </span>
           </h1>
-          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-xs md:text-sm text-[var(--foreground-muted)] mt-1">
             Track active shipments, manage past deliveries, and download receipts.
           </p>
         </div>
 
         <Link
           href="/shop"
-          className="bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white text-xs font-bold shadow-xs transition-all cursor-pointer self-start sm:self-auto h-10 px-4 rounded-xl flex items-center gap-2"
+          className="bg-primary hover:bg-primary-hover text-white text-xs font-bold shadow-md shadow-primary/20 transition-all cursor-pointer self-start sm:self-auto h-10 px-4 rounded-xl flex items-center gap-2"
         >
           <ShoppingBag className="w-4 h-4" />
           <span>Shop More Items</span>
@@ -245,8 +245,8 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                 onClick={() => setSelectedTab(tab)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                   selectedTab === tab
-                    ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-xs"
-                    : "bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-gray-800 border border-slate-200/80 dark:border-gray-800"
+                    ? "bg-primary text-white shadow-xs font-bold"
+                    : "bg-[var(--surface-alt)] text-[var(--foreground-muted)] hover:bg-[var(--surface-alt)]/80 hover:text-[var(--foreground)] border border-[var(--border-color)]"
                 }`}
               >
                 <span>{tab}</span>
@@ -254,7 +254,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                   className={`text-[10px] px-1.5 py-0.5 rounded-full ${
                     selectedTab === tab
                       ? "bg-white/20 text-white"
-                      : "bg-slate-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"
+                      : "bg-[var(--surface-elevated)] text-[var(--foreground-muted)] border border-[var(--border-color)]/50"
                   }`}
                 >
                   {count}
@@ -266,28 +266,28 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
 
         {/* Search input */}
         <div className="relative max-w-md">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)] z-10" />
           <Input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by order number (e.g. #ORD-9582) or product title..."
-            className="w-full pl-9 pr-4 h-10 bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 focus:border-sky-500 rounded-xl text-xs transition-all text-gray-800 dark:text-gray-100 shadow-xs"
+            className="w-full pl-9 pr-4 h-10 bg-[var(--surface-alt)] border border-[var(--border-color)] focus:border-primary rounded-xl text-xs transition-all text-[var(--foreground)] shadow-xs"
           />
         </div>
       </div>
 
       {/* ── Orders Cards List ── */}
       {filteredOrders.length === 0 ? (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-3xl p-12 text-center space-y-4 max-w-xl mx-auto shadow-sm">
-          <div className="w-16 h-16 rounded-3xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center mx-auto border border-sky-100 dark:border-sky-900/40">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-12 text-center space-y-4 max-w-xl mx-auto shadow-sm">
+          <div className="w-16 h-16 rounded-3xl bg-primary/10 text-primary flex items-center justify-center mx-auto border border-primary/20">
             <Package className="w-8 h-8" />
           </div>
           <div className="space-y-1">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+            <h2 className="text-xl font-bold text-[var(--foreground)]">
               No orders found
             </h2>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-[var(--foreground-muted)]">
               {searchQuery
                 ? "No orders matched your search keyword."
                 : `You do not have any ${selectedTab !== "All Orders" ? selectedTab.toLowerCase() : ""} orders yet.`}
@@ -295,7 +295,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
           </div>
           <Link
             href="/shop"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 text-white text-xs font-bold shadow-md transition-all"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold shadow-md shadow-primary/20 transition-all"
           >
             <span>Start Shopping</span>
           </Link>
@@ -305,32 +305,32 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
           {filteredOrders.map((order) => (
             <Card
               key={order.id}
-              className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl overflow-hidden shadow-xs space-y-4 p-0"
+              className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl overflow-hidden shadow-xs space-y-4 p-0"
             >
               {/* Order Card Header */}
-              <div className="p-4 sm:p-5 bg-slate-50/70 dark:bg-gray-800/40 border-b border-slate-100 dark:border-gray-800 flex flex-wrap items-center justify-between gap-3">
+              <div className="p-4 sm:p-5 bg-[var(--surface-alt)] border-b border-[var(--border-color)] flex flex-wrap items-center justify-between gap-3">
                 <div className="flex flex-wrap items-center gap-4 text-xs">
                   <div>
-                    <span className="text-gray-400 text-[10px] uppercase font-bold block">
+                    <span className="text-[var(--foreground-muted)] text-[10px] uppercase font-bold block">
                       Order Number
                     </span>
-                    <span className="font-extrabold text-gray-900 dark:text-white">
+                    <span className="font-extrabold text-[var(--foreground)]">
                       {order.orderNumber}
                     </span>
                   </div>
                   <div>
-                    <span className="text-gray-400 text-[10px] uppercase font-bold block">
+                    <span className="text-[var(--foreground-muted)] text-[10px] uppercase font-bold block">
                       Date Placed
                     </span>
-                    <span className="font-semibold text-gray-700 dark:text-gray-300">
+                    <span className="font-semibold text-[var(--foreground)] opacity-90">
                       {order.date}
                     </span>
                   </div>
                   <div>
-                    <span className="text-gray-400 text-[10px] uppercase font-bold block">
+                    <span className="text-[var(--foreground-muted)] text-[10px] uppercase font-bold block">
                       Total Amount
                     </span>
-                    <span className="font-black text-gray-900 dark:text-white">
+                    <span className="font-black text-[var(--foreground)]">
                       ${order.total.toFixed(2)}
                     </span>
                   </div>
@@ -345,7 +345,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                         : order.status === "Shipped"
                           ? "bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-800/40"
                           : order.status === "Confirmed"
-                            ? "bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 border border-sky-200/50 dark:border-sky-800/40"
+                            ? "bg-primary/10 text-primary border border-primary/20"
                             : order.status === "Processing"
                               ? "bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 border border-amber-200/50 dark:border-amber-800/40"
                               : "bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200/50 dark:border-rose-800/40"
@@ -358,7 +358,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                     size="sm"
                     variant="outline"
                     onClick={() => handleDownloadInvoice(order.orderNumber)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-gray-700 hover:bg-slate-100 dark:hover:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-300 transition-colors cursor-pointer h-8"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--border-color)] hover:bg-[var(--surface-alt)] text-xs font-semibold text-[var(--foreground)] transition-colors cursor-pointer h-8"
                   >
                     <Download className="w-3.5 h-3.5" />
                     <span className="hidden sm:inline">Invoice</span>
@@ -371,10 +371,10 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                 {order.items.map((item) => (
                   <div
                     key={item.id}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-gray-800 last:border-b-0 last:pb-0"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border-color)] last:border-b-0 last:pb-0"
                   >
                     <div className="flex items-center gap-3.5 min-w-0">
-                      <div className="relative w-16 h-16 rounded-xl bg-slate-50 dark:bg-gray-800 p-1.5 border border-slate-200 dark:border-gray-700 shrink-0 overflow-hidden">
+                      <div className="relative w-16 h-16 rounded-xl bg-[var(--surface-alt)] p-1.5 border border-[var(--border-color)] shrink-0 overflow-hidden">
                         <Image
                           src={item.image}
                           alt={item.name}
@@ -387,11 +387,11 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                       <div className="min-w-0">
                         <Link
                           href={`/shop/${item.slug}`}
-                          className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white hover:text-sky-600 dark:hover:text-sky-400 transition-colors line-clamp-1"
+                          className="text-xs sm:text-sm font-bold text-[var(--foreground)] hover:text-primary transition-colors line-clamp-1"
                         >
                           {item.name}
                         </Link>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                        <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
                           Qty: {item.quantity} • ${item.price.toFixed(2)} each
                         </p>
                       </div>
@@ -410,7 +410,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                         className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors cursor-pointer h-8 ${
                           item.inStock === false
                             ? "bg-rose-50/80 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/50 border border-rose-200/80 dark:border-rose-900/40"
-                            : "bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
+                            : "bg-[var(--surface-alt)] hover:bg-[var(--surface-alt)]/80 text-[var(--foreground)] border border-[var(--border-color)]"
                         }`}
                       >
                         <RotateCcw className={`w-3.5 h-3.5 ${loadingItemId === item.id ? "animate-spin" : ""}`} />
@@ -420,7 +420,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                       {order.status === "Delivered" && (
                         <Link
                           href={`/shop/${item.slug}#reviews`}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-sky-500/30 text-sky-600 dark:text-sky-400 hover:bg-sky-50 dark:hover:bg-sky-950/40 text-xs font-semibold transition-colors h-8 flex items-center"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-primary/30 text-primary hover:bg-primary/10 text-xs font-semibold transition-colors h-8 flex items-center"
                         >
                           <Star className="w-3.5 h-3.5" />
                           <span>Review</span>
@@ -435,21 +435,21 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
               {((order.status === "Shipped" || (order as any).rawStatus === "shipped") || order.customerResponse) && (
                 <div className="px-4 sm:px-5">
                   {!order.customerResponse ? (
-                    <div className="p-4 rounded-2xl bg-gradient-to-r from-sky-50 via-blue-50 to-indigo-50 dark:from-sky-950/40 dark:via-blue-950/30 dark:to-indigo-950/40 border border-sky-200/80 dark:border-sky-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+                    <div className="p-4 rounded-2xl bg-primary/5 border border-primary/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
                       <div className="flex items-start gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-sky-500 to-blue-600 text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5 sm:mt-0">
+                        <div className="w-9 h-9 rounded-xl bg-primary text-white flex items-center justify-center shrink-0 shadow-sm mt-0.5 sm:mt-0">
                           <PackageCheck className="w-5 h-5" />
                         </div>
                         <div>
                           <div className="flex items-center gap-2">
-                            <h4 className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white">
+                            <h4 className="text-xs sm:text-sm font-bold text-[var(--foreground)]">
                               Shipment in Transit — Response Requested
                             </h4>
-                            <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-sky-500 text-white animate-pulse">
+                            <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-primary text-white animate-pulse">
                               Action Required
                             </span>
                           </div>
-                          <p className="text-[11px] text-gray-600 dark:text-gray-300 mt-0.5">
+                          <p className="text-[11px] text-[var(--foreground-muted)] mt-0.5">
                             Please submit a response confirming whether you received your package, did not receive it, or want to cancel.
                           </p>
                         </div>
@@ -457,7 +457,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                       <Button
                         size="sm"
                         onClick={() => handleOpenResponseModal(order)}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white text-xs font-bold shadow-md transition-all cursor-pointer self-start sm:self-auto h-9 shrink-0"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold shadow-md shadow-primary/20 transition-all cursor-pointer self-start sm:self-auto h-9 shrink-0"
                       >
                         <CheckCircle2 className="w-4 h-4" />
                         <span>Submit Response</span>
@@ -508,7 +508,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                           )}
                         </div>
                       </div>
-                      <div className="text-[11px] text-gray-500 dark:text-gray-400 flex items-center gap-2 self-end sm:self-auto">
+                      <div className="text-[11px] text-[var(--foreground-muted)] flex items-center gap-2 self-end sm:self-auto">
                         {order.customerResponseAt && (
                           <span>
                             {new Date(order.customerResponseAt).toLocaleDateString(undefined, {
@@ -522,7 +522,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                         {(order.status === "Shipped" || (order as any).rawStatus === "shipped") && (
                           <button
                             onClick={() => handleOpenResponseModal(order)}
-                            className="text-sky-600 dark:text-sky-400 hover:underline font-semibold text-[11px] cursor-pointer ml-1"
+                            className="text-primary hover:underline font-semibold text-[11px] cursor-pointer ml-1"
                           >
                             Update
                           </button>
@@ -534,11 +534,11 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
               )}
 
               {/* Order Footer with Tracking CTA */}
-              <div className="p-4 sm:p-5 pt-0 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-gray-500 dark:text-gray-400">
+              <div className="p-4 sm:p-5 pt-0 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-[var(--foreground-muted)]">
                 <div>
                   <span>Paid with {order.paymentMethod}</span>
                   {order.trackingNumber && (
-                    <span className="ml-2 font-mono text-[11px] text-sky-600 dark:text-sky-400">
+                    <span className="ml-2 font-mono text-[11px] text-primary">
                       • {order.carrier}: #{order.trackingNumber}
                     </span>
                   )}
@@ -549,7 +549,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                     <Button
                       size="sm"
                       onClick={() => setTrackingModalOrder(order)}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 hover:bg-sky-100 dark:hover:bg-sky-900/40 font-bold transition-colors cursor-pointer h-8"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 font-bold transition-colors cursor-pointer h-8 border border-primary/20"
                     >
                       <Truck className="w-4 h-4" />
                       <span>Track Shipment</span>
@@ -565,20 +565,20 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
       {/* ── Order Tracking Modal ── */}
       {trackingModalOrder && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-950/60 backdrop-blur-xs animate-in fade-in duration-200">
-          <Card className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-6">
-            <div className="flex items-center justify-between border-b border-slate-100 dark:border-gray-800 pb-4">
+          <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-6 text-[var(--foreground)]">
+            <div className="flex items-center justify-between border-b border-[var(--border-color)] pb-4">
               <div>
-                <h3 className="text-base font-bold text-gray-900 dark:text-white">
+                <h3 className="text-base font-bold text-[var(--foreground)]">
                   Tracking: {trackingModalOrder.orderNumber}
                 </h3>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-[var(--foreground-muted)]">
                     {trackingModalOrder.carrier} • #{trackingModalOrder.trackingNumber}
                   </p>
                   {trackingModalOrder.trackingNumber && (
                     <button
                       onClick={() => copyTracking(trackingModalOrder.trackingNumber!)}
-                      className="text-sky-600 hover:text-sky-700 cursor-pointer"
+                      className="text-primary hover:underline cursor-pointer"
                       title="Copy Tracking #"
                     >
                       <Copy className="w-3.5 h-3.5" />
@@ -591,7 +591,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                 isIconOnly
                 variant="ghost"
                 onClick={() => setTrackingModalOrder(null)}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-sm font-bold p-1 h-8 w-8 min-w-0"
+                className="text-[var(--foreground-muted)] hover:text-[var(--foreground)] text-sm font-bold p-1 h-8 w-8 min-w-0"
               >
                 ✕
               </Button>
@@ -604,17 +604,17 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                   {idx !== trackingModalOrder.timeline.length - 1 && (
                     <div
                       className={`absolute left-3.5 top-7 w-0.5 h-10 ${
-                        step.completed ? "bg-sky-500" : "bg-slate-200 dark:bg-gray-800"
+                        step.completed ? "bg-primary" : "bg-[var(--border-color)]"
                       }`}
                     />
                   )}
                   <div
                     className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 z-10 ${
                       step.completed
-                        ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-xs"
+                        ? "bg-primary text-white shadow-xs"
                         : step.current
                           ? "bg-amber-500 text-white ring-4 ring-amber-100 dark:ring-amber-950/60 animate-pulse"
-                          : "bg-slate-200 dark:bg-gray-800 text-gray-400"
+                          : "bg-[var(--surface-alt)] text-[var(--foreground-muted)] border border-[var(--border-color)]"
                     }`}
                   >
                     {step.completed ? (
@@ -625,14 +625,14 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
-                      <p className="text-xs font-bold text-gray-900 dark:text-white">
+                      <p className="text-xs font-bold text-[var(--foreground)]">
                         {step.title}
                       </p>
-                      <span className="text-[10px] text-gray-400 font-medium">
+                      <span className="text-[10px] text-[var(--foreground-muted)] font-medium">
                         {step.date}
                       </span>
                     </div>
-                    <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
+                    <p className="text-[11px] text-[var(--foreground-muted)] mt-0.5">
                       {step.description}
                     </p>
                   </div>
@@ -640,16 +640,16 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
               ))}
             </div>
 
-            <div className="pt-4 border-t border-slate-100 dark:border-gray-800 flex items-center justify-between text-xs">
-              <div className="text-gray-500">
+            <div className="pt-4 border-t border-[var(--border-color)] flex items-center justify-between text-xs">
+              <div className="text-[var(--foreground-muted)]">
                 <span>Shipping to: </span>
-                <span className="font-semibold text-gray-800 dark:text-gray-200 block sm:inline">
+                <span className="font-semibold text-[var(--foreground)] block sm:inline">
                   {trackingModalOrder.shippingAddress}
                 </span>
               </div>
               <Button
                 onClick={() => setTrackingModalOrder(null)}
-                className="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white font-bold transition-all cursor-pointer shrink-0 h-9"
+                className="px-4 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold transition-all cursor-pointer shrink-0 h-9"
               >
                 Close
               </Button>
@@ -661,17 +661,17 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
       {/* ── Order Delivery Response Modal ── */}
       {responseModalOrder && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-950/60 backdrop-blur-xs animate-in fade-in duration-200">
-          <Card className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-5">
+          <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-5 text-[var(--foreground)]">
             {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-slate-100 dark:border-gray-800 pb-4">
+            <div className="flex items-center justify-between border-b border-[var(--border-color)] pb-4">
               <div>
-                <h3 className="text-base font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <h3 className="text-base font-bold text-[var(--foreground)] flex items-center gap-2">
                   <span>Order Delivery Feedback</span>
-                  <span className="text-xs font-mono text-sky-600 dark:text-sky-400">
+                  <span className="text-xs font-mono text-primary">
                     {responseModalOrder.orderNumber}
                   </span>
                 </h3>
-                <p className="text-xs text-gray-500 mt-0.5">
+                <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
                   Let the store know if you received this package or have an issue.
                 </p>
               </div>
@@ -821,18 +821,18 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                     ? "e.g., Courier contacted me earlier but didn't show up today..."
                     : "e.g., Need to cancel due to damaged box or wrong timing..."
                 }
-                className="w-full p-3 rounded-xl border border-slate-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-xs text-gray-900 dark:text-white focus:outline-hidden focus:border-sky-500 resize-none shadow-xs"
+                className="w-full p-3 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] text-xs text-[var(--foreground)] focus:outline-hidden focus:border-primary resize-none shadow-xs"
               />
             </div>
 
             {/* Modal Actions */}
-            <div className="pt-3 border-t border-slate-100 dark:border-gray-800 flex items-center justify-end gap-2.5">
+            <div className="pt-3 border-t border-[var(--border-color)] flex items-center justify-end gap-2.5">
               <Button
                 size="sm"
                 variant="outline"
                 onClick={() => setResponseModalOrder(null)}
                 isDisabled={isSubmittingResponse}
-                className="px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer h-9"
+                className="px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer h-9 text-[var(--foreground)] border-[var(--border-color)]"
               >
                 Cancel
               </Button>
@@ -840,7 +840,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                 size="sm"
                 onClick={handleSubmitResponse}
                 isDisabled={isSubmittingResponse}
-                className="px-5 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 text-white text-xs font-bold shadow-md cursor-pointer h-9"
+                className="px-5 py-2 rounded-xl bg-primary hover:bg-primary-hover text-white text-xs font-bold shadow-md shadow-primary/25 cursor-pointer h-9"
               >
                 {isSubmittingResponse ? "Submitting..." : "Submit Response"}
               </Button>

@@ -120,9 +120,9 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-white dark:bg-gray-950 shadow-xs transition-colors duration-200">
+      <header className="sticky top-0 z-40 w-full bg-[var(--navbar-bg)] shadow-xs transition-colors duration-200 border-b border-[var(--border-color)]">
         {/* ── Top Navbar Row ── */}
-        <div className="w-full bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800">
+        <div className="w-full bg-[var(--navbar-bg)] border-b border-[var(--border-color)]">
           <div className="w-full px-3 sm:px-4 md:px-14 py-3 flex items-center justify-between gap-2 sm:gap-4 md:gap-8">
 
             {/* Logo */}
@@ -132,14 +132,14 @@ export default function Navbar() {
             <div className="relative flex flex-1 items-center max-w-3xl min-w-0 mx-1 sm:mx-2">
               <form
                 onSubmit={handleSearchSubmit}
-                className="flex flex-1 items-center border-2 border-primary rounded-full overflow-hidden bg-white dark:bg-gray-900 shadow-sm"
+                className="flex flex-1 items-center border-2 border-primary rounded-full overflow-hidden bg-[var(--surface-elevated)] shadow-sm"
               >
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search products..."
-                  className="w-full px-3 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm text-gray-800 dark:text-gray-100 placeholder-gray-400 bg-transparent focus:outline-none min-w-0"
+                  className="w-full px-3 sm:px-5 py-1.5 sm:py-2 text-xs sm:text-sm text-[var(--foreground)] placeholder-[var(--foreground-muted)] bg-transparent focus:outline-none min-w-0"
                 />
                 <button
                   type="submit"
@@ -152,17 +152,17 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Right Action Icons & User Menu */}
-            <div className="hidden md:flex items-center gap-4 text-gray-700 dark:text-gray-200 shrink-0">
+            <div className="hidden md:flex items-center gap-3 text-[var(--foreground)] shrink-0">
               <Link
                 href="/compare"
                 aria-label="Compare Products"
-                className="flex items-center text-gray-700 dark:text-gray-200 hover:text-primary transition-colors"
+                className="flex items-center text-[var(--foreground-muted)] hover:text-primary transition-colors p-2 rounded-full hover:bg-[var(--surface-alt)]"
               >
                 <ArrowLeftRight className="w-5 h-5 stroke-[1.8]" />
               </Link>
               <WishlistButton />
               <CartButton showTotal={true} />
-              <div className="h-5 w-px bg-gray-200 dark:bg-gray-800" />
+              <div className="h-5 w-px bg-[var(--border-color)]" />
               <UserAccountMenu />
             </div>
 
@@ -173,10 +173,10 @@ export default function Navbar() {
                 type="button"
                 aria-label="Open left drawer"
                 onClick={handleOpenLeftDrawer}
-                className={`p-1.5 sm:p-2 rounded-lg border text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer ${
+                className={`p-1.5 sm:p-2 rounded-lg border text-[var(--foreground)] hover:text-primary transition-colors cursor-pointer ${
                   isLeftDrawerOpen
                     ? "bg-primary text-white border-primary"
-                    : "border-gray-200 dark:border-gray-800 hover:border-primary bg-gray-50/50 dark:bg-gray-900/50"
+                    : "border-[var(--border-color)] hover:border-primary bg-[var(--surface)]/50"
                 }`}
               >
                 <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -188,10 +188,10 @@ export default function Navbar() {
                 aria-label="Toggle mobile menu"
                 aria-expanded={mobileOpen}
                 onClick={handleToggleHamburger}
-                className={`p-1.5 sm:p-2 rounded-lg border text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer ${
+                className={`p-1.5 sm:p-2 rounded-lg border text-[var(--foreground)] hover:text-primary transition-colors cursor-pointer ${
                   mobileOpen
-                    ? "bg-primary text-white border-primary dark:bg-primary dark:text-white"
-                    : "border-gray-200 dark:border-gray-800 hover:border-primary bg-gray-50/50 dark:bg-gray-900/50"
+                    ? "bg-primary text-white border-primary"
+                    : "border-[var(--border-color)] hover:border-primary bg-[var(--surface)]/50"
                 }`}
               >
                 {mobileOpen ? (
@@ -206,10 +206,10 @@ export default function Navbar() {
                 type="button"
                 aria-label="Open right drawer"
                 onClick={handleOpenRightDrawer}
-                className={`p-1.5 sm:p-2 rounded-lg border text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer ${
+                className={`p-1.5 sm:p-2 rounded-lg border text-[var(--foreground)] hover:text-primary transition-colors cursor-pointer ${
                   isRightDrawerOpen
                     ? "bg-primary text-white border-primary"
-                    : "border-gray-200 dark:border-gray-800 hover:border-primary bg-gray-50/50 dark:bg-gray-900/50"
+                    : "border-[var(--border-color)] hover:border-primary bg-[var(--surface)]/50"
                 }`}
               >
                 <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -231,9 +231,9 @@ export default function Navbar() {
               onClick={closeAllMenus}
             />
             {/* Full-screen panel sliding in from top */}
-            <div className="absolute inset-0 bg-white dark:bg-gray-950 shadow-2xl animate-in slide-in-from-top-2 duration-200 flex flex-col overflow-hidden">
+            <div className="absolute inset-0 bg-[var(--navbar-bg)] shadow-2xl animate-in slide-in-from-top-2 duration-200 flex flex-col overflow-hidden">
               {/* Header */}
-              <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50/70 dark:bg-gray-900/50 shrink-0">
+              <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--border-color)] bg-[var(--surface)] shrink-0">
                 <div onClick={closeAllMenus}>
                   <SparqLogo size="sm" />
                 </div>
@@ -241,7 +241,7 @@ export default function Navbar() {
                   type="button"
                   aria-label="Close menu"
                   onClick={closeAllMenus}
-                  className="p-2 rounded-lg text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200/60 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+                  className="p-2 rounded-lg text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-alt)] transition-colors cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -268,14 +268,14 @@ export default function Navbar() {
           <DrawerBackdrop className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex justify-start transition-opacity duration-200">
             <DrawerContent
               placement="left"
-              className="mr-auto h-full w-full max-w-[320px] sm:max-w-[360px] bg-white dark:bg-gray-950 text-gray-800 dark:text-gray-100 shadow-2xl border-r border-gray-200 dark:border-gray-800 flex flex-col"
+              className="mr-auto h-full w-full max-w-[320px] sm:max-w-[360px] bg-[var(--navbar-bg)] text-[var(--foreground)] shadow-2xl border-r border-[var(--border-color)] flex flex-col"
             >
               <DrawerDialog className="flex flex-col h-full outline-none">
-                <DrawerHeader className="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50/70 dark:bg-gray-900/50 shrink-0">
+                <DrawerHeader className="flex items-center justify-between px-5 py-4 border-b border-[var(--border-color)] bg-[var(--surface)] shrink-0">
                   <div onClick={closeAllMenus}>
                     <SparqLogo size="sm" />
                   </div>
-                  <DrawerCloseTrigger className="p-2 rounded-lg text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200/60 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+                  <DrawerCloseTrigger className="p-2 rounded-lg text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-alt)] transition-colors cursor-pointer">
                     <X className="w-5 h-5" />
                   </DrawerCloseTrigger>
                 </DrawerHeader>
@@ -302,14 +302,14 @@ export default function Navbar() {
           <DrawerBackdrop className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex justify-end transition-opacity duration-200">
             <DrawerContent
               placement="right"
-              className="ml-auto h-full w-full max-w-[320px] sm:max-w-[360px] bg-white dark:bg-gray-950 text-gray-800 dark:text-gray-100 shadow-2xl border-l border-gray-200 dark:border-gray-800 flex flex-col"
+              className="ml-auto h-full w-full max-w-[320px] sm:max-w-[360px] bg-[var(--navbar-bg)] text-[var(--foreground)] shadow-2xl border-l border-[var(--border-color)] flex flex-col"
             >
               <DrawerDialog className="flex flex-col h-full outline-none">
-                <DrawerHeader className="flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50/70 dark:bg-gray-900/50 shrink-0">
-                  <span className="text-sm font-bold text-gray-800 dark:text-gray-100 uppercase tracking-wide">
+                <DrawerHeader className="flex items-center justify-between px-5 py-4 border-b border-[var(--border-color)] bg-[var(--surface)] shrink-0">
+                  <span className="text-sm font-bold text-[var(--foreground)] uppercase tracking-wide">
                     Menu & Categories
                   </span>
-                  <DrawerCloseTrigger className="p-2 rounded-lg text-gray-500 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200/60 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+                  <DrawerCloseTrigger className="p-2 rounded-lg text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-alt)] transition-colors cursor-pointer">
                     <X className="w-5 h-5" />
                   </DrawerCloseTrigger>
                 </DrawerHeader>

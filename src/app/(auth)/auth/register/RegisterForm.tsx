@@ -126,22 +126,22 @@ export function RegisterForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-slate-50 dark:bg-gray-950">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[var(--surface-alt)] transition-colors duration-200">
       <div className="w-full max-w-lg space-y-4">
         {/* Brand logo & tagline */}
         <div className="text-center space-y-2 flex flex-col items-center">
           <SparqLogo size="lg" />
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-[var(--foreground-muted)]">
             Join thousands of users and start shopping today
           </p>
         </div>
 
-        <Card className="w-full border border-slate-200/80 dark:border-gray-800 shadow-xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-2xl">
+        <Card className="w-full border border-[var(--border-color)] shadow-xl bg-[var(--surface-elevated)]/95 backdrop-blur-md rounded-2xl">
           <CardHeader className="flex flex-col gap-1 text-center pb-2 pt-6">
-            <CardTitle className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+            <CardTitle className="text-2xl font-bold tracking-tight text-[var(--foreground)]">
               Create an Account
             </CardTitle>
-            <CardDescription className="text-xs text-slate-500 dark:text-slate-400">
+            <CardDescription className="text-xs text-[var(--foreground-muted)]">
               Enter your details below to get started
             </CardDescription>
           </CardHeader>
@@ -161,9 +161,9 @@ export function RegisterForm() {
             {demoMessage && (
               <Alert
                 status="accent"
-                className="p-3 text-xs rounded-xl border border-blue-200 dark:border-blue-900/50 bg-blue-50 dark:bg-blue-950/40"
+                className="p-3 text-xs rounded-xl border border-primary/20 bg-primary/10"
               >
-                <AlertDescription className="text-blue-700 dark:text-blue-300 font-medium">
+                <AlertDescription className="text-primary font-medium">
                   {demoMessage}
                 </AlertDescription>
               </Alert>
@@ -176,7 +176,7 @@ export function RegisterForm() {
               onClick={handleGoogleLogin}
               fullWidth
               isDisabled={loading}
-              className="flex items-center justify-center gap-2 h-11 text-xs font-semibold border-slate-300 dark:border-gray-700 rounded-xl hover:bg-slate-50 dark:hover:bg-gray-800 cursor-pointer transition-colors w-full"
+              className="flex items-center justify-center gap-2 h-11 text-xs font-semibold border-[var(--border-color)] text-[var(--foreground)] rounded-xl hover:bg-[var(--surface-alt)] cursor-pointer transition-colors w-full"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24">
                 <path
@@ -200,11 +200,11 @@ export function RegisterForm() {
             </Button>
 
             <div className="flex items-center gap-4 my-3">
-              <Separator className="flex-1 bg-slate-200 dark:bg-gray-800" />
-              <span className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+              <Separator className="flex-1 bg-[var(--border-color)]" />
+              <span className="text-[11px] font-semibold text-[var(--foreground-muted)] uppercase tracking-wider">
                 Or with Email
               </span>
-              <Separator className="flex-1 bg-slate-200 dark:bg-gray-800" />
+              <Separator className="flex-1 bg-[var(--border-color)]" />
             </div>
 
             {/* Registration Form */}
@@ -212,36 +212,36 @@ export function RegisterForm() {
               {/* Row 1: Full Name & Email Address */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
                 <div className="space-y-1 w-full">
-                  <Label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  <Label className="text-xs font-semibold text-[var(--foreground)]">
                     Full Name <span className="text-red-500">*</span>
                   </Label>
                   <div className="relative w-full">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none z-10" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--foreground-muted)] pointer-events-none z-10" />
                     <Input
                       name="name"
                       type="text"
                       placeholder="John Doe"
                       variant="primary"
                       fullWidth
-                      className="w-full pl-9 h-10 text-xs rounded-xl border border-slate-200 dark:border-gray-800 focus:ring-2 focus:ring-blue-500"
+                      className="w-full pl-9 h-10 text-xs rounded-xl border border-[var(--border-color)] bg-[var(--surface)] text-[var(--foreground)] focus:ring-2 focus:ring-primary"
                       required
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1 w-full">
-                  <Label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  <Label className="text-xs font-semibold text-[var(--foreground)]">
                     Email Address <span className="text-red-500">*</span>
                   </Label>
                   <div className="relative w-full">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none z-10" />
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--foreground-muted)] pointer-events-none z-10" />
                     <Input
                       name="email"
                       type="email"
                       placeholder="john@example.com"
                       variant="primary"
                       fullWidth
-                      className="w-full pl-9 h-10 text-xs rounded-xl border border-slate-200 dark:border-gray-800 focus:ring-2 focus:ring-blue-500"
+                      className="w-full pl-9 h-10 text-xs rounded-xl border border-[var(--border-color)] bg-[var(--surface)] text-[var(--foreground)] focus:ring-2 focus:ring-primary"
                       required
                     />
                   </div>
@@ -251,24 +251,24 @@ export function RegisterForm() {
               {/* Row 2: Password & Confirm Password */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
                 <div className="space-y-1 w-full">
-                  <Label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  <Label className="text-xs font-semibold text-[var(--foreground)]">
                     Password <span className="text-red-500">*</span>
                   </Label>
                   <div className="relative w-full">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none z-10" />
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--foreground-muted)] pointer-events-none z-10" />
                     <Input
                       name="password"
                       type={showPassword ? "text" : "password"}
                       placeholder="••••••••"
                       variant="primary"
                       fullWidth
-                      className="w-full pl-9 pr-9 h-10 text-xs rounded-xl border border-slate-200 dark:border-gray-800 focus:ring-2 focus:ring-blue-500"
+                      className="w-full pl-9 pr-9 h-10 text-xs rounded-xl border border-[var(--border-color)] bg-[var(--surface)] text-[var(--foreground)] focus:ring-2 focus:ring-primary"
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer z-10"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer z-10"
                     >
                       {showPassword ? (
                         <EyeOff className="w-4 h-4" />
@@ -280,18 +280,18 @@ export function RegisterForm() {
                 </div>
 
                 <div className="space-y-1 w-full">
-                  <Label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  <Label className="text-xs font-semibold text-[var(--foreground)]">
                     Confirm Password <span className="text-red-500">*</span>
                   </Label>
                   <div className="relative w-full">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none z-10" />
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--foreground-muted)] pointer-events-none z-10" />
                     <Input
                       name="confirmPassword"
                       type={showConfirmPassword ? "text" : "password"}
                       placeholder="••••••••"
                       variant="primary"
                       fullWidth
-                      className="w-full pl-9 pr-9 h-10 text-xs rounded-xl border border-slate-200 dark:border-gray-800 focus:ring-2 focus:ring-blue-500"
+                      className="w-full pl-9 pr-9 h-10 text-xs rounded-xl border border-[var(--border-color)] bg-[var(--surface)] text-[var(--foreground)] focus:ring-2 focus:ring-primary"
                       required
                     />
                     <button
@@ -299,7 +299,7 @@ export function RegisterForm() {
                       onClick={() =>
                         setShowConfirmPassword(!showConfirmPassword)
                       }
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer z-10"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)] hover:text-[var(--foreground)] cursor-pointer z-10"
                     >
                       {showConfirmPassword ? (
                         <EyeOff className="w-4 h-4" />
@@ -313,25 +313,25 @@ export function RegisterForm() {
 
               {/* Terms and Conditions option */}
               <div className="pt-1">
-                <label className="flex items-start gap-2 text-xs text-slate-600 dark:text-slate-400 cursor-pointer select-none">
+                <label className="flex items-start gap-2 text-xs text-[var(--foreground-muted)] cursor-pointer select-none">
                   <input
                     type="checkbox"
                     name="agreeTerms"
-                    className="w-4 h-4 mt-0.5 rounded border-slate-300 dark:border-gray-700 text-blue-600 focus:ring-blue-500 cursor-pointer accent-blue-600"
+                    className="w-4 h-4 mt-0.5 rounded border-[var(--border-color)] text-primary focus:ring-primary cursor-pointer accent-primary"
                     required
                   />
                   <span>
                     I agree to the{" "}
                     <Link
                       href="/terms"
-                      className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
+                      className="text-primary hover:text-primary-hover font-semibold hover:underline"
                     >
                       Terms of Service
                     </Link>{" "}
                     and{" "}
                     <Link
                       href="/privacy"
-                      className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
+                      className="text-primary hover:text-primary-hover font-semibold hover:underline"
                     >
                       Privacy Policy
                     </Link>
@@ -344,7 +344,7 @@ export function RegisterForm() {
                 variant="primary"
                 fullWidth
                 isDisabled={loading}
-                className="h-11 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 mt-4 w-full"
+                className="h-11 text-xs font-bold bg-primary hover:bg-primary-hover text-white rounded-xl shadow-md shadow-primary/20 hover:shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 mt-4 w-full"
               >
                 {loading ? (
                   "Creating Account..."
@@ -357,11 +357,11 @@ export function RegisterForm() {
               </Button>
             </Form>
 
-            <div className="text-center text-xs text-slate-500 dark:text-slate-400 pt-2">
+            <div className="text-center text-xs text-[var(--foreground-muted)] pt-2">
               Already have an account?{" "}
               <Link
                 href={callbackUrl !== "/" ? `/auth/login?callbackUrl=${encodeURIComponent(callbackUrl)}` : "/auth/login"}
-                className="font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 hover:underline inline-flex items-center gap-0.5"
+                className="font-semibold text-primary hover:text-primary-hover hover:underline inline-flex items-center gap-0.5"
               >
                 Sign In
               </Link>

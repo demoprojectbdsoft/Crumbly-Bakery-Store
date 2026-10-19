@@ -16,12 +16,11 @@ import {
 import { Category, SubCategory } from "@/types";
 import MobileCategories from "./MobileCategories";
 import { ThemeSwitch } from "./Switcher";
-import LanguageTranslator from "./LanguageTranslator";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "react-toastify";
 
 const PAGE_LINKS = [
-  { label: "About Us", href: "/about", icon: Info, color: "text-sky-500" },
+  { label: "About Us", href: "/about", icon: Info, color: "text-primary" },
   { label: "Services", href: "/services", icon: Briefcase, color: "text-violet-500" },
   { label: "Contact Us", href: "/contact", icon: Mail, color: "text-emerald-500" },
 ];
@@ -70,16 +69,16 @@ export default function MobileMenuContent({
     : "/auth/login";
 
   return (
-    <div className="flex flex-col h-full min-h-0 bg-white dark:bg-gray-950">
+    <div className="flex flex-col h-full min-h-0 bg-[var(--background)]">
       {/* ── Scrollable Body Area ── */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0">
         
         {/* 1. Dedicated Account Profile & Logout Card */}
         {user ? (
-          <div className="p-3.5 rounded-2xl bg-gradient-to-br from-sky-50/90 via-blue-50/50 to-indigo-50/30 dark:from-sky-950/40 dark:via-blue-950/20 dark:to-gray-900/40 border border-sky-100/80 dark:border-sky-900/40 shadow-xs space-y-3">
+          <div className="p-3.5 rounded-2xl bg-[var(--surface-elevated)] border border-[var(--border-color)] shadow-xs space-y-3">
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2.5 min-w-0">
-                <div className="relative w-10 h-10 rounded-full bg-gradient-to-r from-sky-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-xs shrink-0 overflow-hidden">
+                <div className="relative w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm shadow-xs shrink-0 overflow-hidden">
                   {user.image || (user as { avatar?: string })?.avatar ? (
                     <Image
                       src={user.image || ((user as { avatar?: string })?.avatar as string)}
@@ -96,10 +95,10 @@ export default function MobileMenuContent({
                   )}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs font-bold text-gray-900 dark:text-white truncate">
+                  <p className="text-xs font-bold text-[var(--foreground)] truncate">
                     {user.name || "My Account"}
                   </p>
-                  <p className="text-[10px] font-semibold text-sky-600 dark:text-sky-400 capitalize">
+                  <p className="text-[10px] font-semibold text-primary capitalize">
                     {(user as { role?: string })?.role || "Customer"} Account
                   </p>
                 </div>
@@ -126,23 +125,23 @@ export default function MobileMenuContent({
             <Link
               href={accountHref}
               onClick={onClose}
-              className="flex items-center justify-center gap-2 w-full py-2 px-3 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-600 hover:to-blue-700 shadow-xs transition-all"
+              className="flex items-center justify-center gap-2 w-full py-2 px-3 rounded-xl text-xs font-bold text-white bg-primary hover:bg-primary-hover shadow-xs transition-all"
             >
               <LayoutDashboard className="w-3.5 h-3.5" />
               <span>Go to Dashboard</span>
             </Link>
           </div>
         ) : (
-          <div className="p-3.5 rounded-2xl bg-gray-50 dark:bg-gray-900/70 border border-gray-200/80 dark:border-gray-800/80 flex items-center justify-between gap-3">
+          <div className="p-3.5 rounded-2xl bg-[var(--surface-elevated)] border border-[var(--border-color)] flex items-center justify-between gap-3">
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-9 h-9 rounded-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-gray-500 dark:text-gray-400 shrink-0">
+              <div className="w-9 h-9 rounded-full bg-[var(--surface-alt)] flex items-center justify-center text-[var(--foreground-muted)] shrink-0">
                 <User className="w-4 h-4" />
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-bold text-gray-800 dark:text-gray-200 truncate">
+                <p className="text-xs font-bold text-[var(--foreground)] truncate">
                   Welcome to Sparq
                 </p>
-                <p className="text-[10px] text-gray-400 truncate">
+                <p className="text-[10px] text-[var(--foreground-muted)] truncate">
                   Sign in to access your orders
                 </p>
               </div>
@@ -150,7 +149,7 @@ export default function MobileMenuContent({
             <Link
               href="/auth/login"
               onClick={onClose}
-              className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white bg-primary hover:bg-primary/90 transition-colors shrink-0 shadow-xs"
+              className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white bg-primary hover:bg-primary-hover transition-colors shrink-0 shadow-xs"
             >
               Sign In
             </Link>
@@ -158,19 +157,16 @@ export default function MobileMenuContent({
         )}
 
         {/* 2. Appearance / Dark Mode Switch */}
-        <div className="flex items-center justify-between px-3.5 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-900/70 border border-gray-200/80 dark:border-gray-800/80">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-gray-700 dark:text-gray-300">Appearance</span>
+        <div className="flex items-center justify-between px-3 py-1.5 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)]">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[11px] font-bold text-[var(--foreground)]">Appearance</span>
           </div>
           <ThemeSwitch variant="inline" />
         </div>
 
-        {/* 2b. Language Translator (Mobile / PWA) */}
-        <LanguageTranslator variant="inline" />
-
         {/* 3. Explore Pages (About, Services, Contact) */}
         <div className="space-y-1">
-          <p className="px-1 text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-1.5">
+          <p className="px-1 text-[10px] font-bold uppercase tracking-widest text-[var(--foreground-muted)] mb-1.5">
             Explore
           </p>
           {PAGE_LINKS.map((page) => {
@@ -180,12 +176,12 @@ export default function MobileMenuContent({
                 key={page.href}
                 href={page.href}
                 onClick={onClose}
-                className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-gray-50 dark:bg-gray-900/70 border border-gray-200/80 dark:border-gray-800/80 hover:border-primary/40 dark:hover:border-primary/40 hover:bg-primary/5 dark:hover:bg-primary/10 transition-all group"
+                className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)] hover:border-primary/40 hover:bg-primary/5 transition-all group"
               >
-                <div className={`w-7 h-7 rounded-lg flex items-center justify-center bg-white dark:bg-gray-800 shadow-xs border border-gray-100 dark:border-gray-700 shrink-0 ${page.color}`}>
+                <div className={`w-7 h-7 rounded-lg flex items-center justify-center bg-[var(--surface-alt)] shadow-xs border border-[var(--border-color)] shrink-0 ${page.color}`}>
                   <Icon className="w-3.5 h-3.5" />
                 </div>
-                <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 group-hover:text-primary dark:group-hover:text-primary transition-colors">
+                <span className="text-xs font-semibold text-[var(--foreground)] group-hover:text-primary transition-colors">
                   {page.label}
                 </span>
               </Link>
