@@ -627,6 +627,8 @@ const SOCIAL_PLATFORMS = [
   { value: "YouTube", label: "YouTube" },
   { value: "TikTok", label: "TikTok" },
   { value: "Pinterest", label: "Pinterest" },
+  { value: "Vimeo", label: "Vimeo" },
+  { value: "Discord", label: "Discord" },
   { value: "RSS", label: "RSS Feed" },
 ];
 
@@ -956,11 +958,13 @@ export default function AdminSettingsClient({
     current.address || "17 Princess Road, London, Greater London NW1 8JR, UK"
   );
   const [socialLinks, setSocialLinks] = useState<SiteSocialLink[]>(
-    current.socialLinks || [
-      { platform: "Facebook", url: "#" },
-      { platform: "Twitter/X", url: "#" },
-      { platform: "Instagram", url: "#" },
-    ]
+    current.socialLinks && current.socialLinks.length > 0
+      ? current.socialLinks
+      : [
+          { platform: "Facebook", url: "" },
+          { platform: "Twitter/X", url: "" },
+          { platform: "Instagram", url: "" },
+        ]
   );
 
   // ── 8. System & Security State ──

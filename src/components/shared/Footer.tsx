@@ -1,10 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Headphones } from "lucide-react";
 import SparqLogo from "./SparqLogo";
 import { useSiteSettings } from "@/context/SiteSettingsContext";
+import { getCategories } from "@/lib/api/categories";
+import { Category } from "@/types";
 import {
   FaFacebookF,
   FaXTwitter,
@@ -14,6 +16,8 @@ import {
   FaRss,
   FaTiktok,
   FaPinterest,
+  FaVimeo,
+  FaDiscord,
 } from "react-icons/fa6";
 
 const PLATFORM_ICONS: Record<string, React.ElementType> = {
@@ -26,29 +30,36 @@ const PLATFORM_ICONS: Record<string, React.ElementType> = {
   youtube: FaYoutube,
   tiktok: FaTiktok,
   pinterest: FaPinterest,
+  vimeo: FaVimeo,
+  discord: FaDiscord,
   rss: FaRss,
 };
 
 export default function Footer() {
   const { settings } = useSiteSettings();
+  const [categories, setCategories] = useState<Category[]>([]);
 
-  const defaultSocialLinks = [
-    { icon: FaFacebookF, label: "Facebook", href: "#" },
-    { icon: FaXTwitter, label: "Twitter", href: "#" },
-    { icon: FaInstagram, label: "Instagram", href: "#" },
-    { icon: FaLinkedinIn, label: "LinkedIn", href: "#" },
-    { icon: FaYoutube, label: "YouTube", href: "#" },
-    { icon: FaRss, label: "RSS Feed", href: "#" },
-  ];
+  useEffect(() => {
+    getCategories()
+      .then((res: { data?: Category[] } | Category[]) => {
+        const list = Array.isArray(res) ? res : res?.data ?? [];
+        setCategories(list.filter((c) => c.isActive !== false));
+      })
+      .catch(() => setCategories([]));
+  }, []);
 
-  const socialLinks =
-    settings.socialLinks && settings.socialLinks.length > 0
-      ? settings.socialLinks.map((item) => ({
-          icon: PLATFORM_ICONS[item.platform.toLowerCase()] || FaFacebookF,
-          label: item.platform,
-          href: item.url || "#",
-        }))
-      : defaultSocialLinks;
+  // Only show the categories column if there are at least 5 categories
+  const showCategoriesColumn = categories.length >= 5;
+  const footerCategories = categories.slice(0, 7);
+
+  // Only show links that have a non-empty URL set in admin settings
+  const socialLinks = (settings.socialLinks || [])
+    .filter((item) => item.url && item.url.trim() !== "")
+    .map((item) => ({
+      icon: PLATFORM_ICONS[item.platform.toLowerCase()] || FaFacebookF,
+      label: item.platform,
+      href: item.url.trim(),
+    }));
 
   const phone = settings.supportPhone || "(800) 8001-8588, (0600) 874 548";
   const address = settings.address || "17 Princess Road, London, Greater London NW1 8JR, UK";
@@ -59,10 +70,10 @@ export default function Footer() {
       
       {/* ── Main Footer Content ── */}
       <div className="max-w-7xl mx-auto px-4 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12">
+        <div className="grid grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12">
           
-          {/* Column 1: Brand & Contact (Span 5) */}
-          <div className="lg:col-span-5 space-y-6">
+          {/* Column 1: Brand & Contact */}
+          <div className={`col-span-2 ${showCategoriesColumn ? "lg:col-span-5" : "lg:col-span-7"} space-y-6`}>
             
             {/* Logo matching site design language with footer logo source */}
             <SparqLogo size="lg" logoSource="footer" showSlogan />
@@ -93,79 +104,49 @@ export default function Footer() {
             </div>
 
             {/* Social Media Links */}
-            <div className="flex items-center gap-2.5 pt-2">
+            <div className="flex items-center gap-2.5 pt-2 flex-wrap">
               {socialLinks.map((item, idx) => {
                 const IconComponent = item.icon;
                 return (
-                  <Link
+                  <a
                     key={idx}
                     href={item.href}
                     aria-label={item.label}
-                    className="w-8 h-8 rounded-full bg-[var(--surface-elevated)] border border-[var(--border-color)] text-[var(--foreground-muted)] hover:bg-brand-gradient hover:text-[var(--on-grad-text)] hover:border-transparent transition-all duration-300 shadow-xs flex items-center justify-center"
+                    target={item.href !== "#" ? "_blank" : undefined}
+                    rel={item.href !== "#" ? "noopener noreferrer" : undefined}
+                    className="social-icon-btn"
                   >
                     <IconComponent className="w-3.5 h-3.5" />
-                  </Link>
+                  </a>
                 );
               })}
             </div>
 
           </div>
 
-          {/* Column 2 & 3: Find It Fast Links (Span 4) */}
-          <div className="lg:col-span-4 space-y-4">
-            <h3 className="text-base font-bold text-[var(--foreground)]">
-              Find It Fast
-            </h3>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 text-xs md:text-sm">
-              
-              {/* Left Link Group */}
-              <ul className="space-y-2.5">
-                {[
-                  { name: "Laptops & Computers", query: "laptops" },
-                  { name: "Cameras & Photography", query: "cameras" },
-                  { name: "Smart Phones & Tablets", query: "tablets" },
-                  { name: "Video Games & Consoles", query: "gaming" },
-                  { name: "TV & Audio", query: "audio" },
-                  { name: "Gadgets", query: "gadgets" },
-                  { name: "Waterproof Headphones", query: "headphones" },
-                ].map((link, idx) => (
-                  <li key={idx}>
+          {/* Column 2: Dynamic Categories — only shown when ≥5 categories exist */}
+          {showCategoriesColumn && (
+            <div className="col-span-1 lg:col-span-4 space-y-4">
+              <h3 className="text-base font-bold text-[var(--foreground)]">
+                Shop by Category
+              </h3>
+              <ul className="space-y-2.5 text-xs md:text-sm">
+                {footerCategories.map((cat) => (
+                  <li key={cat._id || cat.id || cat.slug}>
                     <Link
-                      href={`/shop?category=${link.query}`}
+                      href={`/shop?category=${cat.slug}`}
                       className="text-[var(--foreground-muted)] hover:text-primary transition-colors"
                     >
-                      {link.name}
+                      {cat.name}
                     </Link>
                   </li>
                 ))}
               </ul>
-
-              {/* Right Link Group */}
-              <ul className="space-y-2.5">
-                {[
-                  { name: "About", href: "/about" },
-                  { name: "Contact", href: "/contact" },
-                  { name: "Wishlist", href: "/dashboard/customer/wishlist" },
-                  { name: "Compare", href: "/compare" },
-                  { name: "FAQ", href: "/faq" },
-                  { name: "Store Directory", href: "/stores" },
-                ].map((link, idx) => (
-                  <li key={idx}>
-                    <Link
-                      href={link.href}
-                      className="text-[var(--foreground-muted)] hover:text-primary transition-colors"
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-
             </div>
-          </div>
+          )}
 
-          {/* Column 4: Customer Care (Span 3) */}
-          <div className="lg:col-span-3 space-y-4">
+          {/* Column 3: Customer Care */}
+          <div className={`${showCategoriesColumn ? "col-span-1 lg:col-span-3" : "col-span-2 lg:col-span-5"} space-y-4`}>
             <h3 className="text-base font-bold text-[var(--foreground)]">
               Customer Care
             </h3>
@@ -229,4 +210,4 @@ export default function Footer() {
 
     </footer>
   );
-}
+}
