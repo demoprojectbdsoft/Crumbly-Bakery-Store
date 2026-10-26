@@ -630,11 +630,11 @@ export default function ProductDetailsPage({
                 const activeIdx = allImages.indexOf(currentImage);
                 openGallery(activeIdx >= 0 ? activeIdx : 0);
               }}
-              title="Click to expand gallery"
-              className="absolute bottom-3 right-3 z-10 px-3 py-1.5 rounded-xl bg-slate-900/75 hover:bg-slate-900 text-white backdrop-blur-md border border-white/20 shadow-lg transition-all hover:scale-105 flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
+              aria-label="Open image gallery"
+              className="absolute bottom-3 right-3 z-10 px-3 py-1.5 rounded-xl bg-slate-900/85 md:hover:bg-slate-900 active:scale-95 text-white backdrop-blur-md border border-white/20 shadow-lg transition-all md:hover:scale-105 flex items-center gap-1.5 text-xs font-semibold cursor-pointer touch-manipulation"
             >
-              <Maximize2 className="w-3.5 h-3.5 text-primary" />
-              <span>Gallery ({allImages.length})</span>
+              <Maximize2 className="w-3.5 h-3.5 text-primary pointer-events-none" />
+              <span className="pointer-events-none">Gallery ({allImages.length})</span>
             </button>
           </div>
 
@@ -646,12 +646,11 @@ export default function ProductDetailsPage({
                   key={idx}
                   type="button"
                   onClick={() => setSelectedImage(img)}
-                  onDoubleClick={() => openGallery(idx)}
-                  title="Click to preview, double click to expand gallery"
-                  className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 cursor-pointer ${
+                  aria-label={`Preview product image ${idx + 1}`}
+                  className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 cursor-pointer touch-manipulation ${
                     currentImage === img
                       ? "border-primary shadow-md ring-2 ring-primary/30 scale-95 bg-[var(--surface-elevated)]"
-                      : "border-[var(--border-color)] bg-[var(--surface-alt)] hover:border-primary/50 opacity-80 hover:opacity-100"
+                      : "border-[var(--border-color)] bg-[var(--surface-alt)] md:hover:border-primary/50 opacity-80 md:hover:opacity-100"
                   }`}
                 >
                   <Image

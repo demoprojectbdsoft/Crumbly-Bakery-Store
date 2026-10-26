@@ -26,6 +26,7 @@ import {
   AlertTriangle,
   Images,
   Maximize2,
+  X,
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { deleteReview } from "@/lib/action/reviews";
@@ -572,10 +573,14 @@ export default function CustomerReviewsClient({
 
       {/* ── Review Details Modal ── */}
       <Modal
-        isOpen={isModalOpen}
+        isOpen={isModalOpen && !isGalleryOpen}
         onOpenChange={setIsModalOpen}
       >
-        <Modal.Backdrop>
+        <Modal.Backdrop
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setIsModalOpen(false);
+          }}
+        >
           <Modal.Container size="md">
             <Modal.Dialog className="bg-[var(--surface-elevated)] border border-[var(--border-color)] dark:border-[var(--border-color)] rounded-3xl p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
               {selectedReview && (
@@ -595,9 +600,17 @@ export default function CustomerReviewsClient({
                         </p>
                       </div>
                     </div>
-                    <Modal.CloseTrigger className="text-[var(--foreground-muted)] hover:text-[var(--foreground-secondary)] dark:hover:text-[var(--foreground)] cursor-pointer p-1 rounded-lg">
-                      ✕
-                    </Modal.CloseTrigger>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsModalOpen(false);
+                      }}
+                      aria-label="Close modal"
+                      className="p-1.5 rounded-xl text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-alt)] active:scale-95 transition-all cursor-pointer touch-manipulation"
+                    >
+                      <X className="w-5 h-5 pointer-events-none" />
+                    </button>
                   </Modal.Header>
 
                   {/* Modal Body */}
@@ -707,8 +720,9 @@ export default function CustomerReviewsClient({
                       size="sm"
                       variant="danger-soft"
                       onPress={() => promptDelete(selectedReview)}
+                      onClick={() => promptDelete(selectedReview)}
                       isDisabled={isDeleting}
-                      className="px-3.5 h-9 rounded-xl font-bold text-xs cursor-pointer inline-flex items-center gap-1.5"
+                      className="px-3.5 h-9 rounded-xl font-bold text-xs cursor-pointer inline-flex items-center gap-1.5 touch-manipulation active:scale-95"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                       <span>Delete Review</span>
@@ -717,7 +731,8 @@ export default function CustomerReviewsClient({
                     <Button
                       size="sm"
                       onPress={() => setIsModalOpen(false)}
-                      className="px-5 h-9 rounded-xl bg-[var(--surface-elevated)] dark:bg-[var(--surface-elevated)] text-white dark:text-[var(--foreground)] font-bold text-xs cursor-pointer"
+                      onClick={() => setIsModalOpen(false)}
+                      className="px-5 h-9 rounded-xl bg-[var(--surface-elevated)] dark:bg-[var(--surface-elevated)] text-white dark:text-[var(--foreground)] font-bold text-xs cursor-pointer touch-manipulation active:scale-95"
                     >
                       Close
                     </Button>
@@ -733,7 +748,11 @@ export default function CustomerReviewsClient({
           DELETE REVIEW CONFIRMATION MODAL
       ════════════════════════════════════════════════════════ */}
       <Modal isOpen={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
-        <Modal.Backdrop>
+        <Modal.Backdrop
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setIsDeleteModalOpen(false);
+          }}
+        >
           <Modal.Container size="sm">
             <Modal.Dialog className="bg-[var(--surface-elevated)] border border-[var(--border-color)] dark:border-[var(--border-color)] rounded-3xl p-6 shadow-2xl space-y-4">
               <div className="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center mx-auto border border-rose-100 dark:border-rose-900/40">
@@ -780,14 +799,16 @@ export default function CustomerReviewsClient({
               <div className="flex items-center justify-center gap-3 pt-2">
                 <Button
                   onPress={() => setIsDeleteModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-[var(--surface-alt)] hover:bg-[var(--surface-alt)] dark:bg-[var(--surface)] dark:hover:bg-[var(--surface-alt)] text-[var(--foreground)] font-bold text-xs cursor-pointer transition-colors"
+                  onClick={() => setIsDeleteModalOpen(false)}
+                  className="px-4 py-2 rounded-xl bg-[var(--surface-alt)] hover:bg-[var(--surface-alt)] dark:bg-[var(--surface)] dark:hover:bg-[var(--surface-alt)] text-[var(--foreground)] font-bold text-xs cursor-pointer transition-colors touch-manipulation active:scale-95"
                 >
                   Cancel
                 </Button>
                 <Button
                   onPress={handleConfirmDelete}
+                  onClick={handleConfirmDelete}
                   isDisabled={isDeleting}
-                  className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-sm cursor-pointer transition-colors inline-flex items-center gap-1.5"
+                  className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-sm cursor-pointer transition-colors inline-flex items-center gap-1.5 touch-manipulation active:scale-95"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                   <span>{isDeleting ? "Deleting..." : "Yes, Delete"}</span>

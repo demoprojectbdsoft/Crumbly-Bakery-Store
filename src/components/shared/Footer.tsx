@@ -114,9 +114,9 @@ export default function Footer() {
                     aria-label={item.label}
                     target={item.href !== "#" ? "_blank" : undefined}
                     rel={item.href !== "#" ? "noopener noreferrer" : undefined}
-                    className="social-icon-btn"
+                    className="social-icon-btn touch-manipulation"
                   >
-                    <IconComponent className="w-3.5 h-3.5" />
+                    <IconComponent className="w-3.5 h-3.5 pointer-events-none" />
                   </a>
                 );
               })}

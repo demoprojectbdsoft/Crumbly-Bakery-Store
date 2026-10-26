@@ -57,9 +57,14 @@ export default function ImageGalleryModal({
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   }, [images.length]);
 
-  // Keyboard navigation: Escape to close, Left/Right arrow keys to navigate
+  // Keyboard navigation & modal setup
   useEffect(() => {
     if (!isOpen) return;
+
+    // Blur any active element in the background so mobile doesn't require a tap to unfocus
+    if (typeof document !== "undefined" && document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -90,55 +95,79 @@ export default function ImageGalleryModal({
       role="dialog"
       aria-modal="true"
       aria-label="Image Gallery"
-      className="fixed inset-0 z-[99999] bg-[var(--surface)]/95 backdrop-blur-xl flex flex-col justify-between select-none animate-in fade-in duration-200"
+      className="fixed inset-0 z-[99999] bg-[var(--surface)]/95 dark:bg-black/95 backdrop-blur-2xl flex flex-col justify-between animate-in fade-in duration-200"
     >
       {/* ── Top Header Bar ── */}
-      <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-white/10 bg-[var(--surface-elevated)]/60 backdrop-blur-md z-20">
+      <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-[var(--border-color)] bg-[var(--surface-elevated)]/90 backdrop-blur-md z-20">
         <div className="flex items-center gap-3 min-w-0 pr-4">
-          <div className="w-8 h-8 rounded-lg bg-primary/20 text-primary flex items-center justify-center shrink-0 border border-primary/30">
-            <Layers className="w-4 h-4" />
+          <div className="w-9 h-9 rounded-xl bg-primary/15 text-primary flex items-center justify-center shrink-0 border border-primary/25 shadow-xs">
+            <Layers className="w-4 h-4 stroke-[2]" />
           </div>
           <div className="min-w-0">
-            <h3 className="text-sm font-bold text-white truncate max-w-xs sm:max-w-md">
+            <h3 className="text-sm sm:text-base font-bold text-[var(--foreground)] truncate max-w-xs sm:max-w-md md:max-w-xl">
               {productTitle}
             </h3>
-            <p className="text-[11px] font-mono text-primary font-medium">
+            <p className="text-xs font-mono font-semibold text-primary tracking-wide">
               Image {currentIndex + 1} of {images.length}
             </p>
           </div>
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-1.5 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           {/* Zoom Toggle */}
           <button
             type="button"
-            onClick={() => setIsZoomed((prev) => !prev)}
-            title={isZoomed ? "Reset Zoom" : "Zoom In"}
-            className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-[var(--surface-elevated)]/10 transition-colors cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsZoomed((prev) => !prev);
+            }}
+            aria-label={isZoomed ? "Reset Zoom" : "Zoom In"}
+            className="p-2 sm:p-2.5 rounded-xl text-[var(--foreground-muted)] md:hover:text-primary md:hover:bg-[var(--surface-elevated)] active:text-primary active:scale-95 bg-[var(--surface-alt)] border border-[var(--border-color)] transition-all cursor-pointer shadow-xs touch-manipulation"
           >
-            {isZoomed ? <ZoomOut className="w-4 h-4" /> : <ZoomIn className="w-4 h-4" />}
+            {isZoomed ? (
+              <ZoomOut className="w-4 h-4 stroke-[2] pointer-events-none" />
+            ) : (
+              <ZoomIn className="w-4 h-4 stroke-[2] pointer-events-none" />
+            )}
           </button>
+
+          {/* Download Current Image */}
+          <a
+            href={currentImage}
+            download
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Download image"
+            onClick={(e) => e.stopPropagation()}
+            className="p-2 sm:p-2.5 rounded-xl text-[var(--foreground-muted)] md:hover:text-primary md:hover:bg-[var(--surface-elevated)] active:text-primary active:scale-95 bg-[var(--surface-alt)] border border-[var(--border-color)] transition-all cursor-pointer shadow-xs touch-manipulation"
+          >
+            <Download className="w-4 h-4 stroke-[2] pointer-events-none" />
+          </a>
 
           {/* Open Original in New Tab */}
           <a
             href={currentImage}
             target="_blank"
             rel="noopener noreferrer"
-            title="Open original image"
-            className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-[var(--surface-elevated)]/10 transition-colors cursor-pointer"
+            aria-label="Open original image in new tab"
+            onClick={(e) => e.stopPropagation()}
+            className="p-2 sm:p-2.5 rounded-xl text-[var(--foreground-muted)] md:hover:text-primary md:hover:bg-[var(--surface-elevated)] active:text-primary active:scale-95 bg-[var(--surface-alt)] border border-[var(--border-color)] transition-all cursor-pointer shadow-xs touch-manipulation"
           >
-            <ExternalLink className="w-4 h-4" />
+            <ExternalLink className="w-4 h-4 stroke-[2] pointer-events-none" />
           </a>
 
           {/* Close Button */}
           <button
             type="button"
-            onClick={onClose}
-            title="Close Gallery (Esc)"
-            className="p-2 ml-1 rounded-xl bg-[var(--surface-elevated)]/10 text-white hover:bg-red-500/80 transition-colors cursor-pointer border border-white/10"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
+            aria-label="Close Gallery"
+            className="p-2 sm:p-2.5 ml-1 rounded-xl bg-[var(--surface-alt)] text-[var(--foreground)] md:hover:bg-rose-600 md:hover:text-white md:hover:border-rose-600 active:bg-rose-600 active:text-white active:scale-95 border border-[var(--border-color)] transition-all cursor-pointer shadow-xs touch-manipulation"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2] pointer-events-none" />
           </button>
         </div>
       </div>
@@ -154,16 +183,16 @@ export default function ImageGalleryModal({
               handlePrev();
             }}
             aria-label="Previous Image"
-            className="absolute left-3 sm:left-6 z-20 w-11 h-11 rounded-2xl bg-black/50 hover:bg-gradient-to-r hover:from-primary hover:to-primary-hover text-white flex items-center justify-center backdrop-blur-md border border-white/15 transition-all hover:scale-105 shadow-xl cursor-pointer"
+            className="absolute left-3 sm:left-6 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-[var(--surface-elevated)]/95 text-[var(--foreground)] md:hover:bg-primary md:hover:text-white md:hover:border-primary active:bg-primary active:text-white active:scale-90 flex items-center justify-center backdrop-blur-md border border-[var(--border-color)] transition-all md:hover:scale-105 shadow-xl cursor-pointer group touch-manipulation"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-6 h-6 stroke-[2.2] pointer-events-none transition-transform md:group-hover:-translate-x-0.5" />
           </button>
         )}
 
         {/* Active Image */}
         <div
           onClick={() => setIsZoomed((prev) => !prev)}
-          className={`relative max-w-full max-h-[72vh] flex items-center justify-center transition-all duration-300 cursor-pointer ${
+          className={`relative max-w-full max-h-[72vh] flex items-center justify-center transition-all duration-300 cursor-pointer touch-manipulation ${
             isZoomed ? "scale-125 cursor-zoom-out" : "cursor-zoom-in"
           }`}
         >
@@ -172,7 +201,7 @@ export default function ImageGalleryModal({
             key={currentImage}
             src={currentImage}
             alt={`${productTitle} - Image ${currentIndex + 1}`}
-            className="max-h-[70vh] max-w-[88vw] object-contain rounded-2xl shadow-2xl transition-all duration-300 pointer-events-auto"
+            className="max-h-[70vh] max-w-[88vw] object-contain rounded-2xl shadow-2xl transition-all duration-300 pointer-events-auto border border-[var(--border-color)]/50"
           />
         </div>
 
@@ -185,15 +214,15 @@ export default function ImageGalleryModal({
               handleNext();
             }}
             aria-label="Next Image"
-            className="absolute right-3 sm:right-6 z-20 w-11 h-11 rounded-2xl bg-black/50 hover:bg-gradient-to-r hover:from-primary hover:to-primary-hover text-white flex items-center justify-center backdrop-blur-md border border-white/15 transition-all hover:scale-105 shadow-xl cursor-pointer"
+            className="absolute right-3 sm:right-6 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-[var(--surface-elevated)]/95 text-[var(--foreground)] md:hover:bg-primary md:hover:text-white md:hover:border-primary active:bg-primary active:text-white active:scale-90 flex items-center justify-center backdrop-blur-md border border-[var(--border-color)] transition-all md:hover:scale-105 shadow-xl cursor-pointer group touch-manipulation"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-6 h-6 stroke-[2.2] pointer-events-none transition-transform md:group-hover:translate-x-0.5" />
           </button>
         )}
       </div>
 
       {/* ── Bottom Thumbnails Strip ── */}
-      <div className="px-4 py-3 border-t border-white/10 bg-[var(--surface-elevated)]/70 backdrop-blur-md z-20">
+      <div className="px-4 py-3 border-t border-[var(--border-color)] bg-[var(--surface-elevated)]/90 backdrop-blur-md z-20">
         <div className="flex items-center justify-center gap-2.5 overflow-x-auto max-w-4xl mx-auto py-1 scrollbar-thin">
           {images.map((img, idx) => {
             const isActive = idx === currentIndex;
@@ -201,14 +230,16 @@ export default function ImageGalleryModal({
               <button
                 key={idx}
                 type="button"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   setIsZoomed(false);
                   setCurrentIndex(idx);
                 }}
-                className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden shrink-0 border-2 transition-all cursor-pointer bg-[var(--surface)] ${
+                aria-label={`View thumbnail ${idx + 1}`}
+                className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden shrink-0 border-2 transition-all cursor-pointer touch-manipulation bg-[var(--surface-alt)] ${
                   isActive
-                    ? "border-primary ring-2 ring-primary/50 scale-105 opacity-100 shadow-lg shadow-primary/30"
-                    : "border-white/15 opacity-50 hover:opacity-90 hover:border-white/40"
+                    ? "border-primary ring-2 ring-primary/40 scale-105 opacity-100 shadow-md shadow-primary/20"
+                    : "border-[var(--border-color)] opacity-60 md:hover:opacity-100 md:hover:border-primary/50 active:opacity-100 active:border-primary"
                 }`}
               >
                 <Image
