@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { Transaction } from "@/types";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 const FILTER_TABS = ["All", "Success", "Pending", "Failed"];
 const METHOD_OPTIONS = ["all", "cod", "bkash", "rocket", "nagad"];
@@ -58,6 +59,7 @@ export default function TransactionsClient({
   initialTransactions = [],
   pagination,
 }: TransactionsClientProps) {
+  const { formatPrice } = useSiteSettings();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -441,7 +443,7 @@ export default function TransactionsClient({
 
                       {/* Amount */}
                       <td className="py-3.5 px-4 whitespace-nowrap font-extrabold text-[var(--foreground)]">
-                        ${t.amount?.toFixed(2)}
+                        {formatPrice(t.amount)}
                       </td>
 
                       {/* Status */}
@@ -560,7 +562,7 @@ export default function TransactionsClient({
                           Transaction Amount
                         </span>
                         <span className="text-3xl font-black text-[var(--foreground)]">
-                          ${selectedTrans.amount?.toFixed(2)}
+                          {formatPrice(selectedTrans.amount)}
                         </span>
                       </div>
                       <div>{getStatusBadge(selectedTrans.status)}</div>

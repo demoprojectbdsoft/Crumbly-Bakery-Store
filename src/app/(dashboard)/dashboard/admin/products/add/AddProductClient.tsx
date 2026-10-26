@@ -31,6 +31,7 @@ import { addProduct } from "@/lib/action/products";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useDemoAdmin } from "@/hooks/useDemoAdmin";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 interface AddProductClientProps {
   categories?: Category[];
@@ -84,6 +85,7 @@ export default function AddProductClient({
   subcategories = [],
 }: AddProductClientProps) {
   const router = useRouter();
+  const { currencySymbol } = useSiteSettings();
 
   // ── Basic product fields ────────────────────────────────────────────────────
   const [formState, setFormState] = useState({
@@ -641,7 +643,7 @@ export default function AddProductClient({
 
                 <div className={fieldClass}>
                   <label className={labelClass}>
-                    Selling Price ($) <span className="text-rose-500">*</span>
+                    Selling Price ({currencySymbol}) <span className="text-rose-500">*</span>
                   </label>
                   <Input
                     name="price"
@@ -657,7 +659,7 @@ export default function AddProductClient({
                 </div>
 
                 <div className={fieldClass}>
-                  <label className={labelClass}>Original Price ($)</label>
+                  <label className={labelClass}>Original Price ({currencySymbol})</label>
                   <Input
                     name="originalPrice"
                     type="number"
@@ -672,7 +674,7 @@ export default function AddProductClient({
 
                 <div className={fieldClass}>
                   <label className={labelClass}>
-                    Invest / Cost Price ($)
+                    Invest / Cost Price ({currencySymbol})
                     <span className="ml-1 text-[10px] font-normal text-amber-500">(admin only)</span>
                   </label>
                   <Input

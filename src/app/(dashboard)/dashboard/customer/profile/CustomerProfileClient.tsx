@@ -41,7 +41,7 @@ export default function CustomerProfileClient({
   const [isSaving, setIsSaving] = useState(false);
 
   const { data: session } = authClient.useSession();
-  const { settings } = useSiteSettings();
+  const { settings, formatPrice } = useSiteSettings();
   const supportEmail = settings.supportEmail || "support@sparq.com";
   const sessionUser = session?.user as { id?: string } | undefined;
 
@@ -444,7 +444,7 @@ export default function CustomerProfileClient({
               <p className="text-[11px] text-[var(--foreground-muted)]">
                 Equivalent to{" "}
                 <span className="font-bold text-[var(--foreground)]">
-                  ${(profile.points * 0.01).toFixed(2)} USD
+                  {formatPrice(profile.points * 0.01)}
                 </span>{" "}
                 in store credit.
               </p>

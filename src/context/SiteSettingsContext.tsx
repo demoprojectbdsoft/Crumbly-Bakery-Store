@@ -1,7 +1,9 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from "react";
 import { SiteSettingsData } from "@/types";
+import { getCurrencySymbol, formatPrice as formatPriceUtil, CURRENCY_SYMBOLS } from "@/lib/currency";
+export { getCurrencySymbol, CURRENCY_SYMBOLS };
 
 export const DEFAULT_SITE_SETTINGS: SiteSettingsData = {
   siteName: "Sparq",
@@ -65,11 +67,15 @@ export const DEFAULT_SITE_SETTINGS: SiteSettingsData = {
 interface SiteSettingsContextType {
   settings: SiteSettingsData;
   updateSettings: (newSettings: Partial<SiteSettingsData>) => void;
+  currencySymbol: string;
+  formatPrice: (amount: number | string | undefined | null, opts?: { showDecimals?: boolean }) => string;
 }
 
 const SiteSettingsContext = createContext<SiteSettingsContextType>({
   settings: DEFAULT_SITE_SETTINGS,
   updateSettings: () => {},
+  currencySymbol: "$",
+  formatPrice: (amt, opts) => formatPriceUtil(amt, "USD", opts),
 });
 
 export function SiteSettingsProvider({
@@ -97,6 +103,11 @@ export function SiteSettingsProvider({
   }));
 
   const updateSettings = (newSettings: Partial<SiteSettingsData>) => {
+    if (newSettings.currency && typeof window !== "undefined") {
+      try {
+        localStorage.setItem("customer_preferred_currency", newSettings.currency);
+      } catch {}
+    }
     setSettings((prev) => ({
       ...prev,
       ...newSettings,
@@ -114,6 +125,18 @@ export function SiteSettingsProvider({
       },
     }));
   };
+
+  // Restore client-preferred currency if saved in localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const savedCurrency = localStorage.getItem("customer_preferred_currency");
+        if (savedCurrency) {
+          setSettings((prev) => ({ ...prev, currency: savedCurrency }));
+        }
+      } catch {}
+    }
+  }, []);
 
   // Dynamically inject CSS variables when palette changes.
   // IMPORTANT: Only set --site-* intermediary tokens here.
@@ -166,8 +189,22 @@ export function SiteSettingsProvider({
     document.body.style.fontFamily = `'${primary}', sans-serif`;
   }, [settings.typography?.primaryFont, settings.typography?.headingFont]);
 
+  const currencySymbol = useMemo(() => getCurrencySymbol(settings.currency), [settings.currency]);
+  const formatPrice = useCallback(
+    (amount: number | string | undefined | null, opts?: { showDecimals?: boolean }) =>
+      formatPriceUtil(amount, settings.currency, opts),
+    [settings.currency]
+  );
+
   return (
-    <SiteSettingsContext.Provider value={{ settings, updateSettings }}>
+    <SiteSettingsContext.Provider
+      value={{
+        settings,
+        updateSettings,
+        currencySymbol,
+        formatPrice,
+      }}
+    >
       {children}
     </SiteSettingsContext.Provider>
   );
@@ -179,6 +216,9 @@ export function useSiteSettings() {
     return {
       settings: DEFAULT_SITE_SETTINGS,
       updateSettings: () => {},
+      currencySymbol: "$",
+      formatPrice: (amt: number | string | undefined | null, opts?: { showDecimals?: boolean }) =>
+        formatPriceUtil(amt, "USD", opts),
     };
   }
   return context;

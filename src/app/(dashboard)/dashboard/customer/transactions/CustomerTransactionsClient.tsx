@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 import { toast } from "react-toastify";
 import { CustomerTransaction, SavedPaymentCard } from "@/types/customerDashboard";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 const STATUS_OPTIONS = [
   { key: "all", label: "All Statuses" },
@@ -51,6 +52,7 @@ export default function CustomerTransactionsClient({
   initialTransactions = [],
   initialSavedCards = [],
 }: CustomerTransactionsClientProps) {
+  const { formatPrice } = useSiteSettings();
   const [transactions, setTransactions] = useState<CustomerTransaction[]>(initialTransactions);
   const [savedCards, setSavedCards] = useState<SavedPaymentCard[]>(initialSavedCards);
   const [searchQuery, setSearchQuery] = useState("");
@@ -207,7 +209,7 @@ export default function CustomerTransactionsClient({
             <CheckCircle2 className="w-4 h-4 text-emerald-500" />
           </div>
           <p className="text-2xl font-bold text-[var(--foreground)]">
-            ${totalPaid.toFixed(2)}
+            {formatPrice(totalPaid)}
           </p>
           <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">
             {settledCount} {settledCount === 1 ? "settled payment" : "settled payments"}
@@ -223,7 +225,7 @@ export default function CustomerTransactionsClient({
             <Clock className="w-4 h-4 text-amber-500" />
           </div>
           <p className="text-2xl font-bold text-[var(--foreground)]">
-            ${pendingTotal.toFixed(2)}
+            {formatPrice(pendingTotal)}
           </p>
           <p className="text-[11px] text-amber-600 dark:text-amber-400 font-semibold">
             {pendingCount} pending settlement
@@ -513,7 +515,7 @@ export default function CustomerTransactionsClient({
                       </span>
                     </td>
                     <td className="py-3.5 font-bold text-[var(--foreground)]">
-                      ${tx.amount.toFixed(2)}
+                      {formatPrice(tx.amount)}
                     </td>
                     <td className="py-3.5">
                       <span

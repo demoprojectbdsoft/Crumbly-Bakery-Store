@@ -22,6 +22,7 @@ import {
 import { toast } from "react-toastify";
 import { getOrderById } from "@/lib/api/orders";
 import { OrderSuccessClientProps, Order, OrderItem, Product } from "@/types";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 /**
  * Resilient image renderer for order receipt items.
@@ -61,6 +62,7 @@ export default function OrderSuccessClient({
   orderId,
   initialOrder,
 }: OrderSuccessClientProps) {
+  const { formatPrice } = useSiteSettings();
   const [order, setOrder] = useState<Order | null>(initialOrder || null);
   const [isCopiedId, setIsCopiedId] = useState<boolean>(false);
   const [isCopiedTrx, setIsCopiedTrx] = useState<boolean>(false);
@@ -565,7 +567,7 @@ export default function OrderSuccessClient({
                                 {title}
                               </p>
                               <p className="text-[11px] text-[var(--foreground-muted)] mt-0.5">
-                                Unit: ${price.toFixed(2)} × Qty:{" "}
+                                Unit: {formatPrice(price)} × Qty:{" "}
                                 <span className="font-bold text-[var(--foreground)]">
                                   {item.quantity}
                                 </span>
@@ -575,7 +577,7 @@ export default function OrderSuccessClient({
 
                           <div className="text-right shrink-0">
                             <span className="font-bold text-[var(--foreground)] text-xs sm:text-sm">
-                              ${total.toFixed(2)}
+                              {formatPrice(total)}
                             </span>
                           </div>
                         </div>
@@ -594,7 +596,7 @@ export default function OrderSuccessClient({
                 <div className="flex items-center justify-between">
                   <span>Items Subtotal</span>
                   <span className="font-bold text-[var(--foreground)]">
-                    ${(order?.subtotal || order?.totalAmount || 0).toFixed(2)}
+                    {formatPrice(order?.subtotal || order?.totalAmount || 0)}
                   </span>
                 </div>
 
@@ -606,7 +608,7 @@ export default function OrderSuccessClient({
                         FREE DELIVERY
                       </span>
                     ) : (
-                      `$${order.shippingFee.toFixed(2)}`
+                      formatPrice(order.shippingFee)
                     )}
                   </span>
                 </div>
@@ -627,7 +629,7 @@ export default function OrderSuccessClient({
                     </p>
                   </div>
                   <span className="text-2xl sm:text-3xl font-black text-gradient-primary">
-                    ${(order?.totalAmount || 0).toFixed(2)}
+                    {formatPrice(order?.totalAmount || 0)}
                   </span>
                 </div>
               </div>

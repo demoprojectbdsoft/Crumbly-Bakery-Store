@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Filter, Sparkles, CheckCircle2, Sliders, ChevronDown, DollarSign, Percent, Star, Tag, Zap } from "lucide-react";
 import { RadioGroup, Radio, Switch } from "@heroui/react";
 import { ProductsSidebarFilterProps } from "@/types";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 const DISCOUNT_TABS = ["0-20", "20-40", "40-60", "60-80", "80-100"] as const;
 const BADGE_OPTIONS = [
@@ -23,6 +24,7 @@ const MAX_PRICE = 2000;
 export default function ProductsSidebarFilter({}: ProductsSidebarFilterProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { currencySymbol } = useSiteSettings();
   const [isPending, startTransition] = useTransition();
   const [isExpandedResponsive, setIsExpandedResponsive] = useState(false);
 
@@ -102,9 +104,9 @@ export default function ProductsSidebarFilter({}: ProductsSidebarFilterProps) {
           <DollarSign className="w-3.5 h-3.5 text-primary" /> Price Range
         </label>
         <div className="flex items-center justify-between text-xs font-semibold text-primary">
-          <span>${rangeMin}</span>
+          <span>{currencySymbol}{rangeMin}</span>
           <span className="text-[10px] text-[var(--foreground-muted)]">—</span>
-          <span>${rangeMax}</span>
+          <span>{currencySymbol}{rangeMax}</span>
         </div>
         <div className="relative h-5 flex items-center">
           <div className="absolute w-full h-1.5 rounded-full bg-[var(--surface-alt)]" />

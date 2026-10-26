@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { ArrowRight, ShoppingCart, Sparkles } from "lucide-react";
 import { SlideItem } from "@/types";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 export interface SlideData {
@@ -68,6 +69,8 @@ interface HeroSliderProps {
 
 // ─── Main Slider ─────────────────────────────────────────────────────────────
 export default function HeroSlider({ initialSlides = [] }: HeroSliderProps) {
+  const { formatPrice, currencySymbol } = useSiteSettings();
+
   const slides: SlideData[] = useMemo(() => {
     if (!Array.isArray(initialSlides) || initialSlides.length === 0) {
       return [];
@@ -77,11 +80,11 @@ export default function HeroSlider({ initialSlides = [] }: HeroSliderProps) {
       const validTarget = isNaN(target.getTime()) ? new Date(Date.now() + 86400000) : target;
       const priceStr =
         typeof s.price === "number"
-          ? `$${s.price.toFixed(2)}`
-          : s.price || "$0.00";
+          ? formatPrice(s.price)
+          : s.price || `${currencySymbol}0.00`;
       const origPriceStr =
         typeof s.originalPrice === "number"
-          ? `$${s.originalPrice.toFixed(2)}`
+          ? formatPrice(s.originalPrice)
           : s.originalPrice;
 
       const displayName = s.productName || s.title || s.tabTitle || `OFFER ${idx + 1}`;

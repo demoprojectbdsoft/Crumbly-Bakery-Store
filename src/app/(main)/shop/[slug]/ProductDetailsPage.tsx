@@ -68,7 +68,7 @@ export default function ProductDetailsPage({
   const router = useRouter();
   const pathname = usePathname();
   const { data: clientSession } = authClient.useSession();
-  const { settings } = useSiteSettings();
+  const { settings, formatPrice } = useSiteSettings();
 
   // Local reviews state initialized with server-fetched or demo reviews
   const [reviews, setReviews] = useState<ProductReview[]>(initialReviews);
@@ -161,16 +161,10 @@ export default function ProductDetailsPage({
     setIsGalleryOpen(true);
   };
 
-  const formattedPrice = `$${product.price.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
+  const formattedPrice = formatPrice(product.price);
 
   const formattedOriginalPrice = product.originalPrice
-    ? `$${product.originalPrice.toLocaleString("en-US", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })}`
+    ? formatPrice(product.originalPrice)
     : null;
 
   const discountPercent =

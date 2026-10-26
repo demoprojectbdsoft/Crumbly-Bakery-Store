@@ -68,6 +68,7 @@ import {
   CustomerTransaction,
 } from "@/types/customerDashboard";
 import { exportCustomerOverviewCsv } from "@/lib/csvExport";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 export interface CustomerStatCard {
   title: string;
@@ -117,6 +118,7 @@ export default function CustomerOverviewClient({
   const [selectedOrderForTracking, setSelectedOrderForTracking] = useState<CustomerOrder | null>(null);
   const [activeSpendingView, setActiveSpendingView] = useState<"both" | "spending" | "orders">("both");
   const [showSuspendedAlert, setShowSuspendedAlert] = useState(false);
+  const { formatPrice, currencySymbol } = useSiteSettings();
 
   const router = useRouter();
   const { data: session } = authClient.useSession();
@@ -345,7 +347,7 @@ export default function CustomerOverviewClient({
                   activeSpendingView === "spending" ? "bg-[var(--surface)] text-primary shadow-xs" : "text-[var(--foreground-muted)]"
                 }`}
               >
-                Spent ($)
+                Spent ({currencySymbol})
               </button>
               <button
                 onClick={() => setActiveSpendingView("orders")}
@@ -382,7 +384,7 @@ export default function CustomerOverviewClient({
                   axisLine={false}
                   tickLine={false}
                   tick={{ fill: "#94a3b8", fontSize: 12 }}
-                  tickFormatter={(val) => `$${val}`}
+                  tickFormatter={(val) => `${currencySymbol}${val}`}
                 />
                 {activeSpendingView === "both" && (
                   <YAxis
@@ -404,7 +406,7 @@ export default function CustomerOverviewClient({
                   }}
                   formatter={(value: any, name: any) => [
                     String(name) === "amount"
-                      ? `$${Number(value ?? 0).toLocaleString()}`
+                      ? `${currencySymbol}${Number(value ?? 0).toLocaleString()}`
                       : `${Number(value ?? 0)} Orders`,
                     String(name) === "amount" ? "Spent" : "Orders Placed",
                   ]}
@@ -500,7 +502,7 @@ export default function CustomerOverviewClient({
                     fontSize: "12px",
                   }}
                   formatter={(val: any, _n: any, item: any) => [
-                    `$${Number(item?.payload?.amount ?? 0).toFixed(2)} (${Number(val ?? 0)}%)`,
+                    `${currencySymbol}${Number(item?.payload?.amount ?? 0).toFixed(2)} (${Number(val ?? 0)}%)`,
                     "Share",
                   ]}
                 />
@@ -557,11 +559,11 @@ export default function CustomerOverviewClient({
             <div className="flex items-center gap-4 text-xs font-semibold">
               <div className="flex items-center gap-1.5">
                 <span className="w-3 h-3 rounded-md bg-primary" />
-                <span className="text-[var(--foreground-muted)]">Spent ($)</span>
+                <span className="text-[var(--foreground-muted)]">Spent ({currencySymbol})</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-3 h-3 rounded-md bg-emerald-500" />
-                <span className="text-[var(--foreground-muted)]">Saved ($)</span>
+                <span className="text-[var(--foreground-muted)]">Saved ({currencySymbol})</span>
               </div>
             </div>
           </div>
@@ -792,7 +794,7 @@ export default function CustomerOverviewClient({
                             {item.name}
                           </p>
                           <p className="text-[11px] text-[var(--foreground-muted)]">
-                            Qty: {item.quantity} • ${item.price.toFixed(2)}
+                            Qty: {item.quantity} • {formatPrice(item.price)}
                           </p>
                         </div>
                       </div>
@@ -808,7 +810,7 @@ export default function CustomerOverviewClient({
                     <div>
                       <span className="text-[10px] text-[var(--foreground-muted)] block">Total Amount</span>
                       <span className="text-sm font-extrabold text-[var(--foreground)]">
-                        ${order.total.toFixed(2)}
+                        {formatPrice(order.total)}
                       </span>
                     </div>
 
@@ -880,11 +882,11 @@ export default function CustomerOverviewClient({
                     </p>
                     <div className="flex items-center gap-1.5 mt-0.5">
                       <span className="text-xs font-extrabold text-[var(--foreground)]">
-                        ${item.price.toFixed(2)}
+                        {formatPrice(item.price)}
                       </span>
                       {item.originalPrice && item.originalPrice > item.price && (
                         <span className="text-[10px] text-[var(--foreground-muted)] line-through">
-                          ${item.originalPrice.toFixed(2)}
+                          {formatPrice(item.originalPrice)}
                         </span>
                       )}
                     </div>
@@ -937,7 +939,7 @@ export default function CustomerOverviewClient({
 
                 <div className="text-right">
                   <p className="text-xs font-black text-[var(--foreground)]">
-                    ${tx.amount.toFixed(2)}
+                    {formatPrice(tx.amount)}
                   </p>
                   <span className="inline-flex items-center text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
                     {tx.status}
@@ -952,7 +954,7 @@ export default function CustomerOverviewClient({
 
           <div className="pt-3 border-t border-[var(--border-color)] flex items-center justify-between text-xs">
             <span className="text-[var(--foreground-muted)]">Lifetime Checkout Total</span>
-            <span className="font-extrabold text-primary">${totalSpentAll.toFixed(2)}</span>
+            <span className="font-extrabold text-primary">{formatPrice(totalSpentAll)}</span>
           </div>
         </Card>
       </div>
@@ -970,7 +972,7 @@ export default function CustomerOverviewClient({
                   </h3>
                 </div>
                 <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
-                  Placed on {selectedOrderForTracking.date} • Total ${selectedOrderForTracking.total.toFixed(2)}
+                  Placed on {selectedOrderForTracking.date} • Total {formatPrice(selectedOrderForTracking.total)}
                 </p>
               </div>
 

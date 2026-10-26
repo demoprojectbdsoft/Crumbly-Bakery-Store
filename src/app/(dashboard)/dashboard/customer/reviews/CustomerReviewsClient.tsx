@@ -30,6 +30,7 @@ import {
 import { toast } from "react-toastify";
 import { deleteReview } from "@/lib/action/reviews";
 import ImageGalleryModal from "@/components/shared/ImageGalleryModal";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 const RATING_FILTER_TABS = ["All", "5 Stars", "4 Stars", "3 Stars", "2 Stars", "1 Star"];
 
@@ -76,6 +77,7 @@ export default function CustomerReviewsClient({
   pagination,
   currentUserId,
 }: CustomerReviewsClientProps) {
+  const { formatPrice } = useSiteSettings();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -430,7 +432,7 @@ export default function CustomerReviewsClient({
                             </p>
                             {rev.productPrice !== undefined && rev.productPrice > 0 && (
                               <p className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
-                                ${rev.productPrice.toFixed(2)}
+                                {formatPrice(rev.productPrice)}
                               </p>
                             )}
                           </div>
@@ -623,7 +625,7 @@ export default function CustomerReviewsClient({
                           </p>
                           {selectedReview.productPrice !== undefined && selectedReview.productPrice > 0 && (
                             <p className="text-xs font-extrabold text-emerald-600 dark:text-emerald-400 mt-0.5">
-                              ${selectedReview.productPrice.toFixed(2)}
+                              {formatPrice(selectedReview.productPrice)}
                             </p>
                           )}
                         </div>

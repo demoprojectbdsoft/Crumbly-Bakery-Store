@@ -4,12 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { PromoBanner } from "@/types";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 interface PromoBannersProps {
   banners?: PromoBanner[];
 }
 
 export default function PromoBanners({ banners = [] }: PromoBannersProps) {
+  const { currencySymbol } = useSiteSettings();
   return (
     <section className="w-full max-w-7xl mx-auto px-4 my-8">
       {/* 1. Dual Banner Grid */}
@@ -60,7 +62,7 @@ export default function PromoBanners({ banners = [] }: PromoBannersProps) {
                     </span>
                   )}
                   <span className="text-2xl font-extrabold text-[var(--foreground)] tracking-tight">
-                    ${banner.priceDollars || banner.price}
+                    {currencySymbol}{banner.priceDollars || banner.price}
                     {banner.priceCents && (
                       <span className="text-xs align-top font-bold">
                         {banner.priceCents}

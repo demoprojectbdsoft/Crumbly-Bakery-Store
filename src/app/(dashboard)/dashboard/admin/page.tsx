@@ -5,18 +5,21 @@ import { getProducts } from "@/lib/api/products";
 import { getUsers } from "@/lib/api/user";
 import { getTransactions } from "@/lib/api/transactions";
 import { getCategories } from "@/lib/api/categories";
+import { getSiteSettings } from "@/lib/api/siteSettings";
+import { getCurrencySymbol } from "@/lib/currency";
 import { aggregateAdminDashboard } from "@/lib/dashboard-helpers";
 
 export const dynamic = "force-dynamic";
 
 async function getAdminDashboardData() {
   try {
-    const [ordersRes, productsRes, usersRes, transRes, catRes] = await Promise.allSettled([
+    const [ordersRes, productsRes, usersRes, transRes, catRes, settingsRes] = await Promise.allSettled([
       getAllOrders({ limit: 1000 }),
       getProducts({ limit: 1000 }),
       getUsers("limit=1000"),
       getTransactions({ limit: 1000 }),
       getCategories(),
+      getSiteSettings(),
     ]);
 
     const orders =
@@ -68,10 +71,13 @@ async function getAdminDashboardData() {
           : []
         : [];
 
-    return aggregateAdminDashboard(orders, products, users, transactions, categories);
+    const settings = settingsRes.status === "fulfilled" ? settingsRes.value?.data : null;
+    const currencySymbol = getCurrencySymbol(settings?.currency || "USD");
+
+    return aggregateAdminDashboard(orders, products, users, transactions, categories, currencySymbol);
   } catch (error) {
     console.error("Failed to fetch admin dashboard real-time data:", error);
-    return aggregateAdminDashboard([], [], [], [], []);
+    return aggregateAdminDashboard([], [], [], [], [], "$");
   }
 }
 

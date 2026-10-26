@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Send } from "lucide-react";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 interface NewsletterBannerProps {
   onSubscribe?: (email: string) => void;
@@ -10,8 +11,10 @@ interface NewsletterBannerProps {
 
 export default function NewsletterBanner({
   onSubscribe,
-  couponAmount = "$20",
+  couponAmount,
 }: NewsletterBannerProps) {
+  const { currencySymbol } = useSiteSettings();
+  const displayCoupon = couponAmount || `${currencySymbol}20`;
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -46,7 +49,7 @@ export default function NewsletterBanner({
             <span className="text-white/85 text-[11px] sm:text-xs md:text-sm font-normal">
               ...and receive{" "}
               <strong className="font-bold text-white bg-[var(--surface-elevated)]/20 px-1.5 py-0.5 rounded text-[10px] sm:text-xs inline-block">
-                {couponAmount} coupon
+                {displayCoupon} coupon
               </strong>{" "}
               for your first order
             </span>

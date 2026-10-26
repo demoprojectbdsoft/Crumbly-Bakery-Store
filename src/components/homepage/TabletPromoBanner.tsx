@@ -3,12 +3,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { TabletPromoProps } from "@/types";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 interface TabletPromoBannerProps {
   tabletPromoData: TabletPromoProps;
 }
 
 export default function TabletPromoBanner({ tabletPromoData }: TabletPromoBannerProps) {
+  const { currencySymbol } = useSiteSettings();
   const {
     categorySlug = "",
     titlePrefix = "",
@@ -48,7 +50,7 @@ export default function TabletPromoBanner({ tabletPromoData }: TabletPromoBanner
                   STARTING AT
                 </span>
                 <div className="flex items-start font-black text-2xl md:text-3xl leading-none tracking-tighter pt-0.5">
-                  <span className="text-sm font-bold align-top leading-none pt-0.5">$</span>
+                  <span className="text-sm font-bold align-top leading-none pt-0.5">{currencySymbol}</span>
                   <span>{startingPrice}</span>
                   <span className="text-xs font-bold align-top leading-none pt-0.5">
                     {cents}

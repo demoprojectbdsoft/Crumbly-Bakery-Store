@@ -9,6 +9,7 @@ import { useSiteSettings } from "@/context/SiteSettingsContext";
 export default function PrivacyPage() {
   const { settings } = useSiteSettings();
   const siteName = settings.siteName || "Sparq";
+  const supportEmail = settings.supportEmail || "support@sparq.com";
 
   return (
     <div className="w-auto -mx-4 md:-mx-14 min-h-screen py-10 md:py-14 px-4 md:px-14 bg-[var(--background)] transition-colors relative overflow-hidden">
@@ -101,7 +102,10 @@ export default function PrivacyPage() {
                 <span>Your Privacy Rights & Controls</span>
               </h2>
               <p className="text-[var(--foreground-muted)]">
-                You have the right to request access to, update, or permanently delete your personal data stored on {siteName} at any time directly through your account settings or by contacting our support team.
+                You have the right to request access to, update, or permanently delete your personal data stored on {siteName} at any time directly through your account settings or by contacting our support team at{" "}
+                <a href={`mailto:${supportEmail}`} className="text-primary font-semibold hover:underline">
+                  {supportEmail}
+                </a>.
               </p>
             </section>
           </CardContent>

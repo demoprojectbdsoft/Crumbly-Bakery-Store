@@ -29,6 +29,7 @@ import SuspendedAccountModal from "@/components/shared/SuspendedAccountModal";
 import { CustomerWishlistItem } from "@/types/customerDashboard";
 import { removeFromWishlist } from "@/lib/action/wishlist";
 import { addToCart, isCarted as checkIsCartedAction } from "@/lib/action/cart";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 const SORT_OPTIONS = [
   { key: "newest", label: "Newest Added" },
@@ -45,6 +46,7 @@ function WishlistProductCard({
   onRemove: (item: CustomerWishlistItem) => void;
 }) {
   const router = useRouter();
+  const { formatPrice } = useSiteSettings();
   const { data: session } = authClient.useSession();
   const user = session?.user;
   const userRole = ((user as { role?: string })?.role || "").toLowerCase();
@@ -167,15 +169,15 @@ function WishlistProductCard({
           {item.originalPrice && item.originalPrice > item.price ? (
             <>
               <span className="text-[10px] text-[var(--foreground-muted)] line-through">
-                ${item.originalPrice.toFixed(2)}
+                {formatPrice(item.originalPrice)}
               </span>
               <span className="text-sm font-extrabold text-red-500">
-                ${item.price.toFixed(2)}
+                {formatPrice(item.price)}
               </span>
             </>
           ) : (
             <span className="text-sm font-extrabold text-[var(--foreground)]">
-              ${item.price.toFixed(2)}
+              {formatPrice(item.price)}
             </span>
           )}
         </div>

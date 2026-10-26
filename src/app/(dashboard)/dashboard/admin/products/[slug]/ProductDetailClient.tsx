@@ -33,6 +33,7 @@ import {
 } from "lucide-react";
 import ImageGalleryModal from "@/components/shared/ImageGalleryModal";
 import { Product } from "@/types";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 interface ProductDetailClientProps {
   product: Product;
@@ -56,6 +57,7 @@ function formatDate(dateValue?: string | Date | null) {
 }
 
 export default function ProductDetailClient({ product }: ProductDetailClientProps) {
+  const { formatPrice, currencySymbol } = useSiteSettings();
   const allImages = [
     product.image,
     ...(product.additionalImages || []),
@@ -224,11 +226,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           <span className="text-[11px] uppercase font-bold text-[var(--foreground-muted)]">Current Selling Price</span>
           <div className="flex items-baseline gap-2">
             <span className="text-3xl font-black text-[var(--foreground)]">
-              ${price.toFixed(2)}
+              {formatPrice(price)}
             </span>
             {originalPrice && originalPrice > price && (
               <span className="text-sm font-semibold text-[var(--foreground-muted)] line-through">
-                ${originalPrice.toFixed(2)}
+                {formatPrice(originalPrice)}
               </span>
             )}
           </div>
@@ -239,7 +241,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           ) : null}
           {hasInvestPrice && (
             <span className="text-[11px] text-[var(--foreground-muted)] mt-1">
-              Cost: <strong className="text-[var(--foreground)] font-mono">${investPrice.toFixed(2)}</strong>
+              Cost: <strong className="text-[var(--foreground)] font-mono">{formatPrice(investPrice)}</strong>
             </span>
           )}
         </div>
@@ -297,11 +299,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             </div>
             <div className="mt-3">
               <span className="text-3xl font-black text-[var(--foreground)] font-mono">
-                ${totalRevenue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                {formatPrice(totalRevenue)}
               </span>
             </div>
             <div className="mt-2 text-[11px] text-[var(--foreground-muted)]">
-              Gross sales ({sellCount} × ${price.toFixed(2)})
+              Gross sales ({sellCount} × {formatPrice(price)})
             </div>
           </Card>
 
@@ -340,7 +342,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                         : "text-rose-600 dark:text-rose-400"
                     }`}
                   >
-                    {isUnitProfitable ? "+" : "-"}${Math.abs(unitProfit).toFixed(2)}
+                    {isUnitProfitable ? "+" : "-"}{formatPrice(Math.abs(unitProfit))}
                   </span>
                   <span
                     className={`text-[10px] font-bold px-1.5 py-0.5 rounded uppercase ${
@@ -406,7 +408,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                         : "text-rose-600 dark:text-rose-400"
                     }`}
                   >
-                    {isTotalProfitable ? "+" : "-"}${Math.abs(totalProfitLoss).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    {isTotalProfitable ? "+" : "-"}{formatPrice(Math.abs(totalProfitLoss))}
                   </span>
                 </div>
               ) : (
@@ -417,7 +419,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             <div className="mt-2 text-[11px] text-[var(--foreground-muted)]">
               {hasInvestPrice && totalCost != null ? (
                 <span>
-                  Total COGS: <strong className="text-[var(--foreground)]">${totalCost.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong>
+                  Total COGS: <strong className="text-[var(--foreground)]">{formatPrice(totalCost)}</strong>
                 </span>
               ) : (
                 <span>Requires cost price to compute</span>
@@ -432,7 +434,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             <div>
               <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)] block">Inventory Stock Value</span>
               <span className="text-base font-black text-[var(--foreground)] font-mono">
-                ${inventoryRetailValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                {formatPrice(inventoryRetailValue)}
               </span>
               <span className="text-[10px] text-[var(--foreground-muted)] block mt-0.5">{stockQuantity} units @ retail</span>
             </div>
@@ -444,11 +446,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)] block">Capital Tied in Stock</span>
               <span className="text-base font-black text-[var(--foreground)] font-mono">
                 {hasInvestPrice && inventoryCostValue != null
-                  ? `$${inventoryCostValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                  ? `${currencySymbol}${inventoryCostValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                   : "Cost not set"}
               </span>
               <span className="text-[10px] text-[var(--foreground-muted)] block mt-0.5">
-                {hasInvestPrice ? `${stockQuantity} units @ $${investPrice.toFixed(2)} cost` : "Add cost price"}
+                {hasInvestPrice ? `${stockQuantity} units @ ${formatPrice(investPrice)} cost` : "Add cost price"}
               </span>
             </div>
             <DollarSign className="w-6 h-6 text-emerald-500/60" />
@@ -641,21 +643,21 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <div className="p-3 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)]">
                 <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)] block">Selling Price</span>
                 <span className="text-base font-black text-[var(--foreground)] font-mono block mt-0.5">
-                  ${price.toFixed(2)}
+                  {formatPrice(price)}
                 </span>
               </div>
 
               <div className="p-3 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)]">
                 <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)] block">Original Price (MSRP)</span>
                 <span className="text-base font-black text-[var(--foreground)] font-mono block mt-0.5">
-                  {originalPrice ? `$${originalPrice.toFixed(2)}` : "—"}
+                  {originalPrice ? formatPrice(originalPrice) : "—"}
                 </span>
               </div>
 
               <div className="p-3 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)]">
                 <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)] block">Cost / Invest Price</span>
                 <span className="text-base font-black text-[var(--foreground)] font-mono block mt-0.5">
-                  {hasInvestPrice ? `$${investPrice.toFixed(2)}` : "—"}
+                  {hasInvestPrice ? formatPrice(investPrice) : "—"}
                 </span>
               </div>
 

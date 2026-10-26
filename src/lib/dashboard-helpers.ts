@@ -193,7 +193,8 @@ export function aggregateAdminDashboard(
   rawProducts: RawProduct[] = [],
   rawUsers: RawUser[] = [],
   rawTransactions: RawTransaction[] = [],
-  rawCategories: any[] = []
+  rawCategories: any[] = [],
+  currencySymbol: string = "$"
 ) {
   const orders = Array.isArray(rawOrders) ? rawOrders : [];
   const products = Array.isArray(rawProducts) ? rawProducts : [];
@@ -594,7 +595,7 @@ export function aggregateAdminDashboard(
     const custEmail = ord.userId?.email || "customer@example.com";
     const firstItem = ord.items?.[0]?.title || "Electronic Item";
     const moreItems = (ord.items?.length || 1) > 1 ? ` +${ord.items!.length - 1} more` : "";
-    const amtStr = `$${Number(ord.totalAmount ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const amtStr = `${currencySymbol}${Number(ord.totalAmount ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
     let st: RecentOrder["status"] = "Processing";
     const rawSt = (ord.orderStatus || "").toLowerCase();
@@ -677,15 +678,15 @@ export function aggregateAdminDashboard(
   const stats: StatCardItem[] = [
     {
       title: "Total Revenue",
-      value: `$${totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      value: `${currencySymbol}${totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       change: `From ${orders.length} total orders`,
       isPositive: true,
       iconName: "DollarSign",
     },
     {
       title: "Net Profit",
-      value: `$${Math.max(0, totalProfit).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-      change: totalProfit >= 0 ? `${profitMargin}% profit margin` : `Loss: $${Math.abs(totalProfit).toFixed(2)}`,
+      value: `${currencySymbol}${Math.max(0, totalProfit).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      change: totalProfit >= 0 ? `${profitMargin}% profit margin` : `Loss: ${currencySymbol}${Math.abs(totalProfit).toFixed(2)}`,
       isPositive: totalProfit >= 0,
       iconName: "TrendingUp",
     },
@@ -757,7 +758,8 @@ export function aggregateCustomerDashboard(
   rawOrders: RawOrder[] = [],
   rawWishlist: any[] = [],
   rawTransactions: any[] = [],
-  user: any = null
+  user: any = null,
+  currencySymbol: string = "$"
 ) {
   const orders = Array.isArray(rawOrders) ? rawOrders : [];
   const wishlist = Array.isArray(rawWishlist) ? rawWishlist : [];
@@ -925,8 +927,8 @@ export function aggregateCustomerDashboard(
     },
     {
       title: "Total Spent",
-      value: `$${totalSpent.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-      change: totalSaved > 0 ? `Saved $${totalSaved.toFixed(2)} with deals` : "No promotions applied",
+      value: `${currencySymbol}${totalSpent.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      change: totalSaved > 0 ? `Saved ${currencySymbol}${totalSaved.toFixed(2)} with deals` : "No promotions applied",
       isPositive: true,
       iconName: "DollarSign",
     },

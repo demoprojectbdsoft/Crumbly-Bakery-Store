@@ -201,7 +201,7 @@ export default function CheckoutClient({
     );
   }, [items]);
 
-  const { settings } = useSiteSettings();
+  const { settings, formatPrice } = useSiteSettings();
   const [selectedShippingMethod, setSelectedShippingMethod] = useState<"standard" | "express">("standard");
 
   const standardShippingCost = settings.shipping?.standardDeliveryFee ?? 15.0;
@@ -973,7 +973,7 @@ export default function CheckoutClient({
                         {isFreeShippingEligible ? (
                           <span className="text-emerald-600 dark:text-emerald-400 font-bold">FREE</span>
                         ) : (
-                          `$${standardShippingCost.toFixed(2)}`
+                          formatPrice(standardShippingCost)
                         )}
                       </span>
                     </div>
@@ -1017,7 +1017,7 @@ export default function CheckoutClient({
                     <div className="pt-2 border-t border-[var(--border-color)]/60 flex items-center justify-between">
                       <span className="text-[10px] text-[var(--foreground-muted)] font-medium">Fee:</span>
                       <span className="text-xs font-bold text-primary">
-                        ${expressShippingCost.toFixed(2)}
+                        {formatPrice(expressShippingCost)}
                       </span>
                     </div>
                   </div>
@@ -1074,13 +1074,13 @@ export default function CheckoutClient({
                             {productTitle}
                           </p>
                           <p className="text-[11px] text-[var(--foreground-muted)]">
-                            Qty: {item.quantity} × ${productPrice.toFixed(2)}
+                            Qty: {item.quantity} × {formatPrice(productPrice)}
                           </p>
                         </div>
 
                         <div className="text-right shrink-0">
                           <span className="text-xs font-bold text-slate-900 dark:text-[var(--foreground)]">
-                            ${lineTotal.toFixed(2)}
+                            {formatPrice(lineTotal)}
                           </span>
                         </div>
                       </div>
@@ -1093,7 +1093,7 @@ export default function CheckoutClient({
                   <div className="flex items-center justify-between">
                     <span>Subtotal</span>
                     <span className="font-bold text-slate-900 dark:text-[var(--foreground)]">
-                      ${subtotal.toFixed(2)}
+                      {formatPrice(subtotal)}
                     </span>
                   </div>
 
@@ -1110,14 +1110,14 @@ export default function CheckoutClient({
                           FREE
                         </span>
                       ) : (
-                        `$${shippingCost.toFixed(2)}`
+                        formatPrice(shippingCost)
                       )}
                     </span>
                   </div>
 
                   {shippingCost > 0 && isFreeShippingEnabled && selectedShippingMethod === "standard" && (
                     <p className="text-[10px] text-primary">
-                      Add ${(freeShippingThreshold - subtotal).toFixed(2)} more for
+                      Add {formatPrice(freeShippingThreshold - subtotal)} more for
                       FREE shipping!
                     </p>
                   )}
@@ -1133,7 +1133,7 @@ export default function CheckoutClient({
                       </p>
                     </div>
                     <span className="text-xl font-black text-primary">
-                      ${grandTotal.toFixed(2)}
+                      {formatPrice(grandTotal)}
                     </span>
                   </div>
                 </div>
@@ -1252,7 +1252,7 @@ export default function CheckoutClient({
                 <div>
                   <span className="text-[10px] text-[var(--foreground-muted)] block leading-none">Amount</span>
                   <span className="font-extrabold text-slate-900 dark:text-[var(--foreground)] text-sm">
-                    ${grandTotal.toFixed(2)}
+                    {formatPrice(grandTotal)}
                   </span>
                 </div>
                 <div className="text-right font-mono text-[11px] text-[var(--foreground-secondary)] dark:text-[var(--foreground-secondary)]">

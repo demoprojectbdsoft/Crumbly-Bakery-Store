@@ -38,6 +38,7 @@ import {
 } from "recharts";
 import type { ValueType } from "recharts/types/component/DefaultTooltipContent";
 import { toast } from "react-toastify";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 const TIMEFRAMES = ["Last 30 Days", "Last 6 Months", "This Year", "All Time"];
 
@@ -66,6 +67,7 @@ const BRAND_SPENDING_DATA = [
 ];
 
 export default function CustomerAnalyticsClient() {
+  const { formatPrice, currencySymbol } = useSiteSettings();
   const [selectedTimeframe, setSelectedTimeframe] = useState("This Year");
 
   const handleExport = () => {
@@ -139,7 +141,7 @@ export default function CustomerAnalyticsClient() {
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold text-[var(--foreground)]">$1,842.50</p>
+            <p className="text-2xl font-bold text-[var(--foreground)]">{formatPrice(1842.5)}</p>
             <p className="text-xs text-emerald-600 dark:text-emerald-400 font-bold mt-1">
               +14% vs previous period
             </p>
@@ -157,7 +159,7 @@ export default function CustomerAnalyticsClient() {
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold text-[var(--foreground)]">$131.60</p>
+            <p className="text-2xl font-bold text-[var(--foreground)]">{formatPrice(131.6)}</p>
             <p className="text-xs text-[var(--foreground-muted)] mt-1">Across 14 completed orders</p>
           </div>
         </Card>
@@ -173,7 +175,7 @@ export default function CustomerAnalyticsClient() {
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold text-[var(--foreground)]">$280.00</p>
+            <p className="text-2xl font-bold text-[var(--foreground)]">{formatPrice(280.0)}</p>
             <p className="text-xs text-primary font-semibold mt-1">
               13.2% saved on retail MSRP
             </p>
@@ -215,11 +217,11 @@ export default function CustomerAnalyticsClient() {
             <div className="flex items-center gap-4 text-xs font-semibold">
               <div className="flex items-center gap-1.5">
                 <span className="w-3 h-3 rounded-md bg-primary" />
-                <span className="text-[var(--foreground-muted)]">Spent ($)</span>
+                <span className="text-[var(--foreground-muted)]">Spent ({currencySymbol})</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-3 h-3 rounded-md bg-[var(--accent)]" />
-                <span className="text-[var(--foreground-muted)]">Saved ($)</span>
+                <span className="text-[var(--foreground-muted)]">Saved ({currencySymbol})</span>
               </div>
             </div>
           </div>
@@ -237,7 +239,7 @@ export default function CustomerAnalyticsClient() {
                   axisLine={false}
                   tickLine={false}
                   tick={{ fill: "#94a3b8", fontSize: 12 }}
-                  tickFormatter={(val) => `$${val}`}
+                  tickFormatter={(val) => `${currencySymbol}${val}`}
                 />
                 <Tooltip
                   contentStyle={{
@@ -247,7 +249,7 @@ export default function CustomerAnalyticsClient() {
                     color: "var(--foreground)",
                     fontSize: "12px",
                   }}
-                  formatter={(val: ValueType | undefined) => [`$${Number(val ?? 0)}`, "Amount"]}
+                  formatter={(val: ValueType | undefined) => [`${currencySymbol}${Number(val ?? 0)}`, "Amount"]}
                 />
                 <Bar dataKey="spending" fill="var(--primary)" radius={[6, 6, 0, 0]} />
                 <Bar dataKey="savings" fill="var(--secondary)" radius={[6, 6, 0, 0]} />
@@ -353,7 +355,7 @@ export default function CustomerAnalyticsClient() {
                 </span>
               </div>
               <p className="text-xs text-[var(--foreground-muted)]">
-                ${brand.spend.toFixed(2)} Total Spent
+                {formatPrice(brand.spend)} Total Spent
               </p>
               <div className="w-full bg-[var(--surface-alt)] dark:bg-[var(--surface)] h-2 rounded-full overflow-hidden">
                 <div

@@ -4,6 +4,8 @@ import { getUserSession } from "@/lib/core/session";
 import { getOrdersByUserId } from "@/lib/api/orders";
 import { getWishlistByUserId } from "@/lib/api/wishlist";
 import { getTransactionsByUserId } from "@/lib/api/transactions";
+import { getSiteSettings } from "@/lib/api/siteSettings";
+import { getCurrencySymbol } from "@/lib/currency";
 import { aggregateCustomerDashboard } from "@/lib/dashboard-helpers";
 import {
   CustomerOrder,
@@ -131,10 +133,11 @@ export default async function CustomerDashboardPage() {
 
   if (user?.id) {
     try {
-      const [ordersRes, wishlistRes, transRes] = await Promise.allSettled([
+      const [ordersRes, wishlistRes, transRes, settingsRes] = await Promise.allSettled([
         getOrdersByUserId(user.id),
         getWishlistByUserId(user.id),
         getTransactionsByUserId(user.id),
+        getSiteSettings(),
       ]);
 
       if (ordersRes.status === "fulfilled") {
@@ -192,12 +195,22 @@ export default async function CustomerDashboardPage() {
     }
   }
 
+  // Fetch site settings currency if user was not logged in or in fallback
+  let currencySymbol = "$";
+  try {
+    const sRes = await getSiteSettings();
+    if (sRes?.data?.currency) {
+      currencySymbol = getCurrencySymbol(sRes.data.currency);
+    }
+  } catch {}
+
   // Aggregate stats & 4+ graph data points
   const aggregated = aggregateCustomerDashboard(
     rawOrders,
     wishlistItems,
     rawTransactions,
-    user
+    user,
+    currencySymbol
   );
 
   // Format real customer orders for the overview order list & tracking modal

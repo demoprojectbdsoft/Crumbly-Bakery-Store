@@ -36,6 +36,7 @@ import { toast } from "react-toastify";
 import { updateUser } from "@/lib/action/user";
 import { getUserOrdersAction } from "@/lib/action/orders";
 import { useDemoAdmin } from "@/hooks/useDemoAdmin";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 const ROLE_OPTIONS = [
   { id: "admin", label: "Admin", icon: ShieldCheck, desc: "Full administrative access to the platform" },
@@ -197,6 +198,7 @@ export default function UsersClient({
   initialUsers = [],
   pagination,
 }: UsersClientProps) {
+  const { formatPrice } = useSiteSettings();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { guardDemo } = useDemoAdmin();
@@ -1064,7 +1066,7 @@ export default function UsersClient({
                                     </p>
                                     <div className="flex items-center gap-2 mt-0.5 text-[11px] text-[var(--foreground-muted)]">
                                       <span className="font-extrabold text-emerald-600 dark:text-emerald-400">
-                                        ${pPrice.toFixed(2)}
+                                        {formatPrice(pPrice)}
                                       </span>
                                       <span>•</span>
                                       <span>Qty: {pQty}</span>

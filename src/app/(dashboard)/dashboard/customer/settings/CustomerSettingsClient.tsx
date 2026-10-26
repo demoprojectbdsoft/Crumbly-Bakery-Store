@@ -176,7 +176,7 @@ export default function CustomerSettingsClient({
   initialSettings,
 }: CustomerSettingsClientProps) {
   const [activeTab, setActiveTab] = useState("preferences");
-  const { settings: siteSettings } = useSiteSettings();
+  const { settings: siteSettings, updateSettings } = useSiteSettings();
 
   // Preferences State — currency defaults to site-wide currency from backend
   const [currency, setCurrency] = useState(
@@ -241,7 +241,10 @@ export default function CustomerSettingsClient({
 
   const handlePreferencesSave = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Preferences updated successfully!");
+    if (currency) {
+      updateSettings({ currency });
+    }
+    toast.success(`Preferences updated successfully! Currency set to ${currency}.`);
   };
 
   const handleNotificationsSave = (e: React.FormEvent) => {

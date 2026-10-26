@@ -39,7 +39,7 @@ export const FREE_SHIPPING_THRESHOLD = 50.0;
 export default function CartClient({ initialCart, user: initialUser }: CartClientProps) {
   const { data: clientSession } = authClient.useSession();
   const user = initialUser || clientSession?.user;
-  const { settings } = useSiteSettings();
+  const { settings, currencySymbol, formatPrice } = useSiteSettings();
 
   // Dynamic shipping values from site settings (admin-configurable)
   const dynamicFreeThreshold = settings.shipping?.freeShippingThreshold ?? FREE_SHIPPING_THRESHOLD;
@@ -397,7 +397,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                   <span>
                     Add{" "}
                     <strong className="text-[var(--foreground)] font-bold">
-                      ${amountToFreeShipping.toFixed(2)}
+                      {formatPrice(amountToFreeShipping)}
                     </strong>{" "}
                     more to qualify for <span className="text-primary font-bold">FREE Shipping</span>!
                   </span>
@@ -579,11 +579,11 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                           {/* Unit Price (Col 2) */}
                           <div className="col-span-2 text-center">
                             <div className="font-extrabold text-sm text-[var(--foreground)]">
-                              ${unitPrice.toFixed(2)}
+                              {formatPrice(unitPrice)}
                             </div>
                             {originalPrice && originalPrice > unitPrice && (
                               <div className="text-xs text-[var(--foreground-muted)] line-through">
-                                ${originalPrice.toFixed(2)}
+                                {formatPrice(originalPrice)}
                               </div>
                             )}
                           </div>
@@ -639,7 +639,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                           {/* Line Total & Remove Button (Col 2) */}
                           <div className="col-span-2 flex items-center justify-end gap-3">
                             <span className="font-extrabold text-base text-primary">
-                              ${lineTotal.toFixed(2)}
+                              {formatPrice(lineTotal)}
                             </span>
                             <button
                               type="button"
@@ -712,11 +712,11 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                             <div className="flex items-end justify-between mt-3">
                               <div>
                                 <span className="text-xs font-bold text-slate-900 dark:text-[var(--foreground)]">
-                                  ${unitPrice.toFixed(2)}
+                                  {formatPrice(unitPrice)}
                                 </span>
                                 {item.quantity > 1 && (
                                   <span className="text-[10px] text-[var(--foreground-muted)] ml-1.5 font-medium">
-                                    Total: ${lineTotal.toFixed(2)}
+                                    Total: {formatPrice(lineTotal)}
                                   </span>
                                 )}
                               </div>
@@ -854,7 +854,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                           {appliedCoupon.discountPercent
                             ? `${appliedCoupon.discountPercent}% off subtotal discount`
                             : appliedCoupon.discountAmount
-                            ? `$${appliedCoupon.discountAmount} flat discount`
+                            ? `${formatPrice(appliedCoupon.discountAmount)} flat discount`
                             : "Free shipping activated"}
                         </p>
                       </div>
@@ -912,7 +912,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                     onClick={() => setCouponCode("SAVE15")}
                     className="font-mono px-2 py-0.5 rounded bg-[var(--surface-alt)] hover:bg-primary/10 text-primary border border-[var(--border-color)] cursor-pointer font-bold transition-colors"
                   >
-                    SAVE15 (-$15)
+                    SAVE15 (-{currencySymbol}15)
                   </button>
                 </div>
               </div>
@@ -930,7 +930,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                   <div className="flex items-center justify-between">
                     <span>Subtotal ({itemCount} {itemCount === 1 ? "item" : "items"})</span>
                     <span className="font-bold text-[var(--foreground)] text-sm">
-                      ${subtotal.toFixed(2)}
+                      {formatPrice(subtotal)}
                     </span>
                   </div>
 
@@ -948,7 +948,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                           FREE
                         </span>
                       ) : (
-                        `$${shippingCost.toFixed(2)}`
+                        formatPrice(shippingCost)
                       )}
                     </span>
                   </div>
@@ -957,7 +957,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                   {discountValue > 0 && (
                     <div className="flex items-center justify-between text-emerald-600 dark:text-emerald-400 font-semibold pt-2 border-t border-[var(--border-color)]">
                       <span>Discount ({appliedCoupon?.code})</span>
-                      <span>-${discountValue.toFixed(2)}</span>
+                      <span>-{formatPrice(discountValue)}</span>
                     </div>
                   )}
 
@@ -970,7 +970,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                       <p className="text-[10px] text-[var(--foreground-muted)]">Includes applicable discounts & shipping</p>
                     </div>
                     <span className="text-xl sm:text-2xl font-black text-primary">
-                      ${grandTotal.toFixed(2)}
+                      {formatPrice(grandTotal)}
                     </span>
                   </div>
                 </div>

@@ -92,9 +92,10 @@ export default function StoreLocatorPage() {
       name: `${siteName} Flagship Store`,
       address: mainAddress,
       phone: mainPhone,
+      hours: settings.openingHours || STORES_DATA[0].hours,
     },
     ...STORES_DATA.slice(1),
-  ], [siteName, mainAddress, mainPhone]);
+  ], [siteName, mainAddress, mainPhone, settings.openingHours]);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStoreId, setSelectedStoreId] = useState<string>(allStores[0].id);

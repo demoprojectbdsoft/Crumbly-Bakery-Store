@@ -14,7 +14,7 @@ export const DEFAULT_TOP_BAR_ITEMS: TopBarItem[] = [
 ];
 
 export default function TopBar() {
-  const { settings } = useSiteSettings();
+  const { settings, currencySymbol } = useSiteSettings();
 
   // If top bar is disabled from settings, don't render
   if (settings.topBarEnabled === false) return null;
@@ -30,7 +30,7 @@ export default function TopBar() {
   // Shipping threshold / text
   const freeThreshold = settings.shipping?.freeShippingThreshold ?? 50;
   const freeShippingText = settings.shipping?.freeShippingEnabled !== false
-    ? `Free Express Shipping on $${freeThreshold}+`
+    ? `Free Express Shipping on ${currencySymbol}${freeThreshold}+`
     : `Standard Delivery Available`;
 
   // Announcement text

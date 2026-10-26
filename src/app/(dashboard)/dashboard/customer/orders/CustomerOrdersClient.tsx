@@ -31,6 +31,7 @@ import SuspendedAccountModal from "@/components/shared/SuspendedAccountModal";
 import { CustomerOrder, CustomerOrderItem } from "@/types/customerDashboard";
 import { submitCustomerOrderResponse } from "@/lib/action/orders";
 import { addToCart } from "@/lib/action/cart";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 const STATUS_TABS = ["All Orders", "Confirmed", "Processing", "Shipped", "Delivered", "Cancelled"];
 
@@ -39,6 +40,7 @@ interface CustomerOrdersClientProps {
 }
 
 export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrdersClientProps) {
+  const { formatPrice } = useSiteSettings();
   const { data: session } = authClient.useSession();
   const user = session?.user;
   const isSuspended = ((user as { status?: string })?.status || "").toLowerCase() === "suspended";
@@ -331,7 +333,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                       Total Amount
                     </span>
                     <span className="font-black text-[var(--foreground)]">
-                      ${order.total.toFixed(2)}
+                      {formatPrice(order.total)}
                     </span>
                   </div>
                 </div>
@@ -392,7 +394,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                           {item.name}
                         </Link>
                         <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
-                          Qty: {item.quantity} • ${item.price.toFixed(2)} each
+                          Qty: {item.quantity} • {formatPrice(item.price)} each
                         </p>
                       </div>
                     </div>

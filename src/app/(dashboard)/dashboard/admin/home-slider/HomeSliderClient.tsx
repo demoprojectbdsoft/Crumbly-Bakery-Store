@@ -35,6 +35,7 @@ import { toast } from "react-toastify";
 import { Product, SlideItem } from "@/types";
 import { addSlide, updateSlide, deleteSlide } from "@/lib/action/slides";
 import HeroUIDateTimePicker from "@/components/shared/HeroUIDateTimePicker";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 interface HomeSliderClientProps {
   initialSlides: SlideItem[];
@@ -91,6 +92,7 @@ export default function HomeSliderClient({
   initialSlides = [],
   products = [],
 }: HomeSliderClientProps) {
+  const { formatPrice, currencySymbol } = useSiteSettings();
   const router = useRouter();
 
   const [slides, setSlides] = useState<SlideItem[]>(
@@ -501,11 +503,11 @@ export default function HomeSliderClient({
                   const timer = getTimeRemaining(slide.targetDate);
                   const priceStr =
                     typeof slide.price === "number"
-                      ? `$${slide.price.toFixed(2)}`
-                      : slide.price || "$0.00";
+                      ? formatPrice(slide.price)
+                      : slide.price || `${currencySymbol}0.00`;
                   const origPriceStr =
                     typeof slide.originalPrice === "number"
-                      ? `$${slide.originalPrice.toFixed(2)}`
+                      ? formatPrice(slide.originalPrice)
                       : slide.originalPrice;
 
                   return (
@@ -713,7 +715,7 @@ export default function HomeSliderClient({
                                     {prod.title}
                                   </span>
                                   <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 shrink-0">
-                                    ${Number(prod.price || 0).toFixed(2)}
+                                    {formatPrice(Number(prod.price || 0))}
                                   </span>
                                 </div>
                               </ListBox.Item>
@@ -749,11 +751,11 @@ export default function HomeSliderClient({
                           <p className="text-[11px] text-[var(--foreground-muted)]">
                             Deal Price:{" "}
                             <span className="font-bold text-red-500">
-                              ${Number(selectedProduct.price || 0).toFixed(2)}
+                              {formatPrice(Number(selectedProduct.price || 0))}
                             </span>
                             {selectedProduct.originalPrice && (
                               <span className="ml-1.5 text-[10px] text-[var(--foreground-muted)] line-through">
-                                ${Number(selectedProduct.originalPrice).toFixed(2)}
+                                {formatPrice(Number(selectedProduct.originalPrice))}
                               </span>
                             )}
                           </p>
@@ -959,8 +961,10 @@ export default function HomeSliderClient({
                         </h4>
                         <div className="text-2xl font-normal text-red-500 dark:text-red-400">
                           {typeof previewSlide.price === "number"
-                            ? `$${previewSlide.price.toFixed(2)}`
-                            : previewSlide.price || "$0.00"}
+                            ? formatPrice(previewSlide.price)
+                            : previewSlide.price && !isNaN(Number(previewSlide.price))
+                            ? formatPrice(Number(previewSlide.price))
+                            : formatPrice(0)}
                         </div>
                         <div className="text-[10px] text-[var(--foreground-muted)] uppercase font-semibold">
                           Countdown End: {formatDisplayDate(previewSlide.targetDate)}

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
 import { getCartByUserId } from "@/lib/api/cart";
 import { authClient } from "@/lib/auth-client";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 interface CartButtonProps {
   /** When true, renders the current dollar total next to the bag icon (desktop navbar) */
@@ -18,13 +19,14 @@ export default function CartButton({
   className = "",
   onClick,
 }: CartButtonProps) {
+  const { formatPrice, currencySymbol } = useSiteSettings();
   // ── User Session ──────────────────────────────────────────────────────────
   const { data: session } = authClient.useSession();
   const user = session?.user;
 
   // ── Cart Badge State ──────────────────────────────────────────────────────
   const [count, setCount] = useState<number>(0);
-  const [total, setTotal] = useState<string>("$0.00");
+  const [total, setTotal] = useState<string>(`${currencySymbol}0.00`);
 
   // ── Reactive Cart Sync ────────────────────────────────────────────────────
   // Automatically loads cart when user logs in AND updates live whenever
@@ -33,7 +35,7 @@ export default function CartButton({
     // Reset badge if user is not signed in
     if (!user?.id) {
       setCount(0);
-      setTotal("$0.00");
+      setTotal(`${currencySymbol}0.00`);
       return;
     }
 
@@ -45,7 +47,7 @@ export default function CartButton({
             const totalItems = res.data.totalItems ?? res.data.itemCount ?? 0;
             const totalPrice = res.data.totalPrice ?? res.data.subtotal ?? 0;
             setCount(totalItems);
-            setTotal(`$${Number(totalPrice).toFixed(2)}`);
+            setTotal(formatPrice(Number(totalPrice)));
           }
         })
         .catch(() => {});

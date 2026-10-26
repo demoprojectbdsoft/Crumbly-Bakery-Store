@@ -59,6 +59,7 @@ import {
   TopSellingPeriodItem,
 } from "@/types/adminDashboard";
 import { exportAdminOverviewCsv, exportTopSellingCsv } from "@/lib/csvExport";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 interface OverviewClientProps {
   stats: StatCardItem[];
@@ -100,6 +101,7 @@ export default function OverviewClient({
   yearlyProfitData,
   topSellingByPeriod,
 }: OverviewClientProps) {
+  const { currencySymbol, formatPrice } = useSiteSettings();
   const [revenueMetric, setRevenueMetric] = useState<"both" | "revenue" | "orders">("both");
   const [profitTimeframe, setProfitTimeframe] = useState<"daily" | "weekly" | "monthly" | "yearly">("monthly");
   const [sellingPeriod, setSellingPeriod] = useState<"daily" | "weekly" | "monthly" | "yearly">("monthly");
@@ -243,7 +245,7 @@ export default function OverviewClient({
           </div>
           <div>
             <p className="text-[11px] font-medium text-[var(--foreground-muted)]">Avg. Order Value</p>
-            <p className="text-sm font-extrabold text-[var(--foreground)]">${kpis.avgOrderValue.toFixed(2)}</p>
+            <p className="text-sm font-extrabold text-[var(--foreground)]">{currencySymbol}{kpis.avgOrderValue.toFixed(2)}</p>
           </div>
         </div>
 
@@ -378,7 +380,7 @@ export default function OverviewClient({
                 axisLine={false}
                 tickLine={false}
                 tick={{ fill: "#94a3b8", fontSize: 11 }}
-                tickFormatter={(v) => v >= 1000 ? `$${(v / 1000).toFixed(1)}k` : `$${v}`}
+                tickFormatter={(v) => v >= 1000 ? `${currencySymbol}${(v / 1000).toFixed(1)}k` : `${currencySymbol}${v}`}
               />
               <Tooltip
                 contentStyle={{
@@ -390,7 +392,7 @@ export default function OverviewClient({
                   boxShadow: "0 20px 40px -10px rgba(0,0,0,0.4)",
                 }}
                 formatter={(value: any, name: any) => [
-                  `$${Number(value ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+                  `${currencySymbol}${Number(value ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
                   String(name) === "revenue"
                     ? "💰 Sell Price (Revenue)"
                     : String(name) === "cost"
@@ -535,7 +537,7 @@ export default function OverviewClient({
                   axisLine={false}
                   tickLine={false}
                   tick={{ fill: "#94a3b8", fontSize: 12 }}
-                  tickFormatter={(val) => (val >= 1000 ? `$${val / 1000}k` : `$${val}`)}
+                  tickFormatter={(val) => (val >= 1000 ? `${currencySymbol}${val / 1000}k` : `${currencySymbol}${val}`)}
                 />
                 {revenueMetric === "both" && (
                   <YAxis
@@ -558,9 +560,9 @@ export default function OverviewClient({
                   }}
                   formatter={(value: any, name: any) => [
                     String(name) === "revenue"
-                      ? `$${Number(value ?? 0).toLocaleString()}`
+                      ? `${currencySymbol}${Number(value ?? 0).toLocaleString()}`
                       : `${Number(value ?? 0)} Orders`,
-                    String(name) === "revenue" ? "Revenue ($)" : "Orders Processed",
+                    String(name) === "revenue" ? `Revenue (${currencySymbol})` : "Orders Processed",
                   ]}
                 />
                 {(revenueMetric === "both" || revenueMetric === "revenue") && (
@@ -738,7 +740,7 @@ export default function OverviewClient({
                     fontSize: "12px",
                   }}
                   formatter={(val: any, _name: any, item: any) => [
-                    `${Number(val ?? 0)}% (${item?.payload?.count ?? 0} orders - $${Number(item?.payload?.amount ?? 0).toLocaleString()})`,
+                    `${Number(val ?? 0)}% (${item?.payload?.count ?? 0} orders - ${currencySymbol}${Number(item?.payload?.amount ?? 0).toLocaleString()})`,
                     "Fulfillment Share",
                   ]}
                 />
@@ -810,7 +812,7 @@ export default function OverviewClient({
                     fontSize: "12px",
                   }}
                   formatter={(val: any, _n: any, item: any) => [
-                    `$${Number(item?.payload?.amount ?? 0).toLocaleString()} (${Number(val ?? 0)}% - ${item?.payload?.count ?? 0} payments)`,
+                    `${currencySymbol}${Number(item?.payload?.amount ?? 0).toLocaleString()} (${Number(val ?? 0)}% - ${item?.payload?.count ?? 0} payments)`,
                     "Volume",
                   ]}
                 />
@@ -819,7 +821,7 @@ export default function OverviewClient({
 
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
               <span className="text-lg font-black text-[var(--foreground)]">
-                ${(totalPaymentAmount >= 1000 ? `${(totalPaymentAmount / 1000).toFixed(1)}k` : totalPaymentAmount.toFixed(0))}
+                {currencySymbol}{(totalPaymentAmount >= 1000 ? `${(totalPaymentAmount / 1000).toFixed(1)}k` : totalPaymentAmount.toFixed(0))}
               </span>
               <span className="text-[10px] text-[var(--foreground-muted)] font-semibold uppercase">Settled</span>
             </div>
@@ -831,7 +833,7 @@ export default function OverviewClient({
                 <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: pm.color }} />
                 <div className="truncate">
                   <p className="font-bold text-[var(--foreground)] truncate">{pm.name}</p>
-                  <p className="text-[10px] text-[var(--foreground-muted)]">{pm.value}% • ${pm.amount.toLocaleString()}</p>
+                  <p className="text-[10px] text-[var(--foreground-muted)]">{pm.value}% • {currencySymbol}{pm.amount.toLocaleString()}</p>
                 </div>
               </div>
             ))}
@@ -902,7 +904,7 @@ export default function OverviewClient({
                   </div>
                   <div className="text-right">
                     <span className="text-[10px] text-[var(--foreground-muted)]">Revenue</span>
-                    <p className="font-black text-emerald-600 dark:text-emerald-400">${p.revenue.toLocaleString()}</p>
+                    <p className="font-black text-emerald-600 dark:text-emerald-400">{currencySymbol}{p.revenue.toLocaleString()}</p>
                   </div>
                 </div>
               </div>
@@ -1087,7 +1089,7 @@ export default function OverviewClient({
 
                           {/* Price */}
                           <td className="py-3.5 text-right text-[var(--foreground)] font-mono">
-                            ${Number(item.price).toFixed(2)}
+                            {formatPrice(Number(item.price))}
                           </td>
 
                           {/* Units Sold */}
@@ -1100,13 +1102,13 @@ export default function OverviewClient({
 
                           {/* Revenue */}
                           <td className="py-3.5 text-right font-bold text-[var(--foreground)] font-mono">
-                            ${Number(item.revenue).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                            {currencySymbol}{Number(item.revenue).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                           </td>
 
                           {/* Cost */}
                           <td className="py-3.5 text-right text-[var(--foreground-muted)] font-mono">
                             {item.cost > 0
-                              ? `$${Number(item.cost).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                              ? `${currencySymbol}${Number(item.cost).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                               : <span className="text-[var(--foreground-muted)]">—</span>
                             }
                           </td>
@@ -1121,7 +1123,7 @@ export default function OverviewClient({
                                     : "text-rose-600 dark:text-rose-400"
                                 }`}
                               >
-                                {isProfit ? "+" : "-"}${Math.abs(item.profit).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                {isProfit ? "+" : "-"}{currencySymbol}{Math.abs(item.profit).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                               </span>
                               {profitMarginPct !== null && (
                                 <span

@@ -34,6 +34,7 @@ import {
 import { toast } from "react-toastify";
 import { Order } from "@/types";
 import { updateOrderStatus } from "@/lib/action/orders";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 const STATUS_OPTIONS = [
   { id: "confirmed",  label: "Confirmed",  color: "sky" },
@@ -68,6 +69,7 @@ export default function OrdersClient({
   initialOrders = [],
   pagination,
 }: OrdersClientProps) {
+  const { formatPrice } = useSiteSettings();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -469,7 +471,7 @@ export default function OrdersClient({
 
                       {/* Total */}
                       <td className="py-3.5 px-4 whitespace-nowrap font-extrabold text-[var(--foreground)]">
-                        ${order.totalAmount?.toFixed(2)}
+                        {formatPrice(order.totalAmount)}
                       </td>
 
                       {/* Payment Method */}
@@ -821,14 +823,14 @@ export default function OrdersClient({
                                     {productTitle}
                                   </p>
                                   <p className="text-[11px] text-[var(--foreground-muted)] mt-0.5">
-                                    Qty: {qty} × ${unitPrice.toFixed(2)}
+                                    Qty: {qty} × {formatPrice(unitPrice)}
                                   </p>
                                 </div>
                               </div>
 
                               <div className="text-right shrink-0">
                                 <span className="font-extrabold text-[var(--foreground)] text-xs sm:text-sm">
-                                  ${lineTotal.toFixed(2)}
+                                  {formatPrice(lineTotal)}
                                 </span>
                               </div>
                             </div>
@@ -841,19 +843,19 @@ export default function OrdersClient({
                         <div className="flex justify-between text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)]">
                           <span>Subtotal</span>
                           <span className="font-semibold">
-                            ${(selectedOrder.subtotal ?? (selectedOrder.totalAmount - (selectedOrder.shippingFee || 0))).toFixed(2)}
+                            {formatPrice(selectedOrder.subtotal ?? (selectedOrder.totalAmount - (selectedOrder.shippingFee || 0)))}
                           </span>
                         </div>
                         <div className="flex justify-between text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)]">
                           <span>Shipping Fee</span>
                           <span className="font-semibold">
-                            ${(selectedOrder.shippingFee || 0).toFixed(2)}
+                            {formatPrice(selectedOrder.shippingFee || 0)}
                           </span>
                         </div>
                         <div className="pt-2 border-t border-[var(--border-color)] flex justify-between text-sm font-black text-[var(--foreground)]">
                           <span>Total Amount</span>
                           <span className="text-primary">
-                            ${selectedOrder.totalAmount?.toFixed(2)}
+                            {formatPrice(selectedOrder.totalAmount)}
                           </span>
                         </div>
                       </div>

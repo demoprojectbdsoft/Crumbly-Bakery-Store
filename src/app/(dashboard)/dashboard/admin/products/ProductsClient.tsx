@@ -38,6 +38,7 @@ import ImageUploader from "@/components/shared/ImageUploader";
 import HeroUIDateTimePicker from "@/components/shared/HeroUIDateTimePicker";
 import { Product, Category, SubCategory } from "@/types";
 import { updateProduct, deleteProduct } from "@/lib/action/products";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 const AVAILABLE_BADGES = [
   { id: "new", label: "New" },
@@ -89,6 +90,7 @@ export default function ProductsClient({
   categories = [],
   subcategories = [],
 }: ProductsClientProps) {
+  const { formatPrice, currencySymbol } = useSiteSettings();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -685,11 +687,11 @@ export default function ProductsClient({
                       <td className="py-3.5 px-4 whitespace-nowrap">
                         <div className="flex flex-col">
                           <span className="font-black text-[var(--foreground)] text-sm">
-                            ${product.price?.toFixed(2)}
+                            {formatPrice(product.price)}
                           </span>
                           {product.originalPrice && product.originalPrice > product.price && (
                             <span className="text-[11px] text-[var(--foreground-muted)] line-through">
-                              ${product.originalPrice?.toFixed(2)}
+                              {formatPrice(product.originalPrice)}
                             </span>
                           )}
                           {product.investPrice != null ? (
@@ -700,11 +702,11 @@ export default function ProductsClient({
                                     ? "text-emerald-600 dark:text-emerald-400"
                                     : "text-rose-500"
                                 }`}
-                                title={`Cost: $${product.investPrice.toFixed(2)} | Profit: ${
+                                title={`Cost: ${formatPrice(product.investPrice)} | Profit: ${
                                   product.price >= product.investPrice ? "+" : ""
-                                }$${(product.price - product.investPrice).toFixed(2)}`}
+                                }${formatPrice(product.price - product.investPrice)}`}
                               >
-                                {product.price >= product.investPrice ? "+" : ""}${(product.price - product.investPrice).toFixed(2)} P/L
+                                {product.price >= product.investPrice ? "+" : ""}{formatPrice(product.price - product.investPrice)} P/L
                               </span>
                               {product.profitMargin != null && (
                                 <span className="text-[9px] text-[var(--foreground-muted)] font-medium">
@@ -976,7 +978,7 @@ export default function ProductsClient({
                   <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
                     <div>
                       <label className="text-xs font-bold text-[var(--foreground)] block mb-1">
-                        Price ($) *
+                        Price ({currencySymbol}) *
                       </label>
                       <Input
                         type="number"
@@ -993,7 +995,7 @@ export default function ProductsClient({
 
                     <div>
                       <label className="text-xs font-bold text-[var(--foreground)] block mb-1">
-                        Original Price ($)
+                        Original Price ({currencySymbol})
                       </label>
                       <Input
                         type="number"
@@ -1009,7 +1011,7 @@ export default function ProductsClient({
 
                     <div>
                       <label className="text-xs font-bold text-[var(--foreground)] block mb-1">
-                        Invest / Cost ($)
+                        Invest / Cost ({currencySymbol})
                         <span className="ml-1 text-[10px] font-normal text-[var(--foreground-muted)]">(admin)</span>
                       </label>
                       <Input

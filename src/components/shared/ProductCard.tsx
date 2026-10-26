@@ -17,6 +17,7 @@ import {
 } from "@/lib/action/wishlist";
 import { getReviewsByProductId } from "@/lib/api/reviews";
 import { Product } from "@/types";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 // ── Star Rating Component ────────────────────────────────────────────────────
 function StarRating({
@@ -101,6 +102,7 @@ export default function ProductCard({
   const router = useRouter();
   const pathname = usePathname();
   const { data: session } = authClient.useSession();
+  const { formatPrice } = useSiteSettings();
   const user = session?.user;
   const userRole = ((user as { role?: string })?.role || "").toLowerCase();
   const isOwner = Boolean(
@@ -344,16 +346,10 @@ export default function ProductCard({
 
   const categoryText = product.categories?.join(", ") || "Electronics";
   
-  const formattedPrice = `$${product.price.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
+  const formattedPrice = formatPrice(product.price);
 
   const formattedOriginalPrice = product.originalPrice
-    ? `$${product.originalPrice.toLocaleString("en-US", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })}`
+    ? formatPrice(product.originalPrice)
     : null;
 
   const discountPercent =

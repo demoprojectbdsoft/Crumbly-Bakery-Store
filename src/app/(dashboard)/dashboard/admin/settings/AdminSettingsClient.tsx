@@ -53,6 +53,7 @@ import {
 } from "@/types";
 import { updateSiteSettings } from "@/lib/action/siteSettings";
 import { useSiteSettings } from "@/context/SiteSettingsContext";
+import { getCurrencySymbol } from "@/lib/currency";
 import ImageUploader from "@/components/shared/ImageUploader";
 
 
@@ -964,6 +965,7 @@ export default function AdminSettingsClient({
 
   // ── 8. System & Security State ──
   const [currency, setCurrency] = useState(current.currency || "USD");
+  const currencySymbol = getCurrencySymbol(currency);
   const [timezone, setTimezone] = useState(current.timezone || "Asia/Dhaka");
   const [maintenanceMode, setMaintenanceMode] = useState(
     current.maintenanceMode || false
@@ -1878,17 +1880,17 @@ export default function AdminSettingsClient({
                 <Truck className="w-4 h-4" />
                 <span>
                   {freeShippingEnabled
-                    ? `Free Shipping on Orders $${freeShippingThreshold}+`
-                    : `Standard Delivery Fee: $${standardDeliveryFee}`}
+                    ? `Free Shipping on Orders ${currencySymbol}${freeShippingThreshold}+`
+                    : `Standard Delivery Fee: ${currencySymbol}${standardDeliveryFee}`}
                 </span>
               </div>
               <p className="text-xs text-[var(--foreground-secondary)]">
                 Estimated Delivery: <strong>{estimatedDeliveryDays}</strong>
               </p>
               <div className="text-[11px] text-[var(--foreground-muted)] space-y-1 border-t border-[var(--accent)]/20 pt-2">
-                <p>• Cart subtotal &gt;= ${freeShippingThreshold} → $0.00 Free Delivery</p>
-                <p>• Standard orders → ${standardDeliveryFee.toFixed(2)} Delivery</p>
-                <p>• Express upgrade → ${expressDeliveryFee.toFixed(2)} Delivery</p>
+                <p>• Cart subtotal &gt;= {currencySymbol}{freeShippingThreshold} → {currencySymbol}0.00 Free Delivery</p>
+                <p>• Standard orders → {currencySymbol}{standardDeliveryFee.toFixed(2)} Delivery</p>
+                <p>• Express upgrade → {currencySymbol}{expressDeliveryFee.toFixed(2)} Delivery</p>
               </div>
             </Card>
           </SettingCard>
