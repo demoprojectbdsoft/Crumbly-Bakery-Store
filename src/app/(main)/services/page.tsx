@@ -3,62 +3,82 @@
 import React from "react";
 import Link from "next/link";
 import {
-  Wrench,
   Shield,
-  Zap,
   RefreshCw,
-  Smartphone,
-  Laptop,
-  Cpu,
-  CheckCircle2,
-  Sparkles,
+  Truck,
+  HeartHandshake,
+  BadgeCheck,
+  Gift,
+  Star,
   ArrowRight,
   Headphones,
+  Sparkles,
+  CheckCircle2,
+  CreditCard,
+  PackageSearch,
 } from "lucide-react";
 import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 const SERVICES = [
   {
-    icon: Laptop,
-    title: "Device Diagnostics & Repair",
-    desc: "Certified technician inspection and fast hardware/software repair services for laptops, desktops, and handhelds.",
-    badge: "Hardware & OS",
-  },
-  {
-    icon: Shield,
-    title: "Extended Warranty & Protection",
-    desc: "Comprehensive warranty plans covering accidental drops, liquid spills, screen fractures, and component wear.",
-    badge: "Full Coverage",
+    icon: Truck,
+    title: "Fast & Reliable Delivery",
+    desc: "We offer swift shipping options with real-time tracking so your orders arrive safely and on time, every time.",
+    badge: "Shipping",
   },
   {
     icon: RefreshCw,
-    title: "Trade-In & Rapid Upgrades",
-    desc: "Trade in your existing gadgets for immediate store credit and seamlessly upgrade to cutting-edge tech models.",
-    badge: "Instant Credit",
+    title: "Hassle-Free Returns",
+    desc: "Not satisfied? Return or exchange any item within our return window — no questions asked, full refund guaranteed.",
+    badge: "Easy Returns",
   },
   {
-    icon: Zap,
-    title: "Custom PC & Rig Assembly",
-    desc: "Custom high-performance workstation and gaming configurations tailored, bench-tested, and built by specialists.",
-    badge: "Bench Tested",
+    icon: Shield,
+    title: "Buyer Protection",
+    desc: "Every purchase is protected. Shop with confidence knowing your payment and product quality are fully guaranteed.",
+    badge: "100% Secure",
   },
   {
-    icon: Smartphone,
-    title: "Mobile Phone Setup & Migration",
-    desc: "Hassle-free data transfer, cloud syncing, tempered glass application, and deep device optimization.",
-    badge: "Data Safe",
+    icon: CreditCard,
+    title: "Flexible Payment Options",
+    desc: "Pay the way you prefer — credit/debit cards, digital wallets, bank transfers, and installment plans available.",
+    badge: "Multi-Payment",
   },
   {
-    icon: Cpu,
-    title: "Enterprise IT & Bulk Fleet",
-    desc: "Corporate tech procurement, workstation deployment, prioritized hardware lifecycle management, and dedicated support.",
-    badge: "Enterprise",
+    icon: PackageSearch,
+    title: "Order Tracking & Updates",
+    desc: "Stay informed at every step with automated order status notifications via email or SMS from dispatch to delivery.",
+    badge: "Live Tracking",
+  },
+  {
+    icon: Gift,
+    title: "Gift Cards & Vouchers",
+    desc: "Send joy to loved ones with our digital gift cards and vouchers — redeemable on any product across the store.",
+    badge: "Gift Ready",
+  },
+  {
+    icon: Star,
+    title: "Loyalty & Rewards Program",
+    desc: "Earn points on every purchase and redeem them for exclusive discounts, early access deals, and special perks.",
+    badge: "Earn Points",
+  },
+  {
+    icon: BadgeCheck,
+    title: "Quality Assurance",
+    desc: "Every product listed on our platform is vetted for quality and authenticity before it reaches your doorstep.",
+    badge: "Verified",
+  },
+  {
+    icon: HeartHandshake,
+    title: "Dedicated Customer Support",
+    desc: "Our friendly support team is available around the clock to help you with queries, complaints, and after-sale care.",
+    badge: "24/7 Support",
   },
 ];
 
 export default function ServicesPage() {
   const { settings } = useSiteSettings();
-  const siteName = settings.siteName || "Sparq";
+  const siteName = settings.siteName || "Our Store";
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8 md:py-12 space-y-12 relative overflow-hidden">
@@ -81,10 +101,10 @@ export default function ServicesPage() {
           <span>What We Offer</span>
         </div>
         <h1 className="text-3xl md:text-5xl font-black text-[var(--foreground)] tracking-tight">
-          Comprehensive Tech Services & Solutions
+          Everything You Need, In One Place
         </h1>
         <p className="text-sm md:text-base text-[var(--foreground-muted)] leading-relaxed">
-          Beyond offering top-tier electronics at {siteName}, our certified engineers provide end-to-end repairs, warranty protection, custom PC builds, and corporate IT infrastructure.
+          At {siteName}, we go beyond just selling products. We provide a complete shopping experience — from secure checkout to doorstep delivery and outstanding after-sale support.
         </p>
       </div>
 
@@ -120,13 +140,13 @@ export default function ServicesPage() {
               <div className="pt-4 mt-4 border-t border-[var(--border-color)] flex items-center justify-between text-xs font-semibold text-primary">
                 <span className="flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                  <span>Certified Service</span>
+                  <span>Included with Every Order</span>
                 </span>
                 <Link
                   href="/contact"
                   className="inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform cursor-pointer"
                 >
-                  <span>Inquire</span>
+                  <span>Learn More</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
@@ -143,14 +163,21 @@ export default function ServicesPage() {
           </div>
           <div>
             <h4 className="text-base font-bold text-[var(--foreground)]">
-              Need a Custom Solution or Immediate Repair?
+              Have a Question or Need Help?
             </h4>
             <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
-              Technical helpline: <strong className="text-[var(--foreground)]">{settings.supportPhone || "(800) 8001-8588"}</strong> • {settings.openingHours || "Mon - Fri: 9:00 AM - 8:00 PM"}
+              Reach us at{" "}
+              <strong className="text-[var(--foreground)]">
+                {settings.supportPhone || "(800) 8001-8588"}
+              </strong>{" "}
+              • {settings.openingHours || "Mon - Fri: 9:00 AM - 8:00 PM"}
             </p>
             <p className="text-xs text-primary mt-1 font-semibold">
-              <a href={`mailto:${settings.supportEmail || "support@sparq.com"}`} className="hover:underline">
-                {settings.supportEmail || "support@sparq.com"}
+              <a
+                href={`mailto:${settings.supportEmail || "support@store.com"}`}
+                className="hover:underline"
+              >
+                {settings.supportEmail || "support@store.com"}
               </a>
               {settings.contactEmail && (
                 <>
@@ -168,7 +195,7 @@ export default function ServicesPage() {
           href="/contact"
           className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-primary-hover text-white text-xs font-bold shadow-md shadow-primary/25 transition-all cursor-pointer shrink-0"
         >
-          <span>Contact Specialist</span>
+          <span>Get in Touch</span>
           <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
