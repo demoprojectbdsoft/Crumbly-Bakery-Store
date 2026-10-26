@@ -21,6 +21,7 @@ import { toast } from "react-toastify";
 import { authClient } from "@/lib/auth-client";
 import { updateUser } from "@/lib/action/user";
 import ImageUploader from "@/components/shared/ImageUploader";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 import { RealCustomerProfile } from "./page";
 
 interface CustomerProfileClientProps {
@@ -40,6 +41,8 @@ export default function CustomerProfileClient({
   const [isSaving, setIsSaving] = useState(false);
 
   const { data: session } = authClient.useSession();
+  const { settings } = useSiteSettings();
+  const supportEmail = settings.supportEmail || "support@sparq.com";
   const sessionUser = session?.user as { id?: string } | undefined;
 
   // Fetch live DB data on mount to get up-to-date member/points
@@ -279,10 +282,10 @@ export default function CustomerProfileClient({
             <p className="text-xs text-rose-600/90 dark:text-rose-400/90 leading-relaxed">
               Access to purchases, cart, and checkout has been restricted. If you believe this is a mistake or need further assistance, please{" "}
               <a
-                href="mailto:support@sparq.com"
+                href={`mailto:${supportEmail}`}
                 className="underline underline-offset-2 font-bold hover:text-rose-800 dark:hover:text-rose-200 transition-colors"
               >
-                contact our support team
+                contact our support team ({supportEmail})
               </a>
               {" "}or reach out to the store admin directly.
             </p>

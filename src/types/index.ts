@@ -236,7 +236,9 @@ export interface SiteSettingsData {
   siteTagline: string;
   storeType: string;
   supportEmail: string;
+  contactEmail?: string;
   supportPhone: string;
+  openingHours?: string;
   address: string;
   metaTitle: string;
   metaDescription: string;

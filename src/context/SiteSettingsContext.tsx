@@ -8,7 +8,9 @@ export const DEFAULT_SITE_SETTINGS: SiteSettingsData = {
   siteTagline: "Better products. A brighter you.",
   storeType: "electronics",
   supportEmail: "support@sparq.com",
+  contactEmail: "contact@sparq.com",
   supportPhone: "(800) 8001-8588",
+  openingHours: "Mon - Fri: 9:00 AM - 8:00 PM",
   address: "17 Princess Road, London, Greater London NW1 8JR, UK",
   metaTitle: "Sparq - Premium Electronics Store",
   metaDescription:

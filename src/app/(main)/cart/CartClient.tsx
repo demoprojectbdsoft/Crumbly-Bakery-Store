@@ -938,7 +938,9 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                   <div className="flex items-center justify-between pt-2 border-t border-[var(--border-color)]">
                     <div>
                       <span className="font-semibold text-[var(--foreground)]">Standard Shipping</span>
-                      <p className="text-[10px] text-[var(--foreground-muted)]">Estimated delivery in 3-5 business days</p>
+                      <p className="text-[10px] text-[var(--foreground-muted)]">
+                        Estimated delivery in {settings.shipping?.estimatedDeliveryDays || "2-4 business days"}
+                      </p>
                     </div>
                     <span className="font-bold text-[var(--foreground)]">
                       {shippingCost === 0 ? (

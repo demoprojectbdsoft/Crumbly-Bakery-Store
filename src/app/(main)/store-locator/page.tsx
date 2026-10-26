@@ -13,6 +13,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { StoreLocation } from "@/types/storeLocator";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 
 
 
@@ -80,12 +81,27 @@ const STORES_DATA: StoreLocation[] = [
 ];
 
 export default function StoreLocatorPage() {
+  const { settings } = useSiteSettings();
+  const siteName = settings.siteName || "Sparq";
+  const mainAddress = settings.address || "17 Princess Road, London, Greater London NW1 8JR, UK";
+  const mainPhone = settings.supportPhone || "(800) 8001-8588";
+
+  const allStores = useMemo<StoreLocation[]>(() => [
+    {
+      ...STORES_DATA[0],
+      name: `${siteName} Flagship Store`,
+      address: mainAddress,
+      phone: mainPhone,
+    },
+    ...STORES_DATA.slice(1),
+  ], [siteName, mainAddress, mainPhone]);
+
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedStoreId, setSelectedStoreId] = useState<string>(STORES_DATA[0].id);
+  const [selectedStoreId, setSelectedStoreId] = useState<string>(allStores[0].id);
 
   // Filter stores based on search query
   const filteredStores = useMemo(() => {
-    return STORES_DATA.filter((store) => {
+    return allStores.filter((store) => {
       const q = searchQuery.toLowerCase();
       return (
         store.name.toLowerCase().includes(q) ||
@@ -94,11 +110,11 @@ export default function StoreLocatorPage() {
         store.address.toLowerCase().includes(q)
       );
     });
-  }, [searchQuery]);
+  }, [allStores, searchQuery]);
 
   const activeStore = useMemo(() => {
-    return STORES_DATA.find((s) => s.id === selectedStoreId) || filteredStores[0] || STORES_DATA[0];
-  }, [selectedStoreId, filteredStores]);
+    return allStores.find((s) => s.id === selectedStoreId) || filteredStores[0] || allStores[0];
+  }, [allStores, selectedStoreId, filteredStores]);
 
   return (
     <section className="w-full text-[var(--foreground)] dark:text-[var(--foreground)] py-10 md:py-16">

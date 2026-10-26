@@ -942,8 +942,14 @@ export default function AdminSettingsClient({
   const [supportEmail, setSupportEmail] = useState(
     current.supportEmail || "support@sparq.com"
   );
+  const [contactEmail, setContactEmail] = useState(
+    current.contactEmail || "contact@sparq.com"
+  );
   const [supportPhone, setSupportPhone] = useState(
     current.supportPhone || "(800) 8001-8588"
+  );
+  const [openingHours, setOpeningHours] = useState(
+    current.openingHours || "Mon - Fri: 9:00 AM - 8:00 PM"
   );
   const [address, setAddress] = useState(
     current.address || "17 Princess Road, London, Greater London NW1 8JR, UK"
@@ -1147,7 +1153,9 @@ export default function AdminSettingsClient({
           },
           faviconUrl,
           supportEmail,
+          contactEmail,
           supportPhone,
+          openingHours,
           address,
           socialLinks: socialLinks.filter((s) => s.platform.trim()),
           currency,
@@ -2382,13 +2390,37 @@ export default function AdminSettingsClient({
 
             <div className="flex flex-col gap-1">
               <label className="text-xs font-semibold text-[var(--foreground-secondary)]">
-                Support Email
+                Customer Support Email (Support & Orders)
               </label>
               <Input
                 type="email"
                 value={supportEmail}
                 onChange={(e) => setSupportEmail(e.target.value)}
                 placeholder="support@sparq.com"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-[var(--foreground-secondary)]">
+                General Contact Email (Inquiries & Business)
+              </label>
+              <Input
+                type="email"
+                value={contactEmail}
+                onChange={(e) => setContactEmail(e.target.value)}
+                placeholder="contact@sparq.com"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-[var(--foreground-secondary)]">
+                Opening Days & Hours
+              </label>
+              <Input
+                type="text"
+                value={openingHours}
+                onChange={(e) => setOpeningHours(e.target.value)}
+                placeholder="e.g. Mon - Fri: 9:00 AM - 8:00 PM"
               />
             </div>
 

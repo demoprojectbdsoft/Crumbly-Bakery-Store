@@ -33,6 +33,7 @@ import {
   Images,
 } from "lucide-react";
 import { Button, Card, Tabs, Tab, TabList, TabPanel } from "@heroui/react";
+import { useSiteSettings } from "@/context/SiteSettingsContext";
 import { toast } from "react-toastify";
 import { authClient } from "@/lib/auth-client";
 import SuspendedAccountModal from "@/components/shared/SuspendedAccountModal";
@@ -67,6 +68,7 @@ export default function ProductDetailsPage({
   const router = useRouter();
   const pathname = usePathname();
   const { data: clientSession } = authClient.useSession();
+  const { settings } = useSiteSettings();
 
   // Local reviews state initialized with server-fetched or demo reviews
   const [reviews, setReviews] = useState<ProductReview[]>(initialReviews);
@@ -896,7 +898,9 @@ export default function ProductDetailsPage({
                 <p className="text-[11px] font-bold text-[var(--foreground)]">
                   Fast Delivery
                 </p>
-                <p className="text-[10px] text-slate-400">2-3 Business Days</p>
+                <p className="text-[10px] text-slate-400">
+                  {settings.shipping?.estimatedDeliveryDays || "2-4 Business Days"}
+                </p>
               </div>
 
               <div className="p-3 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)] text-center hover:border-primary/50 transition-colors shadow-xs">

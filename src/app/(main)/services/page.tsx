@@ -136,7 +136,7 @@ export default function ServicesPage() {
       </div>
 
       {/* Bottom Help Banner */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[var(--surface-elevated)] via-[var(--surface-alt)] to-[var(--surface-elevated)] border border-[var(--border-color)] shadow-lg flex flex-col sm:flex-row items-center justify-between gap-6 relative z-10">
+      <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[var(--surface-elevated)] via-[var(--surface-alt)] to-[var(--surface-elevated)] border border-[var(--border-color)] shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-2xl bg-primary text-white flex items-center justify-center shadow-md shadow-primary/25 shrink-0">
             <Headphones className="w-6 h-6" />
@@ -146,7 +146,20 @@ export default function ServicesPage() {
               Need a Custom Solution or Immediate Repair?
             </h4>
             <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
-              Our technical helpdesk is available 24/7 to assist with diagnostics and scheduling.
+              Technical helpline: <strong className="text-[var(--foreground)]">{settings.supportPhone || "(800) 8001-8588"}</strong> • {settings.openingHours || "Mon - Fri: 9:00 AM - 8:00 PM"}
+            </p>
+            <p className="text-xs text-primary mt-1 font-semibold">
+              <a href={`mailto:${settings.supportEmail || "support@sparq.com"}`} className="hover:underline">
+                {settings.supportEmail || "support@sparq.com"}
+              </a>
+              {settings.contactEmail && (
+                <>
+                  <span className="text-[var(--foreground-muted)] mx-2">•</span>
+                  <a href={`mailto:${settings.contactEmail}`} className="hover:underline">
+                    {settings.contactEmail}
+                  </a>
+                </>
+              )}
             </p>
           </div>
         </div>

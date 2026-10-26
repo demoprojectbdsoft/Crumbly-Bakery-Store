@@ -202,14 +202,24 @@ export default function CheckoutClient({
   }, [items]);
 
   const { settings } = useSiteSettings();
+  const [selectedShippingMethod, setSelectedShippingMethod] = useState<"standard" | "express">("standard");
+
   const standardShippingCost = settings.shipping?.standardDeliveryFee ?? 15.0;
+  const expressShippingCost = settings.shipping?.expressDeliveryFee ?? 25.0;
+  const estimatedDays = settings.shipping?.estimatedDeliveryDays || "2-4 business days";
   const freeShippingThreshold = settings.shipping?.freeShippingThreshold ?? 50.0;
   const isFreeShippingEnabled = settings.shipping?.freeShippingEnabled !== false;
 
-  const shippingCost =
-    subtotal === 0 || (isFreeShippingEnabled && subtotal >= freeShippingThreshold)
-      ? 0.0
-      : standardShippingCost;
+  const isFreeShippingEligible = isFreeShippingEnabled && subtotal >= freeShippingThreshold;
+
+  const shippingCost = useMemo(() => {
+    if (subtotal === 0) return 0.0;
+    if (selectedShippingMethod === "express") {
+      return expressShippingCost;
+    }
+    return isFreeShippingEligible ? 0.0 : standardShippingCost;
+  }, [subtotal, selectedShippingMethod, isFreeShippingEligible, expressShippingCost, standardShippingCost]);
+
   const grandTotal = subtotal + shippingCost;
   const isCartEmpty = items.length === 0;
 
@@ -908,6 +918,112 @@ export default function CheckoutClient({
                 </Card.Content>
               </Card>
             )}
+
+            {/* ── 3. Delivery Method Selection (Dynamic from Site Settings) ── */}
+            <Card className={cardClass}>
+              <Card.Content className="p-5 sm:p-6 md:p-7 space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-[var(--border-color)]">
+                  <h2 className={sectionHeadingClass}>
+                    <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+                      <Truck className="w-4 h-4" />
+                    </div>
+                    <span>Delivery Option</span>
+                  </h2>
+                  <span className="text-[11px] font-semibold text-[var(--foreground-muted)]">
+                    Choose delivery speed
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  {/* Standard Delivery */}
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => setSelectedShippingMethod("standard")}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setSelectedShippingMethod("standard");
+                      }
+                    }}
+                    className={`p-4 rounded-xl border transition-all cursor-pointer flex flex-col justify-between gap-2.5 select-none ${
+                      selectedShippingMethod === "standard"
+                        ? "bg-primary/5 border-primary shadow-sm ring-1 ring-primary/20"
+                        : "bg-[var(--surface-alt)] border-[var(--border-color)] hover:border-primary/40"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <p className="text-xs font-bold text-[var(--foreground)]">Standard Delivery</p>
+                        <p className="text-[11px] text-[var(--foreground-muted)] mt-0.5">{estimatedDays}</p>
+                      </div>
+                      <div
+                        className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-colors ${
+                          selectedShippingMethod === "standard"
+                            ? "border-primary bg-primary text-white"
+                            : "border-[var(--border-color)] bg-[var(--surface)]"
+                        }`}
+                      >
+                        {selectedShippingMethod === "standard" && <Check className="w-3 h-3 stroke-[3]" />}
+                      </div>
+                    </div>
+                    <div className="pt-2 border-t border-[var(--border-color)]/60 flex items-center justify-between">
+                      <span className="text-[10px] text-[var(--foreground-muted)] font-medium">Fee:</span>
+                      <span className="text-xs font-bold text-[var(--foreground)]">
+                        {isFreeShippingEligible ? (
+                          <span className="text-emerald-600 dark:text-emerald-400 font-bold">FREE</span>
+                        ) : (
+                          `$${standardShippingCost.toFixed(2)}`
+                        )}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Express Delivery */}
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => setSelectedShippingMethod("express")}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setSelectedShippingMethod("express");
+                      }
+                    }}
+                    className={`p-4 rounded-xl border transition-all cursor-pointer flex flex-col justify-between gap-2.5 select-none ${
+                      selectedShippingMethod === "express"
+                        ? "bg-primary/5 border-primary shadow-sm ring-1 ring-primary/20"
+                        : "bg-[var(--surface-alt)] border-[var(--border-color)] hover:border-primary/40"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <div className="flex items-center gap-1.5">
+                          <p className="text-xs font-bold text-[var(--foreground)]">Express Priority</p>
+                          <span className="text-[9px] font-bold px-1.5 py-0.2 bg-amber-500/10 text-amber-500 rounded border border-amber-500/20">Fast</span>
+                        </div>
+                        <p className="text-[11px] text-[var(--foreground-muted)] mt-0.5">1-2 business days</p>
+                      </div>
+                      <div
+                        className={`w-5 h-5 rounded-full border flex items-center justify-center shrink-0 transition-colors ${
+                          selectedShippingMethod === "express"
+                            ? "border-primary bg-primary text-white"
+                            : "border-[var(--border-color)] bg-[var(--surface)]"
+                        }`}
+                      >
+                        {selectedShippingMethod === "express" && <Check className="w-3 h-3 stroke-[3]" />}
+                      </div>
+                    </div>
+                    <div className="pt-2 border-t border-[var(--border-color)]/60 flex items-center justify-between">
+                      <span className="text-[10px] text-[var(--foreground-muted)] font-medium">Fee:</span>
+                      <span className="text-xs font-bold text-primary">
+                        ${expressShippingCost.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Card.Content>
+            </Card>
           </div>
 
           {/* ════════════════════════════════════════════════════════
@@ -983,9 +1099,9 @@ export default function CheckoutClient({
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1">
-                      <span>Standard Shipping</span>
+                      <span>{selectedShippingMethod === "express" ? "Express Priority" : "Standard Shipping"}</span>
                       <span className="text-[10px] text-[var(--foreground-muted)]">
-                        (3-5 business days)
+                        ({selectedShippingMethod === "express" ? "1-2 business days" : estimatedDays})
                       </span>
                     </div>
                     <span>
@@ -999,7 +1115,7 @@ export default function CheckoutClient({
                     </span>
                   </div>
 
-                  {shippingCost > 0 && isFreeShippingEnabled && (
+                  {shippingCost > 0 && isFreeShippingEnabled && selectedShippingMethod === "standard" && (
                     <p className="text-[10px] text-primary">
                       Add ${(freeShippingThreshold - subtotal).toFixed(2)} more for
                       FREE shipping!
