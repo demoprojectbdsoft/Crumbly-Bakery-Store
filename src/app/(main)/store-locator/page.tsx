@@ -101,7 +101,7 @@ export default function StoreLocatorPage() {
   }, [selectedStoreId, filteredStores]);
 
   return (
-    <section className="w-full text-gray-800 dark:text-gray-100 py-10 md:py-16">
+    <section className="w-full text-[var(--foreground)] dark:text-[var(--foreground)] py-10 md:py-16">
       <div className="max-w-7xl mx-auto px-4 space-y-8">
         
         {/* ── Page Header ── */}
@@ -197,7 +197,7 @@ export default function StoreLocatorPage() {
                         )}
                       </span>
 
-                      <span className="text-gray-400">|</span>
+                      <span className="text-[var(--foreground-muted)]">|</span>
 
                       <span className="text-[var(--foreground-muted)] flex items-center gap-1 truncate">
                         <Phone className="w-3.5 h-3.5 shrink-0" />

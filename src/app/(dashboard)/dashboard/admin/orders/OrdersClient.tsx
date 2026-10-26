@@ -144,14 +144,14 @@ export default function OrdersClient({
         );
       case "shipped":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-800/40">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20">
             <Truck className="w-3 h-3" />
             Shipped
           </span>
         );
       case "confirmed":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-primary/10 text-primary border border-sky-200/50 dark:border-sky-800/40">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--brand-flat)]/10 text-[var(--brand-flat)] border border-[var(--brand-flat)]/25">
             <CheckCircle2 className="w-3 h-3" />
             Confirmed
           </span>
@@ -326,18 +326,18 @@ export default function OrdersClient({
                 selectedKey={currentSort}
                 onSelectionChange={(key) => updateParams({ sort: key ? String(key) : "newest" })}
               >
-                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs font-semibold text-[var(--foreground-secondary)] flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                   <Select.Value className="text-xs font-semibold truncate" />
-                  <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
+                  <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-[var(--foreground-muted)] shrink-0" />
                 </Select.Trigger>
-                <Select.Popover className="w-52 p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50">
+                <Select.Popover className="w-52 p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50">
                   <ListBox>
                     {SORT_OPTIONS.map((opt) => (
                       <ListBox.Item
                         key={opt.key}
                         id={opt.key}
                         textValue={opt.label}
-                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-[var(--surface)] text-[var(--foreground)] cursor-pointer flex items-center justify-between"
                       >
                         {opt.label}
                         <ListBox.ItemIndicator />
@@ -352,7 +352,7 @@ export default function OrdersClient({
               <Button
                 size="sm"
                 onPress={handleResetFilters}
-                className="h-10 px-3 rounded-xl bg-slate-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-xs font-semibold cursor-pointer flex items-center gap-1"
+                className="h-10 px-3 rounded-xl bg-[var(--surface-alt)] text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] hover:text-[var(--foreground)] dark:hover:text-[var(--foreground)] text-xs font-semibold cursor-pointer flex items-center gap-1"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Reset</span>
@@ -364,20 +364,20 @@ export default function OrdersClient({
 
       {/* ── Orders Table ── */}
       {isPending ? (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center shadow-xs">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-12 text-center shadow-xs">
           <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-xs font-semibold text-gray-500">Loading orders...</p>
+          <p className="text-xs font-semibold text-[var(--foreground-muted)]">Loading orders...</p>
         </Card>
       ) : orders.length === 0 ? (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center space-y-4 shadow-sm">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-12 text-center space-y-4 shadow-sm">
           <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
             <ShoppingBag className="w-8 h-8" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-base font-bold text-gray-900 dark:text-white">
+            <h3 className="text-base font-bold text-[var(--foreground)]">
               No orders found
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-[var(--foreground-muted)]">
               {currentSearch
                 ? "No orders matched your search query."
                 : `There are currently no ${currentTab !== "All" ? currentTab.toLowerCase() : ""} orders.`}
@@ -394,11 +394,11 @@ export default function OrdersClient({
           )}
         </Card>
       ) : (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl overflow-hidden shadow-xs p-0">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl overflow-hidden shadow-xs p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-100 dark:border-gray-800 bg-slate-50/80 dark:bg-gray-800/40 text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                <tr className="border-b border-[var(--border-color)] bg-[var(--surface-alt)]/80 dark:bg-[var(--surface-alt)]/40 text-[11px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
                   <th className="py-3.5 px-4">Order ID</th>
                   <th className="py-3.5 px-4">Customer</th>
                   <th className="py-3.5 px-4 text-center">Items</th>
@@ -409,7 +409,7 @@ export default function OrdersClient({
                   <th className="py-3.5 px-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-gray-800/60 text-xs">
+              <tbody className="divide-y divide-[var(--border-color)]/60 text-xs">
                 {orders.map((order) => {
                   const id = order._id || order.id || "";
                   const shortId = id ? `#${id.slice(-8).toUpperCase()}` : "#ORDER";
@@ -434,7 +434,7 @@ export default function OrdersClient({
                     <tr
                       key={id}
                       onClick={() => handleOpenDetail(order)}
-                      className="hover:bg-slate-50/80 dark:hover:bg-gray-800/40 transition-colors cursor-pointer group"
+                      className="hover:bg-[var(--surface-alt)]/80 dark:hover:bg-[var(--surface)]/40 transition-colors cursor-pointer group"
                     >
                       {/* Order ID */}
                       <td className="py-3.5 px-4 font-mono font-bold text-primary whitespace-nowrap">
@@ -444,15 +444,15 @@ export default function OrdersClient({
                       {/* Customer */}
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 flex items-center justify-center font-bold text-[11px] text-gray-700 dark:text-gray-300 shrink-0">
+                          <div className="w-8 h-8 rounded-full bg-[var(--surface-alt)] border border-[var(--border-color)] flex items-center justify-center font-bold text-[11px] text-[var(--foreground)] shrink-0">
                             {customerName.charAt(0).toUpperCase()}
                           </div>
                           <div className="min-w-0 max-w-[160px]">
-                            <p className="font-bold text-gray-900 dark:text-white truncate">
+                            <p className="font-bold text-[var(--foreground)] truncate">
                               {customerName}
                             </p>
                             {customerEmail && (
-                              <p className="text-[11px] text-gray-400 truncate">
+                              <p className="text-[11px] text-[var(--foreground-muted)] truncate">
                                 {customerEmail}
                               </p>
                             )}
@@ -462,19 +462,19 @@ export default function OrdersClient({
 
                       {/* Items */}
                       <td className="py-3.5 px-4 text-center whitespace-nowrap">
-                        <span className="font-semibold text-gray-700 dark:text-gray-300">
+                        <span className="font-semibold text-[var(--foreground)]">
                           {itemsCount} {itemsCount === 1 ? "item" : "items"}
                         </span>
                       </td>
 
                       {/* Total */}
-                      <td className="py-3.5 px-4 whitespace-nowrap font-extrabold text-gray-900 dark:text-white">
+                      <td className="py-3.5 px-4 whitespace-nowrap font-extrabold text-[var(--foreground)]">
                         ${order.totalAmount?.toFixed(2)}
                       </td>
 
                       {/* Payment Method */}
                       <td className="py-3.5 px-4 whitespace-nowrap">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-slate-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-[11px] font-semibold uppercase">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-[var(--surface-alt)] text-[var(--foreground)] text-[11px] font-semibold uppercase">
                           <CreditCard className="w-3 h-3 text-primary" />
                           {order.paymentMethod}
                         </span>
@@ -500,7 +500,7 @@ export default function OrdersClient({
                                 {order.customerResponse === "cancelled" && "✕ Cancelled"}
                               </span>
                             ) : (
-                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-500 dark:bg-gray-800 dark:text-gray-400 border border-slate-200/60 dark:border-gray-700">
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-[var(--surface-alt)] text-[var(--foreground-muted)] dark:bg-[var(--surface)] dark:text-[var(--foreground-muted)] border border-[var(--border-color)]/60 dark:border-[var(--border-color)]">
                                 <Clock className="w-2.5 h-2.5" />
                                 Awaiting Response
                               </span>
@@ -510,7 +510,7 @@ export default function OrdersClient({
                       </td>
 
                       {/* Date */}
-                      <td className="py-3.5 px-4 text-gray-500 dark:text-gray-400 whitespace-nowrap text-[11px]">
+                      <td className="py-3.5 px-4 text-[var(--foreground-muted)] whitespace-nowrap text-[11px]">
                         {dateStr}
                       </td>
 
@@ -519,7 +519,7 @@ export default function OrdersClient({
                         <Button
                           size="sm"
                           onPress={() => handleOpenDetail(order)}
-                          className="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 dark:hover:bg-sky-900/40 text-xs font-bold transition-colors cursor-pointer"
+                          className="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 dark:hover:bg-[var(--accent)]/10 text-xs font-bold transition-colors cursor-pointer"
                         >
                           <Eye className="w-3.5 h-3.5" />
                           <span>View</span>
@@ -534,17 +534,17 @@ export default function OrdersClient({
 
           {/* ── Pagination ── */}
           {totalPages > 1 && (
-            <div className="p-4 border-t border-slate-100 dark:border-gray-800 bg-slate-50/40 dark:bg-gray-900/40">
-              <Pagination className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-500 dark:text-gray-400">
+            <div className="p-4 border-t border-[var(--border-color)] bg-[var(--surface-alt)]/40 dark:bg-[var(--surface-elevated)]/40">
+              <Pagination className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-[var(--foreground-muted)]">
                 <Pagination.Summary className="text-xs">
-                  Showing <span className="text-gray-800 dark:text-gray-200 font-bold">{startItem}–{endItem}</span> of{" "}
+                  Showing <span className="text-[var(--foreground)] font-bold">{startItem}–{endItem}</span> of{" "}
                   <span className="text-primary font-bold">{total}</span> orders
                 </Pagination.Summary>
 
                 <Pagination.Content className="flex items-center gap-1">
                   <Pagination.Item>
                     <Pagination.Previous
-                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-[var(--surface)] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                       isDisabled={page === 1 || isPending}
                       onPress={() => updateParams({ page: String(page - 1) })}
                     >
@@ -556,7 +556,7 @@ export default function OrdersClient({
                   {getPageNumbers().map((p, i) =>
                     p === "ellipsis" ? (
                       <Pagination.Item key={`ellipsis-${i}`}>
-                        <Pagination.Ellipsis className="px-2 text-gray-400 select-none text-xs" />
+                        <Pagination.Ellipsis className="px-2 text-[var(--foreground-muted)] select-none text-xs" />
                       </Pagination.Item>
                     ) : (
                       <Pagination.Item key={p}>
@@ -566,8 +566,8 @@ export default function OrdersClient({
                           onPress={() => updateParams({ page: String(p) })}
                           className={`w-8 h-8 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
                             p === page
-                              ? "bg-sky-500 text-white shadow-sm shadow-primary/30"
-                              : "hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
+                              ? "bg-[var(--accent)] text-[var(--on-accent)] shadow-sm shadow-primary/30"
+                              : "hover:bg-primary/10 dark:hover:bg-[var(--surface)] text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)]"
                           }`}
                         >
                           {p}
@@ -578,7 +578,7 @@ export default function OrdersClient({
 
                   <Pagination.Item>
                     <Pagination.Next
-                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-[var(--surface)] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                       isDisabled={page === totalPages || isPending}
                       onPress={() => updateParams({ page: String(page + 1) })}
                     >
@@ -675,8 +675,8 @@ export default function OrdersClient({
                                           isDisabled={isLocked}
                                           className={`text-xs font-medium px-3 py-2 rounded-lg flex items-center justify-between ${
                                             isLocked
-                                              ? "opacity-45 cursor-not-allowed bg-slate-50 dark:bg-gray-800/40 text-gray-400"
-                                              : "hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer"
+                                              ? "opacity-45 cursor-not-allowed bg-[var(--surface-alt)] text-[var(--foreground-muted)]"
+                                              : "hover:bg-primary/10 dark:hover:bg-[var(--surface)] text-[var(--foreground)] cursor-pointer"
                                           }`}
                                         >
                                           <div className="flex items-center gap-1.5">
@@ -752,17 +752,17 @@ export default function OrdersClient({
                                         ? "Order Not Received"
                                         : "Order Cancelled / Rejected"}
                                     </span>
-                                    <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-white/70 dark:bg-gray-800/70 border border-current">
+                                    <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-[var(--surface-elevated)]/70 dark:bg-[var(--surface)]/70 border border-current">
                                       Delivered &amp; Cancelled Unlocked
                                     </span>
                                   </div>
                                   {selectedOrder.customerResponseNote && (
-                                    <p className="text-[11px] text-gray-700 dark:text-gray-300 italic">
+                                    <p className="text-[11px] text-[var(--foreground)] italic">
                                       "{selectedOrder.customerResponseNote}"
                                     </p>
                                   )}
                                   {selectedOrder.customerResponseAt && (
-                                    <p className="text-[10px] text-gray-500 dark:text-gray-400">
+                                    <p className="text-[10px] text-[var(--foreground-muted)]">
                                       Submitted:{" "}
                                       {new Date(selectedOrder.customerResponseAt).toLocaleString()}
                                     </p>
@@ -777,12 +777,12 @@ export default function OrdersClient({
 
                     {/* Order Items List */}
                     <div className="space-y-3">
-                      <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1.5">
+                      <h3 className="text-xs font-bold uppercase tracking-wider text-[var(--foreground-muted)] flex items-center gap-1.5">
                         <Package className="w-3.5 h-3.5" /> Ordered Items (
                         {selectedOrder.items?.length || 0})
                       </h3>
 
-                      <div className="border border-slate-200/80 dark:border-gray-800 rounded-2xl overflow-hidden divide-y divide-slate-100 dark:divide-gray-800">
+                      <div className="border border-[var(--border-color)] rounded-2xl overflow-hidden divide-y divide-[var(--border-color)]">
                         {selectedOrder.items?.map((item: any, idx: number) => {
                           const productTitle =
                             item.title ||
@@ -799,10 +799,10 @@ export default function OrdersClient({
                           return (
                             <div
                               key={idx}
-                              className="p-3.5 flex items-center justify-between gap-4 bg-white dark:bg-gray-900"
+                              className="p-3.5 flex items-center justify-between gap-4 bg-[var(--surface-elevated)]"
                             >
                               <div className="flex items-center gap-3 min-w-0">
-                                <div className="relative w-12 h-12 rounded-xl bg-slate-50 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 flex items-center justify-center shrink-0 overflow-hidden">
+                                <div className="relative w-12 h-12 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface)] border border-[var(--border-color)] flex items-center justify-center shrink-0 overflow-hidden">
                                   {productImage ? (
                                     <Image
                                       src={productImage}
@@ -813,21 +813,21 @@ export default function OrdersClient({
                                       unoptimized
                                     />
                                   ) : (
-                                    <Package className="w-5 h-5 text-gray-400" />
+                                    <Package className="w-5 h-5 text-[var(--foreground-muted)]" />
                                   )}
                                 </div>
                                 <div className="min-w-0">
-                                  <p className="font-bold text-gray-900 dark:text-white text-xs sm:text-sm truncate">
+                                  <p className="font-bold text-[var(--foreground)] text-xs sm:text-sm truncate">
                                     {productTitle}
                                   </p>
-                                  <p className="text-[11px] text-gray-400 mt-0.5">
+                                  <p className="text-[11px] text-[var(--foreground-muted)] mt-0.5">
                                     Qty: {qty} × ${unitPrice.toFixed(2)}
                                   </p>
                                 </div>
                               </div>
 
                               <div className="text-right shrink-0">
-                                <span className="font-extrabold text-gray-900 dark:text-white text-xs sm:text-sm">
+                                <span className="font-extrabold text-[var(--foreground)] text-xs sm:text-sm">
                                   ${lineTotal.toFixed(2)}
                                 </span>
                               </div>
@@ -837,20 +837,20 @@ export default function OrdersClient({
                       </div>
 
                       {/* Pricing Calculation Summary */}
-                      <div className="p-4 bg-slate-50 dark:bg-gray-800/40 rounded-2xl border border-slate-200/60 dark:border-gray-800 space-y-2 text-xs">
-                        <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                      <div className="p-4 bg-[var(--surface-alt)] rounded-2xl border border-[var(--border-color)]/60 space-y-2 text-xs">
+                        <div className="flex justify-between text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)]">
                           <span>Subtotal</span>
                           <span className="font-semibold">
                             ${(selectedOrder.subtotal ?? (selectedOrder.totalAmount - (selectedOrder.shippingFee || 0))).toFixed(2)}
                           </span>
                         </div>
-                        <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                        <div className="flex justify-between text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)]">
                           <span>Shipping Fee</span>
                           <span className="font-semibold">
                             ${(selectedOrder.shippingFee || 0).toFixed(2)}
                           </span>
                         </div>
-                        <div className="pt-2 border-t border-slate-200 dark:border-gray-700 flex justify-between text-sm font-black text-gray-900 dark:text-white">
+                        <div className="pt-2 border-t border-[var(--border-color)] flex justify-between text-sm font-black text-[var(--foreground)]">
                           <span>Total Amount</span>
                           <span className="text-primary">
                             ${selectedOrder.totalAmount?.toFixed(2)}
@@ -862,13 +862,13 @@ export default function OrdersClient({
                     {/* Customer & Shipping 2-col info */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {/* Customer Info */}
-                      <div className="p-4 bg-white dark:bg-gray-900 rounded-2xl border border-slate-200/80 dark:border-gray-800 space-y-2 text-xs">
-                        <h4 className="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                      <div className="p-4 bg-[var(--surface-elevated)] rounded-2xl border border-[var(--border-color)] space-y-2 text-xs">
+                        <h4 className="font-bold text-[var(--foreground)] flex items-center gap-1.5">
                           <UserIcon className="w-4 h-4 text-primary" />
                           Customer Info
                         </h4>
-                        <div className="space-y-1 text-gray-600 dark:text-gray-400 pt-1">
-                          <p className="font-bold text-gray-900 dark:text-white">
+                        <div className="space-y-1 text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] pt-1">
+                          <p className="font-bold text-[var(--foreground)]">
                             {(typeof selectedOrder.userId === "object"
                               ? selectedOrder.userId?.name
                               : "") ||
@@ -877,13 +877,13 @@ export default function OrdersClient({
                           </p>
                           {typeof selectedOrder.userId === "object" && selectedOrder.userId?.email && (
                             <p className="flex items-center gap-1.5 text-[11px]">
-                              <Mail className="w-3.5 h-3.5 text-gray-400" />
+                              <Mail className="w-3.5 h-3.5 text-[var(--foreground-muted)]" />
                               {selectedOrder.userId.email}
                             </p>
                           )}
                           {selectedOrder.shippingAddress?.phone && (
                             <p className="flex items-center gap-1.5 text-[11px]">
-                              <Phone className="w-3.5 h-3.5 text-gray-400" />
+                              <Phone className="w-3.5 h-3.5 text-[var(--foreground-muted)]" />
                               {selectedOrder.shippingAddress.phone}
                             </p>
                           )}
@@ -891,13 +891,13 @@ export default function OrdersClient({
                       </div>
 
                       {/* Shipping Address */}
-                      <div className="p-4 bg-white dark:bg-gray-900 rounded-2xl border border-slate-200/80 dark:border-gray-800 space-y-2 text-xs">
-                        <h4 className="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                      <div className="p-4 bg-[var(--surface-elevated)] rounded-2xl border border-[var(--border-color)] space-y-2 text-xs">
+                        <h4 className="font-bold text-[var(--foreground)] flex items-center gap-1.5">
                           <MapPin className="w-4 h-4 text-primary" />
                           Shipping Destination
                         </h4>
-                        <div className="space-y-1 text-gray-600 dark:text-gray-400 pt-1">
-                          <p className="font-semibold text-gray-900 dark:text-white">
+                        <div className="space-y-1 text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] pt-1">
+                          <p className="font-semibold text-[var(--foreground)]">
                             {selectedOrder.shippingAddress?.address}
                           </p>
                           <p>
@@ -911,18 +911,18 @@ export default function OrdersClient({
                     </div>
 
                     {/* Payment & Transaction Card */}
-                    <div className="p-4 bg-slate-50 dark:bg-gray-800/40 rounded-2xl border border-slate-200/60 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                    <div className="p-4 bg-[var(--surface-alt)] rounded-2xl border border-[var(--border-color)]/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                       <div>
-                        <span className="text-[10px] font-bold uppercase text-gray-400 block">
+                        <span className="text-[10px] font-bold uppercase text-[var(--foreground-muted)] block">
                           Payment Reference
                         </span>
-                        <span className="font-mono font-bold text-gray-900 dark:text-white">
+                        <span className="font-mono font-bold text-[var(--foreground)]">
                           {selectedOrder.transactionId || `REF-${selectedOrder._id?.slice(-8).toUpperCase()}`}
                         </span>
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <span className="px-2.5 py-1 rounded-lg bg-white dark:bg-gray-800 border border-slate-200 dark:border-gray-700 font-semibold uppercase text-[11px]">
+                        <span className="px-2.5 py-1 rounded-lg bg-[var(--surface-elevated)] border border-[var(--border-color)] font-semibold uppercase text-[11px]">
                           Method: {selectedOrder.paymentMethod}
                         </span>
                         {selectedOrder.paymentStatus && (
@@ -943,7 +943,7 @@ export default function OrdersClient({
                   <Modal.Footer className="flex items-center justify-end pt-4 border-t border-[var(--border-color)]">
                     <Button
                       onPress={() => setIsDetailOpen(false)}
-                      className="px-5 py-2 rounded-xl bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white text-xs font-bold shadow-md shadow-primary/25 cursor-pointer transition-all"
+                      className="px-5 py-2 rounded-xl bg-brand-gradient text-[var(--on-grad-text)] text-xs font-bold shadow-xs cursor-pointer hover:opacity-95 transition-all"
                     >
                       Close Details
                     </Button>

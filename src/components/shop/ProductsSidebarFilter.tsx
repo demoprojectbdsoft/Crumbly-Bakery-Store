@@ -161,7 +161,7 @@ export default function ProductsSidebarFilter({}: ProductsSidebarFilterProps) {
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
                     key={i}
-                    className={`w-3 h-3 ${i < rating ? "fill-amber-400 text-amber-400" : "text-gray-300 dark:text-gray-600"}`}
+                    className={`w-3 h-3 ${i < rating ? "fill-amber-400 text-amber-400" : "text-[var(--foreground-muted)] dark:text-[var(--foreground-secondary)]"}`}
                   />
                 ))}
                 <span className="ml-0.5">& up</span>
@@ -232,7 +232,7 @@ export default function ProductsSidebarFilter({}: ProductsSidebarFilterProps) {
               <Radio value="no">
                 <Radio.Content className="flex items-center gap-1.5 text-[11px] text-[var(--foreground-muted)] cursor-pointer">
                   <Radio.Control className="w-3.5 h-3.5 rounded-full border border-[var(--border-color)] flex items-center justify-center data-selected:border-primary data-selected:bg-primary">
-                    <Radio.Indicator className="w-1.5 h-1.5 rounded-full bg-white" />
+                    <Radio.Indicator className="w-1.5 h-1.5 rounded-full bg-[var(--surface-elevated)]" />
                   </Radio.Control>
                   All
                 </Radio.Content>
@@ -240,7 +240,7 @@ export default function ProductsSidebarFilter({}: ProductsSidebarFilterProps) {
               <Radio value="yes">
                 <Radio.Content className="flex items-center gap-1.5 text-[11px] text-[var(--foreground-muted)] cursor-pointer">
                   <Radio.Control className="w-3.5 h-3.5 rounded-full border border-[var(--border-color)] flex items-center justify-center data-selected:border-primary data-selected:bg-primary">
-                    <Radio.Indicator className="w-1.5 h-1.5 rounded-full bg-white" />
+                    <Radio.Indicator className="w-1.5 h-1.5 rounded-full bg-[var(--surface-elevated)]" />
                   </Radio.Control>
                   Featured only
                 </Radio.Content>

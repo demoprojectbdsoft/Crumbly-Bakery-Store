@@ -423,8 +423,8 @@ export default function CustomerSettingsClient({
               </div>
 
               {/* Site Currency Notice */}
-              <div className="p-3.5 rounded-xl border border-sky-200/60 dark:border-sky-900/40 bg-sky-50/60 dark:bg-sky-950/20 flex items-start gap-2.5 text-xs text-sky-700 dark:text-sky-300">
-                <Globe className="w-4 h-4 shrink-0 mt-0.5 text-sky-500" />
+              <div className="p-3.5 rounded-xl border border-[var(--accent)]/60 dark:border-[var(--accent)]/40 bg-[var(--accent)]/10 dark:bg-[var(--accent)]/5 flex items-start gap-2.5 text-xs text-[var(--accent)] dark:text-[var(--accent)]">
+                <Globe className="w-4 h-4 shrink-0 mt-0.5 text-[var(--accent)]" />
                 <span>
                   The store&apos;s default currency is currently set to{" "}
                   <strong>{siteCurrencyLabel}</strong> by the admin. Your preference below overrides your display only.

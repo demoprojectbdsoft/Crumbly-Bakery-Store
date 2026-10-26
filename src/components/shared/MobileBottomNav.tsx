@@ -38,7 +38,7 @@ export default function MobileBottomNav() {
   return (
     <nav
       aria-label="Mobile Navigation Bar"
-      className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white/90 dark:bg-gray-950/90 backdrop-blur-lg border-t border-gray-200/80 dark:border-gray-800/80 shadow-[0_-4px_25px_rgba(0,0,0,0.08)] dark:shadow-[0_-4px_25px_rgba(0,0,0,0.3)] transition-colors duration-200"
+      className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-[var(--surface-elevated)]/90 backdrop-blur-lg border-t border-[var(--border-color)] shadow-[0_-4px_25px_rgba(0,0,0,0.08)] dark:shadow-[0_-4px_25px_rgba(0,0,0,0.3)] transition-colors duration-200"
     >
       <div className="max-w-md mx-auto px-3 py-1.5 flex items-center justify-around relative">
         {NAV_ITEMS.map((item, idx) => {
@@ -58,7 +58,7 @@ export default function MobileBottomNav() {
             >
               {/* Floating Name Tooltip on Hover */}
               <div
-                className={`absolute -top-9 px-2.5 py-1 rounded-md bg-gray-900/95 dark:bg-gray-100 text-white dark:text-gray-900 text-[11px] font-semibold tracking-wide pointer-events-none transition-all duration-200 shadow-md whitespace-nowrap z-50 flex items-center justify-center ${
+                className={`absolute -top-9 px-2.5 py-1 rounded-md bg-[var(--surface-elevated)] text-[var(--foreground)] border border-[var(--border-color)] text-[11px] font-semibold tracking-wide pointer-events-none transition-all duration-200 shadow-md whitespace-nowrap z-50 flex items-center justify-center ${
                   isHovered
                     ? "opacity-100 -translate-y-1 scale-100"
                     : "opacity-0 translate-y-1 scale-90"
@@ -66,7 +66,7 @@ export default function MobileBottomNav() {
               >
                 <span>{item.label}</span>
                 {/* Arrow pointer */}
-                <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900/95 dark:border-t-gray-100" />
+                <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[var(--border-color)]" />
               </div>
 
               {/* Navigation Link */}
@@ -75,14 +75,14 @@ export default function MobileBottomNav() {
                 className={`relative flex flex-col items-center justify-center w-full py-1.5 px-1 rounded-xl transition-all duration-200 ${
                   isActive
                     ? "text-primary dark:text-primary"
-                    : "text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary active:scale-95"
+                    : "text-[var(--foreground-muted)] hover:text-primary active:scale-95"
                 }`}
               >
                 <div
                   className={`relative p-1.5 rounded-xl transition-all duration-200 ${
                     isActive
                       ? "bg-primary/10 dark:bg-primary/20 shadow-xs"
-                      : "hover:bg-gray-100/80 dark:hover:bg-gray-900/80"
+                      : "hover:bg-[var(--surface-alt)]"
                   }`}
                 >
                   <Icon
@@ -99,7 +99,7 @@ export default function MobileBottomNav() {
                   className={`text-[10px] font-medium tracking-tight mt-0.5 truncate transition-all duration-200 ${
                     isActive
                       ? "font-bold text-primary dark:text-primary"
-                      : "text-gray-600 dark:text-gray-400"
+                      : "text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)]"
                   }`}
                 >
                   {item.label}

@@ -61,9 +61,9 @@ function WarehouseDealsContent() {
   return (
     <section className="w-full max-w-7xl mx-auto px-4 my-10">
       {/* Header with Title and Tabs */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-gray-200 dark:border-gray-800 pb-3 mb-6 gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-[var(--border-color)] pb-3 mb-6 gap-4">
         <div className="relative inline-block">
-          <h2 className="text-xl md:text-2xl font-light text-gray-800 dark:text-gray-100">
+          <h2 className="text-xl md:text-2xl font-light text-[var(--foreground)] dark:text-[var(--foreground)]">
             Save Big on Warehouse Cleaning
           </h2>
           <div className="absolute -bottom-[13px] left-0 w-full h-[2px] bg-primary" />
@@ -80,7 +80,7 @@ function WarehouseDealsContent() {
                 className={`text-xs font-semibold px-3 py-1 rounded-full transition-all cursor-pointer ${
                   currentDiscount === tab
                     ? "bg-primary text-white shadow-xs"
-                    : "text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    : "text-[var(--foreground-muted)] hover:text-[var(--foreground)] dark:text-[var(--foreground-muted)] dark:hover:text-[var(--foreground)] hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--surface-alt)]"
                 }`}
               >
                 {tab}%
@@ -90,7 +90,7 @@ function WarehouseDealsContent() {
 
           <Link
             href={`/shop?discount=${currentDiscount}`}
-            className="text-xs text-gray-500 hover:text-primary flex items-center gap-1 font-medium transition-colors"
+            className="text-xs text-[var(--foreground-muted)] hover:text-primary flex items-center gap-1 font-medium transition-colors"
           >
             Go to Daily Deals Section
             <ChevronRight className="w-3.5 h-3.5" />
@@ -105,21 +105,21 @@ function WarehouseDealsContent() {
             type="button"
             onClick={() => setPageIndex((p) => Math.max(0, p - 1))}
             disabled={pageIndex === 0}
-            className="absolute -left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white dark:bg-gray-800 shadow-md border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-400 hover:text-gray-800 dark:hover:text-white transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+            className="absolute -left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-[var(--surface-elevated)] dark:bg-[var(--surface)] shadow-md border border-[var(--border-color)] flex items-center justify-center text-[var(--foreground-muted)] hover:text-[var(--foreground)] dark:hover:text-[var(--foreground)] transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
         )}
 
-        <div className="border border-gray-200/80 dark:border-gray-800 rounded-lg overflow-hidden bg-white dark:bg-gray-900 shadow-xs">
+        <div className="border border-[var(--border-color)] rounded-lg overflow-hidden bg-[var(--surface-elevated)] dark:bg-[var(--surface-elevated)] shadow-xs">
           {loading ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-x divide-gray-200/80 dark:divide-gray-800">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-x divide-[var(--border-color)]/80 dark:divide-[var(--border-color)]">
               {Array.from({ length: 6 }).map((_, idx) => (
                 <ProductCardSkeleton key={idx} hasRightBorder={idx !== 5} />
               ))}
             </div>
           ) : visibleProducts.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-x divide-gray-200/80 dark:divide-gray-800">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-x divide-[var(--border-color)]/80 dark:divide-[var(--border-color)]">
               {visibleProducts.map((product, idx) => (
                 <ProductCard
                   key={product.id || product.slug}
@@ -129,7 +129,7 @@ function WarehouseDealsContent() {
               ))}
             </div>
           ) : (
-            <div className="p-10 text-center text-sm text-gray-500">
+            <div className="p-10 text-center text-sm text-[var(--foreground-muted)]">
               No products found for {currentDiscount}% discount.
             </div>
           )}
@@ -140,7 +140,7 @@ function WarehouseDealsContent() {
             type="button"
             onClick={() => setPageIndex((p) => Math.min(totalPages - 1, p + 1))}
             disabled={pageIndex >= totalPages - 1}
-            className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white dark:bg-gray-800 shadow-md border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-400 hover:text-gray-800 dark:hover:text-white transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+            className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-[var(--surface-elevated)] dark:bg-[var(--surface)] shadow-md border border-[var(--border-color)] flex items-center justify-center text-[var(--foreground-muted)] hover:text-[var(--foreground)] dark:hover:text-[var(--foreground)] transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -156,7 +156,7 @@ function WarehouseDealsContent() {
               type="button"
               onClick={() => setPageIndex(idx)}
               className={`h-2 rounded-full transition-all cursor-pointer ${
-                pageIndex === idx ? "w-6 bg-primary" : "w-2 bg-gray-300 dark:bg-gray-700"
+                pageIndex === idx ? "w-6 bg-primary" : "w-2 bg-[var(--border-color)] dark:bg-[var(--foreground-muted)]"
               }`}
             />
           ))}

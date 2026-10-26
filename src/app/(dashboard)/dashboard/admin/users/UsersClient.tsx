@@ -170,17 +170,17 @@ function SafeProductImage({
   if (!isValidSrc) {
     return (
       <div
-        className={`flex items-center justify-center bg-slate-100 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 text-gray-400 shrink-0 rounded-lg ${className}`}
+        className={`flex items-center justify-center bg-[var(--surface-alt)] border border-[var(--border-color)] text-[var(--foreground-muted)] shrink-0 rounded-lg ${className}`}
         style={{ width: size, height: size }}
       >
-        <ShoppingBag className="w-5 h-5 text-gray-400" />
+        <ShoppingBag className="w-5 h-5 text-[var(--foreground-muted)]" />
       </div>
     );
   }
 
   return (
     <div
-      className={`relative shrink-0 overflow-hidden rounded-lg bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-700 ${className}`}
+      className={`relative shrink-0 overflow-hidden rounded-lg bg-[var(--surface-elevated)] border border-[var(--border-color)] ${className}`}
       style={{ width: size, height: size }}
     >
       <img
@@ -443,7 +443,7 @@ export default function UsersClient({
 
           {/* Status Filter Tabs */}
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
-            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mr-1">
+            <span className="text-[11px] font-bold text-[var(--foreground-muted)] uppercase tracking-wider mr-1">
               Status:
             </span>
             {STATUS_FILTER_TABS.map((tab) => {
@@ -456,7 +456,7 @@ export default function UsersClient({
                   className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     isActive
                       ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-xs"
-                      : "bg-slate-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-gray-700 border border-slate-200/60 dark:border-gray-700"
+                      : "bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--foreground-muted)] border border-[var(--border-color)]/60 dark:border-[var(--border-color)]"
                   }`}
                 >
                   {tab}
@@ -470,13 +470,13 @@ export default function UsersClient({
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-md flex items-center gap-2">
             <div className="relative flex-1">
-              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10" />
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)] z-10" />
               <Input
                 type="text"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder="Search by name or email..."
-                className="w-full pl-9 pr-4 h-10 bg-slate-50 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 rounded-xl text-xs"
+                className="w-full pl-9 pr-4 h-10 bg-[var(--surface-alt)] dark:bg-[var(--surface)] border border-[var(--border-color)] rounded-xl text-xs"
               />
             </div>
             <Button
@@ -495,18 +495,18 @@ export default function UsersClient({
                 selectedKey={currentSort}
                 onSelectionChange={(key) => updateParams({ sort: key ? String(key) : "newest" })}
               >
-                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs">
+                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs font-semibold text-[var(--foreground-secondary)] flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs">
                   <Select.Value className="text-xs font-semibold truncate" />
-                  <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
+                  <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-[var(--foreground-muted)] shrink-0" />
                 </Select.Trigger>
-                <Select.Popover className="w-52 p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50">
+                <Select.Popover className="w-52 p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50">
                   <ListBox>
                     {SORT_OPTIONS.map((opt) => (
                       <ListBox.Item
                         key={opt.key}
                         id={opt.key}
                         textValue={opt.label}
-                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-[var(--surface)] text-[var(--foreground)] cursor-pointer flex items-center justify-between"
                       >
                         {opt.label}
                         <ListBox.ItemIndicator />
@@ -522,7 +522,7 @@ export default function UsersClient({
                 size="sm"
                 variant="secondary"
                 onPress={handleResetFilters}
-                className="h-10 px-3 rounded-xl bg-slate-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-xs font-semibold cursor-pointer flex items-center gap-1"
+                className="h-10 px-3 rounded-xl bg-[var(--surface-alt)] text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] hover:text-[var(--foreground)] dark:hover:text-[var(--foreground)] text-xs font-semibold cursor-pointer flex items-center gap-1"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Reset</span>
@@ -534,20 +534,20 @@ export default function UsersClient({
 
       {/* ── Users Table ── */}
       {isPending ? (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center shadow-xs">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-12 text-center shadow-xs">
           <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-xs font-semibold text-gray-500">Loading users...</p>
+          <p className="text-xs font-semibold text-[var(--foreground-muted)]">Loading users...</p>
         </Card>
       ) : users.length === 0 ? (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center space-y-4 shadow-sm">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-12 text-center space-y-4 shadow-sm">
           <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
             <Users className="w-8 h-8" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-base font-bold text-gray-900 dark:text-white">
+            <h3 className="text-base font-bold text-[var(--foreground)]">
               No users found
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-[var(--foreground-muted)]">
               {currentSearch
                 ? "No users matched your search query."
                 : "There are currently no users matching the selected filters."}
@@ -564,11 +564,11 @@ export default function UsersClient({
           )}
         </Card>
       ) : (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl overflow-hidden shadow-xs p-0">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl overflow-hidden shadow-xs p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-100 dark:border-gray-800 bg-slate-50/80 dark:bg-gray-800/40 text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                <tr className="border-b border-[var(--border-color)] bg-[var(--surface-alt)]/80 dark:bg-[var(--surface-alt)]/40 text-[11px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
                   <th className="py-3.5 px-4">User</th>
                   <th className="py-3.5 px-4">Email</th>
                   <th className="py-3.5 px-4 text-center">Role</th>
@@ -579,7 +579,7 @@ export default function UsersClient({
                   <th className="py-3.5 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-gray-800/60 text-xs">
+              <tbody className="divide-y divide-[var(--border-color)]/60 text-xs">
                 {users.map((user) => {
                   const id = user._id || user.id || "";
                   const name = user.name || "Unknown User";
@@ -603,7 +603,7 @@ export default function UsersClient({
                     <tr
                       key={id}
                       onClick={() => handleOpenModal(user)}
-                      className="hover:bg-slate-50/80 dark:hover:bg-gray-800/40 transition-colors cursor-pointer group"
+                      className="hover:bg-[var(--surface-alt)]/80 dark:hover:bg-[var(--surface)]/40 transition-colors cursor-pointer group"
                     >
                       {/* User Avatar & Name */}
                       <td className="py-3.5 px-4">
@@ -614,16 +614,16 @@ export default function UsersClient({
                             size={32}
                             rounded="rounded-full"
                           />
-                          <p className="font-bold text-gray-900 dark:text-white truncate max-w-[150px] group-hover:text-primary transition-colors">
+                          <p className="font-bold text-[var(--foreground)] truncate max-w-[150px] group-hover:text-primary transition-colors">
                             {name}
                           </p>
                         </div>
                       </td>
 
                       {/* Email */}
-                      <td className="py-3.5 px-4 text-gray-500 dark:text-gray-400 truncate max-w-[180px]">
+                      <td className="py-3.5 px-4 text-[var(--foreground-muted)] truncate max-w-[180px]">
                         <div className="flex items-center gap-1.5">
-                          <Mail className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                          <Mail className="w-3.5 h-3.5 text-[var(--foreground-muted)] shrink-0" />
                           <span className="truncate">{email}</span>
                         </div>
                       </td>
@@ -634,7 +634,7 @@ export default function UsersClient({
                           className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold border ${
                             role === "admin"
                               ? "bg-violet-50 dark:bg-violet-950/70 text-violet-600 dark:text-violet-300 border-violet-200/80 dark:border-violet-800/60"
-                              : "bg-sky-50 dark:bg-sky-950/70 text-primary border-sky-200/80 dark:border-sky-800/60"
+                              : "bg-[var(--accent)]/10 dark:bg-[var(--accent)]/10/70 text-primary border-sky-200/80 dark:border-sky-800/60"
                           }`}
                         >
                           {role === "admin" ? (
@@ -665,15 +665,15 @@ export default function UsersClient({
                       </td>
 
                       {/* Member Tier */}
-                      <td className="py-3.5 px-4 whitespace-nowrap capitalize text-gray-700 dark:text-gray-300 font-semibold">
-                        <span className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-gray-800 font-medium">
+                      <td className="py-3.5 px-4 whitespace-nowrap capitalize text-[var(--foreground)] font-semibold">
+                        <span className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-md bg-[var(--surface-alt)] font-medium">
                           <Sparkles className="w-3 h-3 text-amber-500" />
                           {user.member || "Standard"}
                         </span>
                       </td>
 
                       {/* Points */}
-                      <td className="py-3.5 px-4 text-right whitespace-nowrap font-extrabold text-gray-900 dark:text-white">
+                      <td className="py-3.5 px-4 text-right whitespace-nowrap font-extrabold text-[var(--foreground)]">
                         <div className="inline-flex items-center gap-1">
                           <Award className="w-3.5 h-3.5 text-amber-500" />
                           {user.points ?? 0}
@@ -681,9 +681,9 @@ export default function UsersClient({
                       </td>
 
                       {/* Date */}
-                      <td className="py-3.5 px-4 text-gray-500 dark:text-gray-400 whitespace-nowrap text-[11px]">
+                      <td className="py-3.5 px-4 text-[var(--foreground-muted)] whitespace-nowrap text-[11px]">
                         <div className="flex items-center gap-1">
-                          <Calendar className="w-3.5 h-3.5 text-gray-400" />
+                          <Calendar className="w-3.5 h-3.5 text-[var(--foreground-muted)]" />
                           {dateStr}
                         </div>
                       </td>
@@ -700,7 +700,7 @@ export default function UsersClient({
                             variant="ghost"
                             onPress={() => handleOpenModal(user)}
                             aria-label={`View ${name}`}
-                            className="w-8 h-8 rounded-lg text-gray-500 hover:text-primary hover:bg-primary/10 cursor-pointer transition-colors"
+                            className="w-8 h-8 rounded-lg text-[var(--foreground-muted)] hover:text-primary hover:bg-primary/10 cursor-pointer transition-colors"
                           >
                             <Eye className="w-3.5 h-3.5" />
                           </Button>
@@ -714,14 +714,14 @@ export default function UsersClient({
           </div>
 
           {/* ── Table Footer & Pagination ── */}
-          <div className="p-4 border-t border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-800/20 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+          <div className="p-4 border-t border-[var(--border-color)] bg-[var(--surface-alt)]/50 dark:bg-[var(--surface)]/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-xs text-[var(--foreground-muted)]">
               Showing{" "}
-              <span className="font-bold text-gray-900 dark:text-white">
+              <span className="font-bold text-[var(--foreground)]">
                 {startItem}–{endItem}
               </span>{" "}
               of{" "}
-              <span className="font-bold text-gray-900 dark:text-white">{total}</span> users
+              <span className="font-bold text-[var(--foreground)]">{total}</span> users
             </p>
 
             {totalPages > 1 && (
@@ -740,7 +740,7 @@ export default function UsersClient({
                   {getPageNumbers().map((p, idx) => {
                     if (p === "ellipsis") {
                       return (
-                        <span key={`ellipsis-${idx}`} className="px-2 text-xs text-gray-400">
+                        <span key={`ellipsis-${idx}`} className="px-2 text-xs text-[var(--foreground-muted)]">
                           ...
                         </span>
                       );
@@ -753,8 +753,8 @@ export default function UsersClient({
                         onClick={() => updateParams({ page: String(p) })}
                         className={`w-8 h-8 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                           isCurrent
-                            ? "bg-sky-500 text-white shadow-xs"
-                            : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700 border border-slate-200/80 dark:border-gray-700"
+                            ? "bg-[var(--accent)] text-[var(--on-accent)] shadow-xs"
+                            : "bg-[var(--surface-elevated)] text-[var(--foreground-muted)] hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--foreground-muted)] border border-[var(--border-color)]/80 dark:border-[var(--border-color)]"
                         }`}
                       >
                         {p}

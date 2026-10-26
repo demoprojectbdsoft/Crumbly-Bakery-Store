@@ -546,17 +546,17 @@ export default function ProductDetailsPage({
       <div className="absolute top-1/2 left-10 w-80 h-80 bg-primary-hover/5 dark:bg-primary-hover/10 rounded-full blur-3xl pointer-events-none -z-10" />
 
       {/* Breadcrumb Navigation */}
-      <nav className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 overflow-x-auto pb-2">
+      <nav className="flex items-center gap-2 text-xs text-[var(--foreground-muted)] overflow-x-auto pb-2">
         <Link href="/" className="hover:text-primary transition-colors cursor-pointer">
           Home
         </Link>
-        <ChevronRight className="w-3.5 h-3.5 flex-shrink-0 text-gray-400" />
+        <ChevronRight className="w-3.5 h-3.5 flex-shrink-0 text-[var(--foreground-muted)]" />
         <Link href="/shop" className="hover:text-primary transition-colors cursor-pointer">
           Shop
         </Link>
         {product.categoryId?.name && (
           <>
-            <ChevronRight className="w-3.5 h-3.5 flex-shrink-0 text-gray-400" />
+            <ChevronRight className="w-3.5 h-3.5 flex-shrink-0 text-[var(--foreground-muted)]" />
             <Link
               href={`/shop?category=${product.categoryId?.slug || encodeURIComponent(product.categoryId?.name)}`}
               className="hover:text-primary transition-colors cursor-pointer"
@@ -565,7 +565,7 @@ export default function ProductDetailsPage({
             </Link>
           </>
         )}
-        <ChevronRight className="w-3.5 h-3.5 flex-shrink-0 text-gray-400" />
+        <ChevronRight className="w-3.5 h-3.5 flex-shrink-0 text-[var(--foreground-muted)]" />
         <span className="text-[var(--foreground)] font-semibold truncate">
           {product.title}
         </span>
@@ -736,7 +736,7 @@ export default function ProductDetailsPage({
             <div className="p-4 rounded-2xl bg-gradient-to-r from-primary/10 via-[var(--surface-alt)] to-[var(--surface-elevated)] border border-[var(--border-color)] shadow-xs flex items-center justify-between gap-4 flex-wrap">
               {/* Left: Price */}
               <div>
-                <span className="text-xs text-slate-500 dark:text-slate-400 block mb-0.5">
+                <span className="text-xs text-[var(--foreground-muted)] block mb-0.5">
                   {showCountdown ? "Deal Price" : "Price"}
                 </span>
                 <div className="flex items-baseline gap-2">
@@ -923,13 +923,13 @@ export default function ProductDetailsPage({
         <Card className="border border-[var(--border-color)] bg-[var(--surface-elevated)] backdrop-blur-md rounded-2xl p-6 shadow-sm">
           <Tabs>
             <TabList className="flex gap-1 border-b border-[var(--border-color)] pb-0 mb-4">
-              <Tab id="description" className="px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 border-b-2 border-transparent data-[selected]:border-primary data-[selected]:text-primary transition-all cursor-pointer bg-transparent rounded-none outline-none">
+              <Tab id="description" className="px-4 py-2 text-sm font-semibold text-[var(--foreground-muted)] border-b-2 border-transparent data-[selected]:border-primary data-[selected]:text-primary transition-all cursor-pointer bg-transparent rounded-none outline-none">
                 Description
               </Tab>
-              <Tab id="specifications" className="px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 border-b-2 border-transparent data-[selected]:border-primary data-[selected]:text-primary transition-all cursor-pointer bg-transparent rounded-none outline-none">
+              <Tab id="specifications" className="px-4 py-2 text-sm font-semibold text-[var(--foreground-muted)] border-b-2 border-transparent data-[selected]:border-primary data-[selected]:text-primary transition-all cursor-pointer bg-transparent rounded-none outline-none">
                 Specifications
               </Tab>
-              <Tab id="reviews" className="px-4 py-2 text-sm font-semibold text-slate-500 dark:text-slate-400 border-b-2 border-transparent data-[selected]:border-primary data-[selected]:text-primary transition-all cursor-pointer bg-transparent rounded-none outline-none">
+              <Tab id="reviews" className="px-4 py-2 text-sm font-semibold text-[var(--foreground-muted)] border-b-2 border-transparent data-[selected]:border-primary data-[selected]:text-primary transition-all cursor-pointer bg-transparent rounded-none outline-none">
                 Customer Reviews ({totalReviews})
               </Tab>
             </TabList>
@@ -1015,7 +1015,7 @@ export default function ProductDetailsPage({
                         <h4 className="text-sm font-bold text-[var(--foreground)]">
                           Customer Satisfaction
                         </h4>
-                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                        <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
                           Based on {totalReviews} {totalReviews === 1 ? "review" : "verified reviews"}
                         </p>
                       </div>
@@ -1090,7 +1090,7 @@ export default function ProductDetailsPage({
                           <p className="text-sm font-bold text-[var(--foreground)]">
                             Sign in to leave a review
                           </p>
-                          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed max-w-xs">
+                          <p className="text-xs text-[var(--foreground-muted)] leading-relaxed max-w-xs">
                             Only signed-in customers can submit reviews. Your feedback helps others make better decisions.
                           </p>
                         </div>
@@ -1112,7 +1112,7 @@ export default function ProductDetailsPage({
                           <p className="text-sm font-bold text-[var(--foreground)]">
                             Purchase Required
                           </p>
-                          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs leading-relaxed">
+                          <p className="text-xs text-[var(--foreground-muted)] max-w-xs leading-relaxed">
                             Only customers who have purchased this product can leave a review.
                           </p>
                         </div>
@@ -1127,7 +1127,7 @@ export default function ProductDetailsPage({
                           <p className="text-sm font-bold text-[var(--foreground)]">
                             Awaiting Delivery
                           </p>
-                          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs leading-relaxed">
+                          <p className="text-xs text-[var(--foreground-muted)] max-w-xs leading-relaxed">
                             Your order must be delivered before you can leave a review.
                           </p>
                         </div>
@@ -1142,7 +1142,7 @@ export default function ProductDetailsPage({
                           <p className="text-sm font-bold text-[var(--foreground)]">
                             Review Already Submitted
                           </p>
-                          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs leading-relaxed">
+                          <p className="text-xs text-[var(--foreground-muted)] max-w-xs leading-relaxed">
                             You have already submitted a review for this product. One review per product is allowed.
                           </p>
                         </div>

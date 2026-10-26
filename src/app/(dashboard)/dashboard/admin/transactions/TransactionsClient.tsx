@@ -245,15 +245,15 @@ export default function TransactionsClient({
           </div>
 
           {/* Payment Method Pills */}
-          <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-50 dark:bg-gray-800 border border-slate-200/60 dark:border-gray-700 text-xs">
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface)] border border-[var(--border-color)]/60 dark:border-[var(--border-color)] text-xs">
             {METHOD_OPTIONS.map((m) => (
               <button
                 key={m}
                 onClick={() => updateParams({ method: m === "all" ? undefined : m })}
                 className={`px-2.5 py-1 rounded-lg uppercase text-[10px] font-bold transition-all cursor-pointer ${
                   currentMethod === m
-                    ? "bg-slate-900 dark:bg-sky-500 text-white shadow-2xs"
-                    : "text-gray-500 hover:text-gray-900 dark:hover:text-white"
+                    ? "bg-[var(--surface-elevated)] dark:bg-[var(--accent)] text-[var(--on-accent)] shadow-2xs"
+                    : "text-[var(--foreground-muted)] hover:text-[var(--foreground)] dark:hover:text-[var(--foreground)]"
                 }`}
               >
                 {m}
@@ -263,16 +263,16 @@ export default function TransactionsClient({
         </div>
 
         {/* Search, Sort & Reset Bar */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-slate-100 dark:border-gray-800">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-[var(--border-color)]">
           <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-md flex items-center gap-2">
             <div className="relative flex-1">
-              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10" />
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)] z-10" />
               <Input
                 type="text"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder="Search reference, order, customer..."
-                className="w-full pl-9 pr-4 h-10 bg-slate-50 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 rounded-xl text-xs"
+                className="w-full pl-9 pr-4 h-10 bg-[var(--surface-alt)] dark:bg-[var(--surface)] border border-[var(--border-color)] rounded-xl text-xs"
               />
             </div>
             <Button
@@ -292,18 +292,18 @@ export default function TransactionsClient({
                 selectedKey={currentSort}
                 onSelectionChange={(key) => updateParams({ sort: key ? String(key) : "newest" })}
               >
-                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs font-semibold text-[var(--foreground-secondary)] flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                   <Select.Value className="text-xs font-semibold truncate" />
-                  <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
+                  <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-[var(--foreground-muted)] shrink-0" />
                 </Select.Trigger>
-                <Select.Popover className="w-52 p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50">
+                <Select.Popover className="w-52 p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50">
                   <ListBox>
                     {SORT_OPTIONS.map((opt) => (
                       <ListBox.Item
                         key={opt.key}
                         id={opt.key}
                         textValue={opt.label}
-                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-[var(--surface)] text-[var(--foreground)] cursor-pointer flex items-center justify-between"
                       >
                         {opt.label}
                         <ListBox.ItemIndicator />
@@ -318,7 +318,7 @@ export default function TransactionsClient({
               <Button
                 size="sm"
                 onPress={handleResetFilters}
-                className="h-10 px-3 rounded-xl bg-slate-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-xs font-semibold cursor-pointer flex items-center gap-1"
+                className="h-10 px-3 rounded-xl bg-[var(--surface-alt)] text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] hover:text-[var(--foreground)] dark:hover:text-[var(--foreground)] text-xs font-semibold cursor-pointer flex items-center gap-1"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Reset</span>
@@ -330,20 +330,20 @@ export default function TransactionsClient({
 
       {/* ── Transactions Table ── */}
       {isPending ? (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center shadow-xs">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-12 text-center shadow-xs">
           <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-xs font-semibold text-gray-500">Loading transactions...</p>
+          <p className="text-xs font-semibold text-[var(--foreground-muted)]">Loading transactions...</p>
         </Card>
       ) : transactions.length === 0 ? (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center space-y-4 shadow-sm">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-12 text-center space-y-4 shadow-sm">
           <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
             <CreditCard className="w-8 h-8" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-base font-bold text-gray-900 dark:text-white">
+            <h3 className="text-base font-bold text-[var(--foreground)]">
               No transactions found
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-[var(--foreground-muted)]">
               {currentSearch
                 ? "No transactions matched your keyword or filter criteria."
                 : "Transactions will appear here automatically when orders are placed."}
@@ -360,11 +360,11 @@ export default function TransactionsClient({
           )}
         </Card>
       ) : (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl overflow-hidden shadow-xs p-0">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl overflow-hidden shadow-xs p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-100 dark:border-gray-800 bg-slate-50/80 dark:bg-gray-800/40 text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                <tr className="border-b border-[var(--border-color)] bg-[var(--surface-alt)]/80 dark:bg-[var(--surface-alt)]/40 text-[11px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
                   <th className="py-3.5 px-4">Reference</th>
                   <th className="py-3.5 px-4">Order ID</th>
                   <th className="py-3.5 px-4">Customer</th>
@@ -375,7 +375,7 @@ export default function TransactionsClient({
                   <th className="py-3.5 px-4 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-gray-800/60 text-xs">
+              <tbody className="divide-y divide-[var(--border-color)]/60 text-xs">
                 {transactions.map((t) => {
                   const id = t._id || t.id || "";
                   const ref = t.reference || `REF-${id.slice(-8)}`;
@@ -400,7 +400,7 @@ export default function TransactionsClient({
                     <tr
                       key={id}
                       onClick={() => handleOpenDetail(t)}
-                      className="hover:bg-slate-50/80 dark:hover:bg-gray-800/40 transition-colors cursor-pointer group"
+                      className="hover:bg-[var(--surface-alt)]/80 dark:hover:bg-[var(--surface)]/40 transition-colors cursor-pointer group"
                     >
                       {/* Reference */}
                       <td className="py-3.5 px-4 font-mono font-bold text-primary whitespace-nowrap">
@@ -408,22 +408,22 @@ export default function TransactionsClient({
                       </td>
 
                       {/* Order ID */}
-                      <td className="py-3.5 px-4 font-mono text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                      <td className="py-3.5 px-4 font-mono text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] whitespace-nowrap">
                         {shortOrderId}
                       </td>
 
                       {/* Customer */}
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 flex items-center justify-center font-bold text-[11px] text-gray-700 dark:text-gray-300 shrink-0">
+                          <div className="w-8 h-8 rounded-full bg-[var(--surface-alt)] border border-[var(--border-color)] flex items-center justify-center font-bold text-[11px] text-[var(--foreground)] shrink-0">
                             {customerName.charAt(0).toUpperCase()}
                           </div>
                           <div className="min-w-0 max-w-[160px]">
-                            <p className="font-bold text-gray-900 dark:text-white truncate">
+                            <p className="font-bold text-[var(--foreground)] truncate">
                               {customerName}
                             </p>
                             {customerEmail && (
-                              <p className="text-[11px] text-gray-400 truncate">
+                              <p className="text-[11px] text-[var(--foreground-muted)] truncate">
                                 {customerEmail}
                               </p>
                             )}
@@ -433,14 +433,14 @@ export default function TransactionsClient({
 
                       {/* Payment Method */}
                       <td className="py-3.5 px-4 whitespace-nowrap">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-slate-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-[11px] font-semibold uppercase">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-[var(--surface-alt)] text-[var(--foreground)] text-[11px] font-semibold uppercase">
                           <CreditCard className="w-3 h-3 text-primary" />
                           {t.method}
                         </span>
                       </td>
 
                       {/* Amount */}
-                      <td className="py-3.5 px-4 whitespace-nowrap font-extrabold text-gray-900 dark:text-white">
+                      <td className="py-3.5 px-4 whitespace-nowrap font-extrabold text-[var(--foreground)]">
                         ${t.amount?.toFixed(2)}
                       </td>
 
@@ -450,7 +450,7 @@ export default function TransactionsClient({
                       </td>
 
                       {/* Date */}
-                      <td className="py-3.5 px-4 text-gray-500 dark:text-gray-400 whitespace-nowrap text-[11px]">
+                      <td className="py-3.5 px-4 text-[var(--foreground-muted)] whitespace-nowrap text-[11px]">
                         {dateStr}
                       </td>
 
@@ -459,7 +459,7 @@ export default function TransactionsClient({
                         <Button
                           size="sm"
                           onPress={() => handleOpenDetail(t)}
-                          className="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 dark:hover:bg-sky-900/40 text-xs font-bold transition-colors cursor-pointer"
+                          className="inline-flex items-center gap-1 px-3 py-1 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 dark:hover:bg-[var(--accent)]/10 text-xs font-bold transition-colors cursor-pointer"
                         >
                           <Eye className="w-3.5 h-3.5" />
                           <span>View</span>
@@ -474,17 +474,17 @@ export default function TransactionsClient({
 
           {/* ── Pagination ── */}
           {totalPages > 1 && (
-            <div className="p-4 border-t border-slate-100 dark:border-gray-800 bg-slate-50/40 dark:bg-gray-900/40">
-              <Pagination className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-500 dark:text-gray-400">
+            <div className="p-4 border-t border-[var(--border-color)] bg-[var(--surface-alt)]/40 dark:bg-[var(--surface-elevated)]/40">
+              <Pagination className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-[var(--foreground-muted)]">
                 <Pagination.Summary className="text-xs">
-                  Showing <span className="text-gray-800 dark:text-gray-200 font-bold">{startItem}–{endItem}</span> of{" "}
+                  Showing <span className="text-[var(--foreground)] font-bold">{startItem}–{endItem}</span> of{" "}
                   <span className="text-primary font-bold">{total}</span> transactions
                 </Pagination.Summary>
 
                 <Pagination.Content className="flex items-center gap-1">
                   <Pagination.Item>
                     <Pagination.Previous
-                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-[var(--surface)] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                       isDisabled={page === 1 || isPending}
                       onPress={() => updateParams({ page: String(page - 1) })}
                     >
@@ -496,7 +496,7 @@ export default function TransactionsClient({
                   {getPageNumbers().map((p, i) =>
                     p === "ellipsis" ? (
                       <Pagination.Item key={`ellipsis-${i}`}>
-                        <Pagination.Ellipsis className="px-2 text-gray-400 select-none text-xs" />
+                        <Pagination.Ellipsis className="px-2 text-[var(--foreground-muted)] select-none text-xs" />
                       </Pagination.Item>
                     ) : (
                       <Pagination.Item key={p}>
@@ -506,8 +506,8 @@ export default function TransactionsClient({
                           onPress={() => updateParams({ page: String(p) })}
                           className={`w-8 h-8 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
                             p === page
-                              ? "bg-sky-500 text-white shadow-sm shadow-primary/30"
-                              : "hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
+                              ? "bg-[var(--accent)] text-[var(--on-accent)] shadow-sm shadow-primary/30"
+                              : "hover:bg-primary/10 dark:hover:bg-[var(--surface)] text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)]"
                           }`}
                         >
                           {p}
@@ -518,7 +518,7 @@ export default function TransactionsClient({
 
                   <Pagination.Item>
                     <Pagination.Next
-                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-[var(--surface)] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                       isDisabled={page === totalPages || isPending}
                       onPress={() => updateParams({ page: String(page + 1) })}
                     >
@@ -578,7 +578,7 @@ export default function TransactionsClient({
                       </div>
                       <button
                         onClick={() => handleCopy(selectedTrans.reference)}
-                        className="p-1.5 rounded-lg bg-white dark:bg-gray-700 border border-slate-200 dark:border-gray-600 text-gray-600 dark:text-gray-200 hover:text-primary cursor-pointer transition-colors"
+                        className="p-1.5 rounded-lg bg-[var(--surface-elevated)] dark:bg-[var(--foreground-muted)] border border-[var(--border-color)] dark:border-[var(--border-color)] text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] hover:text-primary cursor-pointer transition-colors"
                         title="Copy Reference"
                       >
                         {copiedRef ? (
@@ -590,27 +590,27 @@ export default function TransactionsClient({
                     </div>
 
                     {/* Associated Order */}
-                    <div className="p-4 bg-white dark:bg-gray-900 rounded-2xl border border-slate-200/80 dark:border-gray-800 space-y-2 text-xs">
-                      <h4 className="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                    <div className="p-4 bg-[var(--surface-elevated)] rounded-2xl border border-[var(--border-color)] space-y-2 text-xs">
+                      <h4 className="font-bold text-[var(--foreground)] flex items-center gap-1.5">
                         <ShoppingBag className="w-4 h-4 text-primary" />
                         Associated Order
                       </h4>
-                      <div className="grid grid-cols-2 gap-2 text-gray-600 dark:text-gray-400 pt-1">
+                      <div className="grid grid-cols-2 gap-2 text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] pt-1">
                         <div>
-                          <span className="text-[10px] uppercase font-bold text-gray-400 block">
+                          <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)] block">
                             Order Reference ID
                           </span>
-                          <span className="font-mono font-bold text-gray-900 dark:text-white">
+                          <span className="font-mono font-bold text-[var(--foreground)]">
                             {typeof selectedTrans.orderId === "object"
                               ? selectedTrans.orderId?._id || "N/A"
                               : selectedTrans.orderId || "N/A"}
                           </span>
                         </div>
                         <div>
-                          <span className="text-[10px] uppercase font-bold text-gray-400 block">
+                          <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)] block">
                             Order Status
                           </span>
-                          <span className="font-semibold text-gray-800 dark:text-gray-200 capitalize">
+                          <span className="font-semibold text-[var(--foreground)] capitalize">
                             {typeof selectedTrans.orderId === "object"
                               ? selectedTrans.orderId?.orderStatus || "Confirmed"
                               : "Confirmed"}
@@ -620,17 +620,17 @@ export default function TransactionsClient({
                     </div>
 
                     {/* Customer Information */}
-                    <div className="p-4 bg-white dark:bg-gray-900 rounded-2xl border border-slate-200/80 dark:border-gray-800 space-y-2 text-xs">
-                      <h4 className="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                    <div className="p-4 bg-[var(--surface-elevated)] rounded-2xl border border-[var(--border-color)] space-y-2 text-xs">
+                      <h4 className="font-bold text-[var(--foreground)] flex items-center gap-1.5">
                         <UserIcon className="w-4 h-4 text-primary" />
                         Customer Information
                       </h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-gray-600 dark:text-gray-400 pt-1">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] pt-1">
                         <div>
-                          <span className="text-[10px] uppercase font-bold text-gray-400 block">
+                          <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)] block">
                             Name
                           </span>
-                          <span className="font-bold text-gray-900 dark:text-white">
+                          <span className="font-bold text-[var(--foreground)]">
                             {typeof selectedTrans.userId === "object"
                               ? selectedTrans.userId?.name || "Customer"
                               : "Customer"}
@@ -638,10 +638,10 @@ export default function TransactionsClient({
                         </div>
                         {typeof selectedTrans.userId === "object" && selectedTrans.userId?.email && (
                           <div>
-                            <span className="text-[10px] uppercase font-bold text-gray-400 block">
+                            <span className="text-[10px] uppercase font-bold text-[var(--foreground-muted)] block">
                               Email
                             </span>
-                            <span className="text-gray-700 dark:text-gray-300">
+                            <span className="text-[var(--foreground)]">
                               {selectedTrans.userId.email}
                             </span>
                           </div>

@@ -147,10 +147,10 @@ export default function LanguageTranslator({
         {/* Hidden anchor for Google Translate element */}
         <div id="google_translate_element" className="hidden" aria-hidden="true" />
 
-        <div className="flex items-center justify-between px-3.5 py-2.5 rounded-2xl bg-gray-50 dark:bg-gray-900/70 border border-gray-200/80 dark:border-gray-800/80">
+        <div className="flex items-center justify-between px-3.5 py-2.5 rounded-2xl bg-[var(--surface-alt)] dark:bg-[var(--surface-elevated)]/70 border border-[var(--border-color)]/80">
           <div className="flex items-center gap-2">
             <Globe className="w-4 h-4 text-primary shrink-0" />
-            <span className="text-xs font-bold text-gray-700 dark:text-gray-300">
+            <span className="text-xs font-bold text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)]">
               Language
             </span>
           </div>
@@ -159,15 +159,15 @@ export default function LanguageTranslator({
             <button
               type="button"
               onClick={() => setIsOpen(!isOpen)}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-xs font-semibold text-gray-800 dark:text-gray-200 shadow-2xs hover:border-primary transition-all cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[var(--surface-elevated)] dark:bg-[var(--surface)] border border-[var(--border-color)] text-xs font-semibold text-[var(--foreground)] dark:text-[var(--foreground)] shadow-2xs hover:border-primary transition-all cursor-pointer"
             >
               <span className="text-sm leading-none">{activeLanguage.flag}</span>
               <span>{activeLanguage.name}</span>
-              <ChevronDown className="w-3 h-3 text-gray-500" />
+              <ChevronDown className="w-3 h-3 text-[var(--foreground-muted)]" />
             </button>
 
             {isOpen && (
-              <div className="absolute right-0 bottom-full mb-2 w-56 max-h-64 overflow-y-auto bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-xl p-1.5 z-50">
+              <div className="absolute right-0 bottom-full mb-2 w-56 max-h-64 overflow-y-auto bg-[var(--surface-elevated)] dark:bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl shadow-xl p-1.5 z-50">
                 {SUPPORTED_LANGUAGES.map((lang) => (
                   <button
                     key={lang.code}
@@ -176,7 +176,7 @@ export default function LanguageTranslator({
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-colors cursor-pointer ${
                       currentLang === lang.code
                         ? "bg-primary text-white font-bold"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                        : "text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--surface-alt)]"
                     }`}
                   >
                     <div className="flex items-center gap-2">
@@ -208,15 +208,15 @@ export default function LanguageTranslator({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Change language"
-        className="group flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-white/90 dark:text-gray-300 hover:text-white dark:hover:text-white hover:bg-white/15 dark:hover:bg-white/10 transition-all duration-200 text-[10px] sm:text-xs font-semibold whitespace-nowrap cursor-pointer select-none"
+        className="group flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-white/90 dark:text-[var(--foreground)] hover:text-white dark:hover:text-[var(--accent)] hover:bg-[var(--surface-elevated)]/15 dark:hover:bg-[var(--surface-elevated)]/20 transition-all duration-200 text-[10px] sm:text-xs font-semibold whitespace-nowrap cursor-pointer select-none"
       >
-        <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary group-hover:text-amber-300 transition-colors shrink-0" />
+        <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white/80 dark:text-[var(--foreground)] group-hover:text-amber-300 dark:group-hover:text-[var(--accent)] transition-colors shrink-0" />
         <span className="text-xs sm:text-sm leading-none shrink-0">
           {activeLanguage.flag}
         </span>
         <span className="hidden md:inline font-medium">{activeLanguage.name}</span>
         <ChevronDown
-          className={`w-3 h-3 text-white/70 group-hover:text-white transition-transform duration-200 ${
+          className={`w-3 h-3 text-white/70 dark:text-[var(--foreground)]/70 group-hover:text-white dark:group-hover:text-[var(--accent)] transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
         />
@@ -267,7 +267,7 @@ export default function LanguageTranslator({
                           className={`text-[10px] leading-tight truncate ${
                             isSelected
                               ? "text-white/80"
-                              : "text-gray-400 dark:text-gray-500"
+                              : "text-[var(--foreground-muted)] dark:text-[var(--foreground-muted)]"
                           }`}
                         >
                           {lang.nativeName}

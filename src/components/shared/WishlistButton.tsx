@@ -60,7 +60,7 @@ export default function WishlistButton({
       href={user ? "/dashboard/customer/wishlist" : "/auth/login?callbackUrl=/dashboard/customer/wishlist"}
       onClick={onClick}
       aria-label="Wishlist"
-      className={`relative flex items-center text-gray-700 dark:text-gray-200 hover:text-primary transition-colors ${className}`}
+      className={`relative flex items-center text-[var(--foreground-secondary)] dark:text-[var(--foreground)] hover:text-primary transition-colors ${className}`}
     >
       <div className="relative p-0.5">
         <Heart className="w-5 h-5 stroke-[1.8]" />

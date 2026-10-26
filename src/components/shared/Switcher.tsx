@@ -36,7 +36,7 @@ export function ThemeSwitch({ variant = "sidebar" }: ThemeSwitchProps) {
         onClick={() => setTheme(isDark ? "light" : "dark")}
         aria-label="Toggle Theme"
         title={isDark ? "Switch to Light mode" : "Switch to Dark mode"}
-        className="group flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-white/90 dark:text-gray-300 hover:text-white dark:hover:text-white hover:bg-white/15 dark:hover:bg-white/10 transition-all duration-200 text-[10px] sm:text-xs font-semibold whitespace-nowrap cursor-pointer"
+        className="group flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-white/90 dark:text-[var(--foreground)] hover:text-white dark:hover:text-[var(--accent)] hover:bg-[var(--surface-elevated)]/15 dark:hover:bg-[var(--surface-elevated)]/20 transition-all duration-200 text-[10px] sm:text-xs font-semibold whitespace-nowrap cursor-pointer"
       >
         {isDark ? (
           <>
@@ -45,7 +45,7 @@ export function ThemeSwitch({ variant = "sidebar" }: ThemeSwitchProps) {
           </>
         ) : (
           <>
-            <Moon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-sky-200 group-hover:-rotate-12 transition-transform shrink-0" />
+            <Moon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[var(--on-grad-text)] group-hover:-rotate-12 transition-transform shrink-0" />
             <span>Dark</span>
           </>
         )}
@@ -81,7 +81,7 @@ export function ThemeSwitch({ variant = "sidebar" }: ThemeSwitchProps) {
           onClick={() => setTheme("light")}
           className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold transition-all duration-200 cursor-pointer ${
             !isDark
-              ? "bg-primary text-white shadow-xs"
+              ? "bg-brand-gradient text-[var(--on-grad-text)] shadow-xs"
               : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
           }`}
         >
@@ -93,7 +93,7 @@ export function ThemeSwitch({ variant = "sidebar" }: ThemeSwitchProps) {
           onClick={() => setTheme("dark")}
           className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold transition-all duration-200 cursor-pointer ${
             isDark
-              ? "bg-primary text-white shadow-xs"
+              ? "bg-brand-gradient text-[var(--on-grad-text)] shadow-xs"
               : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
           }`}
         >
@@ -113,7 +113,7 @@ export function ThemeSwitch({ variant = "sidebar" }: ThemeSwitchProps) {
       >
         {/* Animated Sliding Primary Capsule */}
         <div
-          className={`absolute left-1 right-1 h-[44px] bg-primary rounded-xl shadow-xs transition-transform duration-300 ease-out ${
+          className={`absolute left-1 right-1 h-[44px] bg-brand-gradient rounded-xl shadow-xs transition-transform duration-300 ease-out ${
             isDark ? "translate-y-[46px]" : "translate-y-0"
           }`}
           style={{ top: "0.25rem" }}
@@ -127,7 +127,7 @@ export function ThemeSwitch({ variant = "sidebar" }: ThemeSwitchProps) {
             setTheme("light");
           }}
           className={`relative cursor-pointer z-10 w-full h-1/2 flex items-center justify-center text-[10px] font-bold uppercase tracking-wider transition-colors duration-200 ${
-            !isDark ? "text-white font-black" : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+            !isDark ? "text-[var(--on-grad-text)] font-black" : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
           }`}
           style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
         >
@@ -142,7 +142,7 @@ export function ThemeSwitch({ variant = "sidebar" }: ThemeSwitchProps) {
             setTheme("dark");
           }}
           className={`relative cursor-pointer z-10 w-full h-1/2 flex items-center justify-center text-[10px] font-bold uppercase tracking-wider transition-colors duration-200 ${
-            isDark ? "text-white font-black" : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+            isDark ? "text-[var(--on-grad-text)] font-black" : "text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
           }`}
           style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
         >

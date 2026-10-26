@@ -164,18 +164,18 @@ export default function CategoriesDropdown({
   if (variant === "docked") {
     return (
       <div
-        className="relative w-[270px] bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 shadow-md rounded-b-xl z-40"
+        className="relative w-[270px] bg-[var(--surface-elevated)] border border-[var(--border-color)] shadow-md rounded-b-xl z-40"
         onMouseLeave={() => setHoveredCategoryId(null)}
       >
         {/* Top Header */}
-        <div className="bg-primary text-white px-5 py-3.5 font-bold text-sm flex items-center gap-2.5 rounded-t-xl select-none">
+        <div className="bg-brand-gradient text-[var(--on-grad-text)] px-5 py-3.5 font-bold text-sm flex items-center gap-2.5 rounded-t-xl select-none">
           <Menu className="w-4 h-4 stroke-[2.5]" />
           <span>{label}</span>
         </div>
 
         {/* Categories list */}
         {isLoading ? (
-          <div className="py-1 flex flex-col divide-y divide-gray-100 dark:divide-gray-800/60">
+          <div className="py-1 flex flex-col divide-y divide-[var(--border-color)]/60">
             {Array.from({ length: 10 }).map((_, i) => {
               const widths = ["w-3/5", "w-4/5", "w-2/3", "w-3/4", "w-1/2", "w-4/5", "w-3/5", "w-2/3"];
               return (
@@ -184,18 +184,18 @@ export default function CategoriesDropdown({
                   className="flex items-center justify-between px-5 py-[12px] animate-pulse"
                 >
                   <div className="flex items-center gap-3 w-full">
-                    <div className="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-800 shrink-0" />
+                    <div className="w-4 h-4 rounded-full bg-[var(--border-color)] dark:bg-[var(--surface)] shrink-0" />
                     <div
-                      className={`h-3.5 bg-gray-200 dark:bg-gray-800 rounded-md ${widths[i % widths.length]}`}
+                      className={`h-3.5 bg-[var(--border-color)] dark:bg-[var(--surface)] rounded-md ${widths[i % widths.length]}`}
                     />
                   </div>
-                  <div className="w-3 h-3 rounded-full bg-gray-100 dark:bg-gray-800/50 shrink-0" />
+                  <div className="w-3 h-3 rounded-full bg-[var(--surface-alt)]  'dark:bg-[var(--surface)]/'+$args[0].Value.Split('/')[1]  shrink-0" />
                 </div>
               );
             })}
           </div>
         ) : categories.length === 0 ? (
-          <div className="p-4 text-xs text-gray-400 text-center">No categories</div>
+          <div className="p-4 text-xs text-[var(--foreground-muted)] text-center">No categories</div>
         ) : (
           <div className="py-1 flex flex-col relative">
             {categories.map((category) => {
@@ -221,7 +221,7 @@ export default function CategoriesDropdown({
             {/* Stable Single Submenu flyout anchored at top-0 left-full with bridge */}
             {hoveredCategory && (
               <div
-                className="absolute left-[calc(100%-1px)] top-0 z-50 animate-in fade-in-50 duration-150 shadow-2xl border border-gray-200 dark:border-gray-800 rounded-r-xl overflow-hidden bg-white dark:bg-gray-950"
+                className="absolute left-[calc(100%-1px)] top-0 z-50 animate-in fade-in-50 duration-150 shadow-2xl border border-[var(--border-color)] rounded-r-xl overflow-hidden bg-[var(--surface-elevated)]"
                 onMouseEnter={() => {
                   if (hoveredCategoryId) setHoveredCategoryId(hoveredCategoryId);
                 }}
@@ -254,7 +254,7 @@ export default function CategoriesDropdown({
           aria-label="All Departments Menu"
           aria-expanded={isOpen}
           onClick={() => setIsOpen((prev) => !prev)}
-          className="bg-primary hover:bg-primary-hover text-white font-bold text-xs sm:text-[13px] px-4 sm:px-5 py-3 rounded-t-lg flex items-center justify-between gap-3 w-[220px] sm:w-[260px] lg:w-[270px] transition-colors cursor-pointer shadow-sm"
+          className="bg-brand-gradient text-[var(--on-grad-text)] font-bold text-xs sm:text-[13px] px-4 sm:px-5 py-3 rounded-t-lg flex items-center justify-between gap-3 w-[220px] sm:w-[260px] lg:w-[270px] transition-colors cursor-pointer shadow-sm"
         >
           <span className="flex items-center gap-2.5">
             <Menu className="w-4 h-4 stroke-[2.5]" />
@@ -272,11 +272,11 @@ export default function CategoriesDropdown({
           aria-label="Categories Menu"
           aria-expanded={isOpen}
           onClick={() => setIsOpen((prev) => !prev)}
-          className="flex items-center gap-2 font-bold text-sm text-[#333e48] dark:text-gray-200 hover:text-primary dark:hover:text-primary transition-colors cursor-pointer bg-transparent border-0 p-0 focus:outline-none"
+          className="flex items-center gap-2 font-bold text-sm text-[var(--foreground)] hover:text-primary transition-colors cursor-pointer bg-transparent border-0 p-0 focus:outline-none"
         >
           <span>Categories</span>
           <ChevronDown
-            className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${
+            className={`w-4 h-4 text-[var(--foreground-muted)] transition-transform duration-200 ${
               isOpen ? "rotate-180 text-primary" : ""
             }`}
           />
@@ -286,12 +286,12 @@ export default function CategoriesDropdown({
       {/* Mega Dropdown Menu */}
       {isOpen && (
         <div className="absolute left-0 top-full mt-0 z-50 animate-in fade-in-50 slide-in-from-top-1 duration-150">
-          <div className="flex bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 shadow-2xl overflow-hidden rounded-b-xl">
+          <div className="flex bg-[var(--surface-elevated)] border border-[var(--border-color)] shadow-2xl overflow-hidden rounded-b-xl">
             {/* Accent Bar at top */}
-            <div className="absolute top-0 left-0 right-0 h-[3px] bg-primary z-20" />
+            <div className="absolute top-0 left-0 right-0 h-[3px] bg-brand-gradient z-20" />
 
             {isLoading ? (
-              <div className="w-[260px] py-1 bg-white dark:bg-gray-950 divide-y divide-gray-100 dark:divide-gray-800/60">
+              <div className="w-[260px] py-1 bg-[var(--surface-elevated)] divide-y divide-[var(--border-color)]/60">
                 {Array.from({ length: 7 }).map((_, i) => {
                   const widths = ["w-3/5", "w-4/5", "w-2/3", "w-3/4", "w-1/2", "w-4/5", "w-3/5"];
                   return (
@@ -300,25 +300,25 @@ export default function CategoriesDropdown({
                       className="flex items-center justify-between px-5 py-[12px] animate-pulse"
                     >
                       <div className="flex items-center gap-3 w-full">
-                        <div className="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-800 shrink-0" />
+                        <div className="w-4 h-4 rounded-full bg-[var(--surface-alt)] shrink-0" />
                         <div
-                          className={`h-3.5 bg-gray-200 dark:bg-gray-800 rounded-md ${widths[i % widths.length]}`}
+                          className={`h-3.5 bg-[var(--surface-alt)] rounded-md ${widths[i % widths.length]}`}
                         />
                       </div>
-                      <div className="w-3 h-3 rounded-full bg-gray-100 dark:bg-gray-800/50 shrink-0" />
+                      <div className="w-3 h-3 rounded-full bg-[var(--surface-alt)]/50 shrink-0" />
                     </div>
                   );
                 })}
               </div>
             ) : categories.length === 0 ? (
-              <div className="flex items-center justify-center p-8 w-[300px] text-gray-500 dark:text-gray-400 gap-2">
+              <div className="flex items-center justify-center p-8 w-[300px] text-[var(--foreground-muted)] gap-2">
                 <AlertCircle className="w-4 h-4" />
                 <span className="text-xs">No categories found</span>
               </div>
             ) : (
               <>
                 {/* Left Column: Category List */}
-                <div className="w-[260px] pt-3 pb-1 bg-white dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800 flex flex-col shrink-0">
+                <div className="w-[260px] pt-3 pb-1 bg-[var(--surface-elevated)] border-r border-[var(--border-color)] flex flex-col shrink-0">
                   {categories.map((category) => {
                     const catKey =
                       category._id || category.id || category.slug;

@@ -747,7 +747,7 @@ export default function AddProductClient({
             {/* ── Section: Categories & Subcategories ── */}
             <Card className={cardClass}>
               <Card.Content className="p-6 space-y-4">
-                <h2 className="text-base font-bold text-gray-900 dark:text-white">
+                <h2 className="text-base font-bold text-[var(--foreground)]">
                   Categories & Subcategories
                 </h2>
 
@@ -799,13 +799,13 @@ export default function AddProductClient({
                   <label className={labelClass}>Subcategories</label>
 
                   {!selectedCategoryId ? (
-                    <div className="p-3 bg-slate-50 dark:bg-gray-800/30 rounded-xl border border-dashed border-slate-200 dark:border-gray-800 text-center">
-                      <p className="text-xs text-gray-400">
+                    <div className="p-3 bg-[var(--surface-alt)] dark:bg-[var(--surface)]/30 rounded-xl border border-dashed border-[var(--border-color)] dark:border-[var(--border-color)] text-center">
+                      <p className="text-xs text-[var(--foreground-muted)]">
                         Please select a category above to load subcategories.
                       </p>
                     </div>
                   ) : availableSubCategories.length === 0 ? (
-                    <p className="text-xs text-gray-400 italic">
+                    <p className="text-xs text-[var(--foreground-muted)] italic">
                       No subcategories available for this category.
                     </p>
                   ) : (

@@ -42,9 +42,9 @@ export default function TabletPromoBanner({ tabletPromoData }: TabletPromoBanner
                 {titleSuffix}
               </h2>
 
-              {/* Accent Yellow Price Badge (#FFDB00) */}
-              <div className="inline-flex flex-col items-center justify-center bg-[#FFDB00] text-gray-900 px-5 py-2.5 rounded-xl shadow-xs group-hover:scale-105 transition-transform duration-300 shrink-0">
-                <span className="text-[9px] whitespace-nowrap font-bold tracking-widest uppercase text-gray-800/90 leading-tight">
+              {/* Accent Brand Price Badge */}
+              <div className="inline-flex flex-col items-center justify-center bg-brand-gradient text-[var(--on-grad-text)] px-5 py-2.5 rounded-xl shadow-brand group-hover:scale-105 transition-transform duration-300 shrink-0">
+                <span className="text-[9px] whitespace-nowrap font-bold tracking-widest uppercase opacity-90 leading-tight">
                   STARTING AT
                 </span>
                 <div className="flex items-start font-black text-2xl md:text-3xl leading-none tracking-tighter pt-0.5">

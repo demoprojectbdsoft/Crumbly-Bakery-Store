@@ -720,7 +720,7 @@ export default function CheckoutClient({
                               disabled={isOtpVerified || isSendingOtp}
                               className="w-full"
                             />
-                            <Smartphone className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                            <Smartphone className="w-4 h-4 text-[var(--foreground-muted)] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                           </div>
 
                           {!isOtpVerified ? (
@@ -750,7 +750,7 @@ export default function CheckoutClient({
                             <Button
                               type="button"
                               onPress={handleResetWalletVerification}
-                              className="h-10 px-4 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-bold text-xs rounded-xl transition-colors shrink-0"
+                              className="h-10 px-4 bg-[var(--surface-alt)] dark:bg-[var(--surface)] hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--surface-alt)] text-[var(--foreground-secondary)] dark:text-[var(--foreground)] font-bold text-xs rounded-xl transition-colors shrink-0"
                             >
                               Change Number
                             </Button>
@@ -778,7 +778,7 @@ export default function CheckoutClient({
                           <button
                             type="button"
                             onClick={handleResetWalletVerification}
-                            className="text-[11px] font-semibold text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 underline cursor-pointer"
+                            className="text-[11px] font-semibold text-[var(--foreground-muted)] hover:text-rose-600 dark:text-[var(--foreground-muted)] dark:hover:text-rose-400 underline cursor-pointer"
                           >
                             Re-verify
                           </button>
@@ -794,14 +794,14 @@ export default function CheckoutClient({
             {selectedPaymentMethod === "cod" && (
               <Card className={cardClass}>
                 <Card.Content className="p-5 sm:p-6 md:p-7 space-y-5">
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                  <div className="flex items-center justify-between pb-3 border-b border-[var(--border-color)]">
                     <h2 className={sectionHeadingClass}>
                       <div className="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
                         <MapPin className="w-4 h-4" />
                       </div>
                       <span>2. Shipping & Delivery Address</span>
                     </h2>
-                    <span className="text-[11px] font-semibold text-slate-400">
+                    <span className="text-[11px] font-semibold text-[var(--foreground-muted)]">
                       Required for COD <span className="text-rose-500">*</span>
                     </span>
                   </div>
@@ -823,7 +823,7 @@ export default function CheckoutClient({
                           className="w-full"
                           required
                         />
-                        <UserIcon className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        <UserIcon className="w-4 h-4 text-[var(--foreground-muted)] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
 
@@ -844,7 +844,7 @@ export default function CheckoutClient({
                           className="w-full"
                           required
                         />
-                        <Phone className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        <Phone className="w-4 h-4 text-[var(--foreground-muted)] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
 
@@ -864,7 +864,7 @@ export default function CheckoutClient({
                           className="w-full"
                           required
                         />
-                        <Building className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        <Building className="w-4 h-4 text-[var(--foreground-muted)] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
 
@@ -901,7 +901,7 @@ export default function CheckoutClient({
                           className="w-full"
                           required
                         />
-                        <Hash className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        <Hash className="w-4 h-4 text-[var(--foreground-muted)] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
                   </div>
@@ -916,7 +916,7 @@ export default function CheckoutClient({
           <div className="lg:col-span-1 space-y-6 lg:sticky lg:top-24">
             <Card className={cardClass}>
               <Card.Content className="p-5 sm:p-6 space-y-5">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+                <div className="flex items-center justify-between pb-3 border-b border-[var(--border-color)]">
                   <h3 className="text-base font-extrabold text-[var(--foreground)] flex items-center gap-2">
                     <ShoppingBag className="w-4 h-4 text-primary" />
                     Order Summary
@@ -942,7 +942,7 @@ export default function CheckoutClient({
                         key={item.id || item.product?.id || idx}
                         className="pt-3 first:pt-0 flex items-center gap-3"
                       >
-                        <div className="relative w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 overflow-hidden shrink-0 border border-slate-200/80 dark:border-slate-700">
+                        <div className="relative w-12 h-12 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface)] overflow-hidden shrink-0 border border-[var(--border-color)]/80 dark:border-[var(--border-color)]">
                           <Image
                             src={productImage}
                             alt={productTitle}
@@ -954,16 +954,16 @@ export default function CheckoutClient({
                         </div>
 
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">
+                          <p className="text-xs font-bold text-[var(--foreground)] truncate">
                             {productTitle}
                           </p>
-                          <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                          <p className="text-[11px] text-[var(--foreground-muted)]">
                             Qty: {item.quantity} × ${productPrice.toFixed(2)}
                           </p>
                         </div>
 
                         <div className="text-right shrink-0">
-                          <span className="text-xs font-bold text-slate-900 dark:text-white">
+                          <span className="text-xs font-bold text-slate-900 dark:text-[var(--foreground)]">
                             ${lineTotal.toFixed(2)}
                           </span>
                         </div>
@@ -973,10 +973,10 @@ export default function CheckoutClient({
                 </div>
 
                 {/* Price Breakdown */}
-                <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-2.5 text-xs text-slate-600 dark:text-slate-300">
+                <div className="pt-4 border-t border-[var(--border-color)] space-y-2.5 text-xs text-[var(--foreground-secondary)] dark:text-[var(--foreground-secondary)]">
                   <div className="flex items-center justify-between">
                     <span>Subtotal</span>
-                    <span className="font-bold text-slate-900 dark:text-white">
+                    <span className="font-bold text-slate-900 dark:text-[var(--foreground)]">
                       ${subtotal.toFixed(2)}
                     </span>
                   </div>
@@ -984,7 +984,7 @@ export default function CheckoutClient({
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1">
                       <span>Standard Shipping</span>
-                      <span className="text-[10px] text-slate-400">
+                      <span className="text-[10px] text-[var(--foreground-muted)]">
                         (3-5 business days)
                       </span>
                     </div>
@@ -1084,7 +1084,7 @@ export default function CheckoutClient({
                     <Truck className="w-4 h-4 text-primary shrink-0" />
                     <span>Fast Express Delivery & Tracking</span>
                   </div>
-                  <div className="flex items-center gap-2.5 text-xs text-slate-600 dark:text-slate-300">
+                  <div className="flex items-center gap-2.5 text-xs text-[var(--foreground-secondary)] dark:text-[var(--foreground-secondary)]">
                     <Sparkles className="w-4 h-4 text-purple-500 shrink-0" />
                     <span>100% Genuine Products Guarantee</span>
                   </div>
@@ -1099,14 +1099,14 @@ export default function CheckoutClient({
           REALISTIC PAYMENT GATEWAY OTP VERIFICATION MODAL
       ════════════════════════════════════════════════════════ */}
       {isOtpModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 animate-in fade-in duration-150">
-          <div className="relative w-full max-w-sm bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-150">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--surface)]/75 animate-in fade-in duration-150">
+          <div className="relative w-full max-w-sm bg-[var(--surface-elevated)] dark:bg-[var(--surface-elevated)] border border-[var(--border-color)] dark:border-[var(--border-color)] rounded-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-150">
             {/* Gateway Brand Header - Compact */}
             <div
               className={`px-4 py-3 bg-gradient-to-r ${currentPaymentOption.gatewayHeaderBg} text-white flex items-center justify-between relative overflow-hidden`}
             >
               <div className="flex items-center gap-2.5 relative z-10">
-                <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center border border-white/30 text-white shadow-xs">
+                <div className="w-8 h-8 rounded-xl bg-[var(--surface-elevated)]/20 flex items-center justify-center border border-white/30 text-white shadow-xs">
                   {currentPaymentOption.icon}
                 </div>
                 <div>
@@ -1122,7 +1122,7 @@ export default function CheckoutClient({
               <button
                 type="button"
                 onClick={() => setIsOtpModalOpen(false)}
-                className="w-7 h-7 rounded-full bg-white/15 hover:bg-white/30 flex items-center justify-center text-white transition-colors cursor-pointer relative z-10"
+                className="w-7 h-7 rounded-full bg-[var(--surface-elevated)]/15 hover:bg-[var(--surface-elevated)]/30 flex items-center justify-center text-white transition-colors cursor-pointer relative z-10"
                 title="Close"
               >
                 <X className="w-3.5 h-3.5" />
@@ -1132,15 +1132,15 @@ export default function CheckoutClient({
             {/* Gateway Body - Compact */}
             <div className="p-4 space-y-3">
               {/* Compact Merchant & Phone Summary */}
-              <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80 text-xs">
+              <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface)]/60 border border-[var(--border-color)]/80 dark:border-[var(--border-color)]/80 text-xs">
                 <div>
-                  <span className="text-[10px] text-slate-400 block leading-none">Amount</span>
-                  <span className="font-extrabold text-slate-900 dark:text-white text-sm">
+                  <span className="text-[10px] text-[var(--foreground-muted)] block leading-none">Amount</span>
+                  <span className="font-extrabold text-slate-900 dark:text-[var(--foreground)] text-sm">
                     ${grandTotal.toFixed(2)}
                   </span>
                 </div>
-                <div className="text-right font-mono text-[11px] text-slate-600 dark:text-slate-300">
-                  <span className="text-[10px] text-slate-400 block font-sans leading-none">Mobile No</span>
+                <div className="text-right font-mono text-[11px] text-[var(--foreground-secondary)] dark:text-[var(--foreground-secondary)]">
+                  <span className="text-[10px] text-[var(--foreground-muted)] block font-sans leading-none">Mobile No</span>
                   <span className="font-bold">+880 {walletPhone}</span>
                 </div>
               </div>
@@ -1172,7 +1172,7 @@ export default function CheckoutClient({
               {/* 6-Digit OTP Input Form */}
               <form onSubmit={handleVerifyOtp} className="space-y-3">
                 <div className="space-y-1 text-center">
-                  <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300">
+                  <label className="text-[11px] font-bold text-[var(--foreground-secondary)] dark:text-[var(--foreground-secondary)]">
                     Enter 6-Digit Verification Code
                   </label>
                   <Input
@@ -1191,10 +1191,10 @@ export default function CheckoutClient({
                 </div>
 
                 {/* Resend OTP Timer */}
-                <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 px-0.5">
+                <div className="flex items-center justify-between text-[10px] text-[var(--foreground-muted)] px-0.5">
                   <span>Didn&apos;t receive code?</span>
                   {resendTimer > 0 ? (
-                    <span className="font-mono text-slate-400 flex items-center gap-1">
+                    <span className="font-mono text-[var(--foreground-muted)] flex items-center gap-1">
                       <Clock className="w-2.5 h-2.5" />
                       00:{resendTimer < 10 ? `0${resendTimer}` : resendTimer}
                     </span>
@@ -1215,7 +1215,7 @@ export default function CheckoutClient({
                   <Button
                     type="button"
                     onPress={() => setIsOtpModalOpen(false)}
-                    className="h-9 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs transition-colors"
+                    className="h-9 rounded-xl bg-[var(--surface-alt)] hover:bg-[var(--surface-alt)] dark:bg-[var(--surface)] dark:hover:bg-[var(--surface-alt)] text-[var(--foreground-secondary)] dark:text-[var(--foreground)] font-bold text-xs transition-colors"
                   >
                     Cancel
                   </Button>
@@ -1248,7 +1248,7 @@ export default function CheckoutClient({
             </div>
 
             {/* Gateway Footer Security */}
-            <div className="py-2 px-3 bg-slate-50 dark:bg-slate-800/40 border-t border-slate-200/60 dark:border-slate-800 text-center flex items-center justify-center gap-1.5 text-[9px] text-slate-400">
+            <div className="py-2 px-3 bg-[var(--surface-alt)] dark:bg-[var(--surface)]/40 border-t border-[var(--border-color)]/60 dark:border-[var(--border-color)] text-center flex items-center justify-center gap-1.5 text-[9px] text-[var(--foreground-muted)]">
               <ShieldCheck className="w-3 h-3 text-emerald-500" />
               <span>256-Bit Encrypted Payment Gateway</span>
             </div>

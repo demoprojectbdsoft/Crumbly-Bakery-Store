@@ -190,7 +190,7 @@ export default function MobileMenuContent({
         </div>
 
         {/* 4. Categories and Subcategories Tree */}
-        <div className="pt-2 border-t border-gray-100 dark:border-gray-800/80">
+        <div className="pt-2 border-t border-[var(--border-color)]/80">
           <MobileCategories
             categories={categories}
             subCategories={subCategories}

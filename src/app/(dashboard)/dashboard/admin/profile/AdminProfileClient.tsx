@@ -90,7 +90,7 @@ export default function AdminProfileClient({
         </div>
         <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
           Admin{" "}
-          <span className="bg-gradient-to-r from-primary to-primary-hover bg-clip-text text-transparent">
+          <span className="bg-brand-gradient bg-clip-text text-transparent">
             Profile
           </span>
         </h1>
@@ -104,7 +104,7 @@ export default function AdminProfileClient({
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
           {/* Avatar */}
           <div className="relative shrink-0">
-            <div className="relative w-24 h-24 rounded-3xl bg-gradient-to-tr from-primary to-primary-hover p-1 shadow-md shadow-primary/20 overflow-hidden">
+            <div className="relative w-24 h-24 rounded-3xl bg-brand-gradient p-1 shadow-xs ring-2 ring-[var(--brand-flat)]/30 overflow-hidden">
               <Image
                 src={avatarUrl || profile.avatar}
                 alt={profile.name}
@@ -138,15 +138,15 @@ export default function AdminProfileClient({
 
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 pt-1 text-xs text-[var(--foreground-muted)]">
               <span className="flex items-center gap-1">
-                <Mail className="w-3.5 h-3.5 text-gray-400" />
+                <Mail className="w-3.5 h-3.5 text-[var(--foreground-muted)]" />
                 {profile.email}
               </span>
               <span className="flex items-center gap-1">
-                <Building2 className="w-3.5 h-3.5 text-gray-400" />
+                <Building2 className="w-3.5 h-3.5 text-[var(--foreground-muted)]" />
                 {profile.department}
               </span>
               <span className="flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-gray-400" />
+                <Calendar className="w-3.5 h-3.5 text-[var(--foreground-muted)]" />
                 Joined {profile.joinedDate}
               </span>
             </div>

@@ -703,7 +703,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                                 type="button"
                                 onClick={() => handleRemoveItem(productId, product?.title || "Item")}
                                 aria-label="Remove item"
-                                className="p-1 text-slate-400 hover:text-red-500 transition-colors"
+                                className="p-1 text-[var(--foreground-muted)] hover:text-red-500 transition-colors"
                               >
                                 <Trash2 className="w-4 h-4" />
                               </button>
@@ -711,27 +711,27 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
 
                             <div className="flex items-end justify-between mt-3">
                               <div>
-                                <span className="text-xs font-bold text-slate-900 dark:text-white">
+                                <span className="text-xs font-bold text-slate-900 dark:text-[var(--foreground)]">
                                   ${unitPrice.toFixed(2)}
                                 </span>
                                 {item.quantity > 1 && (
-                                  <span className="text-[10px] text-slate-400 ml-1.5 font-medium">
+                                  <span className="text-[10px] text-[var(--foreground-muted)] ml-1.5 font-medium">
                                     Total: ${lineTotal.toFixed(2)}
                                   </span>
                                 )}
                               </div>
 
                               <div className="flex flex-col items-end gap-1">
-                                <div className="inline-flex items-center rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-800 p-0.5">
+                                <div className="inline-flex items-center rounded-lg border border-[var(--border-color)] dark:border-[var(--border-color)] bg-[var(--surface-alt)]/80 dark:bg-[var(--surface)] p-0.5">
                                   <button
                                     type="button"
                                     disabled={item.quantity <= 1 || isUpdating}
                                     onClick={() => handleQuantityChange(productId, item.quantity, -1, maxStock, product?.title)}
-                                    className="w-6 h-6 rounded flex items-center justify-center text-slate-600 dark:text-slate-300 disabled:opacity-30"
+                                    className="w-6 h-6 rounded flex items-center justify-center text-slate-600 dark:text-[var(--foreground-secondary)] disabled:opacity-30"
                                   >
                                     <Minus className="w-3 h-3" />
                                   </button>
-                                  <span className="w-7 text-center text-xs font-bold text-slate-900 dark:text-white">
+                                  <span className="w-7 text-center text-xs font-bold text-slate-900 dark:text-[var(--foreground)]">
                                     {isUpdating ? "..." : item.quantity}
                                   </span>
                                   <button
@@ -745,7 +745,7 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                                         ? `Max ${maxStock} in stock`
                                         : "Increase quantity"
                                     }
-                                    className="w-6 h-6 rounded flex items-center justify-center text-slate-600 dark:text-slate-300 disabled:opacity-30"
+                                    className="w-6 h-6 rounded flex items-center justify-center text-slate-600 dark:text-[var(--foreground-secondary)] disabled:opacity-30"
                                   >
                                     <Plus className="w-3 h-3" />
                                   </button>
@@ -765,10 +765,10 @@ export default function CartClient({ initialCart, user: initialUser }: CartClien
                 </div>
 
                 {/* Table Bottom Controls Bar */}
-                <div className="p-4 sm:p-6 bg-slate-50/50 dark:bg-slate-800/30 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
+                <div className="p-4 sm:p-6 bg-[var(--surface-alt)]/50 dark:bg-[var(--surface)]/30 border-t border-[var(--border-color)] dark:border-[var(--border-color)] flex flex-wrap items-center justify-between gap-3">
                   <Link
                     href="/shop"
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors shadow-2xs"
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[var(--border-color)] dark:border-[var(--border-color)] bg-[var(--surface-elevated)] dark:bg-[var(--surface)] text-slate-700 dark:text-[var(--foreground)] text-xs font-bold hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--surface-alt)] transition-colors shadow-2xs"
                   >
                     <ArrowLeft className="w-3.5 h-3.5" /> Continue Shopping
                   </Link>

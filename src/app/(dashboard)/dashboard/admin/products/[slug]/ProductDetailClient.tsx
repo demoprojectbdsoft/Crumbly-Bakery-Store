@@ -188,7 +188,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               <span
                 className={`inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full border ${
                   isOfferExpired
-                    ? "bg-slate-100 dark:bg-gray-800 text-gray-500 border-slate-200 dark:border-gray-700"
+                    ? "bg-[var(--surface-alt)] text-gray-500 border-[var(--border-color)]"
                     : "bg-red-50 dark:bg-red-950/60 text-red-600 dark:text-red-400 border-red-200/60 dark:border-red-800/40"
                 }`}
               >
@@ -220,14 +220,14 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
         </div>
 
         {/* Pricing Summary */}
-        <div className="flex md:flex-col items-baseline md:items-end justify-between border-t md:border-t-0 pt-3 md:pt-0 border-slate-100 dark:border-gray-800 shrink-0">
-          <span className="text-[11px] uppercase font-bold text-gray-400">Current Selling Price</span>
+        <div className="flex md:flex-col items-baseline md:items-end justify-between border-t md:border-t-0 pt-3 md:pt-0 border-[var(--border-color)] shrink-0">
+          <span className="text-[11px] uppercase font-bold text-[var(--foreground-muted)]">Current Selling Price</span>
           <div className="flex items-baseline gap-2">
-            <span className="text-3xl font-black text-gray-900 dark:text-white">
+            <span className="text-3xl font-black text-[var(--foreground)]">
               ${price.toFixed(2)}
             </span>
             {originalPrice && originalPrice > price && (
-              <span className="text-sm font-semibold text-gray-400 line-through">
+              <span className="text-sm font-semibold text-[var(--foreground-muted)] line-through">
                 ${originalPrice.toFixed(2)}
               </span>
             )}
@@ -238,8 +238,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             </span>
           ) : null}
           {hasInvestPrice && (
-            <span className="text-[11px] text-gray-400 mt-1">
-              Cost: <strong className="text-gray-700 dark:text-gray-300 font-mono">${investPrice.toFixed(2)}</strong>
+            <span className="text-[11px] text-[var(--foreground-muted)] mt-1">
+              Cost: <strong className="text-[var(--foreground)] font-mono">${investPrice.toFixed(2)}</strong>
             </span>
           )}
         </div>
@@ -308,13 +308,13 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           {/* 3. Unit Profit / Loss */}
           <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl p-5 shadow-xs relative overflow-hidden">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+              <span className="text-xs font-bold text-[var(--foreground-muted)] uppercase tracking-wider">
                 Unit Profit / Loss
               </span>
               <div
                 className={`w-8 h-8 rounded-xl flex items-center justify-center ${
                   !hasInvestPrice
-                    ? "bg-slate-100 dark:bg-gray-800 text-gray-400"
+                    ? "bg-[var(--surface-alt)] text-[var(--foreground-muted)]"
                     : isUnitProfitable
                     ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400"
                     : "bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400"
@@ -353,16 +353,16 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                   </span>
                 </div>
               ) : (
-                <span className="text-xl font-bold text-gray-400 italic">Cost Not Set</span>
+                <span className="text-xl font-bold text-[var(--foreground-muted)] italic">Cost Not Set</span>
               )}
             </div>
 
-            <div className="mt-2 text-[11px] text-gray-500 dark:text-gray-400">
+            <div className="mt-2 text-[11px] text-[var(--foreground-muted)]">
               {hasInvestPrice && profitMargin != null ? (
                 <span>
-                  Margin: <strong className="text-gray-800 dark:text-gray-200">{profitMargin.toFixed(1)}%</strong>
+                  Margin: <strong className="text-[var(--foreground)]">{profitMargin.toFixed(1)}%</strong>
                   {markupPercent != null && (
-                    <span className="ml-1 text-gray-400">({markupPercent.toFixed(1)}% markup)</span>
+                    <span className="ml-1 text-[var(--foreground-muted)]">({markupPercent.toFixed(1)}% markup)</span>
                   )}
                 </span>
               ) : (
@@ -590,16 +590,16 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
               </div>
 
               <div className="flex items-center justify-between pt-2">
-                <span className="text-gray-500 dark:text-gray-400">Last Updated:</span>
-                <span className="font-mono text-gray-900 dark:text-white font-semibold">
+                <span className="text-[var(--foreground-muted)]">Last Updated:</span>
+                <span className="font-mono text-[var(--foreground)] font-semibold">
                   {formatDate(product.updatedAt)}
                 </span>
               </div>
 
               {product.offerEndDate && (
                 <div className="flex items-center justify-between pt-2">
-                  <span className="text-gray-500 dark:text-gray-400">Offer Expiration:</span>
-                  <span className="font-mono text-gray-900 dark:text-white font-semibold">
+                  <span className="text-[var(--foreground-muted)]">Offer Expiration:</span>
+                  <span className="font-mono text-[var(--foreground)] font-semibold">
                     {formatDate(product.offerEndDate)}
                   </span>
                 </div>
@@ -607,8 +607,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
               {product.ownerId && (
                 <div className="flex items-center justify-between pt-2">
-                  <span className="text-gray-500 dark:text-gray-400">Owner User ID:</span>
-                  <span className="font-mono text-gray-900 dark:text-white font-semibold truncate max-w-[160px]">
+                  <span className="text-[var(--foreground-muted)]">Owner User ID:</span>
+                  <span className="font-mono text-[var(--foreground)] font-semibold truncate max-w-[160px]">
                     {product.ownerId}
                   </span>
                 </div>

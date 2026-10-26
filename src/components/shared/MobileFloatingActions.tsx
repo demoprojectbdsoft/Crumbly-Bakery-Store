@@ -110,7 +110,7 @@ export default function MobileFloatingActions() {
             <div className="relative w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shadow-lg border-2 border-[var(--surface-elevated)] transition-transform group-hover:scale-105 active:scale-95">
               <ArrowLeftRight className="w-5 h-5 stroke-[2]" />
               {compareCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-md border-2 border-white dark:border-gray-950">
+                <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-md border-2 border-[var(--surface-elevated)] dark:border-[var(--surface-alt)]">
                   {compareCount > 99 ? "99+" : compareCount}
                 </span>
               )}
@@ -129,7 +129,7 @@ export default function MobileFloatingActions() {
             <div className="relative w-12 h-12 rounded-full bg-gradient-to-tr from-pink-500 to-rose-600 text-white flex items-center justify-center shadow-lg border-2 border-[var(--surface-elevated)] transition-transform group-hover:scale-105 active:scale-95">
               <Heart className="w-5 h-5 stroke-[2] fill-white/20" />
               {Boolean(user) && wishlistCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-amber-400 text-gray-950 text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-md border-2 border-white dark:border-gray-950">
+                <span className="absolute -top-1 -right-1 bg-amber-400 text-[var(--foreground)] text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-md border-2 border-[var(--surface-elevated)] dark:border-[var(--surface-alt)]">
                   {wishlistCount > 99 ? "99+" : wishlistCount}
                 </span>
               )}
@@ -148,7 +148,7 @@ export default function MobileFloatingActions() {
             <div className="relative w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shadow-lg border-2 border-[var(--surface-elevated)] transition-transform group-hover:scale-105 active:scale-95">
               <ShoppingCart className="w-5 h-5 stroke-[2]" />
               {Boolean(user) && cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-md border-2 border-white dark:border-gray-950 animate-pulse">
+                <span className="absolute -top-1 -right-1 bg-emerald-500 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-md border-2 border-[var(--surface-elevated)] dark:border-[var(--surface-alt)] animate-pulse">
                   {cartCount > 99 ? "99+" : cartCount}
                 </span>
               )}
@@ -162,7 +162,7 @@ export default function MobileFloatingActions() {
           onClick={() => setIsOpen((prev) => !prev)}
           aria-label={isOpen ? "Close quick actions" : "Open shopping quick actions"}
           aria-expanded={isOpen}
-          className="pointer-events-auto relative w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-primary hover:bg-primary-hover text-white flex items-center justify-center shadow-xl shadow-primary/40 border-2 border-white/90 dark:border-gray-900 transition-all duration-300 transform active:scale-90 hover:scale-105 cursor-pointer focus:outline-none"
+          className="pointer-events-auto relative w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-primary hover:bg-primary-hover text-white flex items-center justify-center shadow-xl shadow-primary/40 border-2 border-[var(--surface-elevated)] transition-all duration-300 transform active:scale-90 hover:scale-105 cursor-pointer focus:outline-none"
         >
           <div className="relative flex items-center justify-center">
             {isOpen ? (
@@ -174,7 +174,7 @@ export default function MobileFloatingActions() {
 
           {/* Combined count badge when collapsed */}
           {!isOpen && Boolean(user) && totalActionsCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-extrabold min-w-[20px] h-5 px-1 rounded-full flex items-center justify-center shadow-md border-2 border-white dark:border-gray-950 leading-none">
+            <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-extrabold min-w-[20px] h-5 px-1 rounded-full flex items-center justify-center shadow-md border-2 border-[var(--surface-elevated)] dark:border-[var(--surface-alt)] leading-none">
               {totalActionsCount > 99 ? "99+" : totalActionsCount}
             </span>
           )}

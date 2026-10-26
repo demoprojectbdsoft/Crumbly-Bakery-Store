@@ -170,7 +170,7 @@ export default function HeroSlider({ initialSlides = [] }: HeroSliderProps) {
             <div className="pt-2">
               <Link
                 href={slide.href}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary hover:bg-primary-hover text-white text-xs font-bold shadow-md hover:shadow-lg transition-all transform active:scale-95 group"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand-gradient text-[var(--on-grad-text)] text-xs font-bold shadow-brand hover:opacity-95 transition-all transform active:scale-95 group"
               >
                 <span>Shop Now</span>
                 <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
@@ -257,8 +257,8 @@ export default function HeroSlider({ initialSlides = [] }: HeroSliderProps) {
               >
                 {activeIndex === i && (
                   <div className="absolute top-0 left-0 w-full">
-                    <div className="h-[3px] w-full bg-primary" />
-                    <div className="absolute top-[3px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-primary" />
+                    <div className="h-[3px] w-full bg-brand-gradient" />
+                    <div className="absolute top-[3px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-[var(--brand-flat)]" />
                   </div>
                 )}
                 <span

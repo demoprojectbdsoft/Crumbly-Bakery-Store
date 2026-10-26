@@ -80,35 +80,35 @@ export default function CustomerAnalyticsClient() {
       {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[var(--foreground-muted)] mb-1">
             <Link href="/dashboard/customer" className="hover:text-primary transition-colors">
               Customer Dashboard
             </Link>
             <span>/</span>
             <span className="text-primary">Analytics</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
             Spending &amp; Order{" "}
             <span className="text-gradient-primary">
               Analytics
             </span>
           </h1>
-          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-xs md:text-sm text-[var(--foreground-muted)] mt-1">
             Comprehensive insights into your shopping habits, brand affinity, and promo savings.
           </p>
         </div>
 
         {/* Timeframe & Export */}
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-          <div className="flex items-center bg-slate-100 dark:bg-gray-800/80 p-1 rounded-xl border border-slate-200 dark:border-gray-700">
+          <div className="flex items-center bg-[var(--surface-alt)]/80 p-1 rounded-xl border border-[var(--border-color)]">
             {TIMEFRAMES.map((tf) => (
               <button
                 key={tf}
                 onClick={() => setSelectedTimeframe(tf)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   selectedTimeframe === tf
-                    ? "bg-white dark:bg-gray-900 text-primary shadow-xs"
-                    : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                    ? "bg-[var(--surface-elevated)] text-primary shadow-xs"
+                    : "text-[var(--foreground-muted)] hover:text-[var(--foreground)] dark:hover:text-white"
                 }`}
               >
                 {tf}
@@ -129,9 +129,9 @@ export default function CustomerAnalyticsClient() {
       {/* ── Key Metrics Cards ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {/* Total Spend */}
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-5 shadow-xs space-y-3">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-5 shadow-xs space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+            <span className="text-xs font-semibold text-[var(--foreground-muted)]">
               Total Spend ({selectedTimeframe})
             </span>
             <div className="p-2 rounded-xl bg-primary/10 text-primary border border-primary/20">
@@ -139,7 +139,7 @@ export default function CustomerAnalyticsClient() {
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">$1,842.50</p>
+            <p className="text-2xl font-bold text-[var(--foreground)]">$1,842.50</p>
             <p className="text-xs text-emerald-600 dark:text-emerald-400 font-bold mt-1">
               +14% vs previous period
             </p>
@@ -147,9 +147,9 @@ export default function CustomerAnalyticsClient() {
         </Card>
 
         {/* Average Order Value */}
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-5 shadow-xs space-y-3">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-5 shadow-xs space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+            <span className="text-xs font-semibold text-[var(--foreground-muted)]">
               Average Order Value (AOV)
             </span>
             <div className="p-2 rounded-xl bg-primary/10 text-primary border border-primary/20">
@@ -157,15 +157,15 @@ export default function CustomerAnalyticsClient() {
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">$131.60</p>
-            <p className="text-xs text-gray-400 mt-1">Across 14 completed orders</p>
+            <p className="text-2xl font-bold text-[var(--foreground)]">$131.60</p>
+            <p className="text-xs text-[var(--foreground-muted)] mt-1">Across 14 completed orders</p>
           </div>
         </Card>
 
         {/* Promo Code Savings */}
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-5 shadow-xs space-y-3">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-5 shadow-xs space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+            <span className="text-xs font-semibold text-[var(--foreground-muted)]">
               Discounts &amp; Promo Savings
             </span>
             <div className="p-2 rounded-xl bg-primary/10 text-primary border border-primary/20">
@@ -173,7 +173,7 @@ export default function CustomerAnalyticsClient() {
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">$280.00</p>
+            <p className="text-2xl font-bold text-[var(--foreground)]">$280.00</p>
             <p className="text-xs text-primary font-semibold mt-1">
               13.2% saved on retail MSRP
             </p>
@@ -181,9 +181,9 @@ export default function CustomerAnalyticsClient() {
         </Card>
 
         {/* Purchase Frequency */}
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-5 shadow-xs space-y-3">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-5 shadow-xs space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+            <span className="text-xs font-semibold text-[var(--foreground-muted)]">
               Purchase Frequency
             </span>
             <div className="p-2 rounded-xl bg-primary/10 text-primary border border-primary/20">
@@ -191,7 +191,7 @@ export default function CustomerAnalyticsClient() {
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">1.75 / mo</p>
+            <p className="text-2xl font-bold text-[var(--foreground)]">1.75 / mo</p>
             <p className="text-xs text-emerald-600 dark:text-emerald-400 font-bold mt-1">
               Consistent active shopper
             </p>
@@ -202,24 +202,24 @@ export default function CustomerAnalyticsClient() {
       {/* ── Main Charts ── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Spending vs Savings Bar Chart */}
-        <Card className="lg:col-span-2 bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-4">
+        <Card className="lg:col-span-2 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white">
+              <h3 className="text-base font-bold text-[var(--foreground)]">
                 Monthly Spending vs. Promo Savings
               </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-[var(--foreground-muted)]">
                 Comparison of net spend vs total discounts unlocked
               </p>
             </div>
             <div className="flex items-center gap-4 text-xs font-semibold">
               <div className="flex items-center gap-1.5">
                 <span className="w-3 h-3 rounded-md bg-primary" />
-                <span className="text-gray-600 dark:text-gray-300">Spent ($)</span>
+                <span className="text-[var(--foreground-muted)]">Spent ($)</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded-md bg-blue-400" />
-                <span className="text-gray-600 dark:text-gray-300">Saved ($)</span>
+                <span className="w-3 h-3 rounded-md bg-[var(--accent)]" />
+                <span className="text-[var(--foreground-muted)]">Saved ($)</span>
               </div>
             </div>
           </div>
@@ -241,10 +241,10 @@ export default function CustomerAnalyticsClient() {
                 />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#0f172a",
+                    backgroundColor: "var(--surface-elevated)",
                     border: "none",
                     borderRadius: "12px",
-                    color: "#fff",
+                    color: "var(--foreground)",
                     fontSize: "12px",
                   }}
                   formatter={(val: ValueType | undefined) => [`$${Number(val ?? 0)}`, "Amount"]}
@@ -257,12 +257,12 @@ export default function CustomerAnalyticsClient() {
         </Card>
 
         {/* Order Status Distribution */}
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs flex flex-col justify-between space-y-4">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs flex flex-col justify-between space-y-4">
           <div>
-            <h3 className="text-base font-bold text-gray-900 dark:text-white">
+            <h3 className="text-base font-bold text-[var(--foreground)]">
               Order Fulfillment
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-[var(--foreground-muted)]">
               Delivery success rate &amp; active shipments
             </p>
           </div>
@@ -285,10 +285,10 @@ export default function CustomerAnalyticsClient() {
                 </Pie>
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#0f172a",
+                    backgroundColor: "var(--surface-elevated)",
                     border: "none",
                     borderRadius: "12px",
-                    color: "#fff",
+                    color: "var(--foreground)",
                     fontSize: "12px",
                   }}
                   formatter={(val: ValueType | undefined) => [`${Number(val ?? 0)} Orders`, "Count"]}
@@ -297,10 +297,10 @@ export default function CustomerAnalyticsClient() {
             </ResponsiveContainer>
 
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <span className="text-xl font-extrabold text-gray-900 dark:text-white">
+              <span className="text-xl font-extrabold text-[var(--foreground)]">
                 14
               </span>
-              <span className="text-[10px] text-gray-400">Total Orders</span>
+              <span className="text-[10px] text-[var(--foreground-muted)]">Total Orders</span>
             </div>
           </div>
 
@@ -312,11 +312,11 @@ export default function CustomerAnalyticsClient() {
                     className="w-2.5 h-2.5 rounded-full"
                     style={{ backgroundColor: item.color }}
                   />
-                  <span className="text-gray-600 dark:text-gray-300 font-medium">
+                  <span className="text-[var(--foreground-muted)] font-medium">
                     {item.name}
                   </span>
                 </div>
-                <span className="font-bold text-gray-800 dark:text-gray-200">
+                <span className="font-bold text-[var(--foreground)]">
                   {item.value} ({Math.round((item.value / 14) * 100)}%)
                 </span>
               </div>
@@ -326,13 +326,13 @@ export default function CustomerAnalyticsClient() {
       </div>
 
       {/* ── Brand Affinity Breakdown ── */}
-      <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-4">
+      <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-gray-900 dark:text-white">
+            <h3 className="text-base font-bold text-[var(--foreground)]">
               Brand Affinity &amp; Spend Distribution
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-[var(--foreground-muted)]">
               Brands where you purchased the most products
             </p>
           </div>
@@ -342,20 +342,20 @@ export default function CustomerAnalyticsClient() {
           {BRAND_SPENDING_DATA.map((brand, idx) => (
             <div
               key={idx}
-              className="p-4 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-950/40 space-y-2"
+              className="p-4 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)]/50 dark:bg-[var(--surface-alt)]/40 space-y-2"
             >
               <div className="flex items-center justify-between">
-                <span className="text-sm font-bold text-gray-900 dark:text-white">
+                <span className="text-sm font-bold text-[var(--foreground)]">
                   {brand.brand}
                 </span>
                 <span className="text-xs font-extrabold text-primary">
                   {brand.percentage}%
                 </span>
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-[var(--foreground-muted)]">
                 ${brand.spend.toFixed(2)} Total Spent
               </p>
-              <div className="w-full bg-slate-200 dark:bg-gray-800 h-2 rounded-full overflow-hidden">
+              <div className="w-full bg-[var(--surface-alt)] dark:bg-[var(--surface)] h-2 rounded-full overflow-hidden">
                 <div
                   className="h-full rounded-full"
                   style={{

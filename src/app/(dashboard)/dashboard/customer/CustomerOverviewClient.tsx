@@ -235,21 +235,21 @@ export default function CustomerOverviewClient({
               {membershipTier}
             </span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
             Customer{" "}
             <span className="text-gradient-primary">
               Overview
             </span>
           </h1>
-          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Welcome back, <span className="font-bold text-gray-900 dark:text-white">{userName}</span>. Here is your real-time shopping activity &amp; savings performance.
+          <p className="text-xs md:text-sm text-[var(--foreground-muted)] mt-1">
+            Welcome back, <span className="font-bold text-[var(--foreground)]">{userName}</span>. Here is your real-time shopping activity &amp; savings performance.
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           {/* <Link
             href="/dashboard/customer/analytics"
-            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 dark:hover:bg-gray-700 text-xs font-bold text-gray-700 dark:text-gray-200 transition-colors"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-[var(--surface-alt)] hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--foreground-muted)] text-xs font-bold text-[var(--foreground-secondary)] transition-colors"
           >
             <Activity className="w-4 h-4 text-primary" />
             <span>Detailed Analytics</span>
@@ -277,7 +277,7 @@ export default function CustomerOverviewClient({
               <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/5 to-transparent rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform" />
 
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-gray-500 dark:text-gray-400">
+                <span className="text-xs font-bold text-[var(--foreground-muted)]">
                   {stat.title}
                 </span>
                 <div className="p-2.5 rounded-xl bg-primary/10 text-primary border border-primary/20 group-hover:bg-primary group-hover:text-white transition-colors">
@@ -286,7 +286,7 @@ export default function CustomerOverviewClient({
               </div>
 
               <div>
-                <div className="text-2xl lg:text-3xl font-black text-gray-900 dark:text-white tracking-tight">
+                <div className="text-2xl lg:text-3xl font-black text-[var(--foreground)] tracking-tight">
                   {stat.value}
                 </div>
                 <div className="flex items-center gap-1.5 mt-2">
@@ -321,20 +321,20 @@ export default function CustomerOverviewClient({
                 <div className="p-1.5 rounded-lg bg-primary/10 text-primary">
                   <BarChart3 className="w-4 h-4" />
                 </div>
-                <h3 className="text-base font-bold text-gray-900 dark:text-white">
+                <h3 className="text-base font-bold text-[var(--foreground)]">
                   Spending Activity &amp; Order Velocity
                 </h3>
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+              <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
                 Monthly spending timeline ($ USD) and order volume
               </p>
             </div>
 
-            <div className="flex items-center gap-1 bg-slate-100 dark:bg-gray-800 p-1 rounded-lg text-xs self-start sm:self-auto">
+            <div className="flex items-center gap-1 bg-[var(--surface-alt)] p-1 rounded-lg text-xs self-start sm:self-auto">
               <button
                 onClick={() => setActiveSpendingView("both")}
                 className={`px-2.5 py-1 rounded-md font-semibold transition-all cursor-pointer ${
-                  activeSpendingView === "both" ? "bg-[var(--surface)] text-primary shadow-xs" : "text-gray-500"
+                  activeSpendingView === "both" ? "bg-[var(--surface)] text-primary shadow-xs" : "text-[var(--foreground-muted)]"
                 }`}
               >
                 All
@@ -342,7 +342,7 @@ export default function CustomerOverviewClient({
               <button
                 onClick={() => setActiveSpendingView("spending")}
                 className={`px-2.5 py-1 rounded-md font-semibold transition-all cursor-pointer ${
-                  activeSpendingView === "spending" ? "bg-[var(--surface)] text-primary shadow-xs" : "text-gray-500"
+                  activeSpendingView === "spending" ? "bg-[var(--surface)] text-primary shadow-xs" : "text-[var(--foreground-muted)]"
                 }`}
               >
                 Spent ($)
@@ -350,7 +350,7 @@ export default function CustomerOverviewClient({
               <button
                 onClick={() => setActiveSpendingView("orders")}
                 className={`px-2.5 py-1 rounded-md font-semibold transition-all cursor-pointer ${
-                  activeSpendingView === "orders" ? "bg-[var(--surface)] text-indigo-600 shadow-xs" : "text-gray-500"
+                  activeSpendingView === "orders" ? "bg-[var(--surface)] text-primary shadow-xs" : "text-[var(--foreground-muted)]"
                 }`}
               >
                 Orders
@@ -396,10 +396,10 @@ export default function CustomerOverviewClient({
                 )}
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#0f172a",
+                    backgroundColor: "var(--surface-elevated)",
                     border: "1px solid rgba(255,255,255,0.1)",
                     borderRadius: "14px",
-                    color: "#fff",
+                    color: "var(--foreground)",
                     fontSize: "12px",
                   }}
                   formatter={(value: any, name: any) => [
@@ -438,15 +438,15 @@ export default function CustomerOverviewClient({
             </ResponsiveContainer>
           </div>
 
-          <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-gray-800 text-xs">
+          <div className="flex items-center justify-between pt-2 border-t border-[var(--border-color)] text-xs">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1.5">
                 <span className="w-3 h-3 rounded-full bg-primary" />
-                <span className="text-gray-600 dark:text-gray-300 font-semibold">Net Spend</span>
+                <span className="text-[var(--foreground-muted)] font-semibold">Net Spend</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="w-3 h-3 rounded-full bg-indigo-500" />
-                <span className="text-gray-600 dark:text-gray-300 font-semibold">Orders Count</span>
+                <span className="w-3 h-3 rounded-full bg-[var(--accent)]" />
+                <span className="text-[var(--foreground-muted)] font-semibold">Orders Count</span>
               </div>
             </div>
             <Link
@@ -463,14 +463,14 @@ export default function CustomerOverviewClient({
         <Card className="bg-[var(--surface)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs flex flex-col justify-between space-y-4">
           <div>
             <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400">
+              <div className="p-1.5 rounded-lg bg-primary/10 text-primary">
                 <PieIcon className="w-4 h-4" />
               </div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white">
+              <h3 className="text-base font-bold text-[var(--foreground)]">
                 Category Affinity
               </h3>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-xs text-[var(--foreground-muted)] mt-1">
               Distribution of your purchases by category
             </p>
           </div>
@@ -493,10 +493,10 @@ export default function CustomerOverviewClient({
                 </Pie>
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#0f172a",
+                    backgroundColor: "var(--surface-elevated)",
                     border: "1px solid rgba(255,255,255,0.1)",
                     borderRadius: "12px",
-                    color: "#fff",
+                    color: "var(--foreground)",
                     fontSize: "12px",
                   }}
                   formatter={(val: any, _n: any, item: any) => [
@@ -508,26 +508,26 @@ export default function CustomerOverviewClient({
             </ResponsiveContainer>
 
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <span className="text-xl font-black text-gray-900 dark:text-white">
+              <span className="text-xl font-black text-[var(--foreground)]">
                 {categoryData.length}
               </span>
-              <span className="text-[10px] text-gray-400 uppercase font-bold">Categories</span>
+              <span className="text-[10px] text-[var(--foreground-muted)] uppercase font-bold">Categories</span>
             </div>
           </div>
 
           <div className="space-y-2 text-xs max-h-36 overflow-y-auto pr-1">
             {categoryData.map((cat, i) => (
-              <div key={i} className="flex items-center justify-between p-1 rounded-lg hover:bg-slate-50 dark:hover:bg-gray-800/40">
+              <div key={i} className="flex items-center justify-between p-1 rounded-lg hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--surface)]/40">
                 <div className="flex items-center gap-2">
                   <span
                     className="w-2.5 h-2.5 rounded-full"
                     style={{ backgroundColor: cat.color }}
                   />
-                  <span className="text-gray-600 dark:text-gray-300 font-medium truncate max-w-[130px]">
+                  <span className="text-[var(--foreground-muted)] font-medium truncate max-w-[130px]">
                     {cat.name}
                   </span>
                 </div>
-                <span className="font-bold text-gray-800 dark:text-gray-200">
+                <span className="font-bold text-[var(--foreground)]">
                   {cat.value}%
                 </span>
               </div>
@@ -546,22 +546,22 @@ export default function CustomerOverviewClient({
                 <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                   <TrendingUp className="w-4 h-4" />
                 </div>
-                <h3 className="text-base font-bold text-gray-900 dark:text-white">
+                <h3 className="text-base font-bold text-[var(--foreground)]">
                   Monthly Spending vs. Unlocked Savings
                 </h3>
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+              <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
                 Comparison of net checkout spend vs coupon &amp; deal discounts saved
               </p>
             </div>
             <div className="flex items-center gap-4 text-xs font-semibold">
               <div className="flex items-center gap-1.5">
                 <span className="w-3 h-3 rounded-md bg-primary" />
-                <span className="text-gray-600 dark:text-gray-300">Spent ($)</span>
+                <span className="text-[var(--foreground-muted)]">Spent ($)</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-3 h-3 rounded-md bg-emerald-500" />
-                <span className="text-gray-600 dark:text-gray-300">Saved ($)</span>
+                <span className="text-[var(--foreground-muted)]">Saved ($)</span>
               </div>
             </div>
           </div>
@@ -583,10 +583,10 @@ export default function CustomerOverviewClient({
                 />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#0f172a",
+                    backgroundColor: "var(--surface-elevated)",
                     border: "1px solid rgba(255,255,255,0.1)",
                     borderRadius: "12px",
-                    color: "#fff",
+                    color: "var(--foreground)",
                     fontSize: "12px",
                   }}
                   formatter={(val: any, name: any) => [
@@ -605,14 +605,14 @@ export default function CustomerOverviewClient({
         <Card className="bg-[var(--surface)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs flex flex-col justify-between space-y-4">
           <div>
             <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+              <div className="p-1.5 rounded-lg bg-primary/10 text-primary">
                 <Truck className="w-4 h-4" />
               </div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white">
+              <h3 className="text-base font-bold text-[var(--foreground)]">
                 Order Delivery Journey
               </h3>
             </div>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-xs text-[var(--foreground-muted)] mt-1">
               Fulfillment rate &amp; active shipments
             </p>
           </div>
@@ -635,10 +635,10 @@ export default function CustomerOverviewClient({
                 </Pie>
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#0f172a",
+                    backgroundColor: "var(--surface-elevated)",
                     border: "1px solid rgba(255,255,255,0.1)",
                     borderRadius: "12px",
-                    color: "#fff",
+                    color: "var(--foreground)",
                     fontSize: "12px",
                   }}
                   formatter={(val: ValueType | undefined) => [`${Number(val ?? 0)}%`, "Proportion"]}
@@ -650,23 +650,23 @@ export default function CustomerOverviewClient({
               <span className="text-xl font-black text-emerald-600 dark:text-emerald-400">
                 {orderStatusData.find((s) => s.name === "Delivered")?.value || 0}%
               </span>
-              <span className="text-[10px] text-gray-400 uppercase font-bold">Delivered</span>
+              <span className="text-[10px] text-[var(--foreground-muted)] uppercase font-bold">Delivered</span>
             </div>
           </div>
 
           <div className="space-y-2 text-xs">
             {orderStatusData.map((item, i) => (
-              <div key={i} className="flex items-center justify-between p-1 rounded-lg hover:bg-slate-50 dark:hover:bg-gray-800/40">
+              <div key={i} className="flex items-center justify-between p-1 rounded-lg hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--surface)]/40">
                 <div className="flex items-center gap-2">
                   <span
                     className="w-2.5 h-2.5 rounded-full"
                     style={{ backgroundColor: item.color }}
                   />
-                  <span className="text-gray-600 dark:text-gray-300 font-medium">
+                  <span className="text-[var(--foreground-muted)] font-medium">
                     {item.name}
                   </span>
                 </div>
-                <span className="font-bold text-gray-800 dark:text-gray-200">
+                <span className="font-bold text-[var(--foreground)]">
                   {item.value}%
                 </span>
               </div>
@@ -683,17 +683,17 @@ export default function CustomerOverviewClient({
               <Wallet className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-gray-900 dark:text-white">Preferred Payment Methods</h4>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Your most frequent checkout settlement channels</p>
+              <h4 className="text-sm font-bold text-[var(--foreground)]">Preferred Payment Methods</h4>
+              <p className="text-xs text-[var(--foreground-muted)]">Your most frequent checkout settlement channels</p>
             </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
             {paymentMethodData.map((pm, i) => (
-              <div key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-gray-800/60 border border-slate-200/60 dark:border-gray-700/60 text-xs">
+              <div key={i} className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface-alt)]/60 border border-[var(--border-color)] text-xs">
                 <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: pm.color }} />
-                <span className="font-bold text-gray-800 dark:text-gray-200">{pm.name}</span>
-                <span className="text-[11px] font-semibold text-gray-400">({pm.value}%)</span>
+                <span className="font-bold text-[var(--foreground)]">{pm.name}</span>
+                <span className="text-[11px] font-semibold text-[var(--foreground-muted)]">({pm.value}%)</span>
               </div>
             ))}
           </div>
@@ -704,10 +704,10 @@ export default function CustomerOverviewClient({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+            <h3 className="text-lg font-bold text-[var(--foreground)]">
               Recent Orders &amp; Live Tracking
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-[var(--foreground-muted)]">
               Track active dispatches and view complete purchase history
             </p>
           </div>
@@ -722,9 +722,9 @@ export default function CustomerOverviewClient({
 
         {recentOrders.length === 0 ? (
           <Card className="bg-[var(--surface)] border border-[var(--border-color)] rounded-2xl p-8 text-center space-y-3">
-            <ShoppingBag className="w-10 h-10 text-gray-400 mx-auto" />
-            <p className="text-sm font-bold text-gray-700 dark:text-gray-300">No orders placed yet</p>
-            <p className="text-xs text-gray-400 max-w-sm mx-auto">
+            <ShoppingBag className="w-10 h-10 text-[var(--foreground-muted)] mx-auto" />
+            <p className="text-sm font-bold text-[var(--foreground)]">No orders placed yet</p>
+            <p className="text-xs text-[var(--foreground-muted)] max-w-sm mx-auto">
               Start shopping to experience high-speed dispatch, rewards points, and live tracking.
             </p>
             <Link
@@ -746,12 +746,12 @@ export default function CustomerOverviewClient({
                   key={order.id}
                   className="bg-[var(--surface)] border border-[var(--border-color)] rounded-2xl p-5 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4"
                 >
-                  <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-gray-800">
+                  <div className="flex items-center justify-between pb-3 border-b border-[var(--border-color)]">
                     <div>
                       <span className="text-xs font-bold font-mono text-primary">
                         {order.orderNumber}
                       </span>
-                      <p className="text-[11px] text-gray-400">{order.date}</p>
+                      <p className="text-[11px] text-[var(--foreground-muted)]">{order.date}</p>
                     </div>
 
                     <span
@@ -761,7 +761,7 @@ export default function CustomerOverviewClient({
                           : isShipped
                           ? "bg-primary/10 text-primary border border-primary/20"
                           : isProcessing
-                          ? "bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 border border-indigo-200/50 dark:border-indigo-800/40"
+                          ? "bg-[var(--accent)]/10 text-[var(--accent)] border border-[var(--accent)]/20"
                           : "bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 border border-rose-200/50 dark:border-rose-800/40"
                       }`}
                     >
@@ -775,7 +775,7 @@ export default function CustomerOverviewClient({
                   <div className="space-y-2">
                     {order.items.slice(0, 2).map((item, idx) => (
                       <div key={idx} className="flex items-center gap-3">
-                        <div className="relative w-12 h-12 rounded-lg bg-slate-100 dark:bg-gray-800 shrink-0 overflow-hidden flex items-center justify-center p-1 border border-slate-200/60 dark:border-gray-700">
+                        <div className="relative w-12 h-12 rounded-lg bg-[var(--surface-alt)] shrink-0 overflow-hidden flex items-center justify-center p-1 border border-[var(--border-color)]/60 dark:border-[var(--border-color)]">
                           {item.image ? (
                             <Image
                               src={item.image}
@@ -784,14 +784,14 @@ export default function CustomerOverviewClient({
                               className="object-contain p-1"
                             />
                           ) : (
-                            <Package className="w-6 h-6 text-gray-400" />
+                            <Package className="w-6 h-6 text-[var(--foreground-muted)]" />
                           )}
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-xs font-semibold text-gray-800 dark:text-gray-200 truncate">
+                          <p className="text-xs font-semibold text-[var(--foreground)] truncate">
                             {item.name}
                           </p>
-                          <p className="text-[11px] text-gray-400">
+                          <p className="text-[11px] text-[var(--foreground-muted)]">
                             Qty: {item.quantity} • ${item.price.toFixed(2)}
                           </p>
                         </div>
@@ -804,10 +804,10 @@ export default function CustomerOverviewClient({
                     )}
                   </div>
 
-                  <div className="pt-3 border-t border-slate-100 dark:border-gray-800 flex items-center justify-between">
+                  <div className="pt-3 border-t border-[var(--border-color)] flex items-center justify-between">
                     <div>
-                      <span className="text-[10px] text-gray-400 block">Total Amount</span>
-                      <span className="text-sm font-extrabold text-gray-900 dark:text-white">
+                      <span className="text-[10px] text-[var(--foreground-muted)] block">Total Amount</span>
+                      <span className="text-sm font-extrabold text-[var(--foreground)]">
                         ${order.total.toFixed(2)}
                       </span>
                     </div>
@@ -836,7 +836,7 @@ export default function CustomerOverviewClient({
               <div className="p-1.5 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400">
                 <Heart className="w-4 h-4" />
               </div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white">
+              <h3 className="text-base font-bold text-[var(--foreground)]">
                 Saved in Wishlist ({wishlist.length})
               </h3>
             </div>
@@ -850,8 +850,8 @@ export default function CustomerOverviewClient({
           </div>
 
           {wishlist.length === 0 ? (
-            <div className="py-8 text-center text-xs text-gray-400">
-              <Heart className="w-8 h-8 text-gray-300 mx-auto mb-2" />
+            <div className="py-8 text-center text-xs text-[var(--foreground-muted)]">
+              <Heart className="w-8 h-8 text-[var(--foreground-muted)] mx-auto mb-2" />
               Your wishlist is empty. Tap the heart icon on any product to save it here!
             </div>
           ) : (
@@ -859,9 +859,9 @@ export default function CustomerOverviewClient({
               {wishlist.slice(0, 4).map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center gap-3 p-3 rounded-xl border border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-800/30 hover:border-primary/30 transition-all"
+                  className="flex items-center gap-3 p-3 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] hover:border-primary/30 transition-all"
                 >
-                  <div className="relative w-14 h-14 rounded-lg bg-white dark:bg-gray-800 shrink-0 overflow-hidden flex items-center justify-center p-1 border border-slate-200/60 dark:border-gray-700">
+                  <div className="relative w-14 h-14 rounded-lg bg-[var(--surface-elevated)] shrink-0 overflow-hidden flex items-center justify-center p-1 border border-[var(--border-color)]/60 dark:border-[var(--border-color)]">
                     {item.image ? (
                       <Image
                         src={item.image}
@@ -870,20 +870,20 @@ export default function CustomerOverviewClient({
                         className="object-contain p-1"
                       />
                     ) : (
-                      <Package className="w-6 h-6 text-gray-400" />
+                      <Package className="w-6 h-6 text-[var(--foreground-muted)]" />
                     )}
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs font-bold text-gray-800 dark:text-gray-200 truncate">
+                    <p className="text-xs font-bold text-[var(--foreground)] truncate">
                       {item.title}
                     </p>
                     <div className="flex items-center gap-1.5 mt-0.5">
-                      <span className="text-xs font-extrabold text-gray-900 dark:text-white">
+                      <span className="text-xs font-extrabold text-[var(--foreground)]">
                         ${item.price.toFixed(2)}
                       </span>
                       {item.originalPrice && item.originalPrice > item.price && (
-                        <span className="text-[10px] text-gray-400 line-through">
+                        <span className="text-[10px] text-[var(--foreground-muted)] line-through">
                           ${item.originalPrice.toFixed(2)}
                         </span>
                       )}
@@ -910,7 +910,7 @@ export default function CustomerOverviewClient({
               <div className="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                 <CreditCard className="w-4 h-4" />
               </div>
-              <h3 className="text-base font-bold text-gray-900 dark:text-white">
+              <h3 className="text-base font-bold text-[var(--foreground)]">
                 Recent Settlements
               </h3>
             </div>
@@ -926,17 +926,17 @@ export default function CustomerOverviewClient({
             {recentTransactions.slice(0, 3).map((tx) => (
               <div
                 key={tx.id}
-                className="flex items-center justify-between p-2.5 rounded-xl bg-slate-50/70 dark:bg-gray-800/40 border border-slate-100 dark:border-gray-800"
+                className="flex items-center justify-between p-2.5 rounded-xl bg-[var(--surface-alt)]/70 dark:bg-[var(--surface-alt)]/40 border border-[var(--border-color)]"
               >
                 <div>
-                  <p className="text-xs font-bold text-gray-800 dark:text-gray-200 font-mono">
+                  <p className="text-xs font-bold text-[var(--foreground)] font-mono">
                     {tx.orderNumber}
                   </p>
-                  <p className="text-[10px] text-gray-400">{tx.paymentMethod} • {tx.date}</p>
+                  <p className="text-[10px] text-[var(--foreground-muted)]">{tx.paymentMethod} • {tx.date}</p>
                 </div>
 
                 <div className="text-right">
-                  <p className="text-xs font-black text-gray-900 dark:text-white">
+                  <p className="text-xs font-black text-[var(--foreground)]">
                     ${tx.amount.toFixed(2)}
                   </p>
                   <span className="inline-flex items-center text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
@@ -946,12 +946,12 @@ export default function CustomerOverviewClient({
               </div>
             ))}
             {recentTransactions.length === 0 && (
-              <p className="text-xs text-gray-400 text-center py-4">No transactions recorded</p>
+              <p className="text-xs text-[var(--foreground-muted)] text-center py-4">No transactions recorded</p>
             )}
           </div>
 
-          <div className="pt-3 border-t border-slate-100 dark:border-gray-800 flex items-center justify-between text-xs">
-            <span className="text-gray-400">Lifetime Checkout Total</span>
+          <div className="pt-3 border-t border-[var(--border-color)] flex items-center justify-between text-xs">
+            <span className="text-[var(--foreground-muted)]">Lifetime Checkout Total</span>
             <span className="font-extrabold text-primary">${totalSpentAll.toFixed(2)}</span>
           </div>
         </Card>
@@ -960,23 +960,23 @@ export default function CustomerOverviewClient({
       {/* ── Interactive Order Tracking Modal ── */}
       {selectedOrderForTracking && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-[var(--surface)] border border-slate-200 dark:border-gray-800 rounded-3xl p-6 max-w-lg w-full shadow-2xl space-y-6">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-gray-800">
+          <div className="bg-[var(--surface)] border border-[var(--border-color)] rounded-3xl p-6 max-w-lg w-full shadow-2xl space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b border-[var(--border-color)]">
               <div>
                 <div className="flex items-center gap-2">
                   <Truck className="w-5 h-5 text-primary" />
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                  <h3 className="text-lg font-bold text-[var(--foreground)]">
                     Tracking {selectedOrderForTracking.orderNumber}
                   </h3>
                 </div>
-                <p className="text-xs text-gray-400 mt-0.5">
+                <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
                   Placed on {selectedOrderForTracking.date} • Total ${selectedOrderForTracking.total.toFixed(2)}
                 </p>
               </div>
 
               <button
                 onClick={() => setSelectedOrderForTracking(null)}
-                className="w-8 h-8 rounded-full bg-slate-100 dark:bg-gray-800 hover:bg-slate-200 text-gray-600 dark:text-gray-300 font-bold flex items-center justify-center cursor-pointer"
+                className="w-8 h-8 rounded-full bg-[var(--surface-alt)] hover:bg-[var(--surface-alt)] text-[var(--foreground-muted)] font-bold flex items-center justify-center cursor-pointer"
               >
                 ✕
               </button>
@@ -992,19 +992,19 @@ export default function CustomerOverviewClient({
                         ? "bg-primary border-primary text-white"
                         : step.current
                         ? "bg-[var(--surface)] border-primary animate-pulse"
-                        : "bg-[var(--surface)] border-gray-300 dark:border-gray-700"
+                        : "bg-[var(--surface)] border-[var(--border-color)]"
                     }`}
                   />
                   <div>
                     <div className="flex items-center justify-between">
-                      <h5 className="text-xs font-bold text-gray-900 dark:text-white">
+                      <h5 className="text-xs font-bold text-[var(--foreground)]">
                         {step.title}
                       </h5>
                       {step.date && (
-                        <span className="text-[10px] text-gray-400 font-semibold">{step.date}</span>
+                        <span className="text-[10px] text-[var(--foreground-muted)] font-semibold">{step.date}</span>
                       )}
                     </div>
-                    <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
+                    <p className="text-[11px] text-[var(--foreground-muted)] mt-0.5">
                       {step.description}
                     </p>
                   </div>
@@ -1012,9 +1012,9 @@ export default function CustomerOverviewClient({
               ))}
             </div>
 
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-gray-800/50 text-xs text-gray-600 dark:text-gray-300 space-y-1">
-              <p className="font-semibold text-gray-800 dark:text-gray-200">Delivery Address:</p>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400">{selectedOrderForTracking.shippingAddress}</p>
+            <div className="p-3 rounded-xl bg-[var(--surface-alt)] text-xs text-[var(--foreground-muted)] space-y-1">
+              <p className="font-semibold text-[var(--foreground)]">Delivery Address:</p>
+              <p className="text-[11px] text-[var(--foreground-muted)]">{selectedOrderForTracking.shippingAddress}</p>
             </div>
 
             <Button

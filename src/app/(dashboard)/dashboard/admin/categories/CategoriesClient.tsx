@@ -317,18 +317,18 @@ export default function CategoriesClient({
         <div className="flex flex-wrap items-center gap-3">
           {/* Search bar */}
           <div className="relative min-w-[260px] sm:w-80">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10" />
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)] z-10" />
             <Input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search category or subcategory..."
-              className="w-full pl-9 pr-4 h-10 bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-xl text-xs"
+              className="w-full pl-9 pr-4 h-10 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl text-xs"
             />
           </div>
 
           {/* Status filter buttons */}
-          <div className="flex items-center gap-1 p-1 rounded-xl bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800">
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)]">
             {(["all", "active", "inactive"] as const).map((st) => (
               <button
                 key={st}
@@ -336,7 +336,7 @@ export default function CategoriesClient({
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all cursor-pointer ${
                   statusFilter === st
                     ? "bg-primary text-white shadow-xs"
-                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                    : "text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] hover:text-[var(--foreground)] dark:hover:text-[var(--foreground)]"
                 }`}
               >
                 {st}
@@ -348,13 +348,13 @@ export default function CategoriesClient({
         <div className="flex items-center gap-2 text-xs">
           <button
             onClick={expandAll}
-            className="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-gray-800 font-semibold transition-colors cursor-pointer"
+            className="px-3 py-1.5 rounded-lg border border-[var(--border-color)] bg-[var(--surface-elevated)] text-[var(--foreground)] hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--surface)] font-semibold transition-colors cursor-pointer"
           >
             Expand All
           </button>
           <button
             onClick={collapseAll}
-            className="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-gray-800 font-semibold transition-colors cursor-pointer"
+            className="px-3 py-1.5 rounded-lg border border-[var(--border-color)] bg-[var(--surface-elevated)] text-[var(--foreground)] hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--surface)] font-semibold transition-colors cursor-pointer"
           >
             Collapse All
           </button>
@@ -363,15 +363,15 @@ export default function CategoriesClient({
 
       {/* ── Categories & Subcategories Nested Table / Tree ── */}
       {filteredCategories.length === 0 ? (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center space-y-4 shadow-sm">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-12 text-center space-y-4 shadow-sm">
           <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
             <FolderTree className="w-8 h-8" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-base font-bold text-gray-900 dark:text-white">
+            <h3 className="text-base font-bold text-[var(--foreground)]">
               No categories found
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-[var(--foreground-muted)]">
               {searchQuery
                 ? "Try adjusting your search query or status filter."
                 : "Get started by adding your first product category."}
@@ -386,11 +386,11 @@ export default function CategoriesClient({
           </Link>
         </Card>
       ) : (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl overflow-hidden shadow-xs p-0">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl overflow-hidden shadow-xs p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-100 dark:border-gray-800 bg-slate-50/80 dark:bg-gray-800/40 text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                <tr className="border-b border-[var(--border-color)] bg-[var(--surface-alt)]/80 dark:bg-[var(--surface-alt)]/40 text-[11px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
                   <th className="py-3.5 px-4 w-12 text-center">Tree</th>
                   <th className="py-3.5 px-4">Category / Subcategory</th>
                   <th className="py-3.5 px-4">Slug</th>
@@ -399,7 +399,7 @@ export default function CategoriesClient({
                   <th className="py-3.5 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-gray-800/60 text-xs">
+              <tbody className="divide-y divide-[var(--border-color)]/60 text-xs">
                 {filteredCategories.map((category) => {
                   const catId = (category._id || category.id || category.slug) as string;
                   const childSubs = subCategoryMap.get(String(catId)) || [];
@@ -410,30 +410,30 @@ export default function CategoriesClient({
                   return (
                     <React.Fragment key={catId}>
                       {/* ── Category Row ── */}
-                      <tr className="hover:bg-slate-50/70 dark:hover:bg-gray-800/30 transition-colors group bg-white dark:bg-gray-900">
+                      <tr className="hover:bg-[var(--surface-alt)]/70 dark:hover:bg-[var(--surface)]/30 transition-colors group bg-[var(--surface-elevated)]">
                         {/* Expand toggle icon */}
                         <td className="py-3.5 px-4 text-center">
                           {hasSubs ? (
                             <button
                               onClick={() => toggleExpand(catId)}
-                              className="p-1 rounded-lg hover:bg-slate-200 dark:hover:bg-gray-700 text-gray-500 transition-colors cursor-pointer"
+                              className="p-1 rounded-lg hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--foreground-muted)] text-[var(--foreground-muted)] transition-colors cursor-pointer"
                               title={isExpanded ? "Collapse" : "Expand"}
                             >
                               {isExpanded ? (
                                 <ChevronDown className="w-4 h-4 text-primary" />
                               ) : (
-                                <ChevronRight className="w-4 h-4 text-gray-400" />
+                                <ChevronRight className="w-4 h-4 text-[var(--foreground-muted)]" />
                               )}
                             </button>
                           ) : (
-                            <span className="inline-block w-4 h-4 text-gray-300 text-center">•</span>
+                            <span className="inline-block w-4 h-4 text-[var(--foreground-muted)] text-center">•</span>
                           )}
                         </td>
 
                         {/* Name & Thumbnail */}
                         <td className="py-3.5 px-4">
                           <div className="flex items-center gap-3">
-                            <div className="relative w-10 h-10 rounded-xl bg-slate-100 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 flex items-center justify-center shrink-0 overflow-hidden">
+                            <div className="relative w-10 h-10 rounded-xl bg-[var(--surface-alt)] border border-[var(--border-color)] flex items-center justify-center shrink-0 overflow-hidden">
                               {imgUrl ? (
                                 <Image
                                   src={imgUrl}
@@ -449,16 +449,16 @@ export default function CategoriesClient({
                             </div>
                             <div className="min-w-0">
                               <div className="flex items-center gap-2">
-                                <span className="font-bold text-gray-900 dark:text-white text-sm">
+                                <span className="font-bold text-[var(--foreground)] text-sm">
                                   {category.name}
                                 </span>
                                 {hasSubs && (
-                                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-sky-200/60 dark:border-sky-800/40">
+                                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[var(--brand-flat)]/10 text-[var(--brand-flat)] border border-[var(--brand-flat)]/25">
                                     {childSubs.length} subcategories
                                   </span>
                                 )}
                               </div>
-                              <span className="text-[11px] text-gray-400 font-medium">
+                              <span className="text-[11px] text-[var(--foreground-muted)] font-medium">
                                 Primary Category
                               </span>
                             </div>
@@ -466,13 +466,13 @@ export default function CategoriesClient({
                         </td>
 
                         {/* Slug */}
-                        <td className="py-3.5 px-4 font-mono text-[11px] text-gray-600 dark:text-gray-400">
+                        <td className="py-3.5 px-4 font-mono text-[11px] text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)]">
                           /{category.slug}
                         </td>
 
                         {/* Description */}
-                        <td className="py-3.5 px-4 max-w-xs text-gray-500 dark:text-gray-400 truncate">
-                          {category.description || <span className="italic text-gray-400">No description</span>}
+                        <td className="py-3.5 px-4 max-w-xs text-[var(--foreground-muted)] truncate">
+                          {category.description || <span className="italic text-[var(--foreground-muted)]">No description</span>}
                         </td>
 
                         {/* Status */}
@@ -495,7 +495,7 @@ export default function CategoriesClient({
                           <div className="inline-flex items-center gap-1.5">
                             <button
                               onClick={() => handleOpenEditCategory(category)}
-                              className="p-1.5 rounded-lg text-sky-600 hover:bg-primary/10 dark:hover:bg-sky-950/40 transition-colors cursor-pointer"
+                              className="p-1.5 rounded-lg text-primary hover:bg-primary/10 dark:hover:bg-[var(--accent)]/10 transition-colors cursor-pointer"
                               title="Edit Category"
                             >
                               <Edit2 className="w-4 h-4" />
@@ -521,11 +521,11 @@ export default function CategoriesClient({
                           return (
                             <tr
                               key={subId}
-                              className="bg-slate-50/50 dark:bg-gray-800/20 hover:bg-slate-100/60 dark:hover:bg-gray-800/50 transition-colors"
+                              className="bg-[var(--surface-alt)]/50 dark:bg-[var(--surface)]/20 hover:bg-[var(--surface-alt)]/60 dark:hover:bg-[var(--surface)]/50 transition-colors"
                             >
                               {/* Subcategory connector line */}
                               <td className="py-3 px-4 text-center">
-                                <span className="text-gray-300 dark:text-gray-600 font-mono">
+                                <span className="text-[var(--foreground-muted)] font-mono">
                                   {isLast ? "└" : "├"}
                                 </span>
                               </td>
@@ -533,7 +533,7 @@ export default function CategoriesClient({
                               {/* Subcategory Name & Thumbnail */}
                               <td className="py-3 px-4">
                                 <div className="flex items-center gap-3 pl-4">
-                                  <div className="relative w-8 h-8 rounded-lg bg-white dark:bg-gray-800 border border-slate-200 dark:border-gray-700 flex items-center justify-center shrink-0 overflow-hidden shadow-2xs">
+                                  <div className="relative w-8 h-8 rounded-lg bg-[var(--surface-elevated)] border border-[var(--border-color)] flex items-center justify-center shrink-0 overflow-hidden shadow-2xs">
                                     {subImgUrl ? (
                                       <Image
                                         src={subImgUrl}
@@ -544,14 +544,14 @@ export default function CategoriesClient({
                                         unoptimized
                                       />
                                     ) : (
-                                      <Layers className="w-4 h-4 text-blue-500" />
+                                      <Layers className="w-4 h-4 text-[var(--accent)]" />
                                     )}
                                   </div>
                                   <div className="min-w-0">
-                                    <span className="font-semibold text-gray-800 dark:text-gray-200">
+                                    <span className="font-semibold text-[var(--foreground)]">
                                       {sub.name}
                                     </span>
-                                    <p className="text-[10px] text-gray-400">
+                                    <p className="text-[10px] text-[var(--foreground-muted)]">
                                       under {category.name}
                                     </p>
                                   </div>
@@ -559,14 +559,14 @@ export default function CategoriesClient({
                               </td>
 
                               {/* Slug */}
-                              <td className="py-3 px-4 font-mono text-[11px] text-gray-500 dark:text-gray-400">
+                              <td className="py-3 px-4 font-mono text-[11px] text-[var(--foreground-muted)]">
                                 /{sub.slug}
                               </td>
 
                               {/* Description */}
-                              <td className="py-3 px-4 max-w-xs text-gray-500 dark:text-gray-400 truncate">
+                              <td className="py-3 px-4 max-w-xs text-[var(--foreground-muted)] truncate">
                                 {sub.description || (
-                                  <span className="italic text-gray-400">No description</span>
+                                  <span className="italic text-[var(--foreground-muted)]">No description</span>
                                 )}
                               </td>
 
@@ -588,7 +588,7 @@ export default function CategoriesClient({
                                 <div className="inline-flex items-center gap-1.5">
                                   <button
                                     onClick={() => handleOpenEditSubCategory(sub)}
-                                    className="p-1.5 rounded-lg text-sky-600 hover:bg-primary/10 dark:hover:bg-sky-950/40 transition-colors cursor-pointer"
+                                    className="p-1.5 rounded-lg text-primary hover:bg-primary/10 dark:hover:bg-[var(--accent)]/10 transition-colors cursor-pointer"
                                     title="Edit Subcategory"
                                   >
                                     <Edit2 className="w-3.5 h-3.5" />
@@ -636,7 +636,7 @@ export default function CategoriesClient({
                   {/* For subcategory: parent category select */}
                   {editTargetType === "subcategory" && editingSubCategory && (
                     <div className="flex flex-col gap-1">
-                      <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                      <label className="text-xs font-semibold text-[var(--foreground)]">
                         Parent Category <span className="text-rose-500">*</span>
                       </label>
                       <Select
@@ -672,7 +672,7 @@ export default function CategoriesClient({
                   {/* Name + Slug */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1">
-                      <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                      <label className="text-xs font-semibold text-[var(--foreground)]">
                         Name <span className="text-rose-500">*</span>
                       </label>
                       <Input
@@ -698,7 +698,7 @@ export default function CategoriesClient({
                     </div>
 
                     <div className="flex flex-col gap-1">
-                      <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                      <label className="text-xs font-semibold text-[var(--foreground)]">
                         Slug <span className="text-rose-500">*</span>
                       </label>
                       <Input
@@ -722,7 +722,7 @@ export default function CategoriesClient({
 
                   {/* Description */}
                   <div className="flex flex-col gap-1">
-                    <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                    <label className="text-xs font-semibold text-[var(--foreground)]">
                       Description
                     </label>
                     <TextArea
@@ -766,12 +766,12 @@ export default function CategoriesClient({
                   />
 
                   {/* Visibility Switch */}
-                  <div className="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-gray-800/40 rounded-xl border border-slate-200/60 dark:border-gray-800">
+                  <div className="flex items-center justify-between p-3.5 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)]/60">
                     <div>
-                      <p className="text-xs font-bold text-gray-800 dark:text-gray-200">
+                      <p className="text-xs font-bold text-[var(--foreground)]">
                         Visibility Status
                       </p>
-                      <p className="text-[10px] text-gray-400">
+                      <p className="text-[10px] text-[var(--foreground-muted)]">
                         Enable to show on storefront navigation
                       </p>
                     </div>
@@ -812,7 +812,7 @@ export default function CategoriesClient({
                   type="submit"
                   form="edit-cat-form"
                   isDisabled={isUpdating}
-                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white text-xs font-bold shadow-md shadow-primary/25 cursor-pointer hover:opacity-95 transition-all"
+                  className="px-5 py-2 rounded-xl bg-brand-gradient text-[var(--on-grad-text)] text-xs font-bold shadow-xs cursor-pointer hover:opacity-95 transition-all"
                 >
                   <Check className="w-4 h-4" />
                   {isUpdating ? "Saving..." : "Save Changes"}

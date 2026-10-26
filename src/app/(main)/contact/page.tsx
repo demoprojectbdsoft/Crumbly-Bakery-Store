@@ -15,20 +15,20 @@ export default function ContactPage() {
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8 md:py-12 space-y-10">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-xs text-gray-500">
+      <nav className="flex items-center gap-2 text-xs text-[var(--foreground-muted)]">
         <Link href="/" className="hover:text-primary transition-colors">
           Home
         </Link>
         <span>/</span>
-        <span className="text-gray-900 dark:text-gray-100 font-semibold">Contact Us</span>
+        <span className="text-[var(--foreground)] dark:text-[var(--foreground)] font-semibold">Contact Us</span>
       </nav>
 
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto space-y-3">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-[var(--foreground)] tracking-tight">
           We&apos;d Love to Hear From You
         </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-sm text-[var(--foreground-muted)] dark:text-[var(--foreground-muted)]">
           Have a question about a product, order status, or warranty? Reach out to our team.
         </p>
       </div>

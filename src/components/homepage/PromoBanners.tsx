@@ -38,13 +38,13 @@ export default function PromoBanners({ banners = [] }: PromoBannersProps) {
 
             {/* Right Side: Text, Price & CTA */}
             <div className="w-1/2 pl-4 space-y-2.5">
-              <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+              <p className="text-xs font-semibold text-[var(--foreground-muted)] dark:text-[var(--foreground-muted)] uppercase tracking-wide">
                 {banner.subtitle}
               </p>
               
-              <h3 className="text-lg md:text-xl font-light text-gray-800 dark:text-gray-100 uppercase leading-snug">
+              <h3 className="text-lg md:text-xl font-light text-[var(--foreground)] dark:text-[var(--foreground)] uppercase leading-snug">
                 {banner.highlightText && (
-                  <span className="font-bold text-gray-900 dark:text-white">
+                  <span className="font-bold text-[var(--foreground)]">
                     {banner.highlightText}{" "}
                   </span>
                 )}
@@ -55,11 +55,11 @@ export default function PromoBanners({ banners = [] }: PromoBannersProps) {
               {(banner.priceDollars || banner.price) && (
                 <div className="pt-1 flex items-baseline gap-1">
                   {banner.pricePrefix && (
-                    <span className="text-[10px] font-semibold text-gray-400 uppercase">
+                    <span className="text-[10px] font-semibold text-[var(--foreground-muted)] uppercase">
                       {banner.pricePrefix}
                     </span>
                   )}
-                  <span className="text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+                  <span className="text-2xl font-extrabold text-[var(--foreground)] tracking-tight">
                     ${banner.priceDollars || banner.price}
                     {banner.priceCents && (
                       <span className="text-xs align-top font-bold">

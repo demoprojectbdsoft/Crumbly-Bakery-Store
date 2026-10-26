@@ -35,7 +35,7 @@ export default function NewsletterBanner({
         {/* Left Side: Paper Plane Icon + Text Content */}
         <div className="flex items-center gap-2.5 sm:gap-3 w-full lg:w-auto text-left">
           {/* Paper Plane Icon */}
-          <div className="p-1.5 sm:p-2 rounded-full bg-white/15 backdrop-blur-xs text-white shrink-0">
+          <div className="p-1.5 sm:p-2 rounded-full bg-[var(--surface-elevated)]/15 backdrop-blur-xs text-white shrink-0">
             <Send className="w-4 h-4 sm:w-5 sm:h-5 -rotate-12 stroke-[2]" />
           </div>
 
@@ -45,7 +45,7 @@ export default function NewsletterBanner({
             </span>
             <span className="text-white/85 text-[11px] sm:text-xs md:text-sm font-normal">
               ...and receive{" "}
-              <strong className="font-bold text-white bg-white/20 px-1.5 py-0.5 rounded text-[10px] sm:text-xs inline-block">
+              <strong className="font-bold text-white bg-[var(--surface-elevated)]/20 px-1.5 py-0.5 rounded text-[10px] sm:text-xs inline-block">
                 {couponAmount} coupon
               </strong>{" "}
               for your first order
@@ -56,7 +56,7 @@ export default function NewsletterBanner({
         {/* Right Side: Email Input Form */}
         <div className="w-full lg:w-auto min-w-[260px] sm:min-w-[360px] md:min-w-[440px]">
           {isSubmitted ? (
-            <div className="bg-white/20 backdrop-blur-md text-white text-xs sm:text-sm font-medium py-2 px-5 rounded-full text-center border border-white/30 shadow-xs">
+            <div className="bg-[var(--surface-elevated)]/20 backdrop-blur-md text-white text-xs sm:text-sm font-medium py-2 px-5 rounded-full text-center border border-white/30 shadow-xs">
               Thank you for subscribing!
             </div>
           ) : (
@@ -75,7 +75,7 @@ export default function NewsletterBanner({
               </input>
               <button
                 type="submit"
-                className="bg-gray-900 hover:bg-black dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100 text-white text-xs sm:text-sm font-semibold px-4 sm:px-7 py-2 sm:py-2.5 rounded-full transition-colors shrink-0 cursor-pointer shadow-xs"
+                className="bg-primary hover:bg-primary-hover text-[var(--on-grad-text)] text-xs sm:text-sm font-semibold px-4 sm:px-7 py-2 sm:py-2.5 rounded-full transition-colors shrink-0 cursor-pointer shadow-xs"
               >
                 SignUp
               </button>

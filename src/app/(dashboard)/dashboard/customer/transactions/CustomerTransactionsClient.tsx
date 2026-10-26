@@ -199,14 +199,14 @@ export default function CustomerTransactionsClient({
       {/* ── Real Dynamic Financial Summary Cards ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {/* Total Paid */}
-        <div className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-5 shadow-xs space-y-2">
+        <div className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-5 shadow-xs space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+            <span className="text-xs font-semibold text-[var(--foreground-muted)]">
               Total Paid (Settled)
             </span>
             <CheckCircle2 className="w-4 h-4 text-emerald-500" />
           </div>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">
+          <p className="text-2xl font-bold text-[var(--foreground)]">
             ${totalPaid.toFixed(2)}
           </p>
           <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">
@@ -215,14 +215,14 @@ export default function CustomerTransactionsClient({
         </div>
 
         {/* Pending Settlements */}
-        <div className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-5 shadow-xs space-y-2">
+        <div className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-5 shadow-xs space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+            <span className="text-xs font-semibold text-[var(--foreground-muted)]">
               Pending / COD
             </span>
             <Clock className="w-4 h-4 text-amber-500" />
           </div>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">
+          <p className="text-2xl font-bold text-[var(--foreground)]">
             ${pendingTotal.toFixed(2)}
           </p>
           <p className="text-[11px] text-amber-600 dark:text-amber-400 font-semibold">
@@ -341,13 +341,13 @@ export default function CustomerTransactionsClient({
       )}
 
       {/* ── Transaction Table & HeroUI v3 Toolbar ── */}
-      <div className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-6 shadow-xs space-y-5">
+      <div className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-6 shadow-xs space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h3 className="text-base font-bold text-gray-900 dark:text-white">
+            <h3 className="text-base font-bold text-[var(--foreground)]">
               Transaction History
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-[var(--foreground-muted)]">
               Receipts and invoices from your store purchases
             </p>
           </div>
@@ -438,10 +438,10 @@ export default function CustomerTransactionsClient({
         </div>
 
         {hasActiveFilters && (
-          <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+          <div className="flex items-center justify-between text-xs text-[var(--foreground-muted)]">
             <span>
               Showing{" "}
-              <strong className="text-gray-900 dark:text-white font-bold">
+              <strong className="text-[var(--foreground)] font-bold">
                 {filteredTransactions.length}
               </strong>{" "}
               of {transactions.length} transactions
@@ -459,13 +459,13 @@ export default function CustomerTransactionsClient({
 
         {filteredTransactions.length === 0 ? (
           <div className="py-12 text-center space-y-3">
-            <div className="w-12 h-12 mx-auto rounded-2xl bg-slate-100 dark:bg-gray-800 flex items-center justify-center text-gray-400">
+            <div className="w-12 h-12 mx-auto rounded-2xl bg-[var(--surface-alt)] flex items-center justify-center text-[var(--foreground-muted)]">
               <Receipt className="w-6 h-6" />
             </div>
-            <p className="text-sm font-bold text-gray-900 dark:text-white">
+            <p className="text-sm font-bold text-[var(--foreground)]">
               No transactions found
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 max-w-sm mx-auto">
+            <p className="text-xs text-[var(--foreground-muted)] max-w-sm mx-auto">
               {searchQuery || statusFilter !== "all"
                 ? "No transactions matched your search or filter."
                 : "Your transaction history will be displayed here once you complete orders."}
@@ -475,7 +475,7 @@ export default function CustomerTransactionsClient({
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-slate-100 dark:border-gray-800 text-gray-400 dark:text-gray-500 uppercase tracking-wider font-semibold">
+                <tr className="border-b border-[var(--border-color)] text-[var(--foreground-muted)] uppercase tracking-wider font-semibold">
                   <th className="pb-3 pl-2">Invoice / Ref</th>
                   <th className="pb-3">Order Number</th>
                   <th className="pb-3">Date</th>
@@ -486,24 +486,24 @@ export default function CustomerTransactionsClient({
                   <th className="pb-3 pr-2 text-right">Receipt</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-gray-800">
+              <tbody className="divide-y divide-[var(--border-color)]">
                 {filteredTransactions.map((tx) => (
                   <tr
                     key={tx.id}
-                    className="hover:bg-slate-50/60 dark:hover:bg-gray-800/40 transition-colors"
+                    className="hover:bg-[var(--surface-alt)]/60 dark:hover:bg-[var(--surface-alt)]/40 transition-colors"
                   >
-                    <td className="py-3.5 pl-2 font-mono font-bold text-gray-900 dark:text-white">
+                    <td className="py-3.5 pl-2 font-mono font-bold text-[var(--foreground)]">
                       {tx.invoiceNumber}
                     </td>
-                    <td className="py-3.5 font-semibold text-gray-700 dark:text-gray-300">
+                    <td className="py-3.5 font-semibold text-[var(--foreground)]">
                       {tx.orderNumber}
                     </td>
-                    <td className="py-3.5 text-gray-500 dark:text-gray-400">
+                    <td className="py-3.5 text-[var(--foreground-muted)]">
                       {tx.date}
                     </td>
                     <td className="py-3.5">
-                      <span className="inline-flex items-center gap-1.5 font-medium text-gray-800 dark:text-gray-200">
-                        <CreditCard className="w-3.5 h-3.5 text-gray-400" />
+                      <span className="inline-flex items-center gap-1.5 font-medium text-[var(--foreground)]">
+                        <CreditCard className="w-3.5 h-3.5 text-[var(--foreground-muted)]" />
                         {tx.paymentMethod}
                       </span>
                     </td>
@@ -512,7 +512,7 @@ export default function CustomerTransactionsClient({
                         {tx.type}
                       </span>
                     </td>
-                    <td className="py-3.5 font-bold text-gray-900 dark:text-white">
+                    <td className="py-3.5 font-bold text-[var(--foreground)]">
                       ${tx.amount.toFixed(2)}
                     </td>
                     <td className="py-3.5">
@@ -531,7 +531,7 @@ export default function CustomerTransactionsClient({
                     <td className="py-3.5 pr-2 text-right">
                       <button
                         onClick={() => handleDownloadInvoice(tx.invoiceNumber)}
-                        className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-gray-700 hover:bg-slate-100 dark:hover:bg-gray-800 text-[11px] font-semibold text-gray-700 dark:text-gray-300 transition-colors cursor-pointer"
+                        className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-[var(--border-color)] hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--surface-alt)] text-[11px] font-semibold text-[var(--foreground)] transition-colors cursor-pointer"
                       >
                         <Download className="w-3.5 h-3.5" />
                         <span>PDF</span>
@@ -547,15 +547,15 @@ export default function CustomerTransactionsClient({
 
       {/* ── Add Card Modal ── */}
       {isAddCardOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-950/60 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-5">
-            <div className="flex items-center justify-between border-b border-slate-100 dark:border-gray-800 pb-3">
-              <h3 className="text-base font-bold text-gray-900 dark:text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--surface)]/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="bg-[var(--surface-elevated)] border border-[var(--border-color)] dark:border-[var(--border-color)] rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-5">
+            <div className="flex items-center justify-between border-b border-[var(--border-color)] pb-3">
+              <h3 className="text-base font-bold text-[var(--foreground)]">
                 Add Payment Method
               </h3>
               <button
                 onClick={() => setIsAddCardOpen(false)}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-sm font-bold"
+                className="text-[var(--foreground-muted)] hover:text-[var(--foreground-secondary)] dark:hover:text-[var(--foreground)] text-sm font-bold"
               >
                 ✕
               </button>
@@ -563,7 +563,7 @@ export default function CustomerTransactionsClient({
 
             <form onSubmit={handleAddCardSubmit} className="space-y-4 text-xs">
               <div className="space-y-1">
-                <label className="font-semibold text-gray-700 dark:text-gray-300">
+                <label className="font-semibold text-[var(--foreground)]">
                   Cardholder Name
                 </label>
                 <input
@@ -572,12 +572,12 @@ export default function CustomerTransactionsClient({
                   placeholder="e.g. John Doe"
                   value={cardHolder}
                   onChange={(e) => setCardHolder(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-primary focus:outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] dark:bg-[var(--surface-alt)] focus:border-primary focus:outline-none"
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="font-semibold text-gray-700 dark:text-gray-300">
+                <label className="font-semibold text-[var(--foreground)]">
                   Card Number
                 </label>
                 <div className="relative">
@@ -588,15 +588,15 @@ export default function CustomerTransactionsClient({
                     placeholder="4242 •••• •••• 4242"
                     value={cardNumber}
                     onChange={(e) => setCardNumber(e.target.value)}
-                    className="w-full px-3.5 py-2.5 pl-9 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-primary focus:outline-none"
+                    className="w-full px-3.5 py-2.5 pl-9 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] dark:bg-[var(--surface-alt)] focus:border-primary focus:outline-none"
                   />
-                  <CreditCard className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <CreditCard className="w-4 h-4 text-[var(--foreground-muted)] absolute left-3 top-1/2 -translate-y-1/2" />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="font-semibold text-gray-700 dark:text-gray-300">
+                  <label className="font-semibold text-[var(--foreground)]">
                     Expiry (MM/YY)
                   </label>
                   <input
@@ -606,11 +606,11 @@ export default function CustomerTransactionsClient({
                     maxLength={5}
                     value={cardExp}
                     onChange={(e) => setCardExp(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-primary focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] dark:bg-[var(--surface-alt)] focus:border-primary focus:outline-none"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="font-semibold text-gray-700 dark:text-gray-300">
+                  <label className="font-semibold text-[var(--foreground)]">
                     CVC / CVV
                   </label>
                   <input
@@ -620,7 +620,7 @@ export default function CustomerTransactionsClient({
                     maxLength={4}
                     value={cardCvv}
                     onChange={(e) => setCardCvv(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 focus:border-primary focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] dark:bg-[var(--surface-alt)] focus:border-primary focus:outline-none"
                   />
                 </div>
               </div>

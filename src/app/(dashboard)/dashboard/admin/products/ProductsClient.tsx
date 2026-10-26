@@ -446,16 +446,16 @@ export default function ProductsClient({
                     updateParams({ category: key && String(key) !== "all" ? String(key) : undefined })
                   }
                 >
-                  <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+                  <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs font-semibold text-[var(--foreground-secondary)] flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                     <Select.Value className="text-xs font-semibold truncate" />
-                    <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
+                    <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-[var(--foreground-muted)] shrink-0" />
                   </Select.Trigger>
-                  <Select.Popover className="w-52 p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto">
+                  <Select.Popover className="w-52 p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto">
                     <ListBox>
                       <ListBox.Item
                         id="all"
                         textValue="All Categories"
-                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-[var(--surface)] text-[var(--foreground)] cursor-pointer flex items-center justify-between"
                       >
                         All Categories
                         <ListBox.ItemIndicator />
@@ -467,7 +467,7 @@ export default function ProductsClient({
                             key={c._id || c.id || c.name}
                             id={val}
                             textValue={c.name}
-                            className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                            className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-[var(--surface)] text-[var(--foreground)] cursor-pointer flex items-center justify-between"
                           >
                             {c.name}
                             <ListBox.ItemIndicator />
@@ -481,7 +481,7 @@ export default function ProductsClient({
             )}
 
             {/* Stock Filter */}
-            <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-50 dark:bg-gray-800 border border-slate-200/60 dark:border-gray-700">
+            <div className="flex items-center gap-1 p-1 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface)] border border-[var(--border-color)]/60 dark:border-[var(--border-color)]">
               {(
                 [
                   { id: "all", label: "All Stock" },
@@ -495,7 +495,7 @@ export default function ProductsClient({
                   className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all cursor-pointer ${
                     currentStock === st.id
                       ? "bg-primary text-white shadow-xs"
-                      : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                      : "text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] hover:text-[var(--foreground)] dark:hover:text-[var(--foreground)]"
                   }`}
                 >
                   {st.label}
@@ -504,22 +504,22 @@ export default function ProductsClient({
             </div>
           </div>
 
-          <div className="text-xs font-semibold text-gray-500 dark:text-gray-400">
-            Total products: <span className="font-extrabold text-gray-900 dark:text-white">{total}</span>
+          <div className="text-xs font-semibold text-[var(--foreground-muted)]">
+            Total products: <span className="font-extrabold text-[var(--foreground)]">{total}</span>
           </div>
         </div>
 
         {/* Search, Sort & Reset Bar */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-slate-100 dark:border-gray-800">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2 border-t border-[var(--border-color)]">
           <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-md flex items-center gap-2">
             <div className="relative flex-1">
-              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10" />
+              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)] z-10" />
               <Input
                 type="text"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder="Search by title, SKU, or category..."
-                className="w-full pl-9 pr-4 h-10 bg-slate-50 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 rounded-xl text-xs"
+                className="w-full pl-9 pr-4 h-10 bg-[var(--surface-alt)] dark:bg-[var(--surface)] border border-[var(--border-color)] rounded-xl text-xs"
               />
             </div>
             <Button
@@ -539,18 +539,18 @@ export default function ProductsClient({
                 selectedKey={currentSort}
                 onSelectionChange={(key) => updateParams({ sort: key ? String(key) : "newest" })}
               >
-                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs font-semibold text-[var(--foreground-secondary)] flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                   <Select.Value className="text-xs font-semibold truncate" />
-                  <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
+                  <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-[var(--foreground-muted)] shrink-0" />
                 </Select.Trigger>
-                <Select.Popover className="w-52 p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50">
+                <Select.Popover className="w-52 p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50">
                   <ListBox>
                     {SORT_OPTIONS.map((opt) => (
                       <ListBox.Item
                         key={opt.key}
                         id={opt.key}
                         textValue={opt.label}
-                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-[var(--surface)] text-[var(--foreground)] cursor-pointer flex items-center justify-between"
                       >
                         {opt.label}
                         <ListBox.ItemIndicator />
@@ -565,7 +565,7 @@ export default function ProductsClient({
               <Button
                 size="sm"
                 onPress={handleResetFilters}
-                className="h-10 px-3 rounded-xl bg-slate-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-xs font-semibold cursor-pointer flex items-center gap-1"
+                className="h-10 px-3 rounded-xl bg-[var(--surface-alt)] text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] hover:text-[var(--foreground)] dark:hover:text-[var(--foreground)] text-xs font-semibold cursor-pointer flex items-center gap-1"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Reset</span>
@@ -577,20 +577,20 @@ export default function ProductsClient({
 
       {/* ── Products Table ── */}
       {isPending ? (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center shadow-xs">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-12 text-center shadow-xs">
           <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-xs font-semibold text-gray-500">Loading products...</p>
+          <p className="text-xs font-semibold text-[var(--foreground-muted)]">Loading products...</p>
         </Card>
       ) : products.length === 0 ? (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center space-y-4 shadow-sm">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-12 text-center space-y-4 shadow-sm">
           <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
             <Package className="w-8 h-8" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-base font-bold text-gray-900 dark:text-white">
+            <h3 className="text-base font-bold text-[var(--foreground)]">
               No products found
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-[var(--foreground-muted)]">
               {currentSearch
                 ? "No products matched your search keyword or filters."
                 : "Your store does not have any products yet."}
@@ -605,11 +605,11 @@ export default function ProductsClient({
           </Link>
         </Card>
       ) : (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl overflow-hidden shadow-xs p-0">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl overflow-hidden shadow-xs p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-100 dark:border-gray-800 bg-slate-50/80 dark:bg-gray-800/40 text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                <tr className="border-b border-[var(--border-color)] bg-[var(--surface-alt)]/80 dark:bg-[var(--surface-alt)]/40 text-[11px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
                   <th className="py-3.5 px-4">Product</th>
                   <th className="py-3.5 px-4">Category</th>
                   <th className="py-3.5 px-4">Price</th>
@@ -620,7 +620,7 @@ export default function ProductsClient({
                   <th className="py-3.5 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-gray-800/60 text-xs">
+              <tbody className="divide-y divide-[var(--border-color)]/60 text-xs">
                 {products.map((product) => {
                   const id = product.id || (product as any)._id;
                   const catName =
@@ -631,12 +631,12 @@ export default function ProductsClient({
                   return (
                     <tr
                       key={id}
-                      className="hover:bg-slate-50/70 dark:hover:bg-gray-800/30 transition-colors group"
+                      className="hover:bg-[var(--surface-alt)]/70 dark:hover:bg-[var(--surface)]/30 transition-colors group"
                     >
                       {/* Product Media & Title */}
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-3">
-                          <div className="relative w-12 h-12 rounded-xl bg-slate-100 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 flex items-center justify-center shrink-0 overflow-hidden">
+                          <div className="relative w-12 h-12 rounded-xl bg-[var(--surface-alt)] border border-[var(--border-color)] flex items-center justify-center shrink-0 overflow-hidden">
                             {product.image ? (
                               <Image
                                 src={product.image}
@@ -647,19 +647,19 @@ export default function ProductsClient({
                                 unoptimized
                               />
                             ) : (
-                              <Package className="w-5 h-5 text-gray-400" />
+                              <Package className="w-5 h-5 text-[var(--foreground-muted)]" />
                             )}
                           </div>
                           <div className="min-w-0 max-w-xs">
                             <Link
                               href={`/dashboard/admin/products/${product.slug}`}
-                              className="font-bold text-gray-900 dark:text-white text-xs sm:text-sm hover:text-primary dark:hover:text-primary transition-colors line-clamp-1"
+                              className="font-bold text-[var(--foreground)] text-xs sm:text-sm hover:text-primary dark:hover:text-primary transition-colors line-clamp-1"
                             >
                               {product.title}
                             </Link>
                             <div className="flex items-center gap-2 mt-0.5">
                               {product.sku && (
-                                <span className="font-mono text-[10px] text-gray-400 uppercase">
+                                <span className="font-mono text-[10px] text-[var(--foreground-muted)] uppercase">
                                   SKU: {product.sku}
                                 </span>
                               )}
@@ -675,7 +675,7 @@ export default function ProductsClient({
 
                       {/* Category */}
                       <td className="py-3.5 px-4">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-semibold">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--surface-alt)] text-[var(--foreground)] text-xs font-semibold">
                           <Layers className="w-3 h-3 text-primary" />
                           {catName}
                         </span>
@@ -684,11 +684,11 @@ export default function ProductsClient({
                       {/* Price & Profit */}
                       <td className="py-3.5 px-4 whitespace-nowrap">
                         <div className="flex flex-col">
-                          <span className="font-black text-gray-900 dark:text-white text-sm">
+                          <span className="font-black text-[var(--foreground)] text-sm">
                             ${product.price?.toFixed(2)}
                           </span>
                           {product.originalPrice && product.originalPrice > product.price && (
-                            <span className="text-[11px] text-gray-400 line-through">
+                            <span className="text-[11px] text-[var(--foreground-muted)] line-through">
                               ${product.originalPrice?.toFixed(2)}
                             </span>
                           )}
@@ -707,7 +707,7 @@ export default function ProductsClient({
                                 {product.price >= product.investPrice ? "+" : ""}${(product.price - product.investPrice).toFixed(2)} P/L
                               </span>
                               {product.profitMargin != null && (
-                                <span className="text-[9px] text-gray-400 font-medium">
+                                <span className="text-[9px] text-[var(--foreground-muted)] font-medium">
                                   ({product.profitMargin}%)
                                 </span>
                               )}
@@ -718,10 +718,10 @@ export default function ProductsClient({
 
                       {/* Units Sold */}
                       <td className="py-3.5 px-4 text-center whitespace-nowrap">
-                        <span className="font-mono text-xs font-bold text-gray-800 dark:text-gray-200">
+                        <span className="font-mono text-xs font-bold text-[var(--foreground)]">
                           {product.sellCount ?? 0}
                         </span>
-                        <span className="block text-[10px] text-gray-400 font-medium">sold</span>
+                        <span className="block text-[10px] text-[var(--foreground-muted)] font-medium">sold</span>
                       </td>
 
                       {/* Stock Quantity */}
@@ -729,7 +729,7 @@ export default function ProductsClient({
                         <span
                           className={`font-mono text-xs font-bold ${
                             (product.stockQuantity ?? 0) > 10
-                              ? "text-gray-700 dark:text-gray-300"
+                              ? "text-[var(--foreground)]"
                               : (product.stockQuantity ?? 0) > 0
                                 ? "text-amber-600 dark:text-amber-400"
                                 : "text-rose-500"
@@ -737,7 +737,7 @@ export default function ProductsClient({
                         >
                           {product.stockQuantity !== undefined ? product.stockQuantity : "N/A"}
                         </span>
-                        <span className="block text-[10px] text-gray-400">units</span>
+                        <span className="block text-[10px] text-[var(--foreground-muted)]">units</span>
                       </td>
 
                       {/* Status */}
@@ -762,13 +762,13 @@ export default function ProductsClient({
                             product.badges.map((b) => (
                               <span
                                 key={b}
-                                className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-slate-200 dark:border-gray-700 capitalize"
+                                className="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[var(--surface-alt)] text-[var(--foreground-muted)] border border-[var(--border-color)] capitalize"
                               >
                                 {b}
                               </span>
                             ))
                           ) : (
-                            <span className="text-gray-400 text-[11px]">—</span>
+                            <span className="text-[var(--foreground-muted)] text-[11px]">—</span>
                           )}
                         </div>
                       </td>
@@ -778,7 +778,7 @@ export default function ProductsClient({
                         <div className="flex items-center justify-end gap-1">
                           <Link
                             href={`/dashboard/admin/products/${product.slug}`}
-                            className="p-1.5 rounded-lg text-gray-400 hover:text-primary hover:bg-primary/10 transition-colors"
+                            className="p-1.5 rounded-lg text-[var(--foreground-muted)] hover:text-primary hover:bg-primary/10 transition-colors"
                             title="View Product Page"
                           >
                             <Eye className="w-4 h-4" />
@@ -786,7 +786,7 @@ export default function ProductsClient({
                           <button
                             type="button"
                             onClick={() => handleOpenEdit(product)}
-                            className="p-1.5 rounded-lg text-gray-400 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-950/50 transition-colors cursor-pointer bg-transparent"
+                            className="p-1.5 rounded-lg text-[var(--foreground-muted)] hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-950/50 transition-colors cursor-pointer bg-transparent"
                             title="Quick Edit"
                           >
                             <Edit2 className="w-4 h-4" />
@@ -794,7 +794,7 @@ export default function ProductsClient({
                           <button
                             type="button"
                             onClick={() => handleOpenDelete(product)}
-                            className="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 transition-colors cursor-pointer bg-transparent"
+                            className="p-1.5 rounded-lg text-[var(--foreground-muted)] hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 transition-colors cursor-pointer bg-transparent"
                             title="Delete Product"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -810,17 +810,17 @@ export default function ProductsClient({
 
           {/* ── Pagination ── */}
           {totalPages > 1 && (
-            <div className="p-4 border-t border-slate-100 dark:border-gray-800 bg-slate-50/40 dark:bg-gray-900/40">
-              <Pagination className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-500 dark:text-gray-400">
+            <div className="p-4 border-t border-[var(--border-color)] bg-[var(--surface-alt)]/40 dark:bg-[var(--surface-elevated)]/40">
+              <Pagination className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 text-[var(--foreground-muted)]">
                 <Pagination.Summary className="text-xs">
-                  Showing <span className="text-gray-800 dark:text-gray-200 font-bold">{startItem}–{endItem}</span> of{" "}
+                  Showing <span className="text-[var(--foreground)] font-bold">{startItem}–{endItem}</span> of{" "}
                   <span className="text-primary font-bold">{total}</span> products
                 </Pagination.Summary>
 
                 <Pagination.Content className="flex items-center gap-1">
                   <Pagination.Item>
                     <Pagination.Previous
-                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-[var(--surface)] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                       isDisabled={page === 1 || isPending}
                       onPress={() => updateParams({ page: String(page - 1) })}
                     >
@@ -832,7 +832,7 @@ export default function ProductsClient({
                   {getPageNumbers().map((p, i) =>
                     p === "ellipsis" ? (
                       <Pagination.Item key={`ellipsis-${i}`}>
-                        <Pagination.Ellipsis className="px-2 text-gray-400 select-none text-xs" />
+                        <Pagination.Ellipsis className="px-2 text-[var(--foreground-muted)] select-none text-xs" />
                       </Pagination.Item>
                     ) : (
                       <Pagination.Item key={p}>
@@ -842,8 +842,8 @@ export default function ProductsClient({
                           onPress={() => updateParams({ page: String(p) })}
                           className={`w-8 h-8 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
                             p === page
-                              ? "bg-sky-500 text-white shadow-sm shadow-primary/30"
-                              : "hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
+                              ? "bg-[var(--accent)] text-[var(--on-accent)] shadow-sm shadow-primary/30"
+                              : "hover:bg-primary/10 dark:hover:bg-[var(--surface)] text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)]"
                           }`}
                         >
                           {p}
@@ -854,7 +854,7 @@ export default function ProductsClient({
 
                   <Pagination.Item>
                     <Pagination.Next
-                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-gray-800 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
+                      className="flex items-center gap-1 px-3 h-8 rounded-lg text-xs hover:bg-primary/10 dark:hover:bg-[var(--surface)] disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-colors"
                       isDisabled={page === totalPages || isPending}
                       onPress={() => updateParams({ page: String(page + 1) })}
                     >
@@ -899,7 +899,7 @@ export default function ProductsClient({
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-xs font-bold text-gray-700 dark:text-gray-300 block mb-1">
+                      <label className="text-xs font-bold text-[var(--foreground)] block mb-1">
                         Title *
                       </label>
                       <Input
@@ -915,12 +915,12 @@ export default function ProductsClient({
                         }}
                         placeholder="Product title"
                         required
-                        className="w-full h-10 rounded-xl bg-slate-50 dark:bg-gray-800 text-xs"
+                        className="w-full h-10 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs"
                       />
                     </div>
 
                     <div>
-                      <label className="text-xs font-bold text-gray-700 dark:text-gray-300 block mb-1">
+                      <label className="text-xs font-bold text-[var(--foreground)] block mb-1">
                         URL Slug *
                       </label>
                       <Input
@@ -931,13 +931,13 @@ export default function ProductsClient({
                         }
                         placeholder="product-slug"
                         required
-                        className="w-full h-10 rounded-xl bg-slate-50 dark:bg-gray-800 text-xs font-mono"
+                        className="w-full h-10 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs font-mono"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="text-xs font-bold text-gray-700 dark:text-gray-300 block mb-1">
+                    <label className="text-xs font-bold text-[var(--foreground)] block mb-1">
                       SKU (Stock Keeping Unit)
                     </label>
                     <Input
@@ -947,12 +947,12 @@ export default function ProductsClient({
                         setEditForm((prev) => ({ ...prev, sku: e.target.value }))
                       }
                       placeholder="e.g. ELEC-PROD-001"
-                      className="w-full h-10 rounded-xl bg-slate-50 dark:bg-gray-800 text-xs font-mono"
+                      className="w-full h-10 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs font-mono"
                     />
                   </div>
 
                   <div>
-                    <label className="text-xs font-bold text-gray-700 dark:text-gray-300 block mb-1">
+                    <label className="text-xs font-bold text-[var(--foreground)] block mb-1">
                       Description
                     </label>
                     <TextArea
@@ -962,20 +962,20 @@ export default function ProductsClient({
                       }
                       placeholder="Brief overview of features and capabilities..."
                       rows={3}
-                      className="w-full rounded-xl bg-slate-50 dark:bg-gray-800 text-xs"
+                      className="w-full rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs"
                     />
                   </div>
                 </div>
 
                 {/* 2. Pricing & Inventory */}
-                <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-gray-800">
+                <div className="space-y-4 pt-4 border-t border-[var(--border-color)]">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-primary">
                     Pricing & Inventory
                   </h3>
 
                   <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
                     <div>
-                      <label className="text-xs font-bold text-gray-700 dark:text-gray-300 block mb-1">
+                      <label className="text-xs font-bold text-[var(--foreground)] block mb-1">
                         Price ($) *
                       </label>
                       <Input
@@ -987,12 +987,12 @@ export default function ProductsClient({
                           handleEditPriceChange(e.target.value, editForm.originalPrice)
                         }
                         required
-                        className="w-full h-10 rounded-xl bg-slate-50 dark:bg-gray-800 text-xs font-bold"
+                        className="w-full h-10 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs font-bold"
                       />
                     </div>
 
                     <div>
-                      <label className="text-xs font-bold text-gray-700 dark:text-gray-300 block mb-1">
+                      <label className="text-xs font-bold text-[var(--foreground)] block mb-1">
                         Original Price ($)
                       </label>
                       <Input
@@ -1003,14 +1003,14 @@ export default function ProductsClient({
                         onChange={(e) =>
                           handleEditPriceChange(editForm.price, e.target.value)
                         }
-                        className="w-full h-10 rounded-xl bg-slate-50 dark:bg-gray-800 text-xs"
+                        className="w-full h-10 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs"
                       />
                     </div>
 
                     <div>
-                      <label className="text-xs font-bold text-gray-700 dark:text-gray-300 block mb-1">
+                      <label className="text-xs font-bold text-[var(--foreground)] block mb-1">
                         Invest / Cost ($)
-                        <span className="ml-1 text-[10px] font-normal text-gray-400">(admin)</span>
+                        <span className="ml-1 text-[10px] font-normal text-[var(--foreground-muted)]">(admin)</span>
                       </label>
                       <Input
                         type="number"
@@ -1021,12 +1021,12 @@ export default function ProductsClient({
                         onChange={(e) =>
                           setEditForm((prev) => ({ ...prev, investPrice: e.target.value }))
                         }
-                        className="w-full h-10 rounded-xl bg-slate-50 dark:bg-gray-800 text-xs"
+                        className="w-full h-10 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs"
                       />
                     </div>
 
                     <div>
-                      <label className="text-xs font-bold text-gray-700 dark:text-gray-300 block mb-1">
+                      <label className="text-xs font-bold text-[var(--foreground)] block mb-1">
                         Discount (%)
                       </label>
                       <Input
@@ -1037,12 +1037,12 @@ export default function ProductsClient({
                         onChange={(e) =>
                           setEditForm((prev) => ({ ...prev, discountPercentage: e.target.value }))
                         }
-                        className="w-full h-10 rounded-xl bg-slate-50 dark:bg-gray-800 text-xs"
+                        className="w-full h-10 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs"
                       />
                     </div>
 
                     <div>
-                      <label className="text-xs font-bold text-gray-700 dark:text-gray-300 block mb-1">
+                      <label className="text-xs font-bold text-[var(--foreground)] block mb-1">
                         Stock Quantity *
                       </label>
                       <Input
@@ -1057,12 +1057,12 @@ export default function ProductsClient({
                           }))
                         }
                         required
-                        className="w-full h-10 rounded-xl bg-slate-50 dark:bg-gray-800 text-xs font-bold"
+                        className="w-full h-10 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs font-bold"
                       />
                     </div>
 
                     <div>
-                      <label className="text-xs font-bold text-gray-700 dark:text-gray-300 block mb-1">
+                      <label className="text-xs font-bold text-[var(--foreground)] block mb-1">
                         Units Sold
                       </label>
                       <Input
@@ -1072,19 +1072,19 @@ export default function ProductsClient({
                         onChange={(e) =>
                           setEditForm((prev) => ({ ...prev, sellCount: e.target.value }))
                         }
-                        className="w-full h-10 rounded-xl bg-slate-50 dark:bg-gray-800 text-xs font-mono"
+                        className="w-full h-10 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs font-mono"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                     {/* In Stock toggle */}
-                    <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-gray-800/40 rounded-xl border border-slate-200/60 dark:border-gray-800 cursor-pointer">
+                    <div className="flex items-center justify-between p-3 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)]/60 cursor-pointer">
                       <div>
-                        <p className="text-xs font-bold text-gray-800 dark:text-gray-200">
+                        <p className="text-xs font-bold text-[var(--foreground)]">
                           In Stock
                         </p>
-                        <p className="text-[10px] text-gray-400">
+                        <p className="text-[10px] text-[var(--foreground-muted)]">
                           {hasEditPositiveStock
                             ? "Automatically enabled (Stock > 0)"
                             : "Mark if product is ready for purchase"}
@@ -1109,12 +1109,12 @@ export default function ProductsClient({
                     </div>
 
                     {/* Featured toggle */}
-                    <div className="flex items-center justify-between p-3 bg-slate-50 dark:bg-gray-800/40 rounded-xl border border-slate-200/60 dark:border-gray-800 cursor-pointer">
+                    <div className="flex items-center justify-between p-3 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)]/60 cursor-pointer">
                       <div>
-                        <p className="text-xs font-bold text-gray-800 dark:text-gray-200 flex items-center gap-1">
+                        <p className="text-xs font-bold text-[var(--foreground)] flex items-center gap-1">
                           <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Featured Item
                         </p>
-                        <p className="text-[10px] text-gray-400">
+                        <p className="text-[10px] text-[var(--foreground-muted)]">
                           Promote in featured grids & hero sections
                         </p>
                       </div>
@@ -1149,7 +1149,7 @@ export default function ProductsClient({
                 </div>
 
                 {/* 3. Media Upload */}
-                <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-gray-800">
+                <div className="space-y-4 pt-4 border-t border-[var(--border-color)]">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-primary">
                     Product Media
                   </h3>
@@ -1179,14 +1179,14 @@ export default function ProductsClient({
                 </div>
 
                 {/* 4. Taxonomy & Badges */}
-                <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-gray-800">
+                <div className="space-y-4 pt-4 border-t border-[var(--border-color)]">
                   <h3 className="text-xs font-bold uppercase tracking-wider text-primary">
                     Category & Badges
                   </h3>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="text-xs font-bold text-gray-700 dark:text-gray-300 block mb-1">
+                      <label className="text-xs font-bold text-[var(--foreground)] block mb-1">
                         Category
                       </label>
                       <Select
@@ -1201,11 +1201,11 @@ export default function ProductsClient({
                         }
                         placeholder="Select Category"
                       >
-                        <Select.Trigger className="w-full h-10 px-3 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+                        <Select.Trigger className="w-full h-10 px-3 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs font-semibold text-[var(--foreground-secondary)] flex items-center justify-between gap-1.5 cursor-pointer hover:border-primary transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                           <Select.Value className="text-xs font-semibold truncate" />
-                          <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
+                          <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-[var(--foreground-muted)] shrink-0" />
                         </Select.Trigger>
-                        <Select.Popover className="w-64 p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto">
+                        <Select.Popover className="w-64 p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto">
                           <ListBox>
                             {categories.map((c) => {
                               const cid = (c._id || c.id || c.slug) as string;
@@ -1214,7 +1214,7 @@ export default function ProductsClient({
                                   key={cid}
                                   id={cid}
                                   textValue={c.name}
-                                  className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                                  className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-[var(--surface)] text-[var(--foreground)] cursor-pointer flex items-center justify-between"
                                 >
                                   {c.name}
                                   <ListBox.ItemIndicator />
@@ -1228,10 +1228,10 @@ export default function ProductsClient({
 
                     {editAvailableSubCategories.length > 0 && (
                       <div>
-                        <label className="text-xs font-bold text-gray-700 dark:text-gray-300 block mb-1">
+                        <label className="text-xs font-bold text-[var(--foreground)] block mb-1">
                           Subcategory
                         </label>
-                        <div className="flex flex-wrap gap-2 p-2 bg-slate-50 dark:bg-gray-800 rounded-xl border border-slate-200 dark:border-gray-700">
+                        <div className="flex flex-wrap gap-2 p-2 bg-[var(--surface-alt)] dark:bg-[var(--surface)] rounded-xl border border-[var(--border-color)]">
                           {editAvailableSubCategories.map((sub) => {
                             const subId = (sub._id || sub.id || sub.slug) as string;
                             const isSelected = editForm.subCategoryIds.has(subId);
@@ -1247,8 +1247,8 @@ export default function ProductsClient({
                                 }}
                                 className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                                   isSelected
-                                    ? "bg-sky-500 text-white shadow-2xs"
-                                    : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-slate-100"
+                                    ? "bg-[var(--accent)] text-[var(--on-accent)] shadow-2xs"
+                                    : "bg-[var(--surface-elevated)] dark:bg-[var(--foreground-muted)] text-[var(--foreground)] hover:bg-[var(--surface-alt)]"
                                 }`}
                               >
                                 {sub.name}
@@ -1261,7 +1261,7 @@ export default function ProductsClient({
                   </div>
 
                   <div>
-                    <label className="text-xs font-bold text-gray-700 dark:text-gray-300 block mb-1.5">
+                    <label className="text-xs font-bold text-[var(--foreground)] block mb-1.5">
                       Promotional Badges
                     </label>
                     <div className="flex flex-wrap gap-2">
@@ -1280,7 +1280,7 @@ export default function ProductsClient({
                             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                               isSelected
                                 ? "bg-primary text-white shadow-xs"
-                                : "bg-slate-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-slate-200"
+                                : "bg-[var(--surface-alt)] text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] hover:bg-[var(--surface-alt)]"
                             }`}
                           >
                             {b.label}
@@ -1292,7 +1292,7 @@ export default function ProductsClient({
                 </div>
 
                 {/* 5. Specifications */}
-                <div className="space-y-4 pt-4 border-t border-slate-100 dark:border-gray-800">
+                <div className="space-y-4 pt-4 border-t border-[var(--border-color)]">
                   <div className="flex items-center justify-between">
                     <h3 className="text-xs font-bold uppercase tracking-wider text-primary">
                       Technical Specs
@@ -1320,7 +1320,7 @@ export default function ProductsClient({
                             );
                           }}
                           placeholder="Key (e.g. RAM, Storage, Color)"
-                          className="flex-1 h-9 rounded-xl bg-slate-50 dark:bg-gray-800 text-xs"
+                          className="flex-1 h-9 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs"
                         />
                         <Input
                           type="text"
@@ -1332,7 +1332,7 @@ export default function ProductsClient({
                             );
                           }}
                           placeholder="Value (e.g. 16GB DDR5)"
-                          className="flex-1 h-9 rounded-xl bg-slate-50 dark:bg-gray-800 text-xs"
+                          className="flex-1 h-9 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs"
                         />
                         {editSpecs.length > 1 && (
                           <button
@@ -1340,7 +1340,7 @@ export default function ProductsClient({
                             onClick={() =>
                               setEditSpecs((prev) => prev.filter((_, i) => i !== idx))
                             }
-                            className="p-2 text-gray-400 hover:text-rose-500 rounded-lg cursor-pointer"
+                            className="p-2 text-[var(--foreground-muted)] hover:text-rose-500 rounded-lg cursor-pointer"
                           >
                             <X className="w-4 h-4" />
                           </button>
@@ -1351,7 +1351,7 @@ export default function ProductsClient({
                 </div>
 
                 {/* Modal Footer */}
-                <Modal.Footer className="flex items-center justify-end gap-3 pt-6 border-t border-slate-100 dark:border-gray-800">
+                <Modal.Footer className="flex items-center justify-end gap-3 pt-6 border-t border-[var(--border-color)]">
                   <Button
                     type="button"
                     onPress={() => setIsEditOpen(false)}
@@ -1362,7 +1362,7 @@ export default function ProductsClient({
                   <Button
                     type="submit"
                     isDisabled={isUpdating}
-                    className="px-6 py-2 rounded-xl bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white font-bold text-xs shadow-md shadow-primary/25 cursor-pointer transition-all"
+                    className="px-6 py-2 rounded-xl bg-brand-gradient text-[var(--on-grad-text)] font-bold text-xs shadow-xs cursor-pointer hover:opacity-95 transition-all"
                   >
                     {isUpdating ? "Saving..." : "Save Product"}
                   </Button>

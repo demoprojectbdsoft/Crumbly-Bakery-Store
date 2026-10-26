@@ -34,12 +34,12 @@ export default function AboutPage() {
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-8 md:py-12 space-y-12">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-xs text-gray-500">
+      <nav className="flex items-center gap-2 text-xs text-[var(--foreground-muted)]">
         <Link href="/" className="hover:text-primary transition-colors">
           Home
         </Link>
         <span>/</span>
-        <span className="text-gray-900 dark:text-gray-100 font-semibold">About Us</span>
+        <span className="text-[var(--foreground)] dark:text-[var(--foreground)] font-semibold">About Us</span>
       </nav>
 
       {/* Hero Header */}
@@ -47,10 +47,10 @@ export default function AboutPage() {
         <span className="text-xs font-bold text-primary uppercase tracking-wider bg-primary/10 px-3 py-1.5 rounded-full">
           About Sparq
         </span>
-        <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-[var(--foreground)] tracking-tight">
           We Provide High Quality Electronics & Tech Gadgets
         </h1>
-        <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed">
+        <p className="text-sm md:text-base text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] leading-relaxed">
           Welcome to Sparq, your number one destination for premium consumer electronics, smart gadgets, computers, audio equipment, and tech accessories. We are dedicated to giving you the best online shopping experience.
         </p>
       </div>
@@ -88,7 +88,7 @@ export default function AboutPage() {
         </div>
         <Link
           href="/shop"
-          className="px-6 py-3.5 rounded-full bg-white text-primary font-bold text-xs md:text-sm hover:bg-white/90 transition-colors shrink-0 flex items-center gap-2 cursor-pointer"
+          className="px-6 py-3.5 rounded-full bg-[var(--surface-elevated)] text-primary font-bold text-xs md:text-sm hover:bg-[var(--surface-elevated)]/90 transition-colors shrink-0 flex items-center gap-2 cursor-pointer"
         >
           <span>Shop Now</span>
           <ArrowRight className="w-4 h-4" />

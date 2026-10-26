@@ -717,18 +717,18 @@ function SettingCard({
 }) {
   return (
     <Card
-      className={`border border-slate-200/80 dark:border-gray-800 shadow-xs bg-white dark:bg-gray-900 rounded-2xl overflow-hidden transition-all ${className}`}
+      className={`border border-[var(--border-color)] shadow-xs bg-[var(--surface-elevated)] rounded-2xl overflow-hidden transition-all ${className}`}
     >
-      <div className="flex items-center gap-3 px-6 py-4 border-b border-slate-100 dark:border-gray-800/80 bg-slate-50/50 dark:bg-gray-900/40">
+      <div className="flex items-center gap-3 px-6 py-4 border-b border-[var(--border-color)]/80 bg-[var(--surface-alt)]/50">
         <div className="p-2 rounded-xl bg-primary/10 text-primary shrink-0">
           <Icon className="w-4 h-4" />
         </div>
         <div>
-          <h3 className="text-sm font-bold text-gray-900 dark:text-white">
+          <h3 className="text-sm font-bold text-[var(--foreground)]">
             {title}
           </h3>
           {subtitle && (
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+            <p className="text-xs text-[var(--foreground-muted)] mt-0.5">
               {subtitle}
             </p>
           )}
@@ -751,7 +751,7 @@ function ColorPickerRow({
 }) {
   return (
     <div className="space-y-1">
-      <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+      <label className="text-xs font-semibold text-[var(--foreground-secondary)]">
         {label}
       </label>
       <div className="flex items-center gap-2">
@@ -759,7 +759,7 @@ function ColorPickerRow({
           type="color"
           value={value || "#000000"}
           onChange={(e) => onChange(e.target.value)}
-          className="w-10 h-10 rounded-xl border border-slate-200 dark:border-gray-700 cursor-pointer bg-transparent p-0.5 shrink-0"
+          className="w-10 h-10 rounded-xl border border-[var(--border-color)] cursor-pointer bg-transparent p-0.5 shrink-0"
         />
         <Input
           type="text"
@@ -1176,7 +1176,7 @@ export default function AdminSettingsClient({
       {/* ── Page Header ── */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[var(--foreground-muted)] mb-1">
             <Link
               href="/dashboard/admin"
               className="hover:text-primary transition-colors"
@@ -1186,13 +1186,13 @@ export default function AdminSettingsClient({
             <ChevronRight className="w-3 h-3" />
             <span className="text-primary">Site Settings</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-[var(--foreground)]">
             Site{" "}
             <span className="text-gradient-primary">
               Settings &amp; Branding
             </span>
           </h1>
-          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-xs md:text-sm text-[var(--foreground-muted)] mt-1">
             Full control over store branding, Google fonts, custom color palette creation, dual-theme logos, and delivery stats.
           </p>
         </div>
@@ -1203,7 +1203,7 @@ export default function AdminSettingsClient({
           className="bg-primary text-white font-bold text-xs px-6 py-2.5 rounded-xl shadow-md shadow-primary/25 inline-flex items-center gap-2 cursor-pointer hover:opacity-95 transition-all self-start sm:self-auto shrink-0"
         >
           {isPending ? (
-            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            <span className="w-4 h-4 border-2 border-[var(--surface-elevated)]/30 border-t-white rounded-full animate-spin" />
           ) : (
             <Save className="w-4 h-4" />
           )}
@@ -1212,7 +1212,7 @@ export default function AdminSettingsClient({
       </div>
 
       {/* ── Navigation Tabs ── */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-2 border-b border-slate-200 dark:border-gray-800 scrollbar-none">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-2 border-b border-[var(--border-color)] scrollbar-none">
         {SETTING_TABS.map((tab) => {
           const isValidTabIcon =
             tab.icon &&
@@ -1226,8 +1226,8 @@ export default function AdminSettingsClient({
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                 isActive
-                  ? "bg-sky-500 text-white shadow-xs shadow-primary/20"
-                  : "text-gray-600 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-gray-800/60"
+                  ? "bg-[var(--accent)] text-[var(--on-accent)] shadow-xs shadow-[var(--accent)]/20"
+                  : "text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--surface)]/60"
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -1248,7 +1248,7 @@ export default function AdminSettingsClient({
             icon={Globe}
           >
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+              <label className="text-xs font-semibold text-[var(--foreground-secondary)]">
                 Site Name
               </label>
               <Input
@@ -1257,13 +1257,13 @@ export default function AdminSettingsClient({
                 onChange={(e) => setSiteName(e.target.value)}
                 placeholder="e.g. Sparq, Velvet & Co, Cafe Noir, Golden Crust"
               />
-              <p className="text-[11px] text-gray-400">
+              <p className="text-[11px] text-[var(--foreground-muted)]">
                 Shown in navbar, footer, metadata, and browser tab.
               </p>
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+              <label className="text-xs font-semibold text-[var(--foreground-secondary)]">
                 Slogan / Tagline
               </label>
               <Input
@@ -1290,7 +1290,7 @@ export default function AdminSettingsClient({
             icon={Type}
           >
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+              <label className="text-xs font-semibold text-[var(--foreground-secondary)]">
                 Meta Title
               </label>
               <Input
@@ -1299,13 +1299,13 @@ export default function AdminSettingsClient({
                 onChange={(e) => setMetaTitle(e.target.value)}
                 placeholder="Page title shown on Google"
               />
-              <span className="text-[11px] text-gray-400">
+              <span className="text-[11px] text-[var(--foreground-muted)]">
                 {metaTitle.length}/60 characters recommended
               </span>
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+              <label className="text-xs font-semibold text-[var(--foreground-secondary)]">
                 Meta Description
               </label>
               <TextArea
@@ -1314,7 +1314,7 @@ export default function AdminSettingsClient({
                 onChange={(e) => setMetaDescription(e.target.value)}
                 placeholder="Brief summary of your store for search engine snippets"
               />
-              <span className="text-[11px] text-gray-400">
+              <span className="text-[11px] text-[var(--foreground-muted)]">
                 {metaDescription.length}/160 characters recommended
               </span>
             </div>
@@ -1359,7 +1359,7 @@ export default function AdminSettingsClient({
             </div>
 
             {/* Live Typography Preview Card */}
-            <Card className="rounded-2xl border border-slate-200 dark:border-gray-800 p-6 bg-slate-50 dark:bg-gray-950 space-y-4 shadow-2xs">
+            <Card className="rounded-2xl border border-[var(--border-color)] p-6 bg-[var(--surface-alt)] space-y-4 shadow-2xs">
               <span className="text-[10px] font-bold tracking-wider text-primary uppercase">
                 Live Font Preview
               </span>
@@ -1368,12 +1368,12 @@ export default function AdminSettingsClient({
                   fontFamily: `'${headingFont}', sans-serif`,
                 }}
               >
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-[var(--foreground)]">
                   {siteName} — {siteTagline}
                 </h2>
               </div>
               <p
-                className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed"
+                className="text-sm text-[var(--foreground-secondary)] leading-relaxed"
                 style={{
                   fontFamily: `'${primaryFont}', sans-serif`,
                 }}
@@ -1384,14 +1384,14 @@ export default function AdminSettingsClient({
               </p>
               <div className="flex items-center gap-3 pt-2">
                 <Button
-                  className="bg-sky-500 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-xs"
+                  className="bg-[var(--accent)] text-[var(--on-accent)] text-xs font-bold px-4 py-2 rounded-xl shadow-xs"
                   style={{ fontFamily: `'${primaryFont}', sans-serif` }}
                 >
                   Shop Now
                 </Button>
-                <span className="text-xs text-gray-400">
-                  Heading: <strong className="text-gray-700 dark:text-gray-200">{headingFont}</strong> • Body:{" "}
-                  <strong className="text-gray-700 dark:text-gray-200">{primaryFont}</strong>
+                <span className="text-xs text-[var(--foreground-muted)]">
+                  Heading: <strong className="text-[var(--foreground-secondary)]">{headingFont}</strong> • Body:{" "}
+                  <strong className="text-[var(--foreground-secondary)]">{primaryFont}</strong>
                 </span>
               </div>
             </Card>
@@ -1410,10 +1410,10 @@ export default function AdminSettingsClient({
             subtitle="Design, auto-harmonize, and save your own custom color scheme"
             icon={Wand2}
           >
-            <div className="p-5 rounded-2xl bg-gradient-to-br from-sky-50/60 via-indigo-50/40 to-purple-50/30 dark:from-sky-950/20 dark:via-gray-900 dark:to-indigo-950/20 border border-sky-100 dark:border-gray-800 space-y-4">
+            <div className="p-5 rounded-2xl bg-gradient-to-br from-[var(--accent)]/10 via-[var(--surface-elevated)] to-[var(--surface-elevated)] border border-[var(--accent)]/20 dark:border-[var(--border-color)] space-y-4">
               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                 <div className="flex-1 max-w-sm flex flex-col gap-1">
-                  <label className="text-xs font-bold text-gray-800 dark:text-gray-200">
+                  <label className="text-xs font-bold text-[var(--foreground)]">
                     Palette Name
                   </label>
                   <Input
@@ -1426,20 +1426,20 @@ export default function AdminSettingsClient({
 
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                    <span className="text-xs font-semibold text-[var(--foreground-secondary)]">
                       Seed Color:
                     </span>
                     <input
                       type="color"
                       value={customSeedColor}
                       onChange={(e) => setCustomSeedColor(e.target.value)}
-                      className="w-9 h-9 rounded-xl border border-slate-300 dark:border-gray-700 cursor-pointer p-0.5"
+                      className="w-9 h-9 rounded-xl border border-[var(--border-color)] cursor-pointer p-0.5"
                     />
                   </div>
 
                   <Button
                     onClick={handleAutoHarmonize}
-                    className="bg-white dark:bg-gray-800 border border-slate-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 text-xs font-bold px-4 py-2 rounded-xl shadow-2xs hover:bg-slate-50 dark:hover:bg-gray-700 inline-flex items-center gap-1.5 cursor-pointer"
+                    className="bg-[var(--surface-elevated)] border border-[var(--border-color)] text-[var(--foreground)] text-xs font-bold px-4 py-2 rounded-xl shadow-2xs hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--foreground-muted)] inline-flex items-center gap-1.5 cursor-pointer"
                   >
                     <Wand2 className="w-3.5 h-3.5 text-primary" />
                     Auto-Harmonize
@@ -1456,7 +1456,7 @@ export default function AdminSettingsClient({
               </div>
 
               {/* Real-Time Live Preview of Custom Palette */}
-              <div className="pt-3 border-t border-slate-200/60 dark:border-gray-800">
+              <div className="pt-3 border-t border-[var(--border-color)]/60">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-primary block mb-2">
                   Live Custom Palette Preview
                 </span>
@@ -1514,8 +1514,8 @@ export default function AdminSettingsClient({
                   onClick={() => setSelectedCategoryFilter(pill.id)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap cursor-pointer transition-all ${
                     selectedCategoryFilter === pill.id
-                      ? "bg-sky-500 text-white shadow-xs ring-2 ring-sky-500/20"
-                      : "bg-slate-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100 border border-slate-200/80 dark:border-gray-700 hover:bg-slate-200 dark:hover:bg-gray-700/80 shadow-2xs"
+                      ? "bg-[var(--accent)] text-[var(--on-accent)] shadow-xs ring-2 ring-[var(--accent)]/20"
+                      : "bg-[var(--surface-alt)] text-[var(--foreground-secondary)] dark:text-[var(--foreground)] border border-[var(--border-color)]/80 dark:border-[var(--border-color)] hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--foreground-muted)]/80 shadow-2xs"
                   }`}
                 >
                   {pill.label}
@@ -1547,10 +1547,10 @@ export default function AdminSettingsClient({
                     style={{
                       "--preset-p": pColor,
                     } as React.CSSProperties}
-                    className={`p-4 rounded-xl border transition-all duration-200 cursor-pointer bg-white dark:bg-gray-900 group relative hover:-translate-y-1 ${
+                    className={`p-4 rounded-xl border transition-all duration-200 cursor-pointer bg-[var(--surface-elevated)] group relative hover:-translate-y-1 ${
                       isActive
                         ? "border-[var(--preset-p)] ring-2 ring-[var(--preset-p)]/30 shadow-md shadow-[var(--preset-p)]/20"
-                        : "border-slate-200 dark:border-gray-800 hover:border-[var(--preset-p)] hover:shadow-xl hover:shadow-[var(--preset-p)]/25"
+                        : "border-[var(--border-color)] hover:border-[var(--preset-p)] hover:shadow-xl hover:shadow-[var(--preset-p)]/25"
                     }`}
                   >
                     <div className="flex items-center justify-between mb-2">
@@ -1564,7 +1564,7 @@ export default function AdminSettingsClient({
                         >
                           <IconComponent className="w-3.5 h-3.5" />
                         </div>
-                        <h4 className="text-xs font-bold text-gray-900 dark:text-white transition-colors group-hover:text-[var(--preset-p)]">
+                        <h4 className="text-xs font-bold text-[var(--foreground)] transition-colors group-hover:text-[var(--preset-p)]">
                           {preset.name}
                         </h4>
                       </div>
@@ -1633,7 +1633,7 @@ export default function AdminSettingsClient({
                       {preset.categoryLabel}
                     </span>
 
-                    <p className="text-[11px] text-gray-600 dark:text-gray-300 mb-3 line-clamp-2 font-medium leading-relaxed">
+                    <p className="text-[11px] text-[var(--foreground-secondary)] mb-3 line-clamp-2 font-medium leading-relaxed">
                       {preset.description}
                     </p>
 
@@ -1733,7 +1733,7 @@ export default function AdminSettingsClient({
                 onChange={(v) => setColor("topBarTo", v)}
               />
               <div className="pt-2">
-                <span className="text-[10px] text-gray-400 block mb-1">
+                <span className="text-[10px] text-[var(--foreground-muted)] block mb-1">
                   Resulting Gradient:
                 </span>
                 <div
@@ -1745,12 +1745,12 @@ export default function AdminSettingsClient({
           </div>
 
           {/* Quick Save Palette to DB Bar */}
-          <div className="flex items-center justify-between p-4 rounded-xl bg-sky-50/70 dark:bg-sky-950/30 border border-sky-100 dark:border-sky-900/40">
+          <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--accent)]/10 dark:bg-[var(--accent)]/10 border border-[var(--accent)]/20">
             <div>
-              <p className="text-xs font-bold text-gray-900 dark:text-white">
+              <p className="text-xs font-bold text-[var(--foreground)]">
                 Save Palette Directly to Database
               </p>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400">
+              <p className="text-[11px] text-[var(--foreground-muted)]">
                 Immediately updates and persists your active light & dark color palette to MongoDB.
               </p>
             </div>
@@ -1778,12 +1778,12 @@ export default function AdminSettingsClient({
             icon={Truck}
           >
             {/* Free Shipping Toggle */}
-            <div className="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-gray-800/40 border border-slate-200/60 dark:border-gray-800">
+            <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface-alt)]/40 border border-[var(--border-color)]/60">
               <div>
-                <p className="text-xs font-bold text-gray-900 dark:text-white">
+                <p className="text-xs font-bold text-[var(--foreground)]">
                   Enable Free Shipping
                 </p>
-                <p className="text-[11px] text-gray-500 dark:text-gray-400">
+                <p className="text-[11px] text-[var(--foreground-muted)]">
                   Waive shipping fees when order subtotal meets threshold
                 </p>
               </div>
@@ -1801,7 +1801,7 @@ export default function AdminSettingsClient({
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+              <label className="text-xs font-semibold text-[var(--foreground-secondary)]">
                 Free Shipping Threshold (${currency})
               </label>
               <Input
@@ -1812,14 +1812,14 @@ export default function AdminSettingsClient({
                 onChange={(e) => setFreeShippingThreshold(Number(e.target.value))}
                 placeholder="50"
               />
-              <p className="text-[11px] text-gray-400">
+              <p className="text-[11px] text-[var(--foreground-muted)]">
                 Orders over ${freeShippingThreshold} receive free express shipping.
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-1">
-                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                <label className="text-xs font-semibold text-[var(--foreground-secondary)]">
                   Standard Delivery Fee (${currency})
                 </label>
                 <Input
@@ -1833,7 +1833,7 @@ export default function AdminSettingsClient({
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                <label className="text-xs font-semibold text-[var(--foreground-secondary)]">
                   Express Delivery Fee (${currency})
                 </label>
                 <Input
@@ -1848,7 +1848,7 @@ export default function AdminSettingsClient({
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+              <label className="text-xs font-semibold text-[var(--foreground-secondary)]">
                 Estimated Delivery Duration
               </label>
               <Input
@@ -1865,7 +1865,7 @@ export default function AdminSettingsClient({
             subtitle="How delivery information and free shipping thresholds appear to shoppers"
             icon={Eye}
           >
-            <Card className="p-4 rounded-xl border border-sky-100 dark:border-sky-950 bg-sky-50/50 dark:bg-sky-950/20 space-y-3 shadow-2xs">
+            <Card className="p-4 rounded-xl border border-[var(--accent)]/20 bg-[var(--accent)]/5 space-y-3 shadow-2xs">
               <div className="flex items-center gap-2 text-primary font-bold text-xs">
                 <Truck className="w-4 h-4" />
                 <span>
@@ -1874,10 +1874,10 @@ export default function AdminSettingsClient({
                     : `Standard Delivery Fee: $${standardDeliveryFee}`}
                 </span>
               </div>
-              <p className="text-xs text-gray-600 dark:text-gray-300">
+              <p className="text-xs text-[var(--foreground-secondary)]">
                 Estimated Delivery: <strong>{estimatedDeliveryDays}</strong>
               </p>
-              <div className="text-[11px] text-gray-500 space-y-1 border-t border-sky-200/40 dark:border-sky-800/40 pt-2">
+              <div className="text-[11px] text-[var(--foreground-muted)] space-y-1 border-t border-[var(--accent)]/20 pt-2">
                 <p>• Cart subtotal &gt;= ${freeShippingThreshold} → $0.00 Free Delivery</p>
                 <p>• Standard orders → ${standardDeliveryFee.toFixed(2)} Delivery</p>
                 <p>• Express upgrade → ${expressDeliveryFee.toFixed(2)} Delivery</p>
@@ -1898,13 +1898,13 @@ export default function AdminSettingsClient({
             icon={Sparkles}
           >
             {/* Live Gradient Preview */}
-            <div className="rounded-xl overflow-hidden shadow-xs border border-slate-200 dark:border-gray-800">
+            <div className="rounded-xl overflow-hidden shadow-xs border border-[var(--border-color)]">
               <div
                 className="px-4 py-2 text-white text-xs font-medium flex items-center justify-between gap-3"
                 style={{ background: topBarGradient }}
               >
                 <div className="flex items-center gap-2 truncate">
-                  <span className="px-2 py-0.5 rounded-full bg-white/20 text-[10px] font-bold">
+                  <span className="px-2 py-0.5 rounded-full bg-[var(--surface-elevated)]/20 text-[10px] font-bold">
                     Deals
                   </span>
                   <span className="truncate">
@@ -1916,12 +1916,12 @@ export default function AdminSettingsClient({
             </div>
 
             {/* Toggle */}
-            <div className="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-gray-800/40 border border-slate-200/60 dark:border-gray-800">
+            <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface-alt)]/40 border border-[var(--border-color)]/60">
               <div>
-                <p className="text-xs font-bold text-gray-900 dark:text-white">
+                <p className="text-xs font-bold text-[var(--foreground)]">
                   Show Top Header Bar
                 </p>
-                <p className="text-[11px] text-gray-500 dark:text-gray-400">
+                <p className="text-[11px] text-[var(--foreground-muted)]">
                   Display announcement bar on public customer pages
                 </p>
               </div>
@@ -1939,7 +1939,7 @@ export default function AdminSettingsClient({
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+              <label className="text-xs font-semibold text-[var(--foreground-secondary)]">
                 Announcement Text
               </label>
               <Input
@@ -1983,7 +1983,7 @@ export default function AdminSettingsClient({
               <Button
                 type="button"
                 onClick={addTopBarItem}
-                className="w-full border-2 border-dashed border-slate-200 dark:border-gray-800 text-gray-500 hover:border-primary hover:text-primary bg-transparent text-xs font-bold rounded-xl py-2.5 inline-flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full border-2 border-dashed border-[var(--border-color)] text-[var(--foreground-muted)] hover:border-primary hover:text-primary bg-transparent text-xs font-bold rounded-xl py-2.5 inline-flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 Add Top Bar Link
@@ -1998,9 +1998,9 @@ export default function AdminSettingsClient({
       ────────────────────────────────────────────────────────────────────────── */}
       {activeTab === "branding" && (
         <div className="space-y-6">
-          <div className="p-4 rounded-xl border border-sky-100 dark:border-sky-950 bg-sky-50/60 dark:bg-sky-950/20 flex items-start gap-3">
+          <div className="p-4 rounded-xl border border-[var(--accent)]/20 bg-[var(--accent)]/10/60 dark:bg-[var(--accent)]/5 flex items-start gap-3">
             <AlertCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-            <p className="text-xs text-sky-700 dark:text-sky-300">
+            <p className="text-xs text-[var(--accent)]">
               Upload separate logos for <strong>Light Theme</strong> and <strong>Dark Theme</strong>, for both Navbar and Footer.
               Choose <strong>Image Only</strong> to show a logo graphic, <strong>Text Only</strong> for a typographic wordmark, or <strong>Image + Text</strong> for both together.
               Logos are hosted via ImgBB — use PNG or SVG with transparent backgrounds for best results.
@@ -2036,27 +2036,27 @@ export default function AdminSettingsClient({
                   onClick={() => setLogoType(opt.id as "both" | "img" | "text")}
                   className={`p-4 rounded-xl border cursor-pointer transition-all ${
                     logoType === opt.id
-                      ? "border-primary bg-sky-50/50 dark:bg-sky-950/30 shadow-xs"
-                      : "border-slate-200 dark:border-gray-800 hover:border-slate-300 dark:hover:border-gray-700 bg-white dark:bg-gray-900"
+                      ? "border-primary bg-[var(--accent)]/10/50 dark:bg-[var(--accent)]/10 shadow-xs"
+                      : "border-[var(--border-color)] hover:border-[var(--border-color)] dark:hover:border-[var(--border-color)] bg-[var(--surface-elevated)]"
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-bold text-gray-900 dark:text-white">
+                    <span className="text-xs font-bold text-[var(--foreground)]">
                       {opt.title}
                     </span>
                     <span
                       className={`w-3.5 h-3.5 rounded-full border-2 flex items-center justify-center ${
                         logoType === opt.id
-                          ? "border-primary bg-sky-500"
-                          : "border-slate-300 dark:border-gray-600"
+                          ? "border-primary bg-[var(--accent)]"
+                          : "border-[var(--border-color)] dark:border-[var(--border-color)]"
                       }`}
                     >
                       {logoType === opt.id && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-white" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--surface-elevated)]" />
                       )}
                     </span>
                   </div>
-                  <p className="text-[11px] text-gray-500 dark:text-gray-400">
+                  <p className="text-[11px] text-[var(--foreground-muted)]">
                     {opt.desc}
                   </p>
                 </div>
@@ -2065,8 +2065,8 @@ export default function AdminSettingsClient({
 
             {/* Text Wordmark Input — shown for "both" or "text" mode */}
             {(logoType === "both" || logoType === "text") && (
-              <div className="mt-5 pt-4 border-t border-slate-100 dark:border-gray-800 space-y-2">
-                <label className="text-xs font-semibold text-gray-700 dark:text-gray-300 block">
+              <div className="mt-5 pt-4 border-t border-[var(--border-color)] space-y-2">
+                <label className="text-xs font-semibold text-[var(--foreground-secondary)] block">
                   Brand Wordmark Text
                 </label>
                 <Input
@@ -2075,23 +2075,23 @@ export default function AdminSettingsClient({
                   onChange={(e) => setSiteName(e.target.value)}
                   placeholder="e.g. Sparq, Velvet & Co, Matcha Bloom"
                 />
-                <p className="text-[11px] text-gray-400">
+                <p className="text-[11px] text-[var(--foreground-muted)]">
                   This is the text rendered as your logo wordmark — rendered in your selected heading font (<strong>{headingFont}</strong>).
                 </p>
 
                 {/* Live text wordmark preview */}
                 <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="p-4 rounded-xl bg-white border border-slate-200 flex items-center gap-2.5 shadow-2xs">
-                    <span className="text-[10px] text-gray-400 font-semibold shrink-0 uppercase tracking-wider">Light</span>
+                  <div className="p-4 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)] flex items-center gap-2.5 shadow-2xs">
+                    <span className="text-[10px] text-[var(--foreground-muted)] font-semibold shrink-0 uppercase tracking-wider">Light</span>
                     <span
-                      className="text-xl font-black tracking-tight text-slate-900 leading-none truncate"
+                      className="text-xl font-black tracking-tight text-[var(--foreground)] leading-none truncate"
                       style={{ fontFamily: `'${headingFont}', sans-serif` }}
                     >
                       {siteName || "YourBrand"}
                     </span>
                   </div>
-                  <div className="p-4 rounded-xl bg-[#0b0f19] border border-gray-800 flex items-center gap-2.5 shadow-2xs">
-                    <span className="text-[10px] text-gray-500 font-semibold shrink-0 uppercase tracking-wider">Dark</span>
+                  <div className="p-4 rounded-xl bg-[var(--surface)] border border-[var(--border-color)] flex items-center gap-2.5 shadow-2xs">
+                    <span className="text-[10px] text-[var(--foreground-muted)] font-semibold shrink-0 uppercase tracking-wider">Dark</span>
                     <span
                       className="text-xl font-black tracking-tight text-white leading-none truncate"
                       style={{ fontFamily: `'${headingFont}', sans-serif` }}
@@ -2120,11 +2120,11 @@ export default function AdminSettingsClient({
                 />
 
                 {/* Navbar Light Preview */}
-                <div className="mt-4 pt-4 border-t border-slate-100 dark:border-gray-800">
+                <div className="mt-4 pt-4 border-t border-[var(--border-color)]">
                   <span className="text-[10px] font-bold tracking-wider text-primary uppercase block mb-2">
                     Navbar Preview — Light Theme
                   </span>
-                  <div className="p-3 rounded-xl bg-white border border-slate-200 flex items-center gap-3 shadow-2xs">
+                  <div className="p-3 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)] flex items-center gap-3 shadow-2xs">
                     {navbarLogoLight ? (
                       <Image
                         src={navbarLogoLight}
@@ -2135,11 +2135,11 @@ export default function AdminSettingsClient({
                         unoptimized
                       />
                     ) : (
-                      <span className="text-xs text-gray-400 italic">No logo uploaded yet — placeholder shown</span>
+                      <span className="text-xs text-[var(--foreground-muted)] italic">No logo uploaded yet — placeholder shown</span>
                     )}
                     {logoType === "both" && (
                       <span
-                        className="text-lg font-black tracking-tight text-slate-900 leading-none"
+                        className="text-lg font-black tracking-tight text-[var(--foreground)] leading-none"
                         style={{ fontFamily: `'${headingFont}', sans-serif` }}
                       >
                         {siteName}
@@ -2162,11 +2162,11 @@ export default function AdminSettingsClient({
                 />
 
                 {/* Navbar Dark Preview */}
-                <div className="mt-4 pt-4 border-t border-slate-100 dark:border-gray-800">
+                <div className="mt-4 pt-4 border-t border-[var(--border-color)]">
                   <span className="text-[10px] font-bold tracking-wider text-primary uppercase block mb-2">
                     Navbar Preview — Dark Theme
                   </span>
-                  <div className="p-3 rounded-xl bg-[#0b0f19] border border-gray-800 flex items-center gap-3 shadow-2xs">
+                  <div className="p-3 rounded-xl bg-[var(--surface)] border border-[var(--border-color)] flex items-center gap-3 shadow-2xs">
                     {(navbarLogoDark || navbarLogoLight) ? (
                       <Image
                         src={navbarLogoDark || navbarLogoLight}
@@ -2177,7 +2177,7 @@ export default function AdminSettingsClient({
                         unoptimized
                       />
                     ) : (
-                      <span className="text-xs text-gray-600 italic">No logo uploaded — will fallback to light logo</span>
+                      <span className="text-xs text-[var(--foreground-secondary)] italic">No logo uploaded — will fallback to light logo</span>
                     )}
                     {logoType === "both" && (
                       <span
@@ -2209,11 +2209,11 @@ export default function AdminSettingsClient({
                 />
 
                 {/* Footer Light Preview */}
-                <div className="mt-4 pt-4 border-t border-slate-100 dark:border-gray-800">
+                <div className="mt-4 pt-4 border-t border-[var(--border-color)]">
                   <span className="text-[10px] font-bold tracking-wider text-primary uppercase block mb-2">
                     Footer Preview — Light Theme
                   </span>
-                  <div className="p-4 rounded-xl bg-white border border-slate-200 flex items-center gap-3 shadow-2xs">
+                  <div className="p-4 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)] flex items-center gap-3 shadow-2xs">
                     {footerLogoLight ? (
                       <Image
                         src={footerLogoLight}
@@ -2224,11 +2224,11 @@ export default function AdminSettingsClient({
                         unoptimized
                       />
                     ) : (
-                      <span className="text-xs text-gray-400 italic">No footer logo uploaded yet</span>
+                      <span className="text-xs text-[var(--foreground-muted)] italic">No footer logo uploaded yet</span>
                     )}
                     {logoType === "both" && (
                       <span
-                        className="text-base font-black tracking-tight text-slate-900 leading-none"
+                        className="text-base font-black tracking-tight text-[var(--foreground)] leading-none"
                         style={{ fontFamily: `'${headingFont}', sans-serif` }}
                       >
                         {siteName}
@@ -2251,11 +2251,11 @@ export default function AdminSettingsClient({
                 />
 
                 {/* Footer Dark Preview */}
-                <div className="mt-4 pt-4 border-t border-slate-100 dark:border-gray-800">
+                <div className="mt-4 pt-4 border-t border-[var(--border-color)]">
                   <span className="text-[10px] font-bold tracking-wider text-primary uppercase block mb-2">
                     Footer Preview — Dark Theme
                   </span>
-                  <div className="p-4 rounded-xl bg-[#0b0f19] border border-gray-800 flex items-center gap-3 shadow-2xs">
+                  <div className="p-4 rounded-xl bg-[var(--surface)] border border-[var(--border-color)] flex items-center gap-3 shadow-2xs">
                     {(footerLogoDark || footerLogoLight) ? (
                       <Image
                         src={footerLogoDark || footerLogoLight}
@@ -2266,7 +2266,7 @@ export default function AdminSettingsClient({
                         unoptimized
                       />
                     ) : (
-                      <span className="text-xs text-gray-600 italic">No logo uploaded — will fallback to light logo</span>
+                      <span className="text-xs text-[var(--foreground-secondary)] italic">No logo uploaded — will fallback to light logo</span>
                     )}
                     {logoType === "both" && (
                       <span
@@ -2292,15 +2292,15 @@ export default function AdminSettingsClient({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Navbar-sized text preview */}
                 <div className="space-y-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Navbar Size</span>
-                  <div className="p-3 rounded-xl bg-white border border-slate-200 flex items-center gap-2 shadow-2xs">
-                    <span className="text-[10px] text-gray-300 uppercase shrink-0">☀</span>
-                    <span className="text-xl font-black tracking-tight text-slate-900 leading-none" style={{ fontFamily: `'${headingFont}', sans-serif` }}>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">Navbar Size</span>
+                  <div className="p-3 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)] flex items-center gap-2 shadow-2xs">
+                    <span className="text-[10px] text-[var(--foreground-muted)] uppercase shrink-0">☀</span>
+                    <span className="text-xl font-black tracking-tight text-[var(--foreground)] leading-none" style={{ fontFamily: `'${headingFont}', sans-serif` }}>
                       {siteName || "YourBrand"}
                     </span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#0b0f19] border border-gray-800 flex items-center gap-2 shadow-2xs">
-                    <span className="text-[10px] text-gray-600 uppercase shrink-0">🌙</span>
+                  <div className="p-3 rounded-xl bg-[var(--surface)] border border-[var(--border-color)] flex items-center gap-2 shadow-2xs">
+                    <span className="text-[10px] text-[var(--foreground-secondary)] uppercase shrink-0">🌙</span>
                     <span className="text-xl font-black tracking-tight text-white leading-none" style={{ fontFamily: `'${headingFont}', sans-serif` }}>
                       {siteName || "YourBrand"}
                     </span>
@@ -2308,15 +2308,15 @@ export default function AdminSettingsClient({
                 </div>
                 {/* Footer-sized text preview */}
                 <div className="space-y-2">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Footer Size</span>
-                  <div className="p-4 rounded-xl bg-white border border-slate-200 flex items-center gap-2 shadow-2xs">
-                    <span className="text-[10px] text-gray-300 uppercase shrink-0">☀</span>
-                    <span className="text-base font-black tracking-tight text-slate-900 leading-none" style={{ fontFamily: `'${headingFont}', sans-serif` }}>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">Footer Size</span>
+                  <div className="p-4 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)] flex items-center gap-2 shadow-2xs">
+                    <span className="text-[10px] text-[var(--foreground-muted)] uppercase shrink-0">☀</span>
+                    <span className="text-base font-black tracking-tight text-[var(--foreground)] leading-none" style={{ fontFamily: `'${headingFont}', sans-serif` }}>
                       {siteName || "YourBrand"}
                     </span>
                   </div>
-                  <div className="p-4 rounded-xl bg-[#0b0f19] border border-gray-800 flex items-center gap-2 shadow-2xs">
-                    <span className="text-[10px] text-gray-600 uppercase shrink-0">🌙</span>
+                  <div className="p-4 rounded-xl bg-[var(--surface)] border border-[var(--border-color)] flex items-center gap-2 shadow-2xs">
+                    <span className="text-[10px] text-[var(--foreground-secondary)] uppercase shrink-0">🌙</span>
                     <span className="text-base font-black tracking-tight text-white leading-none" style={{ fontFamily: `'${headingFont}', sans-serif` }}>
                       {siteName || "YourBrand"}
                     </span>
@@ -2339,18 +2339,18 @@ export default function AdminSettingsClient({
               urlPlaceholder="https://.../favicon.png"
             />
             {faviconUrl && (
-              <div className="flex items-center gap-3 mt-3 p-3 rounded-xl bg-slate-50 dark:bg-gray-800/40 border border-slate-200/60 dark:border-gray-800">
+              <div className="flex items-center gap-3 mt-3 p-3 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface-alt)]/40 border border-[var(--border-color)]/60">
                 <Image
                   src={faviconUrl}
                   alt="Favicon Preview"
                   width={32}
                   height={32}
-                  className="w-8 h-8 rounded-md object-contain border border-slate-200 dark:border-gray-700"
+                  className="w-8 h-8 rounded-md object-contain border border-[var(--border-color)]"
                   unoptimized
                 />
                 <div>
-                  <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">Favicon Preview at 32×32px</p>
-                  <p className="text-[11px] text-gray-400">Shown in browser tabs and bookmarks</p>
+                  <p className="text-xs font-semibold text-[var(--foreground-secondary)]">Favicon Preview at 32×32px</p>
+                  <p className="text-[11px] text-[var(--foreground-muted)]">Shown in browser tabs and bookmarks</p>
                 </div>
               </div>
             )}
@@ -2369,7 +2369,7 @@ export default function AdminSettingsClient({
             icon={Phone}
           >
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+              <label className="text-xs font-semibold text-[var(--foreground-secondary)]">
                 Support Phone / Hotline
               </label>
               <Input
@@ -2381,7 +2381,7 @@ export default function AdminSettingsClient({
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+              <label className="text-xs font-semibold text-[var(--foreground-secondary)]">
                 Support Email
               </label>
               <Input
@@ -2393,7 +2393,7 @@ export default function AdminSettingsClient({
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+              <label className="text-xs font-semibold text-[var(--foreground-secondary)]">
                 Physical Address
               </label>
               <TextArea
@@ -2441,7 +2441,7 @@ export default function AdminSettingsClient({
               <Button
                 type="button"
                 onClick={addSocialLink}
-                className="w-full border-2 border-dashed border-slate-200 dark:border-gray-800 text-gray-500 hover:border-primary hover:text-primary bg-transparent text-xs font-bold rounded-xl py-2.5 inline-flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full border-2 border-dashed border-[var(--border-color)] text-[var(--foreground-muted)] hover:border-primary hover:text-primary bg-transparent text-xs font-bold rounded-xl py-2.5 inline-flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 Add Social Link
@@ -2480,7 +2480,7 @@ export default function AdminSettingsClient({
             />
 
             <div className="flex flex-col gap-1">
-              <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+              <label className="text-xs font-semibold text-[var(--foreground-secondary)]">
                 Custom Footer Copyright
               </label>
               <Input
@@ -2497,12 +2497,12 @@ export default function AdminSettingsClient({
             subtitle="Toggle maintenance mode for scheduled store updates"
             icon={Shield}
           >
-            <div className="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-gray-800/40 border border-slate-200/60 dark:border-gray-800">
+            <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface-alt)]/40 border border-[var(--border-color)]/60">
               <div>
-                <p className="text-xs font-bold text-gray-900 dark:text-white">
+                <p className="text-xs font-bold text-[var(--foreground)]">
                   Maintenance Mode
                 </p>
-                <p className="text-[11px] text-gray-500 dark:text-gray-400">
+                <p className="text-[11px] text-[var(--foreground-muted)]">
                   When active, non-admin visitors will see a maintenance message
                 </p>
               </div>
@@ -2536,8 +2536,8 @@ export default function AdminSettingsClient({
 
       {/* ── Sticky Bottom Publish Bar ── */}
       <div className="fixed bottom-4 right-4 sm:right-10 z-40">
-        <div className="flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border border-slate-200 dark:border-gray-800 shadow-xl shadow-black/10">
-          <span className="text-xs text-gray-500 dark:text-gray-400 hidden sm:inline">
+        <div className="flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-[var(--surface-elevated)]/90 dark:bg-[var(--surface-elevated)]/90 backdrop-blur-md border border-[var(--border-color)] shadow-xl shadow-black/10">
+          <span className="text-xs text-[var(--foreground-muted)] hidden sm:inline">
             Unsaved changes?
           </span>
           <Button
@@ -2546,7 +2546,7 @@ export default function AdminSettingsClient({
             className="bg-primary hover:from-sky-600 hover:to-blue-700 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-md shadow-primary/25 transition-all duration-200 cursor-pointer inline-flex items-center gap-2"
           >
             {isPending ? (
-              <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <span className="w-3.5 h-3.5 border-2 border-[var(--surface-elevated)]/30 border-t-white rounded-full animate-spin" />
             ) : (
               <Save className="w-3.5 h-3.5" />
             )}

@@ -313,14 +313,14 @@ export default function CustomerWishlistClient({
               </AlertDialog.Trigger>
               <AlertDialog.Backdrop isDismissable className="bg-black/60">
                 <AlertDialog.Container size="sm">
-                  <AlertDialog.Dialog className="rounded-2xl border border-slate-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 space-y-4 shadow-xl">
+                  <AlertDialog.Dialog className="rounded-2xl border border-[var(--border-color)] dark:border-[var(--border-color)] bg-[var(--surface-elevated)] p-6 space-y-4 shadow-xl">
                     {({ close }) => (
                       <>
                         <div className="space-y-1">
-                          <AlertDialog.Heading className="text-base font-bold text-gray-900 dark:text-white">
+                          <AlertDialog.Heading className="text-base font-bold text-[var(--foreground)]">
                             Clear Wishlist?
                           </AlertDialog.Heading>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                          <p className="text-xs text-[var(--foreground-muted)]">
                             Remove all saved items from your wishlist?
                           </p>
                         </div>
@@ -460,10 +460,10 @@ export default function CustomerWishlistClient({
         </Card>
       ) : filteredItems.length === 0 ? (
         <div className="py-12 text-center space-y-2">
-          <p className="text-sm font-bold text-gray-900 dark:text-white">
+          <p className="text-sm font-bold text-[var(--foreground)]">
             No matching products
           </p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+          <p className="text-xs text-[var(--foreground-muted)]">
             No products match your search or selected category.
           </p>
         </div>

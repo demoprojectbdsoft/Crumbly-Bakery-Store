@@ -113,23 +113,30 @@ export function SiteSettingsProvider({
     }));
   };
 
-  // Dynamically inject CSS variables when palette changes
+  // Dynamically inject CSS variables when palette changes.
+  // IMPORTANT: Only set --site-* intermediary tokens here.
+  // Do NOT set derived tokens (--brand-flat, --surface, etc.) directly —
+  // those are computed by globals.css color-mix() rules which handle light/dark
+  // correctly. Setting them as inline styles would override .dark class rules.
   useEffect(() => {
     if (typeof document === "undefined" || !settings.colorPalette) return;
     const root = document.documentElement;
     const cp = settings.colorPalette;
 
-    if (cp.primary) root.style.setProperty("--site-primary", cp.primary);
-    if (cp.primaryDark) root.style.setProperty("--site-primary-dark", cp.primaryDark);
-    if (cp.secondary) root.style.setProperty("--site-secondary", cp.secondary);
-    if (cp.accent) root.style.setProperty("--site-accent", cp.accent);
-    if (cp.background) root.style.setProperty("--site-bg", cp.background);
-    if (cp.backgroundDark) root.style.setProperty("--site-bg-dark", cp.backgroundDark);
-    if (cp.surface) root.style.setProperty("--site-surface", cp.surface);
-    if (cp.surfaceDark) root.style.setProperty("--site-surface-dark", cp.surfaceDark);
-    if (cp.topBarFrom) root.style.setProperty("--site-topbar-from", cp.topBarFrom);
-    if (cp.topBarVia) root.style.setProperty("--site-topbar-via", cp.topBarVia);
-    if (cp.topBarTo) root.style.setProperty("--site-topbar-to", cp.topBarTo);
+    if (cp.primary)        root.style.setProperty("--site-primary",       cp.primary);
+    if (cp.primaryDark)    root.style.setProperty("--site-primary-dark",   cp.primaryDark);
+    if (cp.secondary)      root.style.setProperty("--site-secondary",      cp.secondary);
+    if (cp.accent)         root.style.setProperty("--site-accent",         cp.accent);
+    if (cp.background)     root.style.setProperty("--site-bg",             cp.background);
+    if (cp.backgroundDark) root.style.setProperty("--site-bg-dark",        cp.backgroundDark);
+    if (cp.surface)        root.style.setProperty("--site-surface",        cp.surface);
+    if (cp.surfaceDark)    root.style.setProperty("--site-surface-dark",   cp.surfaceDark);
+    if (cp.topBarFrom)     root.style.setProperty("--site-topbar-from",    cp.topBarFrom);
+    if (cp.topBarVia)      root.style.setProperty("--site-topbar-via",     cp.topBarVia);
+    if (cp.topBarTo)       root.style.setProperty("--site-topbar-to",      cp.topBarTo);
+    // CSS globals.css color-mix() derives all other tokens (--brand-flat, --surface,
+    // --surface-elevated, --surface-alt, --border-color, --brand-gradient, etc.)
+    // automatically from the --site-* values set above, in the correct mode.
   }, [settings.colorPalette]);
 
   // Dynamically load Google Fonts when typography changes

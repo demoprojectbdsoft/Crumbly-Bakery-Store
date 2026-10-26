@@ -22,10 +22,6 @@ import { getSiteSettings } from "@/lib/api/siteSettings";
 
 // Viewport configuration for standalone PWA & responsive displays
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#0284c7" },
-    { media: "(prefers-color-scheme: dark)", color: "#0b0f19" },
-  ],
   colorScheme: "light dark",
   width: "device-width",
   initialScale: 1,
@@ -76,6 +72,15 @@ export default async function RootLayout({
   const siteSettings = res?.data || null;
   const cp = siteSettings?.colorPalette;
 
+
+  const brandFlat = cp?.topBarVia  || cp?.primary || "#0284c7";
+  const gradFrom  = cp?.topBarFrom || cp?.primary || "#1d4ed8";
+  const gradTo    = cp?.topBarTo   || cp?.primary || "#4338ca";
+
+  // SSR: Only inject --site-* intermediary tokens.
+  // Derived tokens (--brand-flat, --surface, --surface-elevated, etc.) are
+  // computed by globals.css color-mix() for each mode — overriding them here
+  // would break dark mode since .dark class rules cannot beat :root inline styles.
   const initialPaletteCss = cp
     ? `:root {
   --site-primary: ${cp.primary || "#0284c7"};
@@ -86,11 +91,16 @@ export default async function RootLayout({
   --site-bg-dark: ${cp.backgroundDark || "#0b0f19"};
   --site-surface: ${cp.surface || "#f8fafc"};
   --site-surface-dark: ${cp.surfaceDark || "#131d2e"};
-  --site-topbar-from: ${cp.topBarFrom || "#1d4ed8"};
-  --site-topbar-via: ${cp.topBarVia || "#0284c7"};
-  --site-topbar-to: ${cp.topBarTo || "#4338ca"};
+  --site-topbar-from: ${gradFrom};
+  --site-topbar-via: ${brandFlat};
+  --site-topbar-to: ${gradTo};
 }`
     : "";
+
+  // Dynamic theme-color meta
+  const brandColor = brandFlat;
+  const darkBgColor = cp?.backgroundDark || "#0b0f19";
+
 
   return (
     <html
@@ -98,13 +108,18 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={`${openSans.variable} ${poppins.variable}`}
     >
-      <head>
+      <head suppressHydrationWarning>
+        {/* Dynamic palette CSS variables (SSR) */}
         {initialPaletteCss && (
           <style
             id="ssr-site-palette"
+            suppressHydrationWarning
             dangerouslySetInnerHTML={{ __html: initialPaletteCss }}
           />
         )}
+        {/* Dynamic theme-color for PWA / browser chrome — derived from active palette */}
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content={brandColor} />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content={darkBgColor} />
       </head>
       <body className="font-sans bg-background text-foreground antialiased">
         <Providers initialSettings={siteSettings}>

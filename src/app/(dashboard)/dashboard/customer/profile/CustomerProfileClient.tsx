@@ -95,9 +95,9 @@ export default function CustomerProfileClient({
         };
       default: // silver
         return {
-          bg: "bg-slate-100 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300",
+          bg: "bg-[var(--surface-alt)] dark:bg-[var(--surface)]/60 border-[var(--border-color)] dark:border-[var(--border-color)] text-[var(--foreground-secondary)] dark:text-[var(--foreground-secondary)]",
           badge: "bg-gradient-to-r from-slate-500 to-gray-600 text-white",
-          iconColor: "text-slate-400",
+          iconColor: "text-[var(--foreground-muted)]",
         };
     }
   };
@@ -233,32 +233,32 @@ export default function CustomerProfileClient({
             </div>
 
             {profile.bio && (
-              <p className="text-xs text-gray-500 dark:text-gray-400 max-w-lg">
+              <p className="text-xs text-[var(--foreground-muted)] max-w-lg">
                 {profile.bio}
               </p>
             )}
 
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 pt-1 text-xs text-gray-500 dark:text-gray-400">
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 pt-1 text-xs text-[var(--foreground-muted)]">
               <span className="flex items-center gap-1">
-                <Mail className="w-3.5 h-3.5 text-gray-400" />
+                <Mail className="w-3.5 h-3.5 text-[var(--foreground-muted)]" />
                 {profile.email}
               </span>
               {profile.phone && (
                 <span className="flex items-center gap-1">
-                  <Phone className="w-3.5 h-3.5 text-gray-400" />
+                  <Phone className="w-3.5 h-3.5 text-[var(--foreground-muted)]" />
                   {profile.phone}
                 </span>
               )}
               {/* Live Points */}
               <span className="flex items-center gap-1">
                 <Coins className="w-3.5 h-3.5 text-amber-500" />
-                <span className="font-semibold text-gray-900 dark:text-white">
+                <span className="font-semibold text-[var(--foreground)]">
                   {profile.points.toLocaleString()}
                 </span>{" "}
                 Points
               </span>
               <span className="flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-gray-400" />
+                <Calendar className="w-3.5 h-3.5 text-[var(--foreground-muted)]" />
                 Member since {profile.memberSince}
               </span>
             </div>
@@ -416,21 +416,21 @@ export default function CustomerProfileClient({
                     {memberTierName} Tier
                   </span>
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-white/70 dark:bg-black/40">
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-[var(--surface-elevated)]/70 dark:bg-black/40">
                   {profile.plan} Plan
                 </span>
               </div>
-              <p className="text-[11px] text-gray-600 dark:text-gray-400">
+              <p className="text-[11px] text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)]">
                 Earn reward points on every order to redeem instant store discounts.
               </p>
             </div>
 
             {/* Reward Points Box — live data */}
-            <div className="p-4 rounded-xl border border-slate-200 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-950/40 space-y-2">
+            <div className="p-4 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)]/50 dark:bg-[var(--surface-alt)]/40 space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Coins className="w-4 h-4 text-amber-500" />
-                  <span className="text-xs font-bold text-gray-900 dark:text-white">
+                  <span className="text-xs font-bold text-[var(--foreground)]">
                     Electro Reward Points
                   </span>
                 </div>
@@ -438,9 +438,9 @@ export default function CustomerProfileClient({
                   {profile.points.toLocaleString()} pts
                 </span>
               </div>
-              <p className="text-[11px] text-gray-500 dark:text-gray-400">
+              <p className="text-[11px] text-[var(--foreground-muted)]">
                 Equivalent to{" "}
-                <span className="font-bold text-gray-900 dark:text-white">
+                <span className="font-bold text-[var(--foreground)]">
                   ${(profile.points * 0.01).toFixed(2)} USD
                 </span>{" "}
                 in store credit.
@@ -448,7 +448,7 @@ export default function CustomerProfileClient({
 
               {/* Next tier progress hint */}
               {profile.member?.toLowerCase() !== "diamond" && (
-                <div className="pt-1 text-[10px] text-gray-400 dark:text-gray-500">
+                <div className="pt-1 text-[10px] text-[var(--foreground-muted)]">
                   {profile.member?.toLowerCase() === "silver" && (
                     <span>🥇 <strong>{(1000 - profile.points).toLocaleString()}</strong> pts to Gold</span>
                   )}
@@ -468,22 +468,22 @@ export default function CustomerProfileClient({
             </div>
 
             {/* Account Status */}
-            <div className="space-y-2 pt-2 border-t border-slate-100 dark:border-gray-800 text-xs">
-              <div className="flex items-center justify-between text-gray-500 dark:text-gray-400">
+            <div className="space-y-2 pt-2 border-t border-[var(--border-color)] text-xs">
+              <div className="flex items-center justify-between text-[var(--foreground-muted)]">
                 <span>Account Status</span>
                 <span className="font-semibold text-emerald-600 dark:text-emerald-400 capitalize">
                   {profile.status}
                 </span>
               </div>
-              <div className="flex items-center justify-between text-gray-500 dark:text-gray-400">
+              <div className="flex items-center justify-between text-[var(--foreground-muted)]">
                 <span>Account Role</span>
-                <span className="font-semibold text-gray-900 dark:text-white capitalize">
+                <span className="font-semibold text-[var(--foreground)] capitalize">
                   {profile.role}
                 </span>
               </div>
-              <div className="flex items-center justify-between text-gray-500 dark:text-gray-400">
+              <div className="flex items-center justify-between text-[var(--foreground-muted)]">
                 <span>Email Verified</span>
-                <span className="font-semibold text-gray-900 dark:text-white">
+                <span className="font-semibold text-[var(--foreground)]">
                   {profile.emailVerified ? "Yes" : "Pending"}
                 </span>
               </div>

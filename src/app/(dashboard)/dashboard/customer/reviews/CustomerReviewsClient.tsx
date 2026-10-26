@@ -187,7 +187,7 @@ export default function CustomerReviewsClient({
             className={`w-3.5 h-3.5 ${
               star <= rating
                 ? "text-amber-400 fill-amber-400"
-                : "text-slate-200 dark:text-gray-700"
+                : "text-[var(--border-color)] dark:text-[var(--foreground-secondary)]"
             }`}
           />
         ))}
@@ -234,14 +234,14 @@ export default function CustomerReviewsClient({
               Reviews
             </span>
           </h1>
-          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-xs md:text-sm text-[var(--foreground-muted)] mt-1">
             View all your submitted product reviews and ratings.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
           <div className="px-3.5 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200/60 dark:border-amber-800/40 text-xs font-bold text-amber-700 dark:text-amber-300">
-            Total Reviews: <span className="font-extrabold text-amber-600 dark:text-white">{total}</span>
+            Total Reviews: <span className="font-extrabold text-amber-600 dark:text-[var(--foreground)]">{total}</span>
           </div>
         </div>
       </div>
@@ -249,8 +249,8 @@ export default function CustomerReviewsClient({
       {/* ── Filters & Search Bar ── */}
       <div className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-4 md:p-5 shadow-xs space-y-4">
         {/* Rating Filter Tabs */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-slate-100 dark:border-gray-800/80 pb-3">
-          <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider mr-1">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 border-b border-[var(--border-color)]/80 pb-3">
+          <span className="text-[11px] font-bold text-[var(--foreground-muted)] uppercase tracking-wider mr-1">
             Rating:
           </span>
           {RATING_FILTER_TABS.map((tab) => {
@@ -264,7 +264,7 @@ export default function CustomerReviewsClient({
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
                   isActive
                     ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-xs"
-                    : "bg-slate-50 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-gray-700 border border-slate-200/60 dark:border-gray-700"
+                    : "bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--surface-alt)] border border-[var(--border-color)]/60 dark:border-[var(--border-color)]"
                 }`}
               >
                 {rawRating !== "All" && <Star className={`w-3 h-3 ${isActive ? "fill-white" : "fill-amber-400 text-amber-400"}`} />}
@@ -303,18 +303,18 @@ export default function CustomerReviewsClient({
                 selectedKey={currentSort}
                 onSelectionChange={(key) => updateParams({ sort: key ? String(key) : "newest" })}
               >
-                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-slate-50 dark:bg-gray-800 text-xs font-semibold text-gray-700 dark:text-gray-200 flex items-center justify-between gap-1.5 cursor-pointer hover:border-amber-400 transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
+                <Select.Trigger className="h-10 w-full px-3.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-alt)] dark:bg-[var(--surface)] text-xs font-semibold text-[var(--foreground-secondary)] dark:text-[var(--foreground)] flex items-center justify-between gap-1.5 cursor-pointer hover:border-amber-400 transition-colors shadow-xs [&>span]:text-xs [&>span]:font-semibold">
                   <Select.Value className="text-xs font-semibold truncate" />
-                  <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-gray-400 shrink-0" />
+                  <Select.Indicator className="[&>svg]:w-3.5 [&>svg]:h-3.5 text-[var(--foreground-muted)] shrink-0" />
                 </Select.Trigger>
-                <Select.Popover className="w-52 p-1.5 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50">
+                <Select.Popover className="w-52 p-1.5 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl shadow-xl z-50">
                   <ListBox>
                     {SORT_OPTIONS.map((opt) => (
                       <ListBox.Item
                         key={opt.key}
                         id={opt.key}
                         textValue={opt.label}
-                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-amber-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 cursor-pointer flex items-center justify-between"
+                        className="text-xs font-medium px-3 py-2 rounded-lg hover:bg-amber-50 dark:hover:bg-[var(--surface-alt)] text-[var(--foreground)] cursor-pointer flex items-center justify-between"
                       >
                         {opt.label}
                         <ListBox.ItemIndicator />
@@ -329,7 +329,7 @@ export default function CustomerReviewsClient({
               <Button
                 size="sm"
                 onPress={handleResetFilters}
-                className="h-10 px-3 rounded-xl bg-slate-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-xs font-semibold cursor-pointer flex items-center gap-1"
+                className="h-10 px-3 rounded-xl bg-[var(--surface-alt)] text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] hover:text-[var(--foreground)] dark:hover:text-[var(--foreground)] text-xs font-semibold cursor-pointer flex items-center gap-1"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Reset</span>
@@ -341,20 +341,20 @@ export default function CustomerReviewsClient({
 
       {/* ── Reviews Table ── */}
       {isPending ? (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center shadow-xs">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-12 text-center shadow-xs">
           <div className="w-8 h-8 border-3 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-xs font-semibold text-gray-500">Loading your reviews...</p>
+          <p className="text-xs font-semibold text-[var(--foreground-muted)]">Loading your reviews...</p>
         </Card>
       ) : reviews.length === 0 ? (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center space-y-4 shadow-sm">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-12 text-center space-y-4 shadow-sm">
           <div className="w-16 h-16 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto">
             <Star className="w-8 h-8" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-base font-bold text-gray-900 dark:text-white">
+            <h3 className="text-base font-bold text-[var(--foreground)]">
               No reviews found
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-[var(--foreground-muted)]">
               {currentSearch
                 ? "No reviews match your search query."
                 : "You haven't written any product reviews yet."}
@@ -371,11 +371,11 @@ export default function CustomerReviewsClient({
           )}
         </Card>
       ) : (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl overflow-hidden shadow-xs p-0">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl overflow-hidden shadow-xs p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-100 dark:border-gray-800 bg-slate-50/80 dark:bg-gray-800/40 text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                <tr className="border-b border-[var(--border-color)] bg-[var(--surface-alt)]/80 dark:bg-[var(--surface)]/40 text-[11px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
                   <th className="py-3.5 px-4">Review ID</th>
                   <th className="py-3.5 px-4">Product</th>
                   <th className="py-3.5 px-4 text-center">Rating</th>
@@ -384,7 +384,7 @@ export default function CustomerReviewsClient({
                   <th className="py-3.5 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-gray-800/60 text-xs">
+              <tbody className="divide-y divide-[var(--border-color)]/60 text-xs">
                 {reviews.map((rev) => {
                   const id = rev.id || rev._id || "";
                   const shortId = id.slice(-6).toUpperCase();
@@ -400,17 +400,17 @@ export default function CustomerReviewsClient({
                     <tr
                       key={id}
                       onClick={() => openReviewModal(rev)}
-                      className="hover:bg-slate-50/80 dark:hover:bg-gray-800/40 transition-colors cursor-pointer group"
+                      className="hover:bg-[var(--surface-alt)]/80 dark:hover:bg-[var(--surface-alt)]/40 transition-colors cursor-pointer group"
                     >
                       {/* Review ID */}
-                      <td className="py-3.5 px-4 font-mono font-bold text-gray-500 dark:text-gray-400 whitespace-nowrap">
+                      <td className="py-3.5 px-4 font-mono font-bold text-[var(--foreground-muted)] whitespace-nowrap">
                         #{shortId}
                       </td>
 
                       {/* Product */}
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-2.5">
-                          <div className="relative w-10 h-10 rounded-xl bg-slate-100 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 shrink-0 overflow-hidden flex items-center justify-center">
+                          <div className="relative w-10 h-10 rounded-xl bg-[var(--surface-alt)] border border-[var(--border-color)] shrink-0 overflow-hidden flex items-center justify-center">
                             {rev.productImage ? (
                               <Image
                                 src={rev.productImage}
@@ -421,11 +421,11 @@ export default function CustomerReviewsClient({
                                 unoptimized
                               />
                             ) : (
-                              <ShoppingBag className="w-5 h-5 text-gray-400" />
+                              <ShoppingBag className="w-5 h-5 text-[var(--foreground-muted)]" />
                             )}
                           </div>
                           <div className="min-w-0 max-w-[180px]">
-                            <p className="font-bold text-gray-900 dark:text-white truncate group-hover:text-amber-600 transition-colors">
+                            <p className="font-bold text-[var(--foreground)] truncate group-hover:text-amber-600 transition-colors">
                               {rev.productTitle || "Product"}
                             </p>
                             {rev.productPrice !== undefined && rev.productPrice > 0 && (
@@ -449,7 +449,7 @@ export default function CustomerReviewsClient({
 
                       {/* Comment */}
                       <td className="py-3.5 px-4 max-w-[240px]">
-                        <p className="text-gray-600 dark:text-gray-300 truncate font-normal">
+                        <p className="text-[var(--foreground-muted)] truncate font-normal">
                           {rev.comment}
                         </p>
                         {rev.images && rev.images.length > 0 && (
@@ -461,9 +461,9 @@ export default function CustomerReviewsClient({
                       </td>
 
                       {/* Date */}
-                      <td className="py-3.5 px-4 text-gray-500 dark:text-gray-400 whitespace-nowrap text-[11px]">
+                      <td className="py-3.5 px-4 text-[var(--foreground-muted)] whitespace-nowrap text-[11px]">
                         <div className="flex items-center gap-1">
-                          <Calendar className="w-3.5 h-3.5 text-gray-400" />
+                          <Calendar className="w-3.5 h-3.5 text-[var(--foreground-muted)]" />
                           {dateStr}
                         </div>
                       </td>
@@ -479,7 +479,7 @@ export default function CustomerReviewsClient({
                             size="sm"
                             variant="ghost"
                             onPress={() => openReviewModal(rev)}
-                            className="w-8 h-8 rounded-lg text-gray-500 hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-950/50 cursor-pointer"
+                            className="w-8 h-8 rounded-lg text-[var(--foreground-muted)] hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-950/50 cursor-pointer"
                             aria-label="View Review Details"
                           >
                             <Eye className="w-3.5 h-3.5" />
@@ -504,14 +504,14 @@ export default function CustomerReviewsClient({
           </div>
 
           {/* ── Table Footer & Pagination ── */}
-          <div className="p-4 border-t border-slate-100 dark:border-gray-800 bg-slate-50/50 dark:bg-gray-800/20 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+          <div className="p-4 border-t border-[var(--border-color)] bg-[var(--surface-alt)]/50 dark:bg-[var(--surface)]/20 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-xs text-[var(--foreground-muted)]">
               Showing{" "}
-              <span className="font-bold text-gray-900 dark:text-white">
+              <span className="font-bold text-[var(--foreground)]">
                 {startItem}–{endItem}
               </span>{" "}
               of{" "}
-              <span className="font-bold text-gray-900 dark:text-white">{total}</span> reviews
+              <span className="font-bold text-[var(--foreground)]">{total}</span> reviews
             </p>
 
             {totalPages > 1 && (
@@ -530,7 +530,7 @@ export default function CustomerReviewsClient({
                   {getPageNumbers().map((p, idx) => {
                     if (p === "ellipsis") {
                       return (
-                        <span key={`ellipsis-${idx}`} className="px-2 text-xs text-gray-400">
+                        <span key={`ellipsis-${idx}`} className="px-2 text-xs text-[var(--foreground-muted)]">
                           ...
                         </span>
                       );
@@ -544,7 +544,7 @@ export default function CustomerReviewsClient({
                         className={`w-8 h-8 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                           isCurrent
                             ? "bg-amber-500 text-white shadow-xs"
-                            : "bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-gray-700 border border-slate-200/80 dark:border-gray-700"
+                            : "bg-[var(--surface-elevated)] text-[var(--foreground-muted)] hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--surface-alt)] border border-[var(--border-color)]/80 dark:border-[var(--border-color)]"
                         }`}
                       >
                         {p}
@@ -575,25 +575,25 @@ export default function CustomerReviewsClient({
       >
         <Modal.Backdrop>
           <Modal.Container size="md">
-            <Modal.Dialog className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-3xl p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <Modal.Dialog className="bg-[var(--surface-elevated)] border border-[var(--border-color)] dark:border-[var(--border-color)] rounded-3xl p-6 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
               {selectedReview && (
                 <>
                   {/* Modal Header */}
-                  <Modal.Header className="flex items-center justify-between border-b border-slate-100 dark:border-gray-800 pb-4">
+                  <Modal.Header className="flex items-center justify-between border-b border-[var(--border-color)] pb-4">
                     <div className="flex items-center gap-2.5">
                       <div className="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-500 flex items-center justify-center">
                         <Star className="w-5 h-5 fill-amber-500" />
                       </div>
                       <div>
-                        <Modal.Heading className="text-base font-bold text-gray-900 dark:text-white">
+                        <Modal.Heading className="text-base font-bold text-[var(--foreground)]">
                           Review Details
                         </Modal.Heading>
-                        <p className="text-xs text-gray-400">
+                        <p className="text-xs text-[var(--foreground-muted)]">
                           ID: {selectedReview.id || selectedReview._id}
                         </p>
                       </div>
                     </div>
-                    <Modal.CloseTrigger className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 cursor-pointer p-1 rounded-lg">
+                    <Modal.CloseTrigger className="text-[var(--foreground-muted)] hover:text-[var(--foreground-secondary)] dark:hover:text-[var(--foreground)] cursor-pointer p-1 rounded-lg">
                       ✕
                     </Modal.CloseTrigger>
                   </Modal.Header>
@@ -601,9 +601,9 @@ export default function CustomerReviewsClient({
                   {/* Modal Body */}
                   <Modal.Body className="space-y-6">
                     {/* Product Info Card */}
-                    <div className="p-4 rounded-2xl bg-slate-50 dark:bg-gray-800/60 border border-slate-100 dark:border-gray-700/60 flex items-center justify-between gap-3">
+                    <div className="p-4 rounded-2xl bg-[var(--surface-alt)] dark:bg-[var(--surface)]/60 border border-[var(--border-color)] dark:border-[var(--border-color)]/60 flex items-center justify-between gap-3">
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="relative w-14 h-14 rounded-xl bg-white dark:bg-gray-800 border border-slate-200 dark:border-gray-700 shrink-0 overflow-hidden flex items-center justify-center">
+                        <div className="relative w-14 h-14 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)] shrink-0 overflow-hidden flex items-center justify-center">
                           {selectedReview.productImage ? (
                             <Image
                               src={selectedReview.productImage}
@@ -614,11 +614,11 @@ export default function CustomerReviewsClient({
                               unoptimized
                             />
                           ) : (
-                            <ShoppingBag className="w-6 h-6 text-gray-400" />
+                            <ShoppingBag className="w-6 h-6 text-[var(--foreground-muted)]" />
                           )}
                         </div>
                         <div className="min-w-0">
-                          <p className="text-xs font-bold text-gray-900 dark:text-white truncate">
+                          <p className="text-xs font-bold text-[var(--foreground)] truncate">
                             {selectedReview.productTitle || "Product"}
                           </p>
                           {selectedReview.productPrice !== undefined && selectedReview.productPrice > 0 && (
@@ -640,14 +640,14 @@ export default function CustomerReviewsClient({
                     </div>
 
                     {/* Rating & Date */}
-                    <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50/50 dark:bg-gray-800/30">
+                    <div className="flex items-center justify-between p-3 rounded-xl bg-[var(--surface-alt)]">
                       <div className="flex items-center gap-1.5">
                         {renderStars(selectedReview.rating)}
                         <span className="text-xs font-extrabold text-amber-600 dark:text-amber-400 ml-1">
                           {selectedReview.rating} of 5 Stars
                         </span>
                       </div>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-[var(--foreground-muted)]">
                         {selectedReview.date || selectedReview.createdAt
                           ? new Date(selectedReview.date || selectedReview.createdAt!).toLocaleDateString(undefined, {
                               month: "short",
@@ -660,11 +660,11 @@ export default function CustomerReviewsClient({
 
                     {/* Review Comment */}
                     <div className="space-y-2">
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-gray-300">
+                      <div className="flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)]">
                         <MessageSquare className="w-4 h-4 text-amber-500" />
                         <span>Your Review:</span>
                       </div>
-                      <div className="p-4 rounded-2xl bg-slate-50 dark:bg-gray-800/60 border border-slate-200/80 dark:border-gray-700 text-xs leading-relaxed text-gray-800 dark:text-gray-200 italic">
+                      <div className="p-4 rounded-2xl bg-[var(--surface-alt)] dark:bg-[var(--surface)]/60 border border-[var(--border-color)]/80 dark:border-[var(--border-color)] text-xs leading-relaxed text-[var(--foreground)] italic">
                         "{selectedReview.comment}"
                       </div>
                     </div>
@@ -686,7 +686,7 @@ export default function CustomerReviewsClient({
                                 setGalleryIndex(idx);
                                 setIsGalleryOpen(true);
                               }}
-                              className="relative w-16 h-16 rounded-xl overflow-hidden border border-slate-200 dark:border-gray-700 hover:border-amber-400 dark:hover:border-amber-600 transition-colors cursor-pointer group"
+                              className="relative w-16 h-16 rounded-xl overflow-hidden border border-[var(--border-color)] hover:border-amber-400 dark:hover:border-amber-600 transition-colors cursor-pointer group"
                             >
                               <img src={img} alt={`Photo ${idx + 1}`} className="w-full h-full object-cover" />
                               <div className="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
@@ -700,7 +700,7 @@ export default function CustomerReviewsClient({
                   </Modal.Body>
 
                   {/* Modal Footer Actions */}
-                  <Modal.Footer className="flex items-center justify-between gap-3 pt-4 border-t border-slate-100 dark:border-gray-800">
+                  <Modal.Footer className="flex items-center justify-between gap-3 pt-4 border-t border-[var(--border-color)]">
                     <Button
                       size="sm"
                       variant="danger-soft"
@@ -715,7 +715,7 @@ export default function CustomerReviewsClient({
                     <Button
                       size="sm"
                       onPress={() => setIsModalOpen(false)}
-                      className="px-5 h-9 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold text-xs cursor-pointer"
+                      className="px-5 h-9 rounded-xl bg-[var(--surface-elevated)] dark:bg-[var(--surface-elevated)] text-white dark:text-[var(--foreground)] font-bold text-xs cursor-pointer"
                     >
                       Close
                     </Button>
@@ -733,22 +733,22 @@ export default function CustomerReviewsClient({
       <Modal isOpen={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
         <Modal.Backdrop>
           <Modal.Container size="sm">
-            <Modal.Dialog className="bg-white dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-3xl p-6 shadow-2xl space-y-4">
+            <Modal.Dialog className="bg-[var(--surface-elevated)] border border-[var(--border-color)] dark:border-[var(--border-color)] rounded-3xl p-6 shadow-2xl space-y-4">
               <div className="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center mx-auto border border-rose-100 dark:border-rose-900/40">
                 <AlertTriangle className="w-6 h-6" />
               </div>
 
               <div className="text-center space-y-2">
-                <h3 className="text-base font-extrabold text-gray-900 dark:text-white">
+                <h3 className="text-base font-extrabold text-[var(--foreground)]">
                   Delete Review?
                 </h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-xs text-[var(--foreground-muted)]">
                   Are you sure you want to delete your review? This action cannot be undone.
                 </p>
 
                 {reviewToDelete && (
-                  <div className="p-3 bg-slate-50 dark:bg-gray-800/60 border border-slate-200/80 dark:border-gray-700/60 rounded-2xl text-left space-y-1.5 mt-2">
-                    <p className="text-xs font-bold text-gray-900 dark:text-white line-clamp-1">
+                  <div className="p-3 bg-[var(--surface-alt)] dark:bg-[var(--surface)]/60 border border-[var(--border-color)]/80 dark:border-[var(--border-color)]/60 rounded-2xl text-left space-y-1.5 mt-2">
+                    <p className="text-xs font-bold text-[var(--foreground)] line-clamp-1">
                       {reviewToDelete.productTitle || "Product Review"}
                     </p>
                     <div className="flex items-center gap-1">
@@ -758,16 +758,16 @@ export default function CustomerReviewsClient({
                           className={`w-3 h-3 ${
                             star <= reviewToDelete.rating
                               ? "fill-amber-400 text-amber-400"
-                              : "text-slate-300 dark:text-gray-600"
+                              : "text-[var(--foreground-muted)]"
                           }`}
                         />
                       ))}
-                      <span className="text-[10px] font-bold text-gray-500 dark:text-gray-400 ml-1">
+                      <span className="text-[10px] font-bold text-[var(--foreground-muted)] ml-1">
                         ({reviewToDelete.rating}/5)
                       </span>
                     </div>
                     {reviewToDelete.comment && (
-                      <p className="text-[11px] text-gray-600 dark:text-gray-300 italic line-clamp-2">
+                      <p className="text-[11px] text-[var(--foreground-muted)] italic line-clamp-2">
                         "{reviewToDelete.comment}"
                       </p>
                     )}
@@ -778,7 +778,7 @@ export default function CustomerReviewsClient({
               <div className="flex items-center justify-center gap-3 pt-2">
                 <Button
                   onPress={() => setIsDeleteModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold text-xs cursor-pointer transition-colors"
+                  className="px-4 py-2 rounded-xl bg-[var(--surface-alt)] hover:bg-[var(--surface-alt)] dark:bg-[var(--surface)] dark:hover:bg-[var(--surface-alt)] text-[var(--foreground)] font-bold text-xs cursor-pointer transition-colors"
                 >
                   Cancel
                 </Button>

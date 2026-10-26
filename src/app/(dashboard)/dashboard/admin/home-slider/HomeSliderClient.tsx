@@ -379,32 +379,32 @@ export default function HomeSliderClient({
 
       {/* ── Stats Summary Badges ── */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="p-4 bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl flex items-center gap-4 shadow-2xs">
+        <Card className="p-4 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl flex items-center gap-4 shadow-2xs">
           <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
             <SlidersHorizontal className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">Total Slides</p>
-            <p className="text-xl font-extrabold text-gray-900 dark:text-white">{totalSlides}</p>
+            <p className="text-xs font-semibold text-[var(--foreground-muted)]">Total Slides</p>
+            <p className="text-xl font-extrabold text-[var(--foreground)]">{totalSlides}</p>
           </div>
         </Card>
 
-        <Card className="p-4 bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl flex items-center gap-4 shadow-2xs">
+        <Card className="p-4 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl flex items-center gap-4 shadow-2xs">
           <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
             <CheckCircle2 className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">Active On Homepage</p>
+            <p className="text-xs font-semibold text-[var(--foreground-muted)]">Active On Homepage</p>
             <p className="text-xl font-extrabold text-emerald-600 dark:text-emerald-400">{activeSlides}</p>
           </div>
         </Card>
 
-        <Card className="p-4 bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl flex items-center gap-4 shadow-2xs">
+        <Card className="p-4 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl flex items-center gap-4 shadow-2xs">
           <div className="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
             <Clock className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs font-semibold text-gray-500 dark:text-gray-400">Draft / Inactive</p>
+            <p className="text-xs font-semibold text-[var(--foreground-muted)]">Draft / Inactive</p>
             <p className="text-xl font-extrabold text-amber-600 dark:text-amber-400">{inactiveSlides}</p>
           </div>
         </Card>
@@ -415,18 +415,18 @@ export default function HomeSliderClient({
         <div className="flex flex-wrap items-center gap-3">
           {/* Search bar */}
           <div className="relative min-w-[260px] sm:w-80">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 z-10" />
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--foreground-muted)] z-10" />
             <Input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search tab title, product, tagline..."
-              className="w-full pl-9 pr-4 h-10 bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-xl text-xs"
+              className="w-full pl-9 pr-4 h-10 bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl text-xs"
             />
           </div>
 
           {/* Status filter buttons */}
-          <div className="flex items-center gap-1 p-1 rounded-xl bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800">
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)]">
             {(["all", "active", "inactive"] as const).map((st) => (
               <button
                 key={st}
@@ -434,7 +434,7 @@ export default function HomeSliderClient({
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize transition-all cursor-pointer ${
                   statusFilter === st
                     ? "bg-primary text-white shadow-xs"
-                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                    : "text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] hover:text-[var(--foreground)] dark:hover:text-[var(--foreground)]"
                 }`}
               >
                 {st}
@@ -447,7 +447,7 @@ export default function HomeSliderClient({
           <Link
             href="/"
             target="_blank"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-gray-800 text-xs font-semibold transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--border-color)] bg-[var(--surface-elevated)] text-[var(--foreground)] hover:bg-[var(--surface-alt)] dark:hover:bg-[var(--surface)] text-xs font-semibold transition-colors"
           >
             <Eye className="w-3.5 h-3.5 text-primary" />
             <span>View Live Home Slider</span>
@@ -458,15 +458,15 @@ export default function HomeSliderClient({
 
       {/* ── Slides Table ── */}
       {filteredSlides.length === 0 ? (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl p-12 text-center space-y-4 shadow-sm">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl p-12 text-center space-y-4 shadow-sm">
           <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
             <SlidersHorizontal className="w-8 h-8" />
           </div>
           <div className="space-y-1">
-            <h3 className="text-base font-bold text-gray-900 dark:text-white">
+            <h3 className="text-base font-bold text-[var(--foreground)]">
               No hero slides found
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs text-[var(--foreground-muted)]">
               {searchQuery
                 ? "Try adjusting your search query or status filter."
                 : "Get started by adding your first hero deal slide."}
@@ -481,11 +481,11 @@ export default function HomeSliderClient({
           </Button>
         </Card>
       ) : (
-        <Card className="bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-2xl overflow-hidden shadow-xs p-0">
+        <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-2xl overflow-hidden shadow-xs p-0">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-100 dark:border-gray-800 bg-slate-50/80 dark:bg-gray-800/40 text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                <tr className="border-b border-[var(--border-color)] bg-[var(--surface-alt)]/80 dark:bg-[var(--surface-alt)]/40 text-[11px] font-bold uppercase tracking-wider text-[var(--foreground-muted)]">
                   <th className="py-3.5 px-4 w-14 text-center">Order</th>
                   <th className="py-3.5 px-4">Tab Title & Tagline</th>
                   <th className="py-3.5 px-4">Linked Product</th>
@@ -495,7 +495,7 @@ export default function HomeSliderClient({
                   <th className="py-3.5 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-gray-800/60 text-xs">
+              <tbody className="divide-y divide-[var(--border-color)]/60 text-xs">
                 {filteredSlides.map((slide, index) => {
                   const sId = (slide.id || slide._id) as string;
                   const timer = getTimeRemaining(slide.targetDate);
@@ -511,11 +511,11 @@ export default function HomeSliderClient({
                   return (
                     <tr
                       key={sId || index}
-                      className="hover:bg-slate-50/70 dark:hover:bg-gray-800/30 transition-colors bg-white dark:bg-gray-900"
+                      className="hover:bg-[var(--surface-alt)]/70 dark:hover:bg-[var(--surface)]/30 transition-colors bg-[var(--surface-elevated)]"
                     >
                       {/* Order */}
                       <td className="py-3.5 px-4 text-center">
-                        <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-100 dark:bg-gray-800 font-bold text-gray-700 dark:text-gray-300 font-mono text-xs">
+                        <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-[var(--surface-alt)] font-bold text-[var(--foreground)] font-mono text-xs">
                           {slide.order ?? index + 1}
                         </span>
                       </td>
@@ -523,10 +523,10 @@ export default function HomeSliderClient({
                       {/* Tab Title & Tagline */}
                       <td className="py-3.5 px-4 min-w-[180px]">
                         <div>
-                          <p className="font-bold text-gray-900 dark:text-white uppercase tracking-tight text-xs">
+                          <p className="font-bold text-[var(--foreground)] uppercase tracking-tight text-xs">
                             {slide.tabTitle}
                           </p>
-                          <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-1">
+                          <p className="text-[11px] text-[var(--foreground-muted)] mt-0.5 line-clamp-1">
                             {slide.tagline}
                           </p>
                         </div>
@@ -535,7 +535,7 @@ export default function HomeSliderClient({
                       {/* Linked Product */}
                       <td className="py-3.5 px-4 min-w-[200px]">
                         <div className="flex items-center gap-3">
-                          <div className="relative w-12 h-12 rounded-xl bg-slate-100 dark:bg-gray-800 border border-slate-200 dark:border-gray-700 flex items-center justify-center shrink-0 overflow-hidden">
+                          <div className="relative w-12 h-12 rounded-xl bg-[var(--surface-alt)] border border-[var(--border-color)] flex items-center justify-center shrink-0 overflow-hidden">
                             {slide.image ? (
                               <Image
                                 src={slide.image}
@@ -546,11 +546,11 @@ export default function HomeSliderClient({
                                 unoptimized
                               />
                             ) : (
-                              <Package className="w-5 h-5 text-gray-400" />
+                              <Package className="w-5 h-5 text-[var(--foreground-muted)]" />
                             )}
                           </div>
                           <div className="min-w-0">
-                            <p className="font-semibold text-gray-800 dark:text-gray-200 line-clamp-1">
+                            <p className="font-semibold text-[var(--foreground)] line-clamp-1">
                               {slide.productName || "Unnamed Product"}
                             </p>
                             <div className="flex items-baseline gap-2 mt-0.5">
@@ -558,7 +558,7 @@ export default function HomeSliderClient({
                                 {priceStr}
                               </span>
                               {origPriceStr && (
-                                <span className="text-[10px] text-gray-400 line-through">
+                                <span className="text-[10px] text-[var(--foreground-muted)] line-through">
                                   {origPriceStr}
                                 </span>
                               )}
@@ -568,8 +568,8 @@ export default function HomeSliderClient({
                       </td>
 
                       {/* Headline / Subtitle */}
-                      <td className="py-3.5 px-4 max-w-xs font-semibold text-gray-800 dark:text-gray-200">
-                        <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-gray-800 text-[11px] text-gray-700 dark:text-gray-300 font-mono">
+                      <td className="py-3.5 px-4 max-w-xs font-semibold text-[var(--foreground)]">
+                        <span className="px-2 py-0.5 rounded-md bg-[var(--surface-alt)] text-[11px] text-[var(--foreground)] font-mono">
                           {slide.subtitle}
                         </span>
                       </td>
@@ -577,8 +577,8 @@ export default function HomeSliderClient({
                       {/* Target Date (From Linked Product) */}
                       <td className="py-3.5 px-4 whitespace-nowrap">
                         <div className="flex flex-col">
-                          <span className="font-medium text-gray-700 dark:text-gray-300 text-xs flex items-center gap-1.5">
-                            <CalendarIcon className="w-3.5 h-3.5 text-gray-400" />
+                          <span className="font-medium text-[var(--foreground)] text-xs flex items-center gap-1.5">
+                            <CalendarIcon className="w-3.5 h-3.5 text-[var(--foreground-muted)]" />
                             {formatDisplayDate(slide.targetDate)}
                           </span>
                           <span
@@ -611,7 +611,7 @@ export default function HomeSliderClient({
                             className={`text-[10px] font-bold uppercase ${
                               slide.isActive !== false
                                 ? "text-emerald-600 dark:text-emerald-400"
-                                : "text-gray-400"
+                                : "text-[var(--foreground-muted)]"
                             }`}
                           >
                             {slide.isActive !== false ? "Active" : "Off"}
@@ -624,14 +624,14 @@ export default function HomeSliderClient({
                         <div className="inline-flex items-center gap-1.5">
                           <button
                             onClick={() => setPreviewSlide(slide)}
-                            className="p-1.5 rounded-lg text-gray-500 hover:text-primary hover:bg-primary/10 dark:hover:bg-sky-950/40 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg text-[var(--foreground-muted)] hover:text-primary hover:bg-primary/10 dark:hover:bg-[var(--accent)]/10 transition-colors cursor-pointer"
                             title="Preview Hero Banner"
                           >
                             <Eye className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleOpenEdit(slide)}
-                            className="p-1.5 rounded-lg text-sky-600 hover:bg-primary/10 dark:hover:bg-sky-950/40 transition-colors cursor-pointer"
+                            className="p-1.5 rounded-lg text-primary hover:bg-primary/10 dark:hover:bg-[var(--accent)]/10 transition-colors cursor-pointer"
                             title="Edit Slide"
                           >
                             <Edit2 className="w-4 h-4" />
@@ -675,7 +675,7 @@ export default function HomeSliderClient({
                 <form onSubmit={handleSubmitForm} id="slide-form" className="space-y-5">
                   {/* Select Product */}
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                    <label className="text-xs font-semibold text-[var(--foreground)]">
                       Select Linked Product <span className="text-rose-500">*</span>
                     </label>
                     <Select
@@ -693,7 +693,7 @@ export default function HomeSliderClient({
                       placeholder="Choose product from catalog"
                       isRequired
                     >
-                      <Select.Trigger className="w-full cursor-pointer bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-xl">
+                      <Select.Trigger className="w-full cursor-pointer bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl">
                         <Select.Value />
                         <Select.Indicator />
                       </Select.Trigger>
@@ -726,9 +726,9 @@ export default function HomeSliderClient({
 
                   {/* Selected Product Live Sync Info Banner */}
                   {selectedProduct && (
-                    <div className="p-4 bg-sky-50/70 dark:bg-sky-950/30 border border-sky-200/70 dark:border-sky-800/40 rounded-2xl space-y-3">
+                    <div className="p-4 bg-[var(--accent)]/10 dark:bg-[var(--accent)]/10 border border-[var(--border-color)] rounded-2xl space-y-3">
                       <div className="flex items-center gap-3">
-                        <div className="relative w-12 h-12 rounded-xl bg-white dark:bg-gray-800 border border-sky-200/60 dark:border-sky-800 flex items-center justify-center shrink-0 overflow-hidden">
+                        <div className="relative w-12 h-12 rounded-xl bg-[var(--surface-elevated)] border border-[var(--border-color)] flex items-center justify-center shrink-0 overflow-hidden">
                           {selectedProduct.image ? (
                             <Image
                               src={selectedProduct.image}
@@ -743,16 +743,16 @@ export default function HomeSliderClient({
                           )}
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-xs font-bold text-gray-900 dark:text-white truncate">
+                          <p className="text-xs font-bold text-[var(--foreground)] truncate">
                             {selectedProduct.title}
                           </p>
-                          <p className="text-[11px] text-gray-600 dark:text-gray-300">
+                          <p className="text-[11px] text-[var(--foreground-muted)]">
                             Deal Price:{" "}
                             <span className="font-bold text-red-500">
                               ${Number(selectedProduct.price || 0).toFixed(2)}
                             </span>
                             {selectedProduct.originalPrice && (
-                              <span className="ml-1.5 text-[10px] text-gray-400 line-through">
+                              <span className="ml-1.5 text-[10px] text-[var(--foreground-muted)] line-through">
                                 ${Number(selectedProduct.originalPrice).toFixed(2)}
                               </span>
                             )}
@@ -778,7 +778,7 @@ export default function HomeSliderClient({
                   {/* Tab Title & Subtitle */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1">
-                      <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                      <label className="text-xs font-semibold text-[var(--foreground)]">
                         Tab Bottom Label <span className="text-rose-500">*</span>
                       </label>
                       <Input
@@ -787,16 +787,16 @@ export default function HomeSliderClient({
                           setFormData((prev) => ({ ...prev, tabTitle: e.target.value }))
                         }
                         placeholder="e.g. SO MUCH TO WATCH IN 4K TVS"
-                        className="w-full bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-xl text-xs"
+                        className="w-full bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl text-xs"
                         required
                       />
-                      <span className="text-[10px] text-gray-400">
+                      <span className="text-[10px] text-[var(--foreground-muted)]">
                         Label on the bottom navigation tab
                       </span>
                     </div>
 
                     <div className="flex flex-col gap-1">
-                      <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                      <label className="text-xs font-semibold text-[var(--foreground)]">
                         Big Headline / Subtitle <span className="text-rose-500">*</span>
                       </label>
                       <Input
@@ -805,10 +805,10 @@ export default function HomeSliderClient({
                           setFormData((prev) => ({ ...prev, subtitle: e.target.value }))
                         }
                         placeholder="e.g. LIMITED WEEK DEAL"
-                        className="w-full bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-xl text-xs"
+                        className="w-full bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl text-xs"
                         required
                       />
-                      <span className="text-[10px] text-gray-400">
+                      <span className="text-[10px] text-[var(--foreground-muted)]">
                         Rendered on the left side in large bold text
                       </span>
                     </div>
@@ -816,7 +816,7 @@ export default function HomeSliderClient({
 
                   {/* Tagline */}
                   <div className="flex flex-col gap-1">
-                    <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                    <label className="text-xs font-semibold text-[var(--foreground)]">
                       Tagline / Callout <span className="text-rose-500">*</span>
                     </label>
                     <Input
@@ -825,14 +825,14 @@ export default function HomeSliderClient({
                         setFormData((prev) => ({ ...prev, tagline: e.target.value }))
                       }
                       placeholder="e.g. HURRY UP BEFORE OFFER WILL END"
-                      className="w-full bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-xl text-xs"
+                      className="w-full bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl text-xs"
                       required
                     />
                   </div>
 
                   {/* Display Order */}
                   <div className="flex flex-col gap-1">
-                    <label className="text-xs font-semibold text-gray-700 dark:text-gray-300">
+                    <label className="text-xs font-semibold text-[var(--foreground)]">
                       Display Order / Position
                     </label>
                     <Input
@@ -846,17 +846,17 @@ export default function HomeSliderClient({
                         }))
                       }
                       placeholder="0"
-                      className="w-full bg-white dark:bg-gray-900 border border-slate-200/80 dark:border-gray-800 rounded-xl text-xs font-mono"
+                      className="w-full bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-xl text-xs font-mono"
                     />
                   </div>
 
                   {/* Status Toggle Switch */}
-                  <div className="flex items-center justify-between p-3.5 bg-slate-50 dark:bg-gray-800/40 rounded-xl border border-slate-200/60 dark:border-gray-800">
+                  <div className="flex items-center justify-between p-3.5 bg-[var(--surface-alt)] rounded-xl border border-[var(--border-color)]/60">
                     <div>
-                      <p className="text-xs font-bold text-gray-800 dark:text-gray-200">
+                      <p className="text-xs font-bold text-[var(--foreground)]">
                         Active on Homepage
                       </p>
-                      <p className="text-[10px] text-gray-400">
+                      <p className="text-[10px] text-[var(--foreground-muted)]">
                         When enabled, this slide appears in the hero tab rotation.
                       </p>
                     </div>
@@ -889,7 +889,7 @@ export default function HomeSliderClient({
                   type="submit"
                   form="slide-form"
                   isDisabled={isSubmitting}
-                  className="px-5 py-2 rounded-xl bg-gradient-to-r from-primary to-primary-hover hover:from-primary-hover hover:to-primary text-white text-xs font-bold shadow-md shadow-primary/25 cursor-pointer hover:opacity-95 transition-all"
+                  className="px-5 py-2 rounded-xl bg-brand-gradient text-[var(--on-grad-text)] text-xs font-bold shadow-xs cursor-pointer hover:opacity-95 transition-all"
                 >
                   <Check className="w-4 h-4" />
                   {isSubmitting
@@ -923,17 +923,17 @@ export default function HomeSliderClient({
 
               <Modal.Body>
                 {previewSlide && (
-                  <div className="relative bg-gradient-to-b from-[#f8f9fa] via-[#f3f4f6] to-[#eef0f3] dark:from-gray-900 dark:via-gray-900 dark:to-gray-950 rounded-2xl overflow-hidden border border-gray-200/80 dark:border-gray-800 p-6 md:p-8">
+                  <div className="relative bg-gradient-to-b from-[var(--surface-alt)] to-[var(--surface-elevated)] dark:from-[var(--surface-elevated)] dark:to-[var(--surface-alt)] rounded-2xl overflow-hidden border border-[var(--border-color)] p-6 md:p-8">
                     <div className="grid grid-cols-1 md:grid-cols-12 items-center gap-6">
                       {/* Left */}
                       <div className="md:col-span-5 space-y-2 text-center md:text-left">
-                        <h3 className="text-2xl md:text-3xl font-light text-gray-800 dark:text-gray-100 uppercase leading-tight">
+                        <h3 className="text-2xl md:text-3xl font-light text-[var(--foreground)] dark:text-[var(--foreground)] uppercase leading-tight">
                           {previewSlide.subtitle.split(" ")[0]} <br />
                           <span className="font-bold">
                             {previewSlide.subtitle.split(" ").slice(1).join(" ")}
                           </span>
                         </h3>
-                        <p className="text-[11px] font-semibold text-gray-500 dark:text-gray-300 uppercase tracking-wide">
+                        <p className="text-[11px] font-semibold text-[var(--foreground-muted)] dark:text-[var(--foreground-muted)] uppercase tracking-wide">
                           {previewSlide.tagline}
                         </p>
                         <div className="pt-2">
@@ -962,14 +962,14 @@ export default function HomeSliderClient({
                             ? `$${previewSlide.price.toFixed(2)}`
                             : previewSlide.price || "$0.00"}
                         </div>
-                        <div className="text-[10px] text-gray-500 uppercase font-semibold">
+                        <div className="text-[10px] text-[var(--foreground-muted)] uppercase font-semibold">
                           Countdown End: {formatDisplayDate(previewSlide.targetDate)}
                         </div>
                       </div>
                     </div>
 
-                    <div className="mt-6 pt-3 border-t border-gray-200 dark:border-gray-800 text-center">
-                      <span className="text-xs font-bold uppercase text-gray-700 dark:text-gray-300">
+                    <div className="mt-6 pt-3 border-t border-[var(--border-color)] text-center">
+                      <span className="text-xs font-bold uppercase text-[var(--foreground)]">
                         Tab Label: &ldquo;{previewSlide.tabTitle}&rdquo;
                       </span>
                     </div>
@@ -981,7 +981,7 @@ export default function HomeSliderClient({
                 <Button
                   variant="outline"
                   onPress={() => setPreviewSlide(null)}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer border border-slate-200 dark:border-gray-700"
+                  className="px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer border border-[var(--border-color)]"
                 >
                   Close Preview
                 </Button>

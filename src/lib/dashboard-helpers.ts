@@ -23,7 +23,7 @@ import {
 
 const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-const PALETTE = [
+const DEFAULT_PALETTE = [
   "#0284c7", // Sky blue
   "#2563eb", // Royal blue
   "#6366f1", // Indigo
@@ -33,6 +33,69 @@ const PALETTE = [
   "#10b981", // Emerald
   "#f59e0b", // Amber
 ];
+
+function hexToRgb(hex: string): [number, number, number] | null {
+  const clean = hex.replace("#", "").trim();
+  if (clean.length === 3) {
+    return [
+      parseInt(clean[0] + clean[0], 16),
+      parseInt(clean[1] + clean[1], 16),
+      parseInt(clean[2] + clean[2], 16),
+    ];
+  }
+  if (clean.length === 6) {
+    return [
+      parseInt(clean.slice(0, 2), 16),
+      parseInt(clean.slice(2, 4), 16),
+      parseInt(clean.slice(4, 6), 16),
+    ];
+  }
+  return null;
+}
+
+function mixHex(hex1: string, hex2: string, weight: number): string {
+  const rgb1 = hexToRgb(hex1);
+  const rgb2 = hexToRgb(hex2);
+  if (!rgb1 || !rgb2) return hex1;
+  const w = Math.max(0, Math.min(1, weight));
+  const r = Math.round(rgb1[0] * (1 - w) + rgb2[0] * w);
+  const g = Math.round(rgb1[1] * (1 - w) + rgb2[1] * w);
+  const b = Math.round(rgb1[2] * (1 - w) + rgb2[2] * w);
+  return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+}
+
+export function getChartPalette(): string[] {
+  if (typeof window !== "undefined") {
+    try {
+      const style = getComputedStyle(document.documentElement);
+      const via = style.getPropertyValue("--site-topbar-via").trim() || style.getPropertyValue("--brand-flat").trim() || style.getPropertyValue("--primary").trim();
+      const from = style.getPropertyValue("--site-topbar-from").trim() || via;
+      const to = style.getPropertyValue("--site-topbar-to").trim() || via;
+      if (via && via.startsWith("#")) {
+        return [
+          via,
+          from && from.startsWith("#") ? from : via,
+          to && to.startsWith("#") ? to : via,
+          mixHex(via, "#ffffff", 0.35),
+          mixHex(to && to.startsWith("#") ? to : via, "#ffffff", 0.5),
+          mixHex(via, "#000000", 0.28),
+          mixHex(from && from.startsWith("#") ? from : via, "#000000", 0.4),
+          mixHex(via, "#ffffff", 0.65),
+        ];
+      }
+    } catch {
+      // Fallback
+    }
+  }
+  return DEFAULT_PALETTE;
+}
+
+export function getChartColor(idx: number): string {
+  const palette = getChartPalette();
+  return palette[idx % palette.length];
+}
+
+const PALETTE = DEFAULT_PALETTE;
 
 /**
  * Generate last N month labels in chronological order ending at current month
@@ -460,7 +523,7 @@ export function aggregateAdminDashboard(
         name,
         value: Math.round((count / totalCatalogProducts) * 100),
         count,
-        color: PALETTE[idx % PALETTE.length],
+        color: getChartColor(idx),
       }))
     : [];
 
@@ -503,7 +566,7 @@ export function aggregateAdminDashboard(
       value: Math.round((item.count / totalPaymentOrders) * 100),
       count: item.count,
       amount: item.amount,
-      color: PALETTE[idx % PALETTE.length],
+      color: getChartColor(idx),
     }));
 
   // Top Products
@@ -821,7 +884,7 @@ export function aggregateCustomerDashboard(
         name,
         value: Math.round((item.amount / totalCatAmount) * 100),
         amount: item.amount,
-        color: PALETTE[idx % PALETTE.length],
+        color: getChartColor(idx),
       }))
     : [];
 
@@ -829,8 +892,8 @@ export function aggregateCustomerDashboard(
   const totalOrders = orders.length || 1;
   const orderStatusData: CustomerOrderStatusItem[] = [
     { name: "Delivered", value: Math.round((deliveredCount / totalOrders) * 100), color: "#10b981" },
-    { name: "Shipped / In Transit", value: Math.round((inTransitCount / totalOrders) * 100), color: "#0284c7" },
-    { name: "Processing", value: Math.round((processingCount / totalOrders) * 100), color: "#6366f1" },
+    { name: "Shipped / In Transit", value: Math.round((inTransitCount / totalOrders) * 100), color: getChartColor(0) },
+    { name: "Processing", value: Math.round((processingCount / totalOrders) * 100), color: getChartColor(2) },
   ].filter((s) => s.value > 0);
 
   // Payment Method Data (Graph 5)
@@ -841,7 +904,7 @@ export function aggregateCustomerDashboard(
         value: Math.round((item.count / totalPmCount) * 100),
         count: item.count,
         amount: item.amount,
-        color: PALETTE[idx % PALETTE.length],
+        color: getChartColor(idx),
       }))
     : [];
 

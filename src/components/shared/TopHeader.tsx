@@ -22,9 +22,9 @@ export default function TopBar() {
   const cp = settings.colorPalette;
   const gradientStyle =
     cp?.topBarFrom && cp?.topBarVia && cp?.topBarTo
-      ? {
-          background: `linear-gradient(to right, ${cp.topBarFrom}, ${cp.topBarVia}, ${cp.topBarTo})`,
-        }
+      ? ({
+          "--topbar-gradient": `linear-gradient(to right, ${cp.topBarFrom}, ${cp.topBarVia}, ${cp.topBarTo})`,
+        } as React.CSSProperties)
       : undefined;
 
   // Shipping threshold / text
@@ -49,19 +49,19 @@ export default function TopBar() {
   return (
     <div
       style={gradientStyle}
-      className="relative w-full bg-gradient-to-r from-primary via-primary-hover to-primary dark:from-[var(--surface-elevated)] dark:via-[var(--surface)] dark:to-[var(--surface-elevated)] text-white dark:text-gray-200 text-xs transition-colors duration-200 shadow-xs"
+      className="relative w-full [background:var(--topbar-gradient,linear-gradient(to_right,var(--primary),var(--primary-hover),var(--primary)))] dark:[background:none] dark:bg-gradient-to-r dark:from-[var(--surface-elevated)] dark:via-[var(--surface)] dark:to-[var(--surface-elevated)] text-white dark:text-[var(--foreground)] text-xs transition-colors duration-200 shadow-xs"
     >
       {/* Bottom accent gradient line */}
-      <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-white/30 via-primary/50 to-white/30 dark:from-primary/30 dark:via-primary/60 dark:to-primary/30 opacity-80 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-white/30 via-primary/50 to-white/30 dark:from-[var(--border-color)]/40 dark:via-primary/50 dark:to-[var(--border-color)]/40 opacity-80 pointer-events-none" />
 
       <div className="w-full px-3 sm:px-6 md:px-14 py-1.5 sm:py-2 flex flex-col sm:flex-row justify-between items-center gap-1.5 sm:gap-4">
         {/* Left Side: Welcome & Announcement Badge */}
         <div className="flex items-center justify-center sm:justify-start gap-1.5 sm:gap-2 text-center sm:text-left min-w-0">
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/15 dark:bg-primary/20 text-white dark:text-white text-[10px] sm:text-[11px] font-bold backdrop-blur-xs border border-white/20 dark:border-primary/30 shadow-2xs whitespace-nowrap shrink-0">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[var(--surface-elevated)]/15 dark:bg-[var(--surface-elevated)]/40 text-white dark:text-[var(--foreground)] text-[10px] sm:text-[11px] font-bold backdrop-blur-xs border border-white/20 dark:border-[var(--border-color)] shadow-2xs whitespace-nowrap shrink-0">
             <Sparkles className="w-3 h-3 text-amber-300 animate-pulse shrink-0" />
             <span>Deals</span>
           </span>
-          <p className="font-medium text-white/95 dark:text-gray-300 text-[11px] sm:text-xs tracking-tight sm:tracking-wide truncate sm:whitespace-normal">
+          <p className="font-medium text-white/95 dark:text-[var(--foreground)] text-[11px] sm:text-xs tracking-tight sm:tracking-wide truncate sm:whitespace-normal">
             {displayText}
           </p>
         </div>
@@ -75,13 +75,13 @@ export default function TopBar() {
               <React.Fragment key={item.label}>
                 <Link
                   href={item.href}
-                  className="group flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-white/90 dark:text-gray-300 hover:text-white dark:hover:text-white hover:bg-white/15 dark:hover:bg-white/10 transition-all duration-200 text-[10px] sm:text-xs font-semibold whitespace-nowrap"
+                  className="group flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-white/90 dark:text-[var(--foreground)] hover:text-white dark:hover:text-[var(--accent)] hover:bg-[var(--surface-elevated)]/15 dark:hover:bg-[var(--surface-elevated)]/20 transition-all duration-200 text-[10px] sm:text-xs font-semibold whitespace-nowrap"
                 >
-                  <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white/80 dark:text-gray-300 group-hover:text-amber-300 transition-colors shrink-0" />
+                  <Icon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white/80 dark:text-[var(--foreground)] group-hover:text-amber-300 dark:group-hover:text-[var(--accent)] transition-colors shrink-0" />
                   <span>{item.label}</span>
                 </Link>
 
-                <span className="text-white/30 dark:text-gray-700 text-[10px] sm:text-xs select-none">|</span>
+                <span className="text-white/30 dark:text-[var(--border-color)] text-[10px] sm:text-xs select-none">|</span>
               </React.Fragment>
             );
           })}

@@ -277,10 +277,10 @@ export default function AddCategoryClient({
                 {/* Active / Inactive toggle */}
                 <div className={visibilityRowClass}>
                   <div>
-                    <p className="text-xs font-bold text-gray-800 dark:text-gray-200">
+                    <p className="text-xs font-bold text-[var(--foreground)] dark:text-[var(--foreground)]">
                       Category Visibility
                     </p>
-                    <p className="text-[10px] text-gray-400">
+                    <p className="text-[10px] text-[var(--foreground-muted)]">
                       Enable to make this category active across the store
                       front.
                     </p>
@@ -451,10 +451,10 @@ export default function AddCategoryClient({
                 {/* Active / Inactive toggle */}
                 <div className={visibilityRowClass}>
                   <div>
-                    <p className="text-xs font-bold text-gray-800 dark:text-gray-200">
+                    <p className="text-xs font-bold text-[var(--foreground)] dark:text-[var(--foreground)]">
                       Subcategory Visibility
                     </p>
-                    <p className="text-[10px] text-gray-400">
+                    <p className="text-[10px] text-[var(--foreground-muted)]">
                       Enable to make this subcategory active under its parent.
                     </p>
                   </div>

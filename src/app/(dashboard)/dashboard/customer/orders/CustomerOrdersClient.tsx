@@ -253,7 +253,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                 <span
                   className={`text-[10px] px-1.5 py-0.5 rounded-full ${
                     selectedTab === tab
-                      ? "bg-white/20 text-white"
+                      ? "bg-[var(--surface-elevated)]/20 text-white"
                       : "bg-[var(--surface-elevated)] text-[var(--foreground-muted)] border border-[var(--border-color)]/50"
                   }`}
                 >
@@ -343,7 +343,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                       order.status === "Delivered"
                         ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-800/40"
                         : order.status === "Shipped"
-                          ? "bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-800/40"
+                          ? "bg-[var(--accent)] dark:bg-[var(--accent)]/60 text-primary border border-[var(--accent)]/50 dark:border-[var(--accent)]/40"
                           : order.status === "Confirmed"
                             ? "bg-primary/10 text-primary border border-primary/20"
                             : order.status === "Processing"
@@ -497,12 +497,12 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                                 ? "Order Not Received"
                                 : "Order Cancelled"}
                             </span>
-                            <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-white/70 dark:bg-gray-800/70 border border-current">
+                            <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-[var(--surface-elevated)]/70 dark:bg-[var(--surface)]/70 border border-current">
                               Admin Notified
                             </span>
                           </div>
                           {order.customerResponseNote && (
-                            <p className="text-[11px] text-gray-600 dark:text-gray-400 mt-0.5 italic">
+                            <p className="text-[11px] text-[var(--foreground-secondary)] dark:text-[var(--foreground-muted)] mt-0.5 italic">
                               "{order.customerResponseNote}"
                             </p>
                           )}
@@ -564,7 +564,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
 
       {/* ── Order Tracking Modal ── */}
       {trackingModalOrder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-950/60 backdrop-blur-xs animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--surface)]/60 backdrop-blur-xs animate-in fade-in duration-200">
           <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-6 text-[var(--foreground)]">
             <div className="flex items-center justify-between border-b border-[var(--border-color)] pb-4">
               <div>
@@ -660,7 +660,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
 
       {/* ── Order Delivery Response Modal ── */}
       {responseModalOrder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-950/60 backdrop-blur-xs animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[var(--surface)]/60 backdrop-blur-xs animate-in fade-in duration-200">
           <Card className="bg-[var(--surface-elevated)] border border-[var(--border-color)] rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-5 text-[var(--foreground)]">
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-[var(--border-color)] pb-4">
@@ -680,7 +680,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                 isIconOnly
                 variant="ghost"
                 onClick={() => setResponseModalOrder(null)}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-sm font-bold p-1 h-8 w-8 min-w-0"
+                className="text-[var(--foreground-muted)] hover:text-[var(--foreground-secondary)] dark:hover:text-[var(--foreground)] text-sm font-bold p-1 h-8 w-8 min-w-0"
               >
                 ✕
               </Button>
@@ -688,7 +688,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
 
             {/* Response Options */}
             <div className="space-y-3">
-              <label className="text-xs font-bold text-gray-700 dark:text-gray-300 block">
+              <label className="text-xs font-bold text-[var(--foreground)] block">
                 Select Your Delivery Status:
               </label>
 
@@ -698,21 +698,21 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                 className={`p-3.5 rounded-2xl border-2 transition-all cursor-pointer flex items-start gap-3.5 ${
                   selectedResponse === "received"
                     ? "border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20 shadow-xs"
-                    : "border-slate-200 dark:border-gray-800 hover:border-slate-300 dark:hover:border-gray-700 bg-white dark:bg-gray-900"
+                    : "border-[var(--border-color)] dark:border-[var(--border-color)] hover:border-[var(--border-color)] dark:hover:border-[var(--border-color)] bg-[var(--surface-elevated)]"
                 }`}
               >
                 <div
                   className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
                     selectedResponse === "received"
                       ? "bg-emerald-500 text-white"
-                      : "bg-slate-100 dark:bg-gray-800 text-gray-500"
+                      : "bg-[var(--surface-alt)] text-[var(--foreground-muted)]"
                   }`}
                 >
                   <CheckCircle2 className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <p className="text-xs font-bold text-gray-900 dark:text-white">
+                    <p className="text-xs font-bold text-[var(--foreground)]">
                       Order Received
                     </p>
                     <input
@@ -723,7 +723,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                       className="accent-emerald-600 cursor-pointer"
                     />
                   </div>
-                  <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
+                  <p className="text-[11px] text-[var(--foreground-muted)] mt-0.5">
                     I have received my package safely with all items in good condition.
                   </p>
                 </div>
@@ -735,21 +735,21 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                 className={`p-3.5 rounded-2xl border-2 transition-all cursor-pointer flex items-start gap-3.5 ${
                   selectedResponse === "not_received"
                     ? "border-amber-500 bg-amber-50/50 dark:bg-amber-950/20 shadow-xs"
-                    : "border-slate-200 dark:border-gray-800 hover:border-slate-300 dark:hover:border-gray-700 bg-white dark:bg-gray-900"
+                    : "border-[var(--border-color)] dark:border-[var(--border-color)] hover:border-[var(--border-color)] dark:hover:border-[var(--border-color)] bg-[var(--surface-elevated)]"
                 }`}
               >
                 <div
                   className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
                     selectedResponse === "not_received"
                       ? "bg-amber-500 text-white"
-                      : "bg-slate-100 dark:bg-gray-800 text-gray-500"
+                      : "bg-[var(--surface-alt)] text-[var(--foreground-muted)]"
                   }`}
                 >
                   <AlertTriangle className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <p className="text-xs font-bold text-gray-900 dark:text-white">
+                    <p className="text-xs font-bold text-[var(--foreground)]">
                       Order Not Received
                     </p>
                     <input
@@ -760,7 +760,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                       className="accent-amber-600 cursor-pointer"
                     />
                   </div>
-                  <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
+                  <p className="text-[11px] text-[var(--foreground-muted)] mt-0.5">
                     The shipment has not arrived yet, courier was unavailable, or delivery failed.
                   </p>
                 </div>
@@ -772,21 +772,21 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                 className={`p-3.5 rounded-2xl border-2 transition-all cursor-pointer flex items-start gap-3.5 ${
                   selectedResponse === "cancelled"
                     ? "border-rose-500 bg-rose-50/50 dark:bg-rose-950/20 shadow-xs"
-                    : "border-slate-200 dark:border-gray-800 hover:border-slate-300 dark:hover:border-gray-700 bg-white dark:bg-gray-900"
+                    : "border-[var(--border-color)] dark:border-[var(--border-color)] hover:border-[var(--border-color)] dark:hover:border-[var(--border-color)] bg-[var(--surface-elevated)]"
                 }`}
               >
                 <div
                   className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
                     selectedResponse === "cancelled"
                       ? "bg-rose-500 text-white"
-                      : "bg-slate-100 dark:bg-gray-800 text-gray-500"
+                      : "bg-[var(--surface-alt)] text-[var(--foreground-muted)]"
                   }`}
                 >
                   <XCircle className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
-                    <p className="text-xs font-bold text-gray-900 dark:text-white">
+                    <p className="text-xs font-bold text-[var(--foreground)]">
                       Cancel Order / Reject Delivery
                     </p>
                     <input
@@ -797,7 +797,7 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
                       className="accent-rose-600 cursor-pointer"
                     />
                   </div>
-                  <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
+                  <p className="text-[11px] text-[var(--foreground-muted)] mt-0.5">
                     I want to reject the parcel, request return, or cancel this shipment.
                   </p>
                 </div>
@@ -806,9 +806,9 @@ export default function CustomerOrdersClient({ initialOrders = [] }: CustomerOrd
 
             {/* Optional Note / Remarks */}
             <div className="space-y-1.5">
-              <label className="text-xs font-bold text-gray-700 dark:text-gray-300 flex items-center justify-between">
+              <label className="text-xs font-bold text-[var(--foreground)] flex items-center justify-between">
                 <span>Notes or Details (Optional):</span>
-                <span className="text-[10px] text-gray-400 font-normal">Visible to store admin</span>
+                <span className="text-[10px] text-[var(--foreground-muted)] font-normal">Visible to store admin</span>
               </label>
               <textarea
                 value={responseNote}

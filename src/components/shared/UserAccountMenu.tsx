@@ -85,7 +85,7 @@ export default function UserAccountMenu() {
   // Loading state placeholder
   if (isPending) {
     return (
-      <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 animate-pulse shrink-0" />
+      <div className="w-8 h-8 rounded-full bg-[var(--surface-alt)] dark:bg-[var(--surface)] animate-pulse shrink-0" />
     );
   }
 
@@ -95,9 +95,9 @@ export default function UserAccountMenu() {
       <div className="flex items-center gap-2 shrink-0">
         <Link
           href="/auth/login"
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-gray-700 dark:text-gray-200 hover:text-primary dark:hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 transition-all cursor-pointer"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[var(--foreground-secondary)] dark:text-[var(--foreground)] hover:text-primary dark:hover:text-primary hover:bg-[var(--surface-alt)] transition-all cursor-pointer"
         >
-          <User className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+          <User className="w-4 h-4 text-[var(--foreground-muted)]" />
           <span>Sign In</span>
         </Link>
       </div>
@@ -237,7 +237,7 @@ export default function UserAccountMenu() {
           </div>
 
           {/* Logout button */}
-          <div className="p-1.5 border-t border-gray-100 dark:border-gray-800/80">
+          <div className="p-1.5 border-t border-[var(--border-color)]/80">
             <button
               type="button"
               onClick={handleLogout}

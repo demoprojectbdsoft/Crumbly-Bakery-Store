@@ -83,12 +83,12 @@ export default function ForbiddenView() {
                 </span>
               </div>
 
-              <h3 className="text-xs sm:text-sm font-bold text-gray-900 dark:text-gray-100 flex items-center gap-1.5">
+              <h3 className="text-xs sm:text-sm font-bold text-[var(--foreground)] dark:text-[var(--foreground)] flex items-center gap-1.5">
                 <AlertTriangle className="w-3.5 h-3.5 text-red-500 shrink-0" />
                 <span>Unauthorized Role or Missing Clearance</span>
               </h3>
 
-              <p className="text-[11px] sm:text-xs text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
+              <p className="text-[11px] sm:text-xs text-[var(--foreground-muted)] leading-relaxed font-normal">
                 Your authenticated session does not possess the clearance needed to view this page. If you are an administrator, please sign in with an authorized account.
               </p>
             </div>

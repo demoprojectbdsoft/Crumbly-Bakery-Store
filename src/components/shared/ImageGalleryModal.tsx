@@ -90,10 +90,10 @@ export default function ImageGalleryModal({
       role="dialog"
       aria-modal="true"
       aria-label="Image Gallery"
-      className="fixed inset-0 z-[99999] bg-slate-950/95 backdrop-blur-xl flex flex-col justify-between select-none animate-in fade-in duration-200"
+      className="fixed inset-0 z-[99999] bg-[var(--surface)]/95 backdrop-blur-xl flex flex-col justify-between select-none animate-in fade-in duration-200"
     >
       {/* ── Top Header Bar ── */}
-      <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-white/10 bg-slate-900/60 backdrop-blur-md z-20">
+      <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 border-b border-white/10 bg-[var(--surface-elevated)]/60 backdrop-blur-md z-20">
         <div className="flex items-center gap-3 min-w-0 pr-4">
           <div className="w-8 h-8 rounded-lg bg-primary/20 text-primary flex items-center justify-center shrink-0 border border-primary/30">
             <Layers className="w-4 h-4" />
@@ -115,7 +115,7 @@ export default function ImageGalleryModal({
             type="button"
             onClick={() => setIsZoomed((prev) => !prev)}
             title={isZoomed ? "Reset Zoom" : "Zoom In"}
-            className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+            className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-[var(--surface-elevated)]/10 transition-colors cursor-pointer"
           >
             {isZoomed ? <ZoomOut className="w-4 h-4" /> : <ZoomIn className="w-4 h-4" />}
           </button>
@@ -126,7 +126,7 @@ export default function ImageGalleryModal({
             target="_blank"
             rel="noopener noreferrer"
             title="Open original image"
-            className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+            className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-[var(--surface-elevated)]/10 transition-colors cursor-pointer"
           >
             <ExternalLink className="w-4 h-4" />
           </a>
@@ -136,7 +136,7 @@ export default function ImageGalleryModal({
             type="button"
             onClick={onClose}
             title="Close Gallery (Esc)"
-            className="p-2 ml-1 rounded-xl bg-white/10 text-white hover:bg-red-500/80 transition-colors cursor-pointer border border-white/10"
+            className="p-2 ml-1 rounded-xl bg-[var(--surface-elevated)]/10 text-white hover:bg-red-500/80 transition-colors cursor-pointer border border-white/10"
           >
             <X className="w-5 h-5" />
           </button>
@@ -193,7 +193,7 @@ export default function ImageGalleryModal({
       </div>
 
       {/* ── Bottom Thumbnails Strip ── */}
-      <div className="px-4 py-3 border-t border-white/10 bg-slate-900/70 backdrop-blur-md z-20">
+      <div className="px-4 py-3 border-t border-white/10 bg-[var(--surface-elevated)]/70 backdrop-blur-md z-20">
         <div className="flex items-center justify-center gap-2.5 overflow-x-auto max-w-4xl mx-auto py-1 scrollbar-thin">
           {images.map((img, idx) => {
             const isActive = idx === currentIndex;
@@ -205,7 +205,7 @@ export default function ImageGalleryModal({
                   setIsZoomed(false);
                   setCurrentIndex(idx);
                 }}
-                className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden shrink-0 border-2 transition-all cursor-pointer bg-slate-800 ${
+                className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden shrink-0 border-2 transition-all cursor-pointer bg-[var(--surface)] ${
                   isActive
                     ? "border-primary ring-2 ring-primary/50 scale-105 opacity-100 shadow-lg shadow-primary/30"
                     : "border-white/15 opacity-50 hover:opacity-90 hover:border-white/40"

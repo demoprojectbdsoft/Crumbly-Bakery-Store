@@ -101,7 +101,7 @@ export default function Footer() {
                     key={idx}
                     href={item.href}
                     aria-label={item.label}
-                    className="w-8 h-8 rounded-full bg-[var(--surface-elevated)] border border-[var(--border-color)] text-[var(--foreground-muted)] hover:bg-primary hover:text-white hover:border-transparent transition-all duration-300 shadow-xs flex items-center justify-center"
+                    className="w-8 h-8 rounded-full bg-[var(--surface-elevated)] border border-[var(--border-color)] text-[var(--foreground-muted)] hover:bg-brand-gradient hover:text-[var(--on-grad-text)] hover:border-transparent transition-all duration-300 shadow-xs flex items-center justify-center"
                   >
                     <IconComponent className="w-3.5 h-3.5" />
                   </Link>
@@ -213,13 +213,13 @@ export default function Footer() {
               <span className="w-3.5 h-3.5 rounded-full bg-red-500 inline-block" />
               <span className="w-3.5 h-3.5 rounded-full bg-amber-400 inline-block" />
             </div>
-            <span className="font-bold text-xs italic text-blue-800 dark:text-blue-400">
+            <span className="font-bold text-xs italic text-[var(--foreground)] opacity-90">
               PayPal
             </span>
-            <span className="font-bold text-xs text-purple-700 dark:text-purple-400">
+            <span className="font-bold text-xs text-[var(--foreground)] opacity-85">
               Skrill
             </span>
-            <span className="font-black text-xs text-blue-700 dark:text-sky-300 italic">
+            <span className="font-black text-xs text-[var(--foreground)] italic tracking-wider">
               VISA
             </span>
           </div>

@@ -34,7 +34,7 @@ export default function TrackOrderPage() {
 
   return (
     /* Full-width container using default page background */
-    <section className="w-full text-gray-800 dark:text-gray-100 py-12 md:py-20">
+    <section className="w-full text-[var(--foreground)] dark:text-[var(--foreground)] py-12 md:py-20">
       
       {/* Centered content grid */}
       <div className="max-w-4xl mx-auto px-4 space-y-10">

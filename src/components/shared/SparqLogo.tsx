@@ -129,7 +129,7 @@ export default function SparqLogo({
         {showText && (
           <div className="flex items-center leading-none">
             <span
-              className={`font-black tracking-tight text-slate-900 dark:text-white transition-colors duration-200 ${sizeConfig.fontSize}`}
+              className={`font-black tracking-tight text-[var(--foreground)] transition-colors duration-200 ${sizeConfig.fontSize}`}
               style={{
                 fontFamily: "var(--site-font-heading, var(--font-poppins)), system-ui, sans-serif",
                 letterSpacing: "-0.03em",
@@ -141,7 +141,7 @@ export default function SparqLogo({
                   <span className="relative inline-block">
                     q
                     <span
-                      className="absolute bottom-[2px] -right-[1px] w-[5px] h-[7px] bg-gradient-to-br from-[#3b82f6] to-[#8b5cf6] rounded-xs pointer-events-none transform -skew-x-12"
+                      className="absolute bottom-[2px] -right-[1px] w-[5px] h-[7px] bg-[var(--brand-gradient)] rounded-xs pointer-events-none transform -skew-x-12"
                       aria-hidden="true"
                     />
                   </span>
@@ -156,7 +156,7 @@ export default function SparqLogo({
 
       {/* ── Optional Slogan ── */}
       {showSlogan && (
-        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium tracking-tight mt-1">
+        <p className="text-xs sm:text-sm text-[var(--foreground-muted)] dark:text-[var(--foreground-muted)] font-medium tracking-tight mt-1">
           {tagline}
         </p>
       )}

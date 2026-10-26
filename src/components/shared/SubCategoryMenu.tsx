@@ -22,7 +22,7 @@ export default function SubCategoryMenu({
       : undefined;
 
   return (
-    <div className="relative flex flex-col justify-between w-[460px] min-h-[380px] p-6 bg-white dark:bg-gray-950 overflow-hidden">
+    <div className="relative flex flex-col justify-between w-[460px] min-h-[380px] p-6 bg-[var(--surface-elevated)] dark:bg-[var(--surface-alt)] overflow-hidden">
       {/* Background Image of the Category */}
       {bgImage && (
         <div
@@ -38,17 +38,17 @@ export default function SubCategoryMenu({
       <div className="relative z-10 flex flex-col flex-1 justify-between">
         <div>
           {/* Category Header */}
-          <div className="pb-3 mb-4 border-b border-gray-200/80 dark:border-gray-800/80 flex items-start justify-between gap-4">
+          <div className="pb-3 mb-4 border-b border-[var(--border-color)]/80 flex items-start justify-between gap-4">
             <div>
               <div className="flex items-center gap-1.5 text-xs font-semibold text-primary uppercase tracking-wider mb-1">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Category</span>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+              <h3 className="text-lg font-bold text-[var(--foreground)] dark:text-[var(--foreground)]">
                 {category.name}
               </h3>
               {category.description && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mt-1 max-w-sm">
+                <p className="text-xs text-[var(--foreground-muted)] line-clamp-2 mt-1 max-w-sm">
                   {category.description}
                 </p>
               )}
@@ -59,7 +59,7 @@ export default function SubCategoryMenu({
           <div>
             {subCategories.length > 0 ? (
               <div>
-                <div className="flex items-center gap-1.5 text-xs font-medium text-gray-400 dark:text-gray-500 mb-2.5">
+                <div className="flex items-center gap-1.5 text-xs font-medium text-[var(--foreground-muted)] mb-2.5">
                   <Layers className="w-3.5 h-3.5" />
                   <span>Subcategories ({subCategories.length})</span>
                 </div>
@@ -69,7 +69,7 @@ export default function SubCategoryMenu({
                       <Link
                         href={`/shop?category=${category.slug}&subCategory=${sub.slug}`}
                         onClick={onItemClick}
-                        className="group flex items-center justify-between p-2 rounded-md text-[13px] text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors"
+                        className="group flex items-center justify-between p-2 rounded-md text-[13px] text-[var(--foreground)] hover:text-primary dark:hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors"
                       >
                         <span className="truncate group-hover:translate-x-0.5 transition-transform duration-150">
                           {sub.name}
@@ -85,10 +85,10 @@ export default function SubCategoryMenu({
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
                   <Layers className="w-5 h-5" />
                 </div>
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                <p className="text-sm font-medium text-[var(--foreground)]">
                   Explore all {category.name} products
                 </p>
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 max-w-xs">
+                <p className="text-xs text-[var(--foreground-muted)] mt-1 max-w-xs">
                   Browse our collection and find the best deals in this category.
                 </p>
               </div>
@@ -97,11 +97,11 @@ export default function SubCategoryMenu({
         </div>
 
         {/* Footer Link: View All */}
-        <div className="mt-6 pt-3 border-t border-gray-200/80 dark:border-gray-800/80 flex items-center justify-between">
+        <div className="mt-6 pt-3 border-t border-[var(--border-color)]/80 flex items-center justify-between">
           <Link
             href={`/shop?category=${category.slug}`}
             onClick={onItemClick}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-800 dark:text-gray-200 hover:text-primary transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] hover:text-primary transition-colors"
           >
             <span>View all in {category.name}</span>
             <ArrowRight className="w-3.5 h-3.5 text-primary" />

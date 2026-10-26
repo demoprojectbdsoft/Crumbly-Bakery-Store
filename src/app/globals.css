@@ -31,39 +31,96 @@
 
 :root {
   color-scheme: light;
-  --primary: var(--site-primary, #0284c7);
-  --primary-hover: var(--site-primary-dark, #0369a1);
-  --primary-light: color-mix(in srgb, var(--primary) 15%, white);
+
+  /* Reference tokens from /maintenance */
+  --grad-from: var(--site-topbar-from, #1d4ed8);
+  --grad-via:  var(--site-topbar-via,  #0284c7);
+  --grad-to:   var(--site-topbar-to,   #4338ca);
+  --brand-flat: var(--site-topbar-via, var(--site-primary, #0284c7));
+  --brand-gradient: linear-gradient(135deg, var(--grad-from) 0%, var(--grad-via) 50%, var(--grad-to) 100%);
+  --brand-gradient-hover: linear-gradient(135deg,
+    color-mix(in srgb, var(--grad-from) 85%, white) 0%,
+    color-mix(in srgb, var(--grad-via)  85%, white) 50%,
+    color-mix(in srgb, var(--grad-to)   85%, white) 100%);
+  --brand-gradient-active: linear-gradient(135deg,
+    color-mix(in srgb, var(--grad-from) 78%, black) 0%,
+    color-mix(in srgb, var(--grad-via)  78%, black) 50%,
+    color-mix(in srgb, var(--grad-to)   78%, black) 100%);
+  --brand-gradient-disabled: linear-gradient(135deg,
+    color-mix(in srgb, var(--grad-from) 40%, #888) 0%,
+    color-mix(in srgb, var(--grad-via)  40%, #888) 50%,
+    color-mix(in srgb, var(--grad-to)   40%, #888) 100%);
+  --on-grad-text: #ffffff;
+  --brand-shadow: 0 4px 18px -2px color-mix(in srgb, var(--grad-via) 45%, transparent);
+  --brand-shadow-hover: 0 6px 24px -2px color-mix(in srgb, var(--grad-via) 65%, transparent);
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--brand-flat) 35%, transparent);
+  --grad-border: color-mix(in srgb, var(--brand-flat) 40%, transparent);
+
+  --primary: var(--brand-flat);
+  --primary-hover: var(--site-primary-dark, color-mix(in srgb, var(--brand-flat) 85%, black));
+  --primary-light: color-mix(in srgb, var(--brand-flat) 15%, white);
   --secondary: var(--site-secondary, #6366f1);
   --accent: var(--site-accent, #f59e0b);
-  --background: var(--site-bg, #ffffff);
-  --surface: var(--site-surface, #f8fafc);
   --success: oklch(0.65 0.15 155);
   --foreground: #0f172a;
   --foreground-muted: #64748b;
-  --border-color: #e2e8f0;
-  --navbar-bg: var(--site-bg, #ffffff);
-  --surface-elevated: #ffffff;
-  --surface-alt: #f1f5f9;
+
+  /* Light mode surfaces — derived from brand-flat (same logic as dark mode) so palette changes apply */
+  --background:       color-mix(in srgb, var(--site-bg, #ffffff) 97%, var(--brand-flat) 3%);
+  --surface:          color-mix(in srgb, var(--site-surface, #f8fafc) 93%, var(--brand-flat) 7%);
+  --surface-elevated: color-mix(in srgb, #ffffff 96%, var(--brand-flat) 4%);
+  --surface-alt:      color-mix(in srgb, var(--site-surface, #f8fafc) 88%, var(--brand-flat) 12%);
+  --border-color:     color-mix(in srgb, var(--brand-flat) 18%, var(--surface, #f8fafc));
+  --navbar-bg:        var(--surface-elevated);
+
+  /* HeroUI integration */
+  --heroui-primary: var(--primary);
+  --heroui-primary-foreground: var(--on-grad-text);
+  --heroui-focus: var(--brand-flat);
+  --heroui-background: var(--background);
+  --heroui-content1: var(--surface-elevated);
+  --heroui-content2: var(--surface-alt);
+  --heroui-divider: var(--border-color);
 }
 
 html.dark,
 :root.dark,
 .dark {
   color-scheme: dark;
-  --primary: var(--site-primary, #0284c7);
-  --primary-hover: var(--site-primary-dark, #0369a1);
+
+  /* Dark reference tokens from /maintenance */
+  --grad-from: color-mix(in srgb, var(--site-topbar-from, #1d4ed8) 72%, white);
+  --grad-via:  color-mix(in srgb, var(--site-topbar-via,  #0284c7) 72%, white);
+  --grad-to:   color-mix(in srgb, var(--site-topbar-to,   #4338ca) 72%, white);
+  --brand-flat: color-mix(in srgb, var(--site-topbar-via, #0284c7) 80%, white);
+  --on-grad-text: #ffffff;
+  --brand-shadow: 0 4px 18px -2px color-mix(in srgb, var(--grad-via) 30%, transparent);
+  --brand-shadow-hover: 0 6px 24px -2px color-mix(in srgb, var(--grad-via) 45%, transparent);
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--brand-flat) 35%, transparent);
+  --grad-border: color-mix(in srgb, var(--brand-flat) 30%, transparent);
+
+  --primary: var(--brand-flat);
+  --primary-hover: color-mix(in srgb, var(--brand-flat) 85%, white);
   --primary-light: color-mix(in srgb, var(--primary) 25%, black);
   --secondary: var(--site-secondary, #818cf8);
   --accent: var(--site-accent, #fbbf24);
   --background: var(--site-bg-dark, #0b0f19);
-  --surface: var(--site-surface-dark, #131d2e);
+  --surface: var(--site-surface-dark, color-mix(in srgb, var(--background) 85%, var(--brand-flat) 15%));
   --foreground: #f1f5f9;
   --foreground-muted: #94a3b8;
-  --border-color: #1e293b;
-  --navbar-bg: var(--site-surface-dark, #131d2e);
-  --surface-elevated: #1e293b;
-  --surface-alt: #0f172a;
+  --border-color: color-mix(in srgb, var(--surface) 80%, white 20%);
+  --navbar-bg: var(--surface);
+  --surface-elevated: color-mix(in srgb, var(--surface) 88%, white 12%);
+  --surface-alt: color-mix(in srgb, var(--background) 70%, var(--surface));
+
+  /* HeroUI integration in dark mode */
+  --heroui-primary: var(--brand-flat);
+  --heroui-primary-foreground: #0b0f19;
+  --heroui-focus: var(--brand-flat);
+  --heroui-background: var(--background);
+  --heroui-content1: var(--surface-elevated);
+  --heroui-content2: var(--surface-alt);
+  --heroui-divider: var(--border-color);
 }
 
 body {
@@ -105,14 +162,14 @@ textarea::placeholder {
 
 .dark input::placeholder,
 .dark textarea::placeholder {
-  color: #94a3b8;
+  color: var(--foreground-muted);
   opacity: 0.85;
 }
 
 .dark input:-webkit-autofill,
 .dark textarea:-webkit-autofill,
 .dark select:-webkit-autofill {
-  -webkit-text-fill-color: #f1f5f9 !important;
+  -webkit-text-fill-color: var(--foreground) !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -130,13 +187,13 @@ select:-webkit-autofill:focus {
 }
 
 select option {
-  background-color: var(--surface-elevated, #ffffff);
-  color: var(--foreground, #0f172a);
+  background-color: var(--surface-elevated);
+  color: var(--foreground);
 }
 
 .dark select option {
-  background-color: var(--surface-elevated, #1e293b);
-  color: var(--foreground, #f1f5f9);
+  background-color: var(--surface-elevated);
+  color: var(--foreground);
 }
 
 @keyframes slideInLeft {
@@ -161,8 +218,8 @@ select option {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--surface-elevated, #fff);
-  border: 2.5px solid var(--primary, #0ea5e9);
+  background: var(--surface-elevated);
+  border: 2.5px solid var(--brand-flat);
   box-shadow: 0 1px 4px rgba(0,0,0,0.2);
   cursor: pointer;
   transition: transform 0.15s, box-shadow 0.15s;
@@ -171,14 +228,14 @@ select option {
 .range-thumb::-webkit-slider-thumb:hover,
 .range-thumb::-webkit-slider-thumb:active {
   transform: scale(1.2);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+  box-shadow: var(--brand-shadow);
 }
 .range-thumb::-moz-range-thumb {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--surface-elevated, #fff);
-  border: 2.5px solid var(--primary, #0ea5e9);
+  background: var(--surface-elevated);
+  border: 2.5px solid var(--brand-flat);
   box-shadow: 0 1px 4px rgba(0,0,0,0.2);
   cursor: pointer;
 }
@@ -289,33 +346,87 @@ dialog,
   backdrop-filter: blur(4px);
 }
 
+/* ─── Selection Styling (selected text for copy) ────────────────────────────── */
+::selection {
+  background-color: var(--brand-flat);
+  color: var(--on-grad-text);
+}
+
+::-moz-selection {
+  background-color: var(--brand-flat);
+  color: var(--on-grad-text);
+}
+
+/* ─── Toastify Notifications ─────────────────────────────────────────────────── */
+.Toastify__toast {
+  background: var(--surface-elevated) !important;
+  color: var(--foreground) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25) !important;
+}
+
+.Toastify__toast-body {
+  color: var(--foreground) !important;
+  font-family: inherit !important;
+}
+
+.Toastify__close-button {
+  color: var(--foreground-muted) !important;
+}
+
+.Toastify__progress-bar--default,
+.Toastify__progress-bar--info {
+  background: var(--brand-gradient) !important;
+}
+
 /* ─── Dynamic Palette Gradient Utilities ─────────────────────────────────────── */
+.bg-brand-gradient {
+  background-image: var(--brand-gradient) !important;
+}
+
 .bg-gradient-primary {
-  background-image: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  background-image: var(--brand-gradient);
 }
 
 .bg-gradient-primary-rich {
-  background-image: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 50%, var(--secondary) 100%);
+  background-image: var(--brand-gradient);
 }
 
 .bg-gradient-primary-horizontal {
-  background-image: linear-gradient(90deg, var(--primary) 0%, var(--primary-hover) 50%, var(--secondary) 100%);
+  background-image: linear-gradient(90deg, var(--grad-from) 0%, var(--grad-via) 50%, var(--grad-to) 100%);
 }
 
 .text-gradient-primary {
-  background-image: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 50%, var(--secondary) 100%);
+  background-image: var(--brand-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .btn-gradient-primary {
-  background-image: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
-  color: #ffffff;
-  box-shadow: 0 4px 14px 0 color-mix(in srgb, var(--primary) 30%, transparent);
+  background-image: var(--brand-gradient);
+  color: var(--on-grad-text);
+  box-shadow: var(--brand-shadow);
   transition: all 0.25s ease;
 }
 
 .btn-gradient-primary:hover {
-  background-image: linear-gradient(135deg, var(--primary-hover) 0%, var(--primary) 100%);
-  box-shadow: 0 6px 20px 0 color-mix(in srgb, var(--primary) 45%, transparent);
+  background-image: var(--brand-gradient-hover);
+  box-shadow: var(--brand-shadow-hover);
+}
+
+.btn-gradient-primary:active {
+  background-image: var(--brand-gradient-active);
+}
+
+.btn-gradient-primary:disabled {
+  background-image: var(--brand-gradient-disabled);
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.dark .btn-gradient-primary:disabled {
+  background: color-mix(in srgb, var(--background) 80%, rgba(255, 255, 255, 0.06));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--foreground-muted);
 }

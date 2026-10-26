@@ -48,7 +48,7 @@ function StarRating({
               className="relative inline-flex w-3 h-3 sm:w-3.5 sm:h-3.5 flex-shrink-0"
             >
               {/* Empty background star */}
-              <Star className="w-full h-full text-gray-200 dark:text-gray-700/80 fill-gray-200/60 dark:fill-gray-700/40" />
+              <Star className="w-full h-full text-[var(--border-color)] dark:text-[var(--foreground-muted)]/40 fill-[var(--border-color)]/60 dark:fill-[var(--foreground-muted)]/20" />
               {/* Partially/fully filled foreground star */}
               {fillPercentage > 0 && (
                 <div
@@ -70,13 +70,13 @@ function StarRating({
               {numericRating.toFixed(1)}
             </span>
             {count > 0 && (
-              <span className="text-gray-400 dark:text-gray-500 font-medium">
+              <span className="text-[var(--foreground-muted)] dark:text-[var(--foreground-muted)] font-medium">
                 ({count >= 1000 ? `${(count / 1000).toFixed(1)}k` : count})
               </span>
             )}
           </>
         ) : (
-          <span className="text-gray-400 dark:text-gray-500 text-[9px] sm:text-[10px]">
+          <span className="text-[var(--foreground-muted)] dark:text-[var(--foreground-muted)] text-[9px] sm:text-[10px]">
             (0)
           </span>
         )}
@@ -402,7 +402,7 @@ export default function ProductCard({
 
       {/* Top-Right Badge: Discount Only */}
       {showDiscountBadge && discountPercent && discountPercent > 0 ? (
-        <div className="absolute top-2 sm:top-3 right-2 sm:right-3 z-10 px-1.5 sm:px-2 py-0.5 rounded-full bg-primary text-white text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider shadow-sm shadow-primary/20">
+        <div className="absolute top-2 sm:top-3 right-2 sm:right-3 z-10 px-1.5 sm:px-2 py-0.5 rounded-full bg-brand-gradient text-[var(--on-grad-text)] text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider shadow-sm">
           -{discountPercent}%
         </div>
       ) : null}
@@ -547,8 +547,8 @@ export default function ProductCard({
               isOutOfStock
                 ? "bg-[var(--surface-alt)] text-[var(--foreground-muted)] border border-[var(--border-color)] cursor-not-allowed opacity-60 shadow-none"
                 : isInCart
-                ? "bg-primary text-white border-transparent shadow-lg shadow-primary/30 cursor-default"
-                : "bg-[var(--surface)] text-[var(--foreground)] border border-[var(--border-color)] hover:bg-primary hover:text-white hover:border-transparent hover:shadow-lg hover:shadow-primary/30 hover:scale-105 active:scale-95 cursor-pointer"
+                ? "bg-brand-gradient text-[var(--on-grad-text)] border-transparent shadow-lg shadow-brand cursor-default"
+                : "bg-[var(--surface)] text-[var(--foreground)] border border-[var(--border-color)] hover:bg-brand-gradient hover:text-[var(--on-grad-text)] hover:border-transparent hover:shadow-brand hover:scale-105 active:scale-95 cursor-pointer"
             }`}
             title={
               isOutOfStock

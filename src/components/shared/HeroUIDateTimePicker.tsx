@@ -332,7 +332,7 @@ export default function HeroUIDateTimePicker({
                     >
                       <TimeField.Group
                         variant="secondary"
-                        className="px-2.5 py-1 text-xs bg-slate-100 dark:bg-gray-800 rounded-lg border border-slate-200 dark:border-gray-700"
+                        className="px-2.5 py-1 text-xs bg-[var(--surface-alt)] dark:bg-[var(--surface)] rounded-lg border border-[var(--border-color)] dark:border-[var(--border-color)]"
                       >
                         <TimeField.Input className="flex items-center gap-0.5 outline-none">
                           {(segment) => <TimeField.Segment segment={segment} />}
@@ -506,7 +506,7 @@ export default function HeroUIDateTimePicker({
       )}
 
       {helperText && (
-        <p className="text-[10px] text-gray-400 dark:text-gray-500 leading-relaxed">
+        <p className="text-[10px] text-[var(--foreground-muted)] dark:text-[var(--foreground-muted)] leading-relaxed">
           {helperText}
         </p>
       )}
