@@ -812,72 +812,46 @@ export default function AddProductClient({
                     </p>
                   ) : (
                     <>
-                      <Select
-                        placeholder="Select subcategories"
-                        onSelectionChange={(keys) => {
-                          if (keys && typeof keys === "object") {
-                            setSelectedSubCategoryIds(
-                              new Set(
-                                Array.from(
-                                  keys as unknown as Iterable<unknown>
-                                ).map(String)
-                              )
-                            );
-                          }
-                        }}
-                      >
-                        <Select.Trigger className="w-full cursor-pointer">
-                          <Select.Value />
-                          <Select.Indicator />
-                        </Select.Trigger>
-                        <Select.Popover>
-                          <ListBox>
-                            {availableSubCategories.map((sub) => {
-                              const subId = (sub._id || sub.id || sub.slug) as string;
-                              return (
-                                <ListBox.Item
-                                  key={subId}
-                                  id={subId}
-                                  textValue={sub.name}
-                                  className="cursor-pointer"
-                                >
-                                  {sub.name}
-                                </ListBox.Item>
-                              );
-                            })}
-                          </ListBox>
-                        </Select.Popover>
-                      </Select>
-
+                      <div className="flex flex-wrap gap-2 pt-1">
+                        {availableSubCategories.map((sub) => {
+                          const subId = (sub._id || sub.id || sub.slug) as string;
+                          const isSelected = selectedSubCategoryIds.has(subId);
+                          return (
+                            <button
+                              type="button"
+                              key={subId}
+                              onClick={() => {
+                                setSelectedSubCategoryIds((prev) => {
+                                  const next = new Set(prev);
+                                  if (isSelected) next.delete(subId);
+                                  else next.add(subId);
+                                  return next;
+                                });
+                              }}
+                              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer touch-manipulation flex items-center gap-1.5 border ${
+                                isSelected
+                                  ? "bg-primary text-white border-primary shadow-xs"
+                                  : "bg-[var(--surface-alt)] text-[var(--foreground)] hover:bg-[var(--surface-alt)]/80 border-[var(--border-color)]"
+                              }`}
+                            >
+                              {isSelected && <Check className="w-3.5 h-3.5" />}
+                              {sub.name}
+                            </button>
+                          );
+                        })}
+                      </div>
                       {selectedSubCategoryIds.size > 0 && (
-                        <div className="flex flex-wrap gap-1.5 pt-2">
-                          {Array.from(selectedSubCategoryIds).map((id) => {
-                            const label =
-                              availableSubCategories.find(
-                                (s) => (s._id || s.id || s.slug) === id
-                              )?.name ?? id;
-                            return (
-                              <span
-                                key={id}
-                                className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20"
-                              >
-                                {label}
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    setSelectedSubCategoryIds((prev) => {
-                                      const next = new Set(prev);
-                                      next.delete(id);
-                                      return next;
-                                    })
-                                  }
-                                  className="cursor-pointer hover:opacity-75"
-                                >
-                                  <X className="w-2.5 h-2.5" />
-                                </button>
-                              </span>
-                            );
-                          })}
+                        <div className="flex items-center justify-between pt-1">
+                          <span className="text-[11px] text-[var(--foreground-muted)]">
+                            {selectedSubCategoryIds.size} subcategor{selectedSubCategoryIds.size > 1 ? "ies" : "y"} selected
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setSelectedSubCategoryIds(new Set())}
+                            className="text-[11px] text-primary hover:underline cursor-pointer"
+                          >
+                            Clear
+                          </button>
                         </div>
                       )}
                     </>
@@ -895,69 +869,49 @@ export default function AddProductClient({
                 </h2>
 
                 <div className={fieldClass}>
-                  <label className={labelClass}>Product Badges</label>
-                  <Select
-                    placeholder="Select promotional badges"
-                    onSelectionChange={(keys) => {
-                      if (keys && typeof keys === "object") {
-                        setSelectedBadges(
-                          new Set(
-                            Array.from(
-                              keys as unknown as Iterable<unknown>
-                            ).map(String)
-                          )
-                        );
-                      }
-                    }}
-                  >
-                    <Select.Trigger className="w-full cursor-pointer">
-                      <Select.Value />
-                      <Select.Indicator />
-                    </Select.Trigger>
-                    <Select.Popover>
-                      <ListBox>
-                        {AVAILABLE_BADGES.map((badge) => (
-                          <ListBox.Item
-                            key={badge.id}
-                            id={badge.id}
-                            textValue={badge.label}
-                            className="cursor-pointer"
-                          >
-                            {badge.label}
-                          </ListBox.Item>
-                        ))}
-                      </ListBox>
-                    </Select.Popover>
-                  </Select>
+                  <div className="flex items-center justify-between">
+                    <label className={labelClass}>Product Badges</label>
+                    {selectedBadges.size > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => setSelectedBadges(new Set())}
+                        className="text-[11px] text-primary hover:underline cursor-pointer"
+                      >
+                        Clear all ({selectedBadges.size})
+                      </button>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-[var(--foreground-muted)]">
+                    Click to select one or multiple badges to highlight this product.
+                  </p>
 
-                  {selectedBadges.size > 0 && (
-                    <div className="flex flex-wrap gap-1.5 pt-1">
-                      {Array.from(selectedBadges).map((bId) => {
-                        const badgeObj = AVAILABLE_BADGES.find((b) => b.id === bId);
-                        return (
-                          <span
-                            key={bId}
-                            className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20"
-                          >
-                            {badgeObj?.label ?? bId}
-                            <button
-                              type="button"
-                              onClick={() =>
-                                setSelectedBadges((prev) => {
-                                  const next = new Set(prev);
-                                  next.delete(bId);
-                                  return next;
-                                })
-                              }
-                              className="cursor-pointer hover:opacity-75"
-                            >
-                              <X className="w-2.5 h-2.5" />
-                            </button>
-                          </span>
-                        );
-                      })}
-                    </div>
-                  )}
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {AVAILABLE_BADGES.map((b) => {
+                      const isSelected = selectedBadges.has(b.id);
+                      return (
+                        <button
+                          type="button"
+                          key={b.id}
+                          onClick={() => {
+                            setSelectedBadges((prev) => {
+                              const next = new Set(prev);
+                              if (isSelected) next.delete(b.id);
+                              else next.add(b.id);
+                              return next;
+                            });
+                          }}
+                          className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer touch-manipulation flex items-center gap-1.5 border ${
+                            isSelected
+                              ? "bg-primary text-white border-primary shadow-xs"
+                              : "bg-[var(--surface-alt)] text-[var(--foreground)] hover:bg-[var(--surface-alt)]/80 border-[var(--border-color)]"
+                          }`}
+                        >
+                          {isSelected && <Check className="w-3.5 h-3.5" />}
+                          {b.label}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 {/* In Stock toggle */}
