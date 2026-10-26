@@ -22,7 +22,7 @@ export default function SubCategoryMenu({
       : undefined;
 
   return (
-    <div className="relative flex flex-col justify-between w-[460px] min-h-[380px] p-6 bg-[var(--surface-elevated)] dark:bg-[var(--surface-alt)] overflow-hidden">
+    <div className="relative flex flex-col justify-between w-[460px] min-h-[380px] p-6 bg-[var(--surface-elevated)] border-l border-[var(--border-color)] overflow-hidden">
       {/* Background Image of the Category */}
       {bgImage && (
         <div
@@ -31,8 +31,8 @@ export default function SubCategoryMenu({
         />
       )}
 
-      {/* Subtle Gradient Overlays for contrast */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-white/95 via-white/85 to-white/60 dark:from-gray-950/95 dark:via-gray-950/85 dark:to-gray-950/70 pointer-events-none" />
+      {/* Dynamic Theme Gradient Overlays for contrast */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-[var(--surface-elevated)]/95 via-[var(--surface-elevated)]/85 to-[var(--surface-elevated)]/60 pointer-events-none" />
 
       {/* Submenu Content */}
       <div className="relative z-10 flex flex-col flex-1 justify-between">
@@ -44,7 +44,7 @@ export default function SubCategoryMenu({
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Category</span>
               </div>
-              <h3 className="text-lg font-bold text-[var(--foreground)] dark:text-[var(--foreground)]">
+              <h3 className="text-lg font-bold text-[var(--foreground)]">
                 {category.name}
               </h3>
               {category.description && (
@@ -69,12 +69,12 @@ export default function SubCategoryMenu({
                       <Link
                         href={`/shop?category=${category.slug}&subCategory=${sub.slug}`}
                         onClick={onItemClick}
-                        className="group flex items-center justify-between p-2 rounded-md text-[13px] text-[var(--foreground)] hover:text-primary dark:hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors"
+                        className="group flex items-center justify-between p-2 rounded-xl text-[13px] text-[var(--foreground)] hover:text-primary hover:bg-[var(--surface-alt)] border border-transparent hover:border-[var(--border-color)]/60 transition-all duration-150"
                       >
-                        <span className="truncate group-hover:translate-x-0.5 transition-transform duration-150">
+                        <span className="truncate group-hover:translate-x-0.5 transition-transform duration-150 font-medium">
                           {sub.name}
                         </span>
-                        <ArrowRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-150 text-primary shrink-0 ml-1" />
+                        <ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-150 text-primary shrink-0 ml-1" />
                       </Link>
                     </li>
                   ))}
@@ -101,10 +101,10 @@ export default function SubCategoryMenu({
           <Link
             href={`/shop?category=${category.slug}`}
             onClick={onItemClick}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] hover:text-primary transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--foreground)] hover:text-primary transition-colors group"
           >
             <span>View all in {category.name}</span>
-            <ArrowRight className="w-3.5 h-3.5 text-primary" />
+            <ArrowRight className="w-3.5 h-3.5 text-primary group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
       </div>

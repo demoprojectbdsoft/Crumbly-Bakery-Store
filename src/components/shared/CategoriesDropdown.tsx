@@ -189,7 +189,7 @@ export default function CategoriesDropdown({
                       className={`h-3.5 bg-[var(--border-color)] dark:bg-[var(--surface)] rounded-md ${widths[i % widths.length]}`}
                     />
                   </div>
-                  <div className="w-3 h-3 rounded-full bg-[var(--surface-alt)]  'dark:bg-[var(--surface)]/'+$args[0].Value.Split('/')[1]  shrink-0" />
+                  <div className="w-3 h-3 rounded-full bg-[var(--surface-alt)] shrink-0" />
                 </div>
               );
             })}

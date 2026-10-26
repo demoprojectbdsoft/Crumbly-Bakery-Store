@@ -65,13 +65,27 @@
   --foreground: #0f172a;
   --foreground-muted: #64748b;
 
-  /* Light mode surfaces — derived from brand-flat (same logic as dark mode) so palette changes apply */
-  --background:       color-mix(in srgb, var(--site-bg, #ffffff) 97%, var(--brand-flat) 3%);
-  --surface:          color-mix(in srgb, var(--site-surface, #f8fafc) 93%, var(--brand-flat) 7%);
-  --surface-elevated: color-mix(in srgb, #ffffff 96%, var(--brand-flat) 4%);
-  --surface-alt:      color-mix(in srgb, var(--site-surface, #f8fafc) 88%, var(--brand-flat) 12%);
-  --border-color:     color-mix(in srgb, var(--brand-flat) 18%, var(--surface, #f8fafc));
+  /* Light mode surfaces — clean, crisp, professional across all palettes */
+  --background:       color-mix(in srgb, #f8fafc 97%, var(--brand-flat) 3%);
+  --surface:          color-mix(in srgb, #f8fafc 95%, var(--brand-flat) 5%);
+  --surface-elevated: #ffffff;
+  --surface-alt:      color-mix(in srgb, #f1f5f9 95%, var(--brand-flat) 5%);
+  --border-color:     color-mix(in srgb, var(--brand-flat) 12%, #e2e8f0);
   --navbar-bg:        var(--surface-elevated);
+
+  /* Form Field & HeroUI tokens (Light Mode) — clean recessed fields that focus to crisp white */
+  --field-background: color-mix(in srgb, #f8fafc 96%, var(--brand-flat) 4%);
+  --field-hover:      color-mix(in srgb, #ffffff 88%, var(--brand-flat) 12%);
+  --field-focus:      #ffffff;
+  --field-foreground: var(--foreground);
+  --field-placeholder: var(--foreground-muted);
+  --field-border:     color-mix(in srgb, var(--brand-flat) 16%, #cbd5e1);
+  --field-border-hover: color-mix(in srgb, var(--brand-flat) 40%, #94a3b8);
+  --field-border-focus: var(--brand-flat);
+  --field-border-width: 1px;
+  --default:          var(--surface-alt);
+  --default-hover:    var(--field-hover);
+  --default-foreground: var(--foreground);
 
   /* HeroUI integration */
   --heroui-primary: var(--primary);
@@ -81,6 +95,11 @@
   --heroui-content1: var(--surface-elevated);
   --heroui-content2: var(--surface-alt);
   --heroui-divider: var(--border-color);
+  --heroui-default: var(--surface-alt);
+  --heroui-default-50: var(--surface-elevated);
+  --heroui-default-100: var(--field-background);
+  --heroui-default-200: var(--field-hover);
+  --heroui-default-foreground: var(--foreground);
 }
 
 html.dark,
@@ -104,23 +123,42 @@ html.dark,
   --primary-light: color-mix(in srgb, var(--primary) 25%, black);
   --secondary: var(--site-secondary, #818cf8);
   --accent: var(--site-accent, #fbbf24);
-  --background: var(--site-bg-dark, #0b0f19);
-  --surface: var(--site-surface-dark, color-mix(in srgb, var(--background) 85%, var(--brand-flat) 15%));
+  --background: color-mix(in srgb, #07090e 92%, var(--brand-flat) 8%);
+  --surface: color-mix(in srgb, #0d121c 88%, var(--brand-flat) 12%);
   --foreground: #f1f5f9;
   --foreground-muted: #94a3b8;
-  --border-color: color-mix(in srgb, var(--surface) 80%, white 20%);
+  --border-color: color-mix(in srgb, var(--brand-flat) 18%, rgba(255, 255, 255, 0.08));
   --navbar-bg: var(--surface);
-  --surface-elevated: color-mix(in srgb, var(--surface) 88%, white 12%);
-  --surface-alt: color-mix(in srgb, var(--background) 70%, var(--surface));
+  --surface-elevated: color-mix(in srgb, #121824 88%, var(--brand-flat) 12%);
+  --surface-alt: color-mix(in srgb, var(--background) 65%, var(--surface));
+
+  /* Form Field & HeroUI tokens (Dark Mode) — comfortable, glare-free fields */
+  --field-background: color-mix(in srgb, var(--background) 88%, var(--brand-flat) 12%);
+  --field-hover: color-mix(in srgb, var(--surface) 86%, var(--brand-flat) 14%);
+  --field-focus: color-mix(in srgb, var(--surface-elevated) 86%, var(--brand-flat) 14%);
+  --field-foreground: var(--foreground);
+  --field-placeholder: var(--foreground-muted);
+  --field-border: color-mix(in srgb, var(--brand-flat) 22%, rgba(255, 255, 255, 0.1));
+  --field-border-hover: color-mix(in srgb, var(--brand-flat) 50%, rgba(255, 255, 255, 0.2));
+  --field-border-focus: var(--brand-flat);
+  --field-border-width: 1px;
+  --default: var(--field-background);
+  --default-hover: var(--field-hover);
+  --default-foreground: var(--foreground);
 
   /* HeroUI integration in dark mode */
   --heroui-primary: var(--brand-flat);
-  --heroui-primary-foreground: #0b0f19;
+  --heroui-primary-foreground: #07090e;
   --heroui-focus: var(--brand-flat);
   --heroui-background: var(--background);
   --heroui-content1: var(--surface-elevated);
   --heroui-content2: var(--surface-alt);
   --heroui-divider: var(--border-color);
+  --heroui-default: var(--field-background);
+  --heroui-default-50: var(--surface);
+  --heroui-default-100: var(--field-background);
+  --heroui-default-200: var(--field-hover);
+  --heroui-default-foreground: var(--foreground);
 }
 
 body {
@@ -142,22 +180,95 @@ body {
   }
 }
 
-input,
-textarea,
-select {
-  color: inherit;
+/* =====================================================================
+   Form Controls (HeroUI, Native Inputs, Textarea, Select)
+   Guarantees no inputs remain stark default white or stark black.
+   ===================================================================== */
+.input,
+.textarea,
+.select__trigger,
+.search-field__group,
+.input-group,
+.date-input-group,
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="hidden"]):not(.bg-transparent),
+textarea:not(.bg-transparent),
+select:not(.bg-transparent) {
+  background-color: var(--field-background);
+  color: var(--foreground);
+  border-color: var(--field-border);
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.dark input,
-.dark textarea,
-.dark select {
-  color: var(--foreground);
+.input:hover:not(:focus):not(:focus-visible),
+.input[data-hovered="true"]:not([data-focused="true"]),
+.textarea:hover:not(:focus):not(:focus-visible),
+.textarea[data-hovered="true"]:not([data-focused="true"]),
+.select__trigger:hover:not(:focus),
+.select__trigger[data-hovered="true"]:not([data-focused="true"]),
+.search-field__group:hover:not(:focus-within),
+.input-group:hover:not(:focus-within),
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="hidden"]):not(.bg-transparent):hover:not(:focus),
+textarea:not(.bg-transparent):hover:not(:focus),
+select:not(.bg-transparent):hover:not(:focus) {
+  background-color: var(--field-hover);
+  border-color: var(--field-border-hover);
+}
+
+.input:focus,
+.input:focus-visible,
+.input[data-focused="true"],
+.textarea:focus,
+.textarea:focus-visible,
+.textarea[data-focused="true"],
+.select__trigger:focus,
+.select__trigger[data-focus="true"],
+.search-field__group:focus-within,
+.input-group:has([data-slot="input-group-input"]:focus),
+.input-group:has([data-slot="input-group-textarea"]:focus),
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="hidden"]):not(.bg-transparent):focus,
+textarea:not(.bg-transparent):focus,
+select:not(.bg-transparent):focus {
+  background-color: var(--field-focus);
+  border-color: var(--field-border-focus);
+  box-shadow: var(--focus-ring);
+  outline: none;
+}
+
+/* Disabled Form Field States */
+.input:disabled,
+.input[data-disabled="true"],
+.textarea:disabled,
+.textarea[data-disabled="true"],
+.select__trigger:disabled,
+.select__trigger[data-disabled="true"],
+input:disabled,
+textarea:disabled,
+select:disabled {
+  background-color: var(--surface-alt) !important;
+  color: var(--foreground-muted) !important;
+  border-color: var(--border-color) !important;
+  opacity: 0.55 !important;
+  cursor: not-allowed !important;
+}
+
+.dark .input:disabled,
+.dark .input[data-disabled="true"],
+.dark .textarea:disabled,
+.dark .textarea[data-disabled="true"],
+.dark .select__trigger:disabled,
+.dark .select__trigger[data-disabled="true"],
+.dark input:disabled,
+.dark textarea:disabled,
+.dark select:disabled {
+  background-color: color-mix(in srgb, var(--background) 92%, black) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: var(--foreground-muted) !important;
 }
 
 input::placeholder,
 textarea::placeholder {
   color: var(--foreground-muted);
-  opacity: 0.7;
+  opacity: 0.75;
 }
 
 .dark input::placeholder,
@@ -166,13 +277,7 @@ textarea::placeholder {
   opacity: 0.85;
 }
 
-.dark input:-webkit-autofill,
-.dark textarea:-webkit-autofill,
-.dark select:-webkit-autofill {
-  -webkit-text-fill-color: var(--foreground) !important;
-  transition: background-color 5000s ease-in-out 0s;
-}
-
+/* Browser autofill harmonization with palette */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -182,7 +287,24 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  -webkit-text-fill-color: inherit;
+  -webkit-text-fill-color: var(--foreground) !important;
+  -webkit-box-shadow: 0 0 0px 1000px var(--field-background) inset !important;
+  box-shadow: 0 0 0px 1000px var(--field-background) inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark textarea:-webkit-autofill,
+.dark textarea:-webkit-autofill:hover,
+.dark textarea:-webkit-autofill:focus,
+.dark select:-webkit-autofill,
+.dark select:-webkit-autofill:hover,
+.dark select:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--foreground) !important;
+  -webkit-box-shadow: 0 0 0px 1000px var(--field-background) inset !important;
+  box-shadow: 0 0 0px 1000px var(--field-background) inset !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 
