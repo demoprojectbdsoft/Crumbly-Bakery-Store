@@ -16,6 +16,7 @@ export interface ShopQueryParams {
   hasOffer?: string;
   sort?: string;
   page?: string;
+  mode?: "pagination" | "scroll" | string;
 }
 
 export interface ShopPagination {
