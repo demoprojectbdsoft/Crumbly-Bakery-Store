@@ -1,24 +1,33 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { getSiteSettings } from "@/lib/api/siteSettings";
 import MaintenancePage from "./MaintenanceClient";
 
-export const metadata: Metadata = {
-  title: "Maintenance – Color Theme Test",
-  description: "Static test page for the color theming system. No maintenance logic.",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const res = await getSiteSettings();
+  const siteName = res?.data?.siteName || "Store";
+  return {
+    title: `Maintenance Mode | ${siteName}`,
+    description: `We are currently performing scheduled system updates to improve your shopping experience. ${siteName} will be back shortly.`,
+    robots: { index: false, follow: false },
+  };
+}
 
 /**
- * /maintenance – static theming test page (no middleware, no auth, no 503).
+ * /maintenance – Real-time Store Maintenance Page.
  *
- * Fetch SiteSettings on the server → build palette CSS vars → inject as
- * inline <style> before first paint so there is zero color flash.
- * The same --site-* tokens are used by globals.css and the Settings Preview.
+ * Rendered when maintenance mode is active. Synchronizes real-time status
+ * with the backend and settings, automatically redirecting visitors once the
+ * store comes back online.
+ *
+ * Wrapped in Suspense because MaintenanceClient uses useSearchParams().
  */
 export default async function MaintenanceRoute() {
   const res = await getSiteSettings();
   const settings = res?.data || null;
-  // NOTE: The root layout already injects palette CSS vars via `ssr-site-palette`
-  // before first paint, so we just pass the settings down to the client component.
-  return <MaintenancePage settings={settings} />;
+  return (
+    <Suspense fallback={null}>
+      <MaintenancePage settings={settings} />
+    </Suspense>
+  );
 }

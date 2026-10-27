@@ -1,22 +1,29 @@
 "use client";
 
-/**
- * MaintenancePage – Color Theme Test Page
- *
- * Every color comes from CSS custom properties derived from the active palette.
- * Zero hardcoded colors. Gradient brand surfaces use var(--brand-gradient).
- * Flat accent for text/borders/rings: var(--brand-flat).
- * Text on gradient: var(--on-grad-text) (auto black/white via CSS).
- */
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useSiteSettings } from "@/context/SiteSettingsContext";
 import {
-  Mail, Phone,
-  Share2, PlayCircle, Briefcase, Globe,
-  Sun, Moon, Clock, Wrench, CheckCircle, ArrowRight, ExternalLink,
+  Mail,
+  Phone,
+  Share2,
+  PlayCircle,
+  Briefcase,
+  Globe,
+  Sun,
+  Moon,
+  Clock,
+  CheckCircle2,
+  RefreshCw,
+  Shield,
+  ArrowRight,
+  Sparkles,
+  Server,
+  Activity,
+  Lock,
 } from "lucide-react";
 import type { SiteSettingsData } from "@/types";
 
@@ -26,7 +33,13 @@ function SocialIcon({ platform }: { platform: string }) {
   const cls = "w-4 h-4";
   if (p.includes("youtube") || p.includes("video")) return <PlayCircle className={cls} />;
   if (p.includes("linkedin") || p.includes("work")) return <Briefcase className={cls} />;
-  if (p.includes("facebook") || p.includes("twitter") || p.includes("instagram") || p.includes("social")) return <Share2 className={cls} />;
+  if (
+    p.includes("facebook") ||
+    p.includes("twitter") ||
+    p.includes("instagram") ||
+    p.includes("social")
+  )
+    return <Share2 className={cls} />;
   return <Globe className={cls} />;
 }
 
@@ -35,18 +48,44 @@ interface Props {
 }
 
 export default function MaintenancePage({ settings: serverSettings }: Props) {
-  const { settings } = useSiteSettings();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const fromPath = searchParams.get("from") || "/";
+  const isPreview = searchParams.has("preview");
+
+  const { settings: contextSettings } = useSiteSettings();
   const { theme, setTheme, resolvedTheme } = useTheme();
+
   const [mounted, setMounted] = useState(false);
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [checkingStatus, setCheckingStatus] = useState(false);
+  const [lastCheckTime, setLastCheckTime] = useState<Date | null>(null);
+  const [pingLatency, setPingLatency] = useState<number | null>(null);
+  const [isStoreBackLive, setIsStoreBackLive] = useState(false);
+  const [redirectCountdown, setRedirectCountdown] = useState<number | null>(null);
+  const [liveSettings, setLiveSettings] = useState<Partial<SiteSettingsData> | null>(null);
 
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    setMounted(true);
+    // Check if user previously subscribed
+    try {
+      const savedEmail = localStorage.getItem("maint_subscribed_email");
+      if (savedEmail) {
+        setEmail(savedEmail);
+        setSubmitted(true);
+      }
+    } catch {}
+  }, []);
 
   const isDark = mounted ? (resolvedTheme || theme) === "dark" : false;
 
-  // Context settings win (supports live Settings Preview); fall back to server props
-  const s: SiteSettingsData = settings || (serverSettings as SiteSettingsData);
+  // Active settings hierarchy: Real-time polled data > context settings > server SSR props
+  const s: SiteSettingsData =
+    (liveSettings as SiteSettingsData) ||
+    contextSettings ||
+    (serverSettings as SiteSettingsData);
+
   const siteName = s?.siteName || "Sparq";
   const supportEmail = s?.supportEmail || "support@sparq.com";
   const supportPhone = s?.supportPhone || "(800) 8001-8588";
@@ -54,13 +93,82 @@ export default function MaintenancePage({ settings: serverSettings }: Props) {
 
   const navLogo = s?.navbarLogo;
   const lightLogo = navLogo?.light?.trim() || "";
-  const darkLogo  = navLogo?.dark?.trim()  || "";
-  const hasLogo   = !!(lightLogo || darkLogo);
-  const activeLogo = isDark ? (darkLogo || lightLogo) : (lightLogo || darkLogo);
+  const darkLogo = navLogo?.dark?.trim() || "";
+  const hasLogo = !!(lightLogo || darkLogo);
+  const activeLogo = isDark ? darkLogo || lightLogo : lightLogo || darkLogo;
 
-  // ── Inline CSS – all palette derivations in CSS, not JS ──────────────────
+  // ── Real-time Status Polling ──────────────────────────────────────────────
+  const checkStatus = useCallback(
+    async (isManual: boolean = false) => {
+      if (isManual) setCheckingStatus(true);
+      const startTime = performance.now();
+
+      try {
+        const res = await fetch("/api/maintenance/status", {
+          cache: "no-store",
+          headers: { Pragma: "no-cache" },
+        });
+
+        const latency = Math.round(performance.now() - startTime);
+        setPingLatency(latency);
+        setLastCheckTime(new Date());
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.settings) {
+            setLiveSettings(data.settings);
+          }
+
+          // If maintenance mode was disabled on the server!
+          if (data?.maintenanceMode === false && !isPreview) {
+            setIsStoreBackLive(true);
+            setRedirectCountdown(3);
+          }
+        }
+      } catch (err) {
+        console.error("Maintenance status check error:", err);
+      } finally {
+        if (isManual) {
+          setTimeout(() => setCheckingStatus(false), 400);
+        }
+      }
+    },
+    [isPreview]
+  );
+
+  // Poll every 4 seconds for real-time responsiveness
+  useEffect(() => {
+    checkStatus(false);
+    const interval = setInterval(() => {
+      checkStatus(false);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [checkStatus]);
+
+  // Countdown redirect when store returns online
+  useEffect(() => {
+    if (redirectCountdown === null) return;
+    if (redirectCountdown <= 0) {
+      router.push(fromPath);
+      return;
+    }
+    const timer = setTimeout(() => {
+      setRedirectCountdown((prev) => (prev !== null ? prev - 1 : null));
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [redirectCountdown, fromPath, router]);
+
+  const handleNotifySubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    setSubmitted(true);
+    try {
+      localStorage.setItem("maint_subscribed_email", email);
+    } catch {}
+  };
+
+  // ── Inline CSS with brand design tokens ────────────────────────────────────
   const STYLES = `
-    /* Brand gradient stops pulled from topBar palette tokens */
     :root {
       --grad-from: var(--site-topbar-from, #1d4ed8);
       --grad-via:  var(--site-topbar-via,  #0284c7);
@@ -71,188 +179,140 @@ export default function MaintenancePage({ settings: serverSettings }: Props) {
         color-mix(in srgb, var(--grad-from) 85%, white) 0%,
         color-mix(in srgb, var(--grad-via)  85%, white) 50%,
         color-mix(in srgb, var(--grad-to)   85%, white) 100%);
-      --brand-gradient-active: linear-gradient(135deg,
-        color-mix(in srgb, var(--grad-from) 78%, black) 0%,
-        color-mix(in srgb, var(--grad-via)  78%, black) 50%,
-        color-mix(in srgb, var(--grad-to)   78%, black) 100%);
-      --brand-gradient-disabled: linear-gradient(135deg,
-        color-mix(in srgb, var(--grad-from) 40%, #888) 0%,
-        color-mix(in srgb, var(--grad-via)  40%, #888) 50%,
-        color-mix(in srgb, var(--grad-to)   40%, #888) 100%);
-      --on-grad-text: white;
-      --brand-shadow: 0 4px 18px -2px color-mix(in srgb, var(--grad-via) 45%, transparent);
-      --brand-shadow-hover: 0 6px 24px -2px color-mix(in srgb, var(--grad-via) 65%, transparent);
+      --brand-shadow: 0 4px 20px -2px color-mix(in srgb, var(--grad-via) 40%, transparent);
+      --brand-shadow-hover: 0 8px 30px -4px color-mix(in srgb, var(--grad-via) 60%, transparent);
       --focus-ring: 0 0 0 3px color-mix(in srgb, var(--brand-flat) 35%, transparent);
-      --grad-border: color-mix(in srgb, var(--brand-flat) 40%, transparent);
+      --grad-border: color-mix(in srgb, var(--brand-flat) 30%, transparent);
     }
-    /* Dark: lighten stops and flat accent so they remain vivid on near-black */
     .dark {
-      --grad-from: color-mix(in srgb, var(--site-topbar-from, #1d4ed8) 72%, white);
-      --grad-via:  color-mix(in srgb, var(--site-topbar-via,  #0284c7) 72%, white);
-      --grad-to:   color-mix(in srgb, var(--site-topbar-to,   #4338ca) 72%, white);
+      --grad-from: color-mix(in srgb, var(--site-topbar-from, #1d4ed8) 75%, white);
+      --grad-via:  color-mix(in srgb, var(--site-topbar-via,  #0284c7) 75%, white);
+      --grad-to:   color-mix(in srgb, var(--site-topbar-to,   #4338ca) 75%, white);
       --brand-flat: color-mix(in srgb, var(--site-topbar-via, #0284c7) 80%, white);
-      --on-grad-text: white;
     }
-    /* Page */
-    .maint-page { min-height:100vh; background:var(--background); color:var(--foreground); position:relative; overflow-x:hidden; }
-    /* Ambient glow */
-    .maint-glow { position:fixed; inset:0; pointer-events:none; z-index:0;
-      background:radial-gradient(ellipse 80% 50% at 50% -10%, color-mix(in srgb, var(--grad-via) 18%, transparent), transparent 70%); }
-    .dark .maint-glow { background:radial-gradient(ellipse 85% 55% at 50% -10%, color-mix(in srgb, var(--grad-via) 22%, transparent), transparent 75%); }
-    /* Grad badge */
-    .grad-badge { display:inline-flex; align-items:center; gap:.35rem; padding:.25rem .85rem; border-radius:999px;
-      background:var(--brand-gradient); color:var(--on-grad-text); font-size:.72rem; font-weight:700;
-      letter-spacing:.07em; text-transform:uppercase; box-shadow:var(--brand-shadow); border:1px solid transparent; transition:box-shadow .2s; }
-    .dark .grad-badge { border-color:var(--grad-border); }
-    /* Grad strip */
-    .grad-strip { background:var(--brand-gradient); border-radius:1rem; padding:1.25rem 2rem;
-      box-shadow:var(--brand-shadow); border:1px solid transparent; position:relative; overflow:hidden; }
-    .dark .grad-strip { border-color:color-mix(in srgb, var(--brand-flat) 30%, transparent); box-shadow:0 8px 30px -4px color-mix(in srgb, var(--brand-flat) 35%, transparent); }
-    .grad-strip::before { content:""; position:absolute; inset:0;
-      background:linear-gradient(135deg,rgba(255,255,255,.08) 0%,transparent 60%); pointer-events:none; }
-    .grad-strip-text { color:var(--on-grad-text); position:relative; z-index:1; }
-    /* Primary btn */
-    .btn-primary { display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
-      padding:.625rem 1.375rem; border-radius:9999px; background:var(--brand-gradient); color:var(--on-grad-text);
-      font-weight:600; font-size:.875rem; border:1px solid transparent; cursor:pointer;
-      box-shadow:var(--brand-shadow); transition:background .25s,box-shadow .25s,transform .15s; outline:none; text-decoration:none; white-space:nowrap; }
-    .dark .btn-primary { border-color:var(--grad-border); }
-    .btn-primary:hover { background:var(--brand-gradient-hover); box-shadow:var(--brand-shadow-hover); transform:translateY(-1px); }
-    .btn-primary:active { background:var(--brand-gradient-active); transform:translateY(0) scale(.98); box-shadow:var(--brand-shadow); }
-    .btn-primary:focus-visible { box-shadow:var(--brand-shadow),var(--focus-ring); }
-    .btn-primary:disabled { background:var(--brand-gradient-disabled); opacity:.65; cursor:not-allowed; transform:none; box-shadow:none; }
-    .dark .btn-primary:disabled { background:color-mix(in srgb, var(--background) 80%, rgba(255,255,255,.06)); border:1px solid rgba(255,255,255,.08); color:var(--foreground-muted); opacity:.55; box-shadow:none; }
-    /* Secondary btn */
-    .btn-secondary { display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
-      padding:.625rem 1.375rem; border-radius:9999px; background:transparent; color:var(--brand-flat);
-      font-weight:600; font-size:.875rem; border:1.5px solid var(--brand-flat); cursor:pointer;
-      transition:background .2s,color .2s,border-color .2s,transform .15s,box-shadow .2s; outline:none; text-decoration:none; white-space:nowrap; }
-    .btn-secondary:hover { background:color-mix(in srgb,var(--brand-flat) 10%,transparent); transform:translateY(-1px);
-      box-shadow:0 2px 10px -2px color-mix(in srgb,var(--brand-flat) 25%,transparent); }
-    .btn-secondary:active { background:color-mix(in srgb,var(--brand-flat) 18%,transparent); transform:translateY(0) scale(.98); }
-    .btn-secondary:focus-visible { box-shadow:var(--focus-ring); }
-    .btn-secondary:disabled { opacity:.45; cursor:not-allowed; border-color:var(--border-color); color:var(--foreground-muted); transform:none; box-shadow:none; }
-    .dark .btn-secondary:disabled { border-color:rgba(255,255,255,.1); color:var(--foreground-muted); opacity:.45; background:transparent; box-shadow:none; }
-    /* Notify btn */
-    .btn-notify { display:inline-flex; align-items:center; justify-content:center; gap:.35rem;
-      padding:.5rem 1.1rem; border-radius:0 9999px 9999px 0; background:var(--brand-gradient); color:var(--on-grad-text);
-      font-weight:600; font-size:.8125rem; border:1px solid transparent; cursor:pointer;
-      box-shadow:var(--brand-shadow); transition:background .2s,box-shadow .2s; outline:none; white-space:nowrap; flex-shrink:0; }
-    .dark .btn-notify { border-color:var(--grad-border); }
-    .btn-notify:hover { background:var(--brand-gradient-hover); box-shadow:var(--brand-shadow-hover); }
-    .btn-notify:active { background:var(--brand-gradient-active); }
-    .btn-notify:focus-visible { box-shadow:var(--brand-shadow),var(--focus-ring); }
-    /* Card */
-    .maint-card { 
-      background: var(--surface-elevated, #ffffff); 
+
+    .maint-page {
+      min-height: 100vh;
+      background: var(--background);
+      color: var(--foreground);
+      position: relative;
+      overflow-x: hidden;
+    }
+    .maint-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(circle 600px at 50% 0%, color-mix(in srgb, var(--grad-via) 15%, transparent), transparent 75%),
+        radial-gradient(circle 500px at 80% 80%, color-mix(in srgb, var(--grad-to) 10%, transparent), transparent 70%);
+    }
+    .dark .maint-glow {
+      background:
+        radial-gradient(circle 700px at 50% -5%, color-mix(in srgb, var(--grad-via) 22%, transparent), transparent 80%),
+        radial-gradient(circle 600px at 90% 70%, color-mix(in srgb, var(--grad-to) 14%, transparent), transparent 75%);
+    }
+
+    .maint-card {
+      background: var(--surface-elevated, #ffffff);
       border: 1px solid var(--border-color, #e2e8f0);
-      border-radius: 1.25rem; 
-      box-shadow: 0 4px 32px -4px rgba(0,0,0,.08); 
-      overflow: hidden; 
+      border-radius: 1.5rem;
+      box-shadow: 0 4px 30px -4px rgba(0, 0, 0, 0.06);
+      position: relative;
+      overflow: hidden;
+      transition: border-color .2s, box-shadow .2s;
     }
-    .dark .maint-card { 
+    .dark .maint-card {
       background: linear-gradient(
         180deg,
-        color-mix(in srgb, var(--surface) 86%, var(--brand-flat) 14%) 0%,
-        color-mix(in srgb, var(--background) 92%, var(--brand-flat) 8%) 100%
+        color-mix(in srgb, var(--surface, #131d2e) 88%, var(--brand-flat) 12%) 0%,
+        color-mix(in srgb, var(--background, #0b0f19) 92%, var(--brand-flat) 8%) 100%
       );
-      border: 1px solid color-mix(in srgb, var(--brand-flat) 26%, rgba(255, 255, 255, 0.09));
-      box-shadow: 
-        0 16px 48px -12px rgba(0, 0, 0, 0.75),
-        0 0 28px -6px color-mix(in srgb, var(--brand-flat) 18%, transparent),
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.09);
+      border: 1px solid color-mix(in srgb, var(--brand-flat) 24%, rgba(255, 255, 255, 0.08));
+      box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.65), 0 0 24px -6px color-mix(in srgb, var(--brand-flat) 16%, transparent);
     }
-    .maint-card-accent-top::before { content:""; display:block; height:3px; background:var(--brand-gradient); }
-    /* Email input */
-    .email-input { flex:1; min-width:0; padding:.5rem 1rem; border:1.5px solid var(--border-color);
-      border-right:none; border-radius:9999px 0 0 9999px; background:var(--surface-elevated,var(--background));
-      color:var(--foreground); font-size:.875rem; outline:none; transition:border-color .2s,box-shadow .2s; }
-    .email-input::placeholder { color:var(--foreground-muted); opacity:.75; }
-    .email-input:focus { border-color:var(--brand-flat); box-shadow:var(--focus-ring); z-index:1; }
-    .email-input:disabled { opacity:.5; cursor:not-allowed; background:var(--surface-alt); }
-    .dark .email-input {
-      background: color-mix(in srgb, var(--background) 86%, var(--brand-flat) 14%);
-      border-color: color-mix(in srgb, var(--brand-flat) 25%, rgba(255, 255, 255, 0.12));
-      color: var(--foreground);
-    }
-    .dark .email-input:focus {
-      border-color: var(--brand-flat);
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-flat) 30%, transparent);
-    }
-    /* Disabled input */
-    .input-disabled { width:100%; padding:.55rem .9rem; border:1.5px solid var(--border-color);
-      border-radius:.625rem; background:var(--surface-alt); color:var(--foreground-muted);
-      font-size:.875rem; cursor:not-allowed; opacity:.55; outline:none; }
-    .dark .input-disabled {
-      background: color-mix(in srgb, var(--background) 92%, black);
-      border-color: rgba(255, 255, 255, 0.08);
-      color: var(--foreground-muted);
-    }
-    /* Link */
-    .maint-link { color:var(--brand-flat); text-decoration:underline;
-      text-decoration-color:color-mix(in srgb,var(--brand-flat) 35%,transparent);
-      text-underline-offset:3px; font-weight:500; transition:color .2s,text-decoration-color .2s; border-radius:2px; outline:none; }
-    .maint-link:hover { color:color-mix(in srgb,var(--brand-flat) 80%,black); text-decoration-color:var(--brand-flat); }
-    .dark .maint-link:hover { color:color-mix(in srgb,var(--brand-flat) 80%,white); }
-    .maint-link:focus-visible { box-shadow:var(--focus-ring); outline:2px solid var(--brand-flat); outline-offset:2px; }
-    /* Social btn */
-    .social-btn { display:inline-flex; align-items:center; justify-content:center; width:2.25rem; height:2.25rem;
-      border-radius:9999px; background:color-mix(in srgb,var(--brand-flat) 10%,transparent);
-      color:var(--brand-flat); border:1px solid color-mix(in srgb,var(--brand-flat) 25%,transparent);
-      transition:background .2s,color .2s,border-color .2s,transform .15s,box-shadow .2s; outline:none; cursor:pointer; text-decoration:none; }
-    .social-btn:hover { background:var(--brand-gradient); color:var(--on-grad-text); border-color:transparent;
-      transform:translateY(-2px) scale(1.08); box-shadow:var(--brand-shadow); }
-    .social-btn:focus-visible { box-shadow:var(--focus-ring); }
-    .dark .social-btn {
-      background: color-mix(in srgb, var(--brand-flat) 15%, transparent);
-      color: var(--brand-flat);
-      border: 1px solid color-mix(in srgb, var(--brand-flat) 28%, transparent);
-    }
-    .dark .social-btn:hover {
+
+    .btn-gradient {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.4rem;
+      border-radius: 9999px;
       background: var(--brand-gradient);
-      color: var(--on-grad-text);
-      border-color: transparent;
-      box-shadow: 0 4px 18px color-mix(in srgb, var(--brand-flat) 50%, transparent);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 0.875rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      box-shadow: var(--brand-shadow);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
     }
-    /* Spinner */
-    @keyframes spin360 { to { transform:rotate(360deg); } }
-    .maint-spinner { width:2rem; height:2rem; border-radius:50%; border:3px solid color-mix(in srgb,var(--brand-flat) 20%,transparent);
-      border-top-color:var(--brand-flat); animation:spin360 .75s linear infinite; }
-    /* Skeleton */
-    @keyframes shimmer { 0%{background-position:-200% center} 100%{background-position:200% center} }
-    .maint-skeleton { border-radius:.5rem;
-      background:linear-gradient(90deg,var(--surface-alt) 25%,color-mix(in srgb,var(--brand-flat) 8%,var(--surface-alt)) 50%,var(--surface-alt) 75%);
-      background-size:200% 100%; animation:shimmer 1.6s ease-in-out infinite; }
-    .dark .maint-skeleton {
-      background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.05) 25%,
-        color-mix(in srgb, var(--brand-flat) 26%, rgba(255, 255, 255, 0.14)) 50%,
-        rgba(255, 255, 255, 0.05) 75%
-      );
-      background-size: 200% 100%;
+    .btn-gradient:hover {
+      background: var(--brand-gradient-hover);
+      box-shadow: var(--brand-shadow-hover);
+      transform: translateY(-1.5px);
     }
-    /* Contact icon */
-    .contact-icon { display:inline-flex; align-items:center; justify-content:center;
-      width:2rem; height:2rem; border-radius:50%; background:color-mix(in srgb,var(--brand-flat) 12%,transparent);
-      color:var(--brand-flat); flex-shrink:0; }
-    .dark .contact-icon {
-      background: color-mix(in srgb, var(--brand-flat) 18%, transparent);
+    .btn-gradient:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 9999px;
+      background: transparent;
       color: var(--brand-flat);
-      border: 1px solid color-mix(in srgb, var(--brand-flat) 30%, transparent);
+      border: 1.5px solid var(--brand-flat);
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
     }
-    /* Divider */
-    .maint-divider { height:1px;
-      background:linear-gradient(to right,transparent,var(--border-color) 20%,var(--border-color) 80%,transparent);
-      margin:1.5rem 0; }
-    .dark .maint-divider {
-      background: linear-gradient(
-        to right,
-        transparent,
-        color-mix(in srgb, var(--brand-flat) 22%, rgba(255, 255, 255, 0.1)) 20%,
-        color-mix(in srgb, var(--brand-flat) 22%, rgba(255, 255, 255, 0.1)) 80%,
-        transparent
-      );
+    .btn-outline:hover {
+      background: color-mix(in srgb, var(--brand-flat) 10%, transparent);
+      transform: translateY(-1px);
+    }
+
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.4rem;
+      height: 2.4rem;
+      border-radius: 9999px;
+      background: color-mix(in srgb, var(--brand-flat) 10%, transparent);
+      color: var(--brand-flat);
+      border: 1px solid color-mix(in srgb, var(--brand-flat) 25%, transparent);
+      transition: all 0.2s;
+    }
+    .social-btn:hover {
+      background: var(--brand-gradient);
+      color: #ffffff;
+      transform: translateY(-2px) scale(1.06);
+      box-shadow: var(--brand-shadow);
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(1.4); }
+    }
+    .pulse-dot {
+      position: relative;
+    }
+    .pulse-dot::after {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: inherit;
+      animation: pulseGlow 2s infinite ease-in-out;
+      opacity: 0.6;
     }
   `;
 
@@ -260,254 +320,471 @@ export default function MaintenancePage({ settings: serverSettings }: Props) {
     <>
       <style dangerouslySetInnerHTML={{ __html: STYLES }} />
 
-      <div className="maint-page">
-        {/* Ambient glow */}
+      <div className="maint-page flex flex-col justify-between">
+        {/* Ambient Glow */}
         <div className="maint-glow" aria-hidden />
 
-        {/* ── Top bar: gradient bg + theme toggle ──────────────────────── */}
-        <div className="relative z-10 w-full"
-          style={{ background: "var(--brand-gradient)", borderBottom: "1px solid var(--grad-border)" }}>
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 py-2 flex items-center justify-between">
-            <span className="text-[11px] font-semibold tracking-wide flex items-center gap-1"
-              style={{ color: "var(--on-grad-text)", opacity: 0.9 }}>
-              <Wrench className="w-3 h-3" aria-hidden />
-              Color Theme Test Page
-            </span>
-            {mounted && (
-              <button id="maint-theme-toggle" type="button"
-                onClick={() => setTheme(isDark ? "light" : "dark")}
-                aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-                className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold cursor-pointer"
-                style={{ color:"var(--on-grad-text)", background:"rgba(255,255,255,.15)", border:"1px solid rgba(255,255,255,.25)" }}>
-                {isDark ? <><Sun className="w-3 h-3" /><span>Light</span></> : <><Moon className="w-3 h-3" /><span>Dark</span></>}
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* ── Main Content ─────────────────────────────────────────────── */}
-        <main id="maintenance-content"
-          className="relative z-10 flex flex-col items-center min-h-[calc(100vh-40px)] py-10 px-4 sm:px-6">
-          <div className="w-full max-w-2xl mx-auto space-y-8">
-
-            {/* 1. Logo, site name, heading, badge */}
-            <div className="flex flex-col items-center text-center space-y-4">
-              <div className="flex items-center gap-3 select-none">
-                {hasLogo && activeLogo ? (
-                  <Image src={activeLogo} alt={siteName} width={140} height={44}
-                    style={{ height: 44, width: "auto", objectFit: "contain" }} unoptimized priority />
-                ) : (
-                  <span className="font-black text-3xl tracking-tight"
-                    style={{ fontFamily:"var(--site-font-heading,var(--font-poppins)),sans-serif",
-                      letterSpacing:"-0.03em", color:"var(--foreground)" }}>
+        {/* ── Top Header Navigation ────────────────────────────────────── */}
+        <header className="relative z-20 w-full border-b border-[var(--border-color)]/60 bg-[var(--surface)]/70 backdrop-blur-md">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+            {/* Logo / Brand */}
+            <div className="flex items-center gap-3">
+              {hasLogo && activeLogo ? (
+                <Image
+                  src={activeLogo}
+                  alt={siteName}
+                  width={130}
+                  height={38}
+                  style={{ height: 38, width: "auto", objectFit: "contain" }}
+                  unoptimized
+                  priority
+                />
+              ) : (
+                <div className="flex items-center gap-2">
+                  <div
+                    className="w-8 h-8 rounded-xl flex items-center justify-center font-black text-white shadow-md"
+                    style={{ background: "var(--brand-gradient)" }}
+                  >
+                    {siteName.charAt(0)}
+                  </div>
+                  <span
+                    className="font-extrabold text-xl tracking-tight text-[var(--foreground)]"
+                    style={{
+                      fontFamily: "var(--site-font-heading, sans-serif)",
+                    }}
+                  >
                     {siteName}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Right actions: Live status, Theme toggle, Admin portal */}
+            <div className="flex items-center gap-2.5 sm:gap-3.5">
+              {/* Real-time status badge */}
+              <div
+                className="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold border backdrop-blur-sm shadow-sm"
+                style={{
+                  background: isStoreBackLive
+                    ? "color-mix(in srgb, #10b981 12%, transparent)"
+                    : "color-mix(in srgb, var(--brand-flat) 10%, transparent)",
+                  color: isStoreBackLive ? "#10b981" : "var(--brand-flat)",
+                  borderColor: isStoreBackLive
+                    ? "color-mix(in srgb, #10b981 25%, transparent)"
+                    : "color-mix(in srgb, var(--brand-flat) 25%, transparent)",
+                }}
+              >
+                <span
+                  className={`w-2 h-2 rounded-full pulse-dot ${
+                    isStoreBackLive ? "bg-emerald-500" : "bg-amber-500"
+                  }`}
+                />
+                <span>
+                  {isStoreBackLive
+                    ? "Store Online"
+                    : "Maintenance Active"}
+                </span>
+                {pingLatency !== null && (
+                  <span className="text-[10px] opacity-75 font-mono">
+                    ({pingLatency}ms)
                   </span>
                 )}
               </div>
-              <div>
-                <span className="grad-badge">
-                  <Clock className="w-3 h-3" aria-hidden />
-                  Back Soon
-                </span>
-              </div>
-              <div className="space-y-2">
-                <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight"
-                  style={{ fontFamily:"var(--site-font-heading,var(--font-poppins)),sans-serif",
-                    color:"var(--foreground)", letterSpacing:"-0.025em" }}>
-                  We&apos;re working on something
-                </h1>
-                <p className="text-base leading-relaxed max-w-md mx-auto"
-                  style={{ color:"var(--foreground-muted)" }}>
-                  Our team is making improvements to bring you a better experience.
-                  We&apos;ll be back shortly. Thank you for your patience.
-                </p>
-              </div>
-            </div>
 
-            {/* 2. Card with message, buttons, link */}
-            <div className="maint-card maint-card-accent-top">
-              <div className="p-6 sm:p-8 space-y-5">
-                <div className="flex items-start gap-3">
-                  <div className="contact-icon mt-0.5">
-                    <CheckCircle className="w-4 h-4" aria-hidden />
-                  </div>
-                  <div className="space-y-1 min-w-0">
-                    <h2 className="font-bold text-base" style={{ color:"var(--foreground)" }}>
-                      What&apos;s happening?
-                    </h2>
-                    <p className="text-sm leading-relaxed" style={{ color:"var(--foreground-muted)" }}>
-                      We are upgrading our systems to deliver a faster, more reliable, and feature-rich
-                      experience. Our engineers are working around the clock to get this done quickly.
-                    </p>
-                  </div>
-                </div>
-                <div className="maint-divider" />
-                {/* Active buttons */}
-                <div className="flex flex-wrap gap-3">
-                  <button id="maint-btn-primary" type="button" className="btn-primary">
-                    <CheckCircle className="w-4 h-4" aria-hidden />
-                    Check Status
-                  </button>
-                  <button id="maint-btn-secondary" type="button" className="btn-secondary">
-                    <ExternalLink className="w-4 h-4" aria-hidden />
-                    Learn More
-                  </button>
-                </div>
-                {/* Disabled buttons */}
-                <div className="flex flex-wrap gap-3">
-                  <button id="maint-btn-disabled" type="button" className="btn-primary" disabled>
-                    Unavailable (disabled)
-                  </button>
-                  <button id="maint-btn-secondary-disabled" type="button" className="btn-secondary" disabled>
-                    Also disabled
-                  </button>
-                </div>
-                {/* Link with hover state */}
-                <p className="text-sm" style={{ color:"var(--foreground-muted)" }}>
-                  Need help right now?{" "}
-                  <a href={`mailto:${supportEmail}`} className="maint-link" id="maint-contact-link">
-                    Contact our support team
-                  </a>{" "}
-                  or visit our{" "}
-                  <a href="/shop" className="maint-link" id="maint-shop-link">
-                    product catalog <ArrowRight className="w-3 h-3 inline ml-0.5 mb-0.5" />
-                  </a>.
-                </p>
-              </div>
-            </div>
+              {/* Theme switch */}
+              {mounted && (
+                <button
+                  type="button"
+                  id="maint-theme-toggle"
+                  onClick={() => setTheme(isDark ? "light" : "dark")}
+                  aria-label={
+                    isDark ? "Switch to light mode" : "Switch to dark mode"
+                  }
+                  className="p-2 rounded-full text-[var(--foreground-muted)] hover:text-[var(--foreground)] hover:bg-[var(--surface-alt)] transition-colors border border-[var(--border-color)]/60 cursor-pointer"
+                >
+                  {isDark ? (
+                    <Sun className="w-4 h-4 text-amber-400" />
+                  ) : (
+                    <Moon className="w-4 h-4 text-slate-600" />
+                  )}
+                </button>
+              )}
 
-            {/* 3. Gradient strip */}
-            <div className="grad-strip">
-              <div className="grad-strip-text flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              {/* Staff / Admin Login Access */}
+              <Link
+                href="/auth/login"
+                id="maint-admin-access-btn"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all border border-[var(--border-color)] text-[var(--foreground)] bg-[var(--surface-alt)] hover:border-[var(--brand-flat)] cursor-pointer"
+                title="Admin / Staff Login"
+              >
+                <Shield className="w-3.5 h-3.5 text-[var(--brand-flat)]" />
+                <span className="hidden sm:inline">Admin Login</span>
+              </Link>
+            </div>
+          </div>
+        </header>
+
+        {/* ── Store Back Online Notification Banner ─────────────────────── */}
+        {isStoreBackLive && (
+          <div className="relative z-30 w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white shadow-lg animate-in slide-in-from-top duration-300">
+            <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                  <Sparkles className="w-4 h-4 text-yellow-300" />
+                </div>
                 <div>
-                  <p className="font-bold text-sm" style={{ color:"var(--on-grad-text)" }}>
-                    🚀 Exciting new features are coming
+                  <p className="font-bold text-sm">
+                    Store is officially back online!
                   </p>
-                  <p className="text-xs mt-0.5 leading-relaxed"
-                    style={{ color:"var(--on-grad-text)", opacity:.85 }}>
-                    Sign up below to be first to know when we&apos;re live. No spam, ever.
+                  <p className="text-xs text-white/90">
+                    System maintenance has concluded. Redirecting you in{" "}
+                    <strong>{redirectCountdown ?? 3}</strong>s...
                   </p>
                 </div>
-                <span className="text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap"
-                  style={{ background:"rgba(255,255,255,.18)", color:"var(--on-grad-text)", border:"1px solid rgba(255,255,255,.25)" }}>
-                  Coming Soon
+              </div>
+              <button
+                type="button"
+                onClick={() => router.push(fromPath)}
+                className="px-4 py-1.5 rounded-full text-xs font-bold bg-white text-emerald-800 hover:bg-white/90 shadow transition cursor-pointer shrink-0"
+              >
+                Enter Store Now →
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* ── Main Content Hero ────────────────────────────────────────── */}
+        <main className="relative z-10 flex-1 flex flex-col items-center justify-center py-12 px-4 sm:px-6">
+          <div className="w-full max-w-3xl mx-auto space-y-8">
+            {/* Top Pill & Headline */}
+            <div className="flex flex-col items-center text-center space-y-4">
+              <div
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-sm uppercase border"
+                style={{
+                  background:
+                    "color-mix(in srgb, var(--brand-flat) 12%, transparent)",
+                  color: "var(--brand-flat)",
+                  borderColor:
+                    "color-mix(in srgb, var(--brand-flat) 28%, transparent)",
+                }}
+              >
+                <Clock className="w-3.5 h-3.5" />
+                <span>Scheduled Store Maintenance</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping" />
+              </div>
+
+              <h1
+                className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight"
+                style={{
+                  fontFamily: "var(--site-font-heading, sans-serif)",
+                  color: "var(--foreground)",
+                }}
+              >
+                We&apos;re upgrading for a{" "}
+                <span
+                  style={{
+                    background: "var(--brand-gradient)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
+                >
+                  brighter experience
                 </span>
-              </div>
-            </div>
+              </h1>
 
-            {/* 4. Email + Notify me + disabled input */}
-            <div className="maint-card">
-              <div className="p-6 sm:p-8 space-y-5">
-                <div className="space-y-1">
-                  <h2 className="font-bold text-base" style={{ color:"var(--foreground)" }}>
-                    Get notified when we&apos;re back
-                  </h2>
-                  <p className="text-sm" style={{ color:"var(--foreground-muted)" }}>
-                    Drop your email and we&apos;ll ping you the moment the store is live.
-                  </p>
-                </div>
-                {submitted ? (
-                  <div className="flex items-center gap-2 py-3 px-4 rounded-xl text-sm font-medium"
-                    style={{ background:"color-mix(in srgb,var(--brand-flat) 10%,transparent)",
-                      color:"var(--brand-flat)", border:"1px solid color-mix(in srgb,var(--brand-flat) 25%,transparent)" }}>
-                    <CheckCircle className="w-4 h-4" aria-hidden />
-                    You&apos;re on the list! We&apos;ll notify you at <strong className="ml-1">{email}</strong>.
-                  </div>
-                ) : (
-                  <form id="maint-notify-form" onSubmit={(e) => { e.preventDefault(); if(email) setSubmitted(true); }} className="flex">
-                    <input id="maint-email-input" type="email" className="email-input"
-                      placeholder="you@example.com" value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      aria-label="Email address" required />
-                    <button id="maint-notify-btn" type="submit" className="btn-notify">
-                      Notify me
-                    </button>
-                  </form>
-                )}
-                <div className="space-y-1">
-                  <label htmlFor="maint-disabled-input" className="text-xs font-medium"
-                    style={{ color:"var(--foreground-muted)" }}>
-                    Referral code (disabled)
-                  </label>
-                  <input id="maint-disabled-input" type="text" className="input-disabled"
-                    placeholder="Enter referral code" disabled aria-disabled="true" />
-                </div>
-              </div>
-            </div>
-
-            {/* 5. Spinner + skeleton */}
-            <div className="maint-card">
-              <div className="p-6 sm:p-8 space-y-5">
-                <h2 className="font-bold text-base" style={{ color:"var(--foreground)" }}>Loading states</h2>
-                <div className="flex items-center gap-3">
-                  <div className="maint-spinner" role="status" aria-label="Loading" />
-                  <span className="text-sm" style={{ color:"var(--foreground-muted)" }}>Fetching latest data…</span>
-                </div>
-                <div className="space-y-2.5" aria-hidden>
-                  <div className="maint-skeleton h-4 w-3/4" />
-                  <div className="maint-skeleton h-4 w-full" />
-                  <div className="maint-skeleton h-4 w-5/6" />
-                  <div className="maint-skeleton h-10 w-1/3 rounded-xl" />
-                </div>
-              </div>
-            </div>
-
-            {/* 6. Support + social links */}
-            <div className="maint-card">
-              <div className="p-6 sm:p-8 space-y-5">
-                <h2 className="font-bold text-base" style={{ color:"var(--foreground)" }}>Need help?</h2>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <a href={`mailto:${supportEmail}`} id="maint-email-link"
-                    className="flex items-center gap-2.5" style={{ textDecoration:"none" }}>
-                    <div className="contact-icon"><Mail className="w-4 h-4" /></div>
-                    <div>
-                      <p className="text-[11px]" style={{ color:"var(--foreground-muted)" }}>Email support</p>
-                      <span className="maint-link text-sm font-semibold" style={{ textDecoration:"none" }}>
-                        {supportEmail}
-                      </span>
-                    </div>
-                  </a>
-                  <a href={`tel:${supportPhone.replace(/\s/g,"")}`} id="maint-phone-link"
-                    className="flex items-center gap-2.5" style={{ textDecoration:"none" }}>
-                    <div className="contact-icon"><Phone className="w-4 h-4" /></div>
-                    <div>
-                      <p className="text-[11px]" style={{ color:"var(--foreground-muted)" }}>Phone support</p>
-                      <span className="maint-link text-sm font-semibold" style={{ textDecoration:"none" }}>
-                        {supportPhone}
-                      </span>
-                    </div>
-                  </a>
-                </div>
-                {socialLinks.length > 0 && (
-                  <div className="space-y-2">
-                    <p className="text-xs font-semibold tracking-wide uppercase"
-                      style={{ color:"var(--foreground-muted)" }}>Follow us</p>
-                    <div className="flex flex-wrap gap-2">
-                      {socialLinks.map((link, i) => (
-                        <a key={i} href={link.url || "#"}
-                          id={`maint-social-${link.platform.toLowerCase().replace(/[^a-z0-9]/g,"")}`}
-                          aria-label={link.platform} target="_blank" rel="noopener noreferrer"
-                          className="social-btn" title={link.platform}>
-                          <SocialIcon platform={link.platform} />
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Footer */}
-            <div className="text-center pb-4">
-              <p className="text-xs" style={{ color:"var(--foreground-muted)" }}>
-                &copy; {new Date().getFullYear()}{" "}
-                <a href="/" className="maint-link" id="maint-footer-link">{siteName}</a>
-                . Static color theme test — no maintenance logic.
+              <p className="text-base sm:text-lg max-w-xl text-[var(--foreground-muted)] leading-relaxed">
+                {siteName} is currently undergoing scheduled performance and
+                security improvements. All shopping data, orders and customer
+                accounts remain safe and untouched.
               </p>
             </div>
 
+            {/* ── System Status & Live Progress Card ───────────────────── */}
+            <div className="maint-card p-6 sm:p-8 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[var(--border-color)]/60">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-10 h-10 rounded-2xl flex items-center justify-center text-white shadow"
+                    style={{ background: "var(--brand-gradient)" }}
+                  >
+                    <Activity className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h2 className="font-bold text-base text-[var(--foreground)]">
+                      System Upgrade in Progress
+                    </h2>
+                    <p className="text-xs text-[var(--foreground-muted)]">
+                      Live sync active • Auto-redirects when store re-opens
+                    </p>
+                  </div>
+                </div>
+
+                {/* Real-time check status button */}
+                <button
+                  type="button"
+                  id="maint-check-status-btn"
+                  onClick={() => checkStatus(true)}
+                  disabled={checkingStatus}
+                  className="btn-outline text-xs px-3.5 py-1.5 self-start sm:self-auto cursor-pointer"
+                >
+                  <RefreshCw
+                    className={`w-3.5 h-3.5 ${
+                      checkingStatus ? "animate-spin" : ""
+                    }`}
+                  />
+                  <span>
+                    {checkingStatus ? "Pinging..." : "Check Live Status"}
+                  </span>
+                </button>
+              </div>
+
+              {/* Visual Pipeline Stages */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="p-3.5 rounded-xl border border-emerald-500/20 bg-emerald-500/5 flex items-start gap-3">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" />
+                  <div>
+                    <p className="text-xs font-bold text-[var(--foreground)]">
+                      Core Database
+                    </p>
+                    <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+                      Optimized & Verified
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-3.5 rounded-xl border border-amber-500/30 bg-amber-500/5 flex items-start gap-3 relative overflow-hidden">
+                  <Server className="w-4 h-4 text-amber-500 mt-0.5 shrink-0 animate-pulse" />
+                  <div>
+                    <p className="text-xs font-bold text-[var(--foreground)]">
+                      Performance Engine
+                    </p>
+                    <p className="text-[11px] text-amber-600 dark:text-amber-400 font-medium">
+                      In Progress (78%)
+                    </p>
+                  </div>
+                  <div
+                    className="absolute bottom-0 left-0 h-0.5 w-3/4"
+                    style={{ background: "var(--brand-gradient)" }}
+                  />
+                </div>
+
+                <div className="p-3.5 rounded-xl border border-[var(--border-color)]/60 bg-[var(--surface-alt)]/50 flex items-start gap-3 opacity-75">
+                  <Lock className="w-4 h-4 text-[var(--foreground-muted)] mt-0.5 shrink-0" />
+                  <div>
+                    <p className="text-xs font-bold text-[var(--foreground)]">
+                      Security & Storefront
+                    </p>
+                    <p className="text-[11px] text-[var(--foreground-muted)] font-medium">
+                      Final Step Before Live
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Animated Progress Bar */}
+              <div className="space-y-2">
+                <div className="flex justify-between text-xs font-semibold text-[var(--foreground-muted)]">
+                  <span>Upgrade Progress</span>
+                  <span className="text-[var(--brand-flat)]">78% Completed</span>
+                </div>
+                <div className="w-full h-2 rounded-full bg-[var(--surface-alt)] overflow-hidden border border-[var(--border-color)]/60">
+                  <div
+                    className="h-full rounded-full transition-all duration-1000 ease-out"
+                    style={{
+                      width: "78%",
+                      background: "var(--brand-gradient)",
+                      boxShadow: "0 0 10px var(--brand-flat)",
+                    }}
+                  />
+                </div>
+              </div>
+
+              {lastCheckTime && (
+                <div className="flex items-center justify-between text-[11px] text-[var(--foreground-muted)] pt-2 border-t border-[var(--border-color)]/40">
+                  <span>
+                    Last server heartbeat:{" "}
+                    {lastCheckTime.toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      second: "2-digit",
+                    })}
+                  </span>
+                  <span className="flex items-center gap-1 font-mono">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                    proxy active
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* ── Email Notification Card ──────────────────────────────── */}
+            <div className="maint-card p-6 sm:p-8 space-y-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-[var(--brand-flat)]" />
+                  <h2 className="font-bold text-base text-[var(--foreground)]">
+                    Get Instant Notification When We Re-Open
+                  </h2>
+                </div>
+                <p className="text-sm text-[var(--foreground-muted)]">
+                  Enter your email address and our system will alert you the
+                  moment the store goes live.
+                </p>
+              </div>
+
+              {submitted ? (
+                <div
+                  className="flex items-center gap-3 p-4 rounded-xl border text-sm font-semibold animate-in fade-in"
+                  style={{
+                    background:
+                      "color-mix(in srgb, var(--brand-flat) 10%, transparent)",
+                    color: "var(--brand-flat)",
+                    borderColor:
+                      "color-mix(in srgb, var(--brand-flat) 25%, transparent)",
+                  }}
+                >
+                  <CheckCircle2 className="w-5 h-5 shrink-0" />
+                  <div>
+                    <p>You&apos;re subscribed!</p>
+                    <p className="text-xs font-normal opacity-90">
+                      We will notify <strong>{email}</strong> the exact instant
+                      the store is live.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <form
+                  id="maint-notify-form"
+                  onSubmit={handleNotifySubmit}
+                  className="flex flex-col sm:flex-row gap-2.5"
+                >
+                  <input
+                    type="email"
+                    id="maint-email-input"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email address..."
+                    required
+                    className="flex-1 px-4 py-3 rounded-full text-sm outline-none transition-all bg-[var(--surface-alt)] text-[var(--foreground)] border border-[var(--border-color)] focus:border-[var(--brand-flat)] focus:ring-2 focus:ring-[var(--brand-flat)]/20"
+                  />
+                  <button
+                    type="submit"
+                    id="maint-notify-btn"
+                    className="btn-gradient shrink-0"
+                  >
+                    <span>Notify Me</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </form>
+              )}
+            </div>
+
+            {/* ── Need Immediate Assistance / Support Contacts ─────────── */}
+            <div className="maint-card p-6 sm:p-8 space-y-5">
+              <h2 className="font-bold text-base text-[var(--foreground)]">
+                Need immediate customer support?
+              </h2>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <a
+                  href={`mailto:${supportEmail}`}
+                  id="maint-email-link"
+                  className="flex items-center gap-3.5 p-3.5 rounded-xl border border-[var(--border-color)]/60 bg-[var(--surface-alt)]/40 hover:border-[var(--brand-flat)] transition-all group no-underline"
+                >
+                  <div
+                    className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
+                    style={{
+                      background:
+                        "color-mix(in srgb, var(--brand-flat) 12%, transparent)",
+                      color: "var(--brand-flat)",
+                    }}
+                  >
+                    <Mail className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-xs text-[var(--foreground-muted)]">
+                      Email Customer Care
+                    </p>
+                    <p className="text-sm font-semibold text-[var(--foreground)] truncate">
+                      {supportEmail}
+                    </p>
+                  </div>
+                </a>
+
+                <a
+                  href={`tel:${supportPhone.replace(/\s/g, "")}`}
+                  id="maint-phone-link"
+                  className="flex items-center gap-3.5 p-3.5 rounded-xl border border-[var(--border-color)]/60 bg-[var(--surface-alt)]/40 hover:border-[var(--brand-flat)] transition-all group no-underline"
+                >
+                  <div
+                    className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
+                    style={{
+                      background:
+                        "color-mix(in srgb, var(--brand-flat) 12%, transparent)",
+                      color: "var(--brand-flat)",
+                    }}
+                  >
+                    <Phone className="w-4 h-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-xs text-[var(--foreground-muted)]">
+                      Toll-Free Phone Support
+                    </p>
+                    <p className="text-sm font-semibold text-[var(--foreground)] truncate">
+                      {supportPhone}
+                    </p>
+                  </div>
+                </a>
+              </div>
+
+              {/* {socialLinks.length > 0 && (
+                <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[var(--border-color)]/40">
+                  <span className="text-xs font-semibold text-[var(--foreground-muted)] uppercase tracking-wider">
+                    Follow updates on social
+                  </span>
+                  <div className="flex items-center gap-2">
+                    {socialLinks.map((link, i) => (
+                      <a
+                        key={i}
+                        href={link.url || "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="social-btn"
+                        title={link.platform}
+                        aria-label={link.platform}
+                      >
+                        <SocialIcon platform={link.platform} />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )} */}
+            </div>
           </div>
         </main>
+
+        {/* ── Footer ───────────────────────────────────────────────────── */}
+        <footer className="relative z-10 py-6 border-t border-[var(--border-color)]/50 text-center text-xs text-[var(--foreground-muted)] space-y-2">
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Link
+              href="/dashboard/admin/settings"
+              className="text-[var(--brand-flat)] hover:underline font-semibold"
+            >
+              Administrator & Demo Admin Settings
+            </Link>
+            <span>•</span>
+            <Link
+              href="/auth/login"
+              className="text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+            >
+              Staff Sign In
+            </Link>
+          </div>
+          <p>
+            &copy; {new Date().getFullYear()} {siteName}. All rights reserved.
+            Protected by {siteName} Proxy Route Guard.
+          </p>
+        </footer>
       </div>
     </>
   );

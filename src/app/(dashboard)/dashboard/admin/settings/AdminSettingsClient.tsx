@@ -974,10 +974,35 @@ export default function AdminSettingsClient({
   const [maintenanceMode, setMaintenanceMode] = useState(
     current.maintenanceMode || false
   );
+  const [savingMaintenance, setSavingMaintenance] = useState(false);
   const [footerCopyright, setFooterCopyright] = useState(
     current.footerCopyright || ""
   );
 
+  // ── Maintenance Mode: instant real-time toggle (saves immediately, no Publish required) ──
+  const handleToggleMaintenance = async (isSelected: boolean) => {
+    setMaintenanceMode(isSelected);
+    setSavingMaintenance(true);
+    try {
+      const res = await updateSiteSettings({ maintenanceMode: isSelected });
+      if (res?.success === false) {
+        toast.error(res.message || "Failed to update maintenance mode.");
+        setMaintenanceMode(!isSelected); // rollback
+      } else {
+        updateSettings({ maintenanceMode: isSelected });
+        toast.success(
+          isSelected
+            ? "⚠️ Store maintenance mode activated! Public routes are now blocked."
+            : "✅ Maintenance mode deactivated. Store is live!"
+        );
+      }
+    } catch {
+      toast.error("An error occurred while updating maintenance mode.");
+      setMaintenanceMode(!isSelected); // rollback
+    } finally {
+      setSavingMaintenance(false);
+    }
+  };
   // ── Helpers & Real-Time Sync ──
   const setColor = (key: keyof SiteColorPalette, val: string) => {
     setColors((prev) => {
@@ -2532,7 +2557,7 @@ export default function AdminSettingsClient({
 
           <SettingCard
             title="Operating Mode"
-            subtitle="Toggle maintenance mode for scheduled store updates"
+            subtitle="Toggle maintenance mode — changes take effect immediately, no Save required"
             icon={Shield}
           >
             <div className="flex items-center justify-between p-4 rounded-xl bg-[var(--surface-alt)] dark:bg-[var(--surface-alt)]/40 border border-[var(--border-color)]/60">
@@ -2541,31 +2566,49 @@ export default function AdminSettingsClient({
                   Maintenance Mode
                 </p>
                 <p className="text-[11px] text-[var(--foreground-muted)]">
-                  When active, non-admin visitors will see a maintenance message
+                  When active, non-admin visitors will see a maintenance page
                 </p>
               </div>
-              <Switch
-                isSelected={maintenanceMode}
-                onChange={(isSelected) => setMaintenanceMode(isSelected)}
-                className="cursor-pointer"
-              >
-                <Switch.Content className="cursor-pointer">
-                  <Switch.Control className="cursor-pointer">
-                    <Switch.Thumb className="cursor-pointer" />
-                  </Switch.Control>
-                </Switch.Content>
-              </Switch>
+              <div className="flex items-center gap-2">
+                {savingMaintenance && (
+                  <span className="text-[11px] text-[var(--foreground-muted)] animate-pulse">
+                    Saving…
+                  </span>
+                )}
+                <Switch
+                  isSelected={maintenanceMode}
+                  onChange={(isSelected) => handleToggleMaintenance(isSelected)}
+                  isDisabled={savingMaintenance}
+                  className="cursor-pointer"
+                >
+                  <Switch.Content className="cursor-pointer">
+                    <Switch.Control className="cursor-pointer">
+                      <Switch.Thumb className="cursor-pointer" />
+                    </Switch.Control>
+                  </Switch.Content>
+                </Switch>
+              </div>
             </div>
 
             {maintenanceMode ? (
-              <div className="p-3.5 rounded-xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-950/20 flex items-center gap-2.5 text-xs text-red-600 dark:text-red-400 font-semibold">
-                <AlertCircle className="w-4 h-4 shrink-0" />
-                <span>Store is currently in maintenance mode!</span>
+              <div className="p-3.5 rounded-xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-950/20 flex items-center justify-between gap-2.5">
+                <div className="flex items-center gap-2 text-xs text-red-600 dark:text-red-400 font-semibold">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>Maintenance mode is ACTIVE — public store is blocked.</span>
+                </div>
+                <a
+                  href="/maintenance?preview=true"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] px-2.5 py-1 rounded-full border border-red-300 dark:border-red-700 text-red-600 dark:text-red-400 font-semibold hover:bg-red-100 dark:hover:bg-red-950/30 transition shrink-0 whitespace-nowrap"
+                >
+                  Preview Page ↗
+                </a>
               </div>
             ) : (
               <div className="p-3.5 rounded-xl border border-emerald-200 dark:border-emerald-900/50 bg-emerald-50 dark:bg-emerald-950/20 flex items-center gap-2.5 text-xs text-emerald-600 dark:text-emerald-400 font-semibold">
                 <CheckCircle2 className="w-4 h-4 shrink-0" />
-                <span>Store is live and operational.</span>
+                <span>Store is live and operational — maintenance mode is OFF.</span>
               </div>
             )}
           </SettingCard>
