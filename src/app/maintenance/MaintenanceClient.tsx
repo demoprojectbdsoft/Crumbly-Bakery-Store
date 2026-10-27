@@ -327,8 +327,12 @@ export default function MaintenancePage({ settings: serverSettings }: Props) {
         {/* ── Top Header Navigation ────────────────────────────────────── */}
         <header className="relative z-20 w-full border-b border-[var(--border-color)]/60 bg-[var(--surface)]/70 backdrop-blur-md">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-            {/* Logo / Brand */}
-            <div className="flex items-center gap-3">
+            {/* Logo / Brand → home */}
+            <Link
+              href="/"
+              aria-label={`${siteName} home`}
+              className="flex items-center gap-3 cursor-pointer"
+            >
               {hasLogo && activeLogo ? (
                 <Image
                   src={activeLogo}
@@ -357,7 +361,7 @@ export default function MaintenancePage({ settings: serverSettings }: Props) {
                   </span>
                 </div>
               )}
-            </div>
+            </Link>
 
             {/* Right actions: Live status, Theme toggle, Admin portal */}
             <div className="flex items-center gap-2.5 sm:gap-3.5">
