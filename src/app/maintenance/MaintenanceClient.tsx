@@ -767,15 +767,8 @@ export default function MaintenancePage({ settings: serverSettings }: Props) {
         <footer className="relative z-10 py-6 border-t border-[var(--border-color)]/50 text-center text-xs text-[var(--foreground-muted)] space-y-2">
           <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
-              href="/dashboard/admin/settings"
-              className="text-[var(--brand-flat)] hover:underline font-semibold"
-            >
-              Administrator & Demo Admin Settings
-            </Link>
-            <span>•</span>
-            <Link
               href="/auth/login"
-              className="text-[var(--foreground-muted)] hover:text-[var(--foreground)]"
+              className="text-[var(--brand-flat)] hover:underline font-semibold"
             >
               Staff Sign In
             </Link>
