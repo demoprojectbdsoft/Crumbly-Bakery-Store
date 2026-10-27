@@ -256,6 +256,7 @@ export interface SiteSettingsData {
   currency: string;
   timezone: string;
   maintenanceMode: boolean;
+  shopBrowseMode?: "pagination" | "scroll";
   footerCopyright: string;
 }
 
