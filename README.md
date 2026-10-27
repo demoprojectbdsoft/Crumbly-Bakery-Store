@@ -20,10 +20,12 @@
 2. [Quick Navigation](#-quick-navigation)
 3. [Roles & Access](#-roles--access)
 4. [Storefront](#-storefront)
+   - [Shop Browse Modes](#shop-browse-modes)
 5. [Customer Dashboard](#-customer-dashboard)
 6. [Admin Dashboard](#️-admin-dashboard)
    - [Catalog & Orders](#catalog--orders)
    - [Site Settings & Branding](#site-settings--branding)
+   - [Maintenance Mode](#maintenance-mode)
 7. [Business Rules](#-business-rules)
    - [Orders & Payments](#orders--payments)
    - [Loyalty & Membership](#loyalty--membership)
@@ -62,6 +64,8 @@ Nothing is hardcoded. Categories, products, the homepage slider, and the store's
 | What a shopper can do | [Storefront](#-storefront), [Customer Dashboard](#-customer-dashboard) |
 | What an admin can do | [Admin Dashboard](#️-admin-dashboard) |
 | How the store's look and branding is changed | [Site Settings & Branding](#site-settings--branding) |
+| What happens during maintenance | [Maintenance Mode](#maintenance-mode) |
+| Pagination vs infinite scroll | [Shop Browse Modes](#shop-browse-modes) |
 | How orders, points, and prices behave | [Business Rules](#-business-rules) |
 | Who can see or do what | [Roles & Access](#-roles--access) |
 | The demo login and its limits | [Demo Admin Mode](#-demo-admin-mode) |
@@ -98,22 +102,43 @@ Public pages anyone can visit.
 |---|---|
 | **Dynamic homepage** | Hero slider, Popular/Trending Products, Warehouse Deals, New Arrivals, promo banners, and newsletter signup. |
 | **Category mega-menu** | Desktop and mobile menus driven by live category/subcategory data. |
-| **Shop page** | Search, filters, sorting, pagination, and a product details page per slug. |
+| **Shop page** | Search, filters, sorting, and a product details page per slug. Browse with numbered **pagination** or **infinite scroll** — see [Browse Modes](#shop-browse-modes). |
 | **Language translator** | A built-in switcher to translate the storefront on the fly. |
 | **Admin-controlled branding** | Site name, tagline, SEO meta, fonts, colors, logos, favicon, announcement bar, contact details, currency, and footer text come from the database, so changes show up across the storefront without a redeploy. |
 | **Dark / Light theme** | Via `next-themes`, with separate light and dark colors and logos. |
 | **Installable app (PWA)** | A web manifest for installing Sparq to desktop or mobile. |
-| **Maintenance mode** | When switched on by an admin, non-admin visitors see a maintenance message. |
+| **Maintenance mode** | When switched on by an admin, customers and guests see a branded maintenance page, while admins and demo admins keep full access. See [Maintenance Mode](#maintenance-mode). |
+
+### Shop Browse Modes
+
+The shop page can list products two ways, switched from a toggle above the grid.
+
+| Mode | Behavior |
+|---|---|
+| **Pagination** | Numbered pages with Prev / Next and a "Showing 1–12 of N" summary. |
+| **Infinite Scroll** | The next batch loads automatically as you near the bottom, with a progress bar (loaded / total), skeleton cards while loading, a **Load Next Page** fallback button, and a **Back to top** card at the end of the catalog. |
+
+Which mode opens first is decided in this order:
+
+```
+1. ?mode=scroll in the URL
+2. The customer's own preference (Account Settings)
+3. The mode they last picked on the shop page (saved in the browser)
+4. The store default chosen by the admin in Site Settings
+```
+
+Switching mode keeps the current filters, search, and sort.
 
 ### Shopping Experience
 
 | Feature | Description |
 |---|---|
 | **Cart & Wishlist** | Persisted per user in the database, synced across devices. |
-| **Checkout** | Cash on Delivery or mobile wallet (bKash / Rocket / Nagad) with OTP verification. |
+| **Checkout** | Cash on Delivery or mobile wallet (bKash / Rocket / Nagad) with OTP verification. A shipping address is required only for Cash on Delivery. |
+| **Product gallery** | An image gallery opens in a modal on the product details page. |
 | **Order tracking** | A Track Order page and full status history per order. |
 | **Buy Again** | From an order in Orders history, re-add that same product straight back to the cart. |
-| **Reviews & ratings** | A product's rating and review count are recalculated from its actual reviews. |
+| **Reviews & ratings** | A customer leaves a star rating and a written review, and can attach up to 5 images (stored on ImgBB). A product's rating and review count are recalculated from its actual reviews. |
 | **Loyalty points & membership** | Points on every order, tracked against a membership tier. |
 
 ---
@@ -135,7 +160,7 @@ Public pages anyone can visit.
 
 | Tab | What the customer can do |
 |---|---|
-| **Preferences & Localization** | Choose a display currency and language. The currency overrides the store default for that customer's display only. |
+| **Preferences & Localization** | Choose a display currency and language. The currency overrides the store default for that customer's display only. Also choose how the shop lists products: store default, pagination, or infinite scroll. |
 | **Notifications & Alerts** | Manage notification preferences. |
 | **Security & Sessions** | Change password (current password required). Changing it revokes all other active sessions. |
 | **Privacy & Data** | Export account data as JSON (purchase history, saved addresses, profile), or permanently delete the account — requires typing `DELETE` and re-entering the password. |
@@ -148,13 +173,13 @@ Public pages anyone can visit.
 
 | Area | What the admin can do |
 |---|---|
-| **Products** | Add, edit, and delete products with image upload, badges, and stock. See each product's **sell count** and the **profit or loss** it has made. |
+| **Products** | Add, edit, and delete products with image upload, badges, and stock. See each product's **sell count** and the **profit or loss** it has made, in both the table and the product view, with the same image gallery modal. |
 | **Categories & subcategories** | Manage the hierarchy. Deleting a category also deletes its subcategories, but the whole delete is cancelled if the category or any subcategory still has products. |
 | **Home Slider** | Add, reorder, and manage slides by selecting an existing product. |
 | **Orders & Transactions** | Platform-wide tables with status updates. |
 | **Users** | Change user role and account status. |
 | **Reviews** | View and moderate all product reviews. |
-| **Profit & sales analytics** | Daily/weekly/monthly/yearly profit, exportable to CSV. |
+| **Profit & sales analytics** | Daily/weekly/monthly/yearly profit, a profit/loss graph, and graphs of the most sold and most earning products. Exportable to CSV. |
 | **Settings** | Site Settings & Branding — see below. |
 
 ### Site Settings & Branding
@@ -170,7 +195,39 @@ One page, split into tabs, that controls how the whole store looks and behaves. 
 | **Top Bar & Layout** | Show or hide the announcement bar, edit its text with live preview, and add custom action links. |
 | **Logos & Media** | Image + Text, Image Only, or Text Only display; separate light and dark logos for navbar and footer; brand wordmark text; favicon by upload or URL (hosted on ImgBB). |
 | **Contact & Socials** | Support phone, email, physical address, and social links shown in the footer and mobile navigation. |
-| **System & Security** | Store currency, timezone, custom footer copyright, and **maintenance mode**. |
+| **System & Security** | Store currency, timezone, custom footer copyright, the default shop browse mode (pagination or infinite scroll), and **maintenance mode**. |
+
+
+### Maintenance Mode
+
+An admin switches it on or off in **Site Settings → System & Security**. It takes effect within a few seconds.
+
+| Visitor | While maintenance is ON |
+|---|---|
+| **Customer / guest** | Every page, including the customer dashboard, redirects to `/maintenance`. |
+| **Admin / demo admin** (signed in) | Full access to the storefront and the admin dashboard. |
+| **Sign-in pages** | Always reachable, so staff can log in. |
+
+```
+Request ─► proxy.ts
+             │
+             ├─ static files, /auth, /api/auth, /api/site-settings ─► allowed
+             ├─ maintenance OFF ───────────────────────────────────► allowed
+             ├─ maintenance ON + admin / demo admin session ───────► allowed
+             └─ maintenance ON + anyone else ──► /maintenance?from=<page>
+```
+
+**The maintenance page**
+- Branded with the store's logo (linked to home), name, and palette gradient, in light and dark.
+- Shows a live status badge and a **Check Live Status** button, and re-checks the server every 4 seconds.
+- When maintenance is switched off, it shows "Store is officially back online" and redirects the visitor back to the page they came from after 3 seconds.
+- Shows the store's support email and phone from Contact settings.
+- Has **Admin Login** and **Staff Sign In** links for staff.
+- Admins can preview it any time at `/maintenance?preview`.
+
+**How it works**
+- `proxy.ts` (Next.js 16's replacement for `middleware.ts`) reads the `maintenanceMode` flag from the settings API, cached for 3 seconds.
+- For signed-in users it asks better-auth for the session role, cached for 30 seconds per session. If the backend is unreachable, the last known state is kept.
 
 ---
 
@@ -210,6 +267,8 @@ A customer can review a product only if **all** of these hold:
 3. They have purchased the product, and that order has been **delivered**.
 4. They haven't already reviewed that product — one review per user per product.
 
+A review contains a star rating, a written message, and up to 5 images.
+
 Ratings are recalculated from the actual review documents on every create, update, and delete, so they are never stored stale.
 
 ### Suspended Accounts
@@ -226,8 +285,8 @@ A shared demo admin login lets reviewers explore the admin dashboard safely.
 
 | | Demo admin can | Demo admin cannot |
 |---|---|---|
-| **Catalog** | Add, edit, and delete categories, subcategories, products, slides, and reviews. | — |
-| **Everything else** | — | Change users, orders, transactions, cart, wishlist, account settings, password, or email, or delete the account. |
+| **Catalog** | Add, edit, and delete categories, subcategories, products, and slides, and moderate reviews. | Write a review. |
+| **Everything else** | — | Change users, orders, transactions, account settings, password, or email, or delete the account. Add to cart or wishlist (the cart button is hidden in the admin and demo admin dashboard navbar). |
 
 **Automatic restore** — everything the demo admin changes is reverted by a daily job on the server: added items are removed, edited items go back to their original values, and deleted items come back. Real admin changes are never touched.
 
@@ -244,6 +303,7 @@ Technical details are in the [server README](https://github.com/demoprojectbdsof
 | **Review eligibility** | Enforced server-side — see [Reviews & Ratings](#reviews--ratings). |
 | **Suspended accounts** | Blocked from adding to cart and checking out. |
 | **Demo admin limits** | Restricted to catalog routes only. |
+| **Maintenance guard** | While maintenance is on, only a signed-in admin or demo admin passes; customers are redirected, dashboard included. |
 | **Account deletion** | Requires typing `DELETE` and re-verifying the password. |
 | **Money math** | Prices, discounts, shipping fees, and totals never come from the client. |
 
